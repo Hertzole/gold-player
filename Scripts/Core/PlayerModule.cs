@@ -121,5 +121,13 @@ namespace Hertzole.GoldPlayer
             else
                 return Input.GetAxisRaw(defaultAxisName);
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Called when something changes in the inspector.
+        /// THIS IS EDITOR ONLY! SHOULD NOT BE USED OUTSIDE 'if UNITY_EDITOR' define!
+        /// </summary>
+        public virtual void OnValidate() { }
+#endif
     }
 }

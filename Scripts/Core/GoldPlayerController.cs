@@ -8,9 +8,10 @@ namespace Hertzole.GoldPlayer
     {
         [SerializeField]
         private PlayerMovement m_Movement;
+        /// <summary> Everything related to movement. </summary>
         public PlayerMovement Movement { get { return m_Movement; } }
 
-        private bool m_InitOnStart = false;
+        private bool m_InitOnStart = true;
         protected bool m_HasBeenInitialized = false;
 
         private GoldInput m_PlayerInput;
@@ -34,17 +35,20 @@ namespace Hertzole.GoldPlayer
 
         private void Update()
         {
-            Movement.OnUpdate();
+            if (HasBeenInitialized)
+                Movement.OnUpdate();
         }
 
         private void FixedUpdate()
         {
-            Movement.OnFixedUpdate();
+            if (HasBeenInitialized)
+                Movement.OnFixedUpdate();
         }
 
         private void LateUpdate()
         {
-            Movement.OnLateUpdate();
+            if (HasBeenInitialized)
+                Movement.OnLateUpdate();
         }
 
         /// <summary>
@@ -55,6 +59,8 @@ namespace Hertzole.GoldPlayer
             GetReferences();
 
             InitializeModules();
+
+            m_HasBeenInitialized = true;
         }
 
         /// <summary>
@@ -73,5 +79,12 @@ namespace Hertzole.GoldPlayer
         {
             Movement.Init(this, PlayerInput);
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            Movement.OnValidate();
+        }
+#endif
     }
 }
