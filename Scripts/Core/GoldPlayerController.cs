@@ -7,6 +7,10 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerController : MonoBehaviour
     {
         [SerializeField]
+        private PlayerCamera m_Camera;
+        /// <summary> Everything related to the player camera (mouse movement). </summary>
+        public PlayerCamera Camera { get { return m_Camera; } set { m_Camera = value; } }
+        [SerializeField]
         private PlayerMovement m_Movement;
         /// <summary> Everything related to movement. </summary>
         public PlayerMovement Movement { get { return m_Movement; } }
@@ -36,19 +40,28 @@ namespace Hertzole.GoldPlayer
         private void Update()
         {
             if (HasBeenInitialized)
+            {
                 Movement.OnUpdate();
+                Camera.OnUpdate();
+            }
         }
 
         private void FixedUpdate()
         {
             if (HasBeenInitialized)
+            {
                 Movement.OnFixedUpdate();
+                Camera.OnFixedUpdate();
+            }
         }
 
         private void LateUpdate()
         {
             if (HasBeenInitialized)
+            {
                 Movement.OnLateUpdate();
+                Camera.OnLateUpdate();
+            }
         }
 
         /// <summary>
@@ -78,12 +91,14 @@ namespace Hertzole.GoldPlayer
         protected virtual void InitializeModules()
         {
             Movement.Init(this, PlayerInput);
+            Camera.Init(this, PlayerInput);
         }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
             Movement.OnValidate();
+            Camera.OnValidate();
         }
 #endif
     }

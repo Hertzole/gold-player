@@ -12,11 +12,13 @@ namespace Hertzole.GoldPlayer.Editor
         private string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
         private const string SELECTED_TAB_PREFS = "HERTZ_APP_SELECTED_TAB";
 
+        private SerializedProperty m_Camera;
         private SerializedProperty m_Movement;
 
         private void OnEnable()
         {
             m_CurrentTab = EditorPrefs.GetInt(SELECTED_TAB_PREFS, 0);
+            m_Camera = serializedObject.FindProperty("m_Camera");
             m_Movement = serializedObject.FindProperty("m_Movement");
         }
 
@@ -32,13 +34,18 @@ namespace Hertzole.GoldPlayer.Editor
 
             if (m_CurrentTab == 0) // Camera
             {
-
+                DoCameraGUI();
             }
             else if (m_CurrentTab == 1) // Movement
             {
                 DoMovementGUI();
             }
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DoCameraGUI()
+        {
+            EditorGUILayout.PropertyField(m_Camera, true);
         }
 
         private void DoMovementGUI()
