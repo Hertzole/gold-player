@@ -1,6 +1,5 @@
 using UnityEngine;
 
-//TODO: Add tooltips
 namespace Hertzole.GoldPlayer.Core
 {
     [System.Serializable]
