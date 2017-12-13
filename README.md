@@ -20,6 +20,7 @@ I have several things I want to do with this player controller. Right now I just
 - ~~Rewired input~~ Replaced by new Unity input system.
 - Intergrate the [new Unity Input System](https://github.com/Unity-Technologies/InputSystem) (when it becomes more stable).
 - Easy to use API
+
 Those are just some things I can think of right now. I will, of course, add more stuff as time goes on!
 
 ### Q&A
