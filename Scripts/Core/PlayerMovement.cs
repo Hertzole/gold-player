@@ -29,6 +29,10 @@ namespace Hertzole.GoldPlayer.Core
     [System.Serializable]
     public class PlayerMovement : PlayerModule
     {
+        [SerializeField]
+        [Tooltip("Determines if the player can move at all.")]
+        private bool m_CanMove;
+
         //////// WALKING
         [Header("Walking")]
         [SerializeField]
@@ -79,6 +83,15 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("How long is takes for the player to reach top speed.")]
         private float m_Acceleration = 0.10f;
+        [SerializeField]
+        [Tooltip("Sets the gravity of the player.")]
+        private float m_Gravity = 20;
+        [SerializeField]
+        [Tooltip("Determines if groundstick should be enabled. This would stop the player for bouncing down slopes.")]
+        private bool m_EnableGroundStick = true;
+        [SerializeField]
+        [Tooltip("Sets how much the player will stick to the ground.")]
+        private float m_GroundStick = 10;
 
         // The real calculated jump height.
         private float m_RealJumpHeight = 0;
@@ -113,6 +126,9 @@ namespace Hertzole.GoldPlayer.Core
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         private MovementSpeeds m_MoveSpeed = new MovementSpeeds();
 
+        /// <summary> Determines if the player can move at all. </summary>
+        public bool CanMove { get { return m_CanMove; } set { m_CanMove = value; } }
+
         /// <summary> The speeds when walking. </summary>
         public MovementSpeeds WalkingSpeeds { get { return m_WalkingSpeeds; } set { m_WalkingSpeeds = value; if (!m_IsRunning) m_MoveSpeed = value; } }
 
@@ -141,6 +157,12 @@ namespace Hertzole.GoldPlayer.Core
         public LayerMask GroundLayer { get { return m_GroundLayer; } set { m_GroundLayer = value; } }
         /// <summary> How long is takes for the player to reach top speed. </summary>
         public float Acceleration { get { return m_Acceleration; } set { m_Acceleration = value; } }
+        /// <summary> Sets the gravity of the player. </summary>
+        public float Gravity { get { return m_Gravity; } set { float v = value; if (v < 0) v = -v; m_Gravity = v; } }
+        /// <summary> Determines if groundstick should be enabled. This would stop the player for bouncing down slopes. </summary>
+        public bool EnableGroundStick { get { return m_EnableGroundStick; } set { m_EnableGroundStick = value; } }
+        /// <summary> Sets how much the player will stick to the ground. </summary>
+        public float GroundStick { get { return m_GroundStick; } set { float v = value; if (v < 0) v = -v; m_GroundStick = v; } }
 
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return m_IsGrounded; } }
@@ -157,6 +179,13 @@ namespace Hertzole.GoldPlayer.Core
 
         protected override void OnInit()
         {
+            // Make the gravity + if needed.
+            if (m_Gravity < 0)
+                m_Gravity = -m_Gravity;
+            // Make the ground stick + if needed.
+            if (m_GroundStick < 0)
+                m_GroundStick = -m_GroundStick;
+
             // Set the move to the walking speeds.
             m_MoveSpeed = m_WalkingSpeeds;
             // Calculate the real jump height.
@@ -174,7 +203,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         private float CalculateJumpHeight(float height)
         {
-            return Mathf.Sqrt(2 * height * 10);
+            return Mathf.Sqrt(2 * height * m_Gravity);
         }
 
         /// <summary>
@@ -183,7 +212,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns>Is the player grounded?</returns>
         public bool CheckGrounded()
         {
-            m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerController.transform.position.x, PlayerController.transform.position.y + PlayerController.Controller.radius - 0.08f, PlayerController.transform.position.z), PlayerController.Controller.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
+            m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerController.transform.position.x, PlayerController.transform.position.y + PlayerController.Controller.radius - 0.1f, PlayerController.transform.position.z), PlayerController.Controller.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
             return m_IsGrounded;
         }
 
@@ -202,6 +231,9 @@ namespace Hertzole.GoldPlayer.Core
             return m_MovementInput;
         }
 
+        /// <summary>
+        /// Called every frame.
+        /// </summary>
         public override void OnUpdate()
         {
             CheckGrounded();
@@ -209,41 +241,74 @@ namespace Hertzole.GoldPlayer.Core
 
             if (!m_IsGrounded)
             {
+                // Make sure the player can't walk around in the ceiling.
                 if ((PlayerController.Controller.collisionFlags & CollisionFlags.Above) != 0)
-                    m_MoveDirection.y = -1;
+                    m_MoveDirection.y = -1f;
 
                 if (!m_IsFalling && !m_IsJumping)
                 {
                     m_IsFalling = true;
                     m_MoveDirection.y = 0;
                 }
-                m_MoveDirection -= new Vector3(0, 10 * Time.deltaTime, 0) * 10;
+
+                m_MoveDirection.y -= m_Gravity * Time.deltaTime;
             }
             else
             {
                 m_IsFalling = false;
                 m_IsJumping = false;
 
-                if (!m_IsJumping)
-                    m_MoveDirection.y = -10;
+                if (m_EnableGroundStick && !m_IsJumping)
+                    m_MoveDirection.y = -m_GroundStick;
+                else
+                    m_MoveDirection.y = 0;
             }
 
             //m_IsRunning = new Vector2(PlayerController.Controller.velocity.x, PlayerController.Controller.velocity.y).magnitude > 
 
             HandleMovementDirection();
 
+            if (GetButtonDown("Jump", KeyCode.Space) && m_CanJump && m_IsGrounded && m_CanMove)
+            {
+                Jump();
+            }
+
             PlayerController.Controller.Move(m_MoveDirection * Time.deltaTime);
         }
 
         protected virtual void HandleMovementDirection()
         {
-            m_MoveDirection = PlayerController.transform.TransformDirection(new Vector3(m_MovementInput.x, 0, m_MovementInput.y));
-            if (m_MovementInput.y > 0)
-                m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
-            else
-                m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
+            if (m_CanMove)
+            {
+                m_MoveDirection = PlayerController.transform.TransformDirection(new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y));
+                if (m_MovementInput.y > 0)
+                    m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
+                else
+                    m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
 
-            m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
+                m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
+            }
+            else
+            {
+                m_MoveDirection = Vector3.zero;
+            }
+        }
+
+        protected virtual void Jump()
+        {
+            m_IsJumping = true;
+
+            if (m_IsCrouching)
+            {
+                if (m_CrouchJumping)
+                {
+                    m_MoveDirection.y = m_RealJumpHeight;
+                }
+            }
+            else
+            {
+                m_MoveDirection.y = m_RealJumpHeight;
+            }
         }
 
 #if UNITY_EDITOR
