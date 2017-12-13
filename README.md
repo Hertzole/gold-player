@@ -17,7 +17,8 @@ I have several things I want to do with this player controller. Right now I just
 - Audio for footsteps, landing, and jumping
 - Extra components (stuff that could help you make your game and hooks into the player)
 - Built-in camera shake
-- Rewired input (I don't actually own Rewired yet, but when I do, I really want to support it!)
+- ~~Rewired input~~ Replaced by new Unity input system.
+- Intergrate the [new Unity Input System](https://github.com/Unity-Technologies/InputSystem) (when it becomes more stable).
 - Easy to use API
 Those are just some things I can think of right now. I will, of course, add more stuff as time goes on!
 
