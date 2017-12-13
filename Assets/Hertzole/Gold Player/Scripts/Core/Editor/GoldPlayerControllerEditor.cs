@@ -45,7 +45,11 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void DoCameraGUI()
         {
-            EditorGUILayout.PropertyField(m_Camera, true);
+            EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
+            SerializedProperty it = m_Camera.Copy ();
+            while (it.NextVisible(true)) {
+                if(!it.propertyPath.StartsWith("m_Movement") && it.depth < 2) EditorGUILayout.PropertyField(it, false);
+            }
         }
 
         private void DoMovementGUI()
@@ -59,7 +63,11 @@ namespace Hertzole.GoldPlayer.Editor
             //GUI.enabled = m_Movement.FindPropertyRelative("m_CanRun").boolValue;
             //EditorGUILayout.PropertyField(m_Movement.FindPropertyRelative("m_RunSpeeds"), true);
             //GUI.enabled = true;
-            EditorGUILayout.PropertyField(m_Movement, true);
+            SerializedProperty it = m_Movement.Copy ();
+            while (it.NextVisible(true)) {
+                if(!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, false);
+            }
+            
         }
     }
 }
