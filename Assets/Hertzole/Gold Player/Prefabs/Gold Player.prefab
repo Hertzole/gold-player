@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10fbdadb3552da541b69779cfadf70ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UseKeyCodes: 0
+  m_UseKeyCodes: 1
   m_Inputs:
   - m_ButtonName: Horizontal
     m_InputName: Horizontal
@@ -275,6 +275,9 @@ MonoBehaviour:
   - m_ButtonName: Jump
     m_InputName: Jump
     m_Key: 32
+  - m_ButtonName: Crouch
+    m_InputName: Crouch
+    m_Key: 99
 --- !u!114 &114880877538668738
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -301,7 +304,7 @@ MonoBehaviour:
     m_WalkingSpeeds:
       m_ForwardSpeed: 4
       m_SidewaysSpeed: 3.5
-      m_BackwardsSpeed: 2.5
+      m_BackwardsSpeed: 3
     m_CanRun: 1
     m_RunSpeeds:
       m_ForwardSpeed: 7
@@ -311,9 +314,9 @@ MonoBehaviour:
     m_JumpHeight: 2
     m_CanCrouch: 1
     m_CrouchSpeeds:
-      m_ForwardSpeed: 0
-      m_SidewaysSpeed: 0
-      m_BackwardsSpeed: 0
+      m_ForwardSpeed: 2
+      m_SidewaysSpeed: 1.5
+      m_BackwardsSpeed: 1
     m_CrouchJumping: 0
     m_CrouchHeight: 1
     m_CrouchHeadLerp: 10

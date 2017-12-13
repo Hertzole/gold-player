@@ -64,7 +64,7 @@ namespace Hertzole.GoldPlayer.Core
         private bool m_CanCrouch = true;
         [SerializeField]
         [Tooltip("The movement speeds when crouching.")]
-        private MovementSpeeds m_CrouchSpeeds;
+        private MovementSpeeds m_CrouchSpeeds = new MovementSpeeds(2f, 1.5f, 1f);
         [SerializeField]
         [Tooltip("Determines if the player can jump while crouched.")]
         private bool m_CrouchJumping = false;
@@ -94,37 +94,47 @@ namespace Hertzole.GoldPlayer.Core
         private float m_GroundStick = 10;
 
         // The real calculated jump height.
-        private float m_RealJumpHeight = 0;
+        protected float m_RealJumpHeight = 0;
         // The original character controller height.
-        private float m_OriginalControllerHeight = 0;
+        protected float m_OriginalControllerHeight = 0;
+        // The original camera position.
+        protected float m_OriginalCameraPosition = 0;
+        // The character controller center set when the player is crouching.
+        protected float m_ControllerCrouchCenter = 0;
+        // The current camera position, related to crouching.
+        protected float m_CurrentCrouchCameraPosition = 0;
+        // The position to set the camera to when crouching.
+        protected float m_CrouchCameraPosition = 0;
         // Just used in Input smoothing.
-        private float m_ForwardSpeedVelocity = 0;
+        protected float m_ForwardSpeedVelocity = 0;
         // Just used in Input smoothing.
-        private float m_SidewaysSpeedVelocity = 0;
+        protected float m_SidewaysSpeedVelocity = 0;
 
         // Is the player grounded?
-        private bool m_IsGrounded = false;
+        protected bool m_IsGrounded = false;
         // Is the player moving at all?
-        private bool m_IsMoving = false;
+        protected bool m_IsMoving = false;
         // Is the player running?
-        private bool m_IsRunning = false;
+        protected bool m_IsRunning = false;
         // Is the player jumping?
-        private bool m_IsJumping = false;
+        protected bool m_IsJumping = false;
         // Is the player falling?
-        private bool m_IsFalling = false;
+        protected bool m_IsFalling = false;
         // Is the player crouching?
-        private bool m_IsCrouching = false;
+        protected bool m_IsCrouching = false;
+        // Can the player stand up while crouching?
+        protected bool m_CanStandUp = false;
 
         // Input values for movement on the X and Z axis.
-        private Vector2 m_MovementInput = Vector2.zero;
+        protected Vector2 m_MovementInput = Vector2.zero;
 
         // The original character controller center.
-        private Vector3 m_OriginalControllerCenter = Vector3.zero;
+        protected Vector3 m_OriginalControllerCenter = Vector3.zero;
         // The direction the player is moving in.
-        private Vector3 m_MoveDirection = Vector3.zero;
+        protected Vector3 m_MoveDirection = Vector3.zero;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
-        private MovementSpeeds m_MoveSpeed = new MovementSpeeds();
+        protected MovementSpeeds m_MoveSpeed = new MovementSpeeds();
 
         /// <summary> Determines if the player can move at all. </summary>
         public bool CanMove { get { return m_CanMove; } set { m_CanMove = value; } }
@@ -176,6 +186,13 @@ namespace Hertzole.GoldPlayer.Core
         public bool IsFalling { get { return m_IsFalling; } }
         /// <summary> Is the player crouching? </summary>
         public bool IsCrouching { get { return m_IsCrouching; } }
+        /// <summary> Can the player stand up while crouching </summary>
+        public bool CanStandUp { get { return m_CanStandUp; } }
+
+        /// <summary> Used for moving left to right. </summary>
+        public const string HORIZONTAL_AXIS = "Horizontal";
+        /// <summary> Used for moving up and down. </summary>
+        public const string VERTICAL_AXIS = "Vertical";
 
         protected override void OnInit()
         {
@@ -194,6 +211,11 @@ namespace Hertzole.GoldPlayer.Core
             m_OriginalControllerHeight = PlayerController.Controller.height;
             // Set the original controller center.
             m_OriginalControllerCenter = PlayerController.Controller.center;
+            //TODO: Fetch camera head in a more elegant way.
+            m_OriginalCameraPosition = PlayerController.Camera.CameraHead.localPosition.y;
+            m_ControllerCrouchCenter = CrouchHeight / 2;
+            m_CrouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - m_CrouchHeight;
+            m_CurrentCrouchCameraPosition = m_OriginalCameraPosition;
         }
 
         /// <summary>
@@ -222,8 +244,8 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
-            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw("Horizontal"), ref m_ForwardSpeedVelocity, m_Acceleration);
-            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw("Vertical"), ref m_SidewaysSpeedVelocity, m_Acceleration);
+            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw(HORIZONTAL_AXIS), ref m_ForwardSpeedVelocity, m_Acceleration);
+            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw(VERTICAL_AXIS), ref m_SidewaysSpeedVelocity, m_Acceleration);
 
             if (m_MovementInput.sqrMagnitude > 1)
                 m_MovementInput.Normalize();
@@ -236,9 +258,25 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public override void OnUpdate()
         {
+            // Check the grounded state.
             CheckGrounded();
+            // Update the input.
             GetInput();
 
+            // Do movement.
+            BasicMovement();
+            // Do crouching.
+            Crouching();
+
+            // Move the player using the character controller.
+            PlayerController.Controller.Move(m_MoveDirection * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Handles the basic movement, like walking and jumping.
+        /// </summary>
+        protected virtual void BasicMovement()
+        {
             if (!m_IsGrounded)
             {
                 // Make sure the player can't walk around in the ceiling.
@@ -272,10 +310,11 @@ namespace Hertzole.GoldPlayer.Core
             {
                 Jump();
             }
-
-            PlayerController.Controller.Move(m_MoveDirection * Time.deltaTime);
         }
 
+        /// <summary>
+        /// Controls the movement direction and applying the correct speeds.
+        /// </summary>
         protected virtual void HandleMovementDirection()
         {
             if (m_CanMove)
@@ -294,6 +333,9 @@ namespace Hertzole.GoldPlayer.Core
             }
         }
 
+        /// <summary>
+        /// Makes the player jump.
+        /// </summary>
         protected virtual void Jump()
         {
             m_IsJumping = true;
@@ -309,6 +351,56 @@ namespace Hertzole.GoldPlayer.Core
             {
                 m_MoveDirection.y = m_RealJumpHeight;
             }
+        }
+
+        /// <summary>
+        /// Handles crouching.
+        /// </summary>
+        protected virtual void Crouching()
+        {
+            if (m_CanCrouch)
+            {
+                if (GetButton("Crouch", KeyCode.C))
+                {
+                    m_IsCrouching = true;
+                }
+                else if (m_CanStandUp)
+                {
+                    m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_OriginalCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
+                    m_IsCrouching = false;
+                    PlayerController.Controller.height = m_OriginalControllerHeight;
+                    PlayerController.Controller.center = m_OriginalControllerCenter;
+
+                    m_MoveSpeed = m_WalkingSpeeds;
+                }
+
+                if (m_IsCrouching)
+                {
+                    m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_CrouchCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
+                    m_CanStandUp = CheckCanStandUp(PlayerController.Controller.radius);
+                    PlayerController.Controller.height = m_CrouchHeight;
+                    PlayerController.Controller.center = new Vector3(PlayerController.Controller.center.x, m_ControllerCrouchCenter, PlayerController.Controller.center.z);
+
+                    m_MoveSpeed = m_CrouchSpeeds;
+                }
+
+                //TODO: Fetch camera head in a more elegant way.
+                PlayerController.Camera.CameraHead.localPosition = new Vector3(PlayerController.Camera.CameraHead.localPosition.x, m_CurrentCrouchCameraPosition, PlayerController.Camera.CameraHead.localPosition.z);
+            }
+            else
+            {
+                m_IsCrouching = false;
+            }
+        }
+
+        /// <summary>
+        /// Checks if there's anything above the player that could stop the player from standing up.
+        /// </summary>
+        /// <param name="radius"></param>
+        /// <returns></returns>
+        protected virtual bool CheckCanStandUp(float radius)
+        {
+            return !Physics.CheckSphere(new Vector3(PlayerController.transform.position.x, PlayerController.transform.position.y + m_OriginalControllerHeight, PlayerController.transform.position.z), radius - 0.1f, m_GroundLayer);
         }
 
 #if UNITY_EDITOR
