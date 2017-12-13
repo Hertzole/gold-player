@@ -54,20 +54,10 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void DoMovementGUI()
         {
-            //EditorGUILayout.LabelField("Walking", EditorStyles.boldLabel);
-            //EditorGUILayout.PropertyField(m_Movement.FindPropertyRelative("m_WalkingSpeeds"), true);
-
-            //EditorGUILayout.Space();
-            //EditorGUILayout.LabelField("Running", EditorStyles.boldLabel);
-            //EditorGUILayout.PropertyField(m_Movement.FindPropertyRelative("m_CanRun"));
-            //GUI.enabled = m_Movement.FindPropertyRelative("m_CanRun").boolValue;
-            //EditorGUILayout.PropertyField(m_Movement.FindPropertyRelative("m_RunSpeeds"), true);
-            //GUI.enabled = true;
             SerializedProperty it = m_Movement.Copy ();
             while (it.NextVisible(true)) {
                 if(!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, false);
-            }
-            
+            }        
         }
     }
 }
