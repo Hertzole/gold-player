@@ -12,9 +12,9 @@ namespace Hertzole.GoldPlayer.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {           
             EditorGUI.BeginProperty(position, label, property);
-
-            EditorGUI.Foldout(position, true, label); // TODO: Allow user to actually use the folout :)
             position.height = EditorGUIUtility.singleLineHeight;
+            EditorGUI.Foldout(position, true, label); // TODO: Allow user to actually use the folout :)
+            
             position.y += gap;
             
             var indent = EditorGUI.indentLevel;
