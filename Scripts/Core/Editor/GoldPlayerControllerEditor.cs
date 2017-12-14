@@ -10,16 +10,18 @@ namespace Hertzole.GoldPlayer.Editor
         private int m_CurrentTab = 0;
 
         private string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
-        private const string SELECTED_TAB_PREFS = "HERTZ_APP_SELECTED_TAB";
+        private const string SELECTED_TAB_PREFS = "HERTZ_GOLD_PLAYER_SELECTED_TAB";
 
         private SerializedProperty m_Camera;
         private SerializedProperty m_Movement;
+        private SerializedProperty m_HeadBob;
 
         private void OnEnable()
         {
             m_CurrentTab = EditorPrefs.GetInt(SELECTED_TAB_PREFS, 0);
             m_Camera = serializedObject.FindProperty("m_Camera");
             m_Movement = serializedObject.FindProperty("m_Movement");
+            m_HeadBob = serializedObject.FindProperty("m_HeadBob");
         }
 
         private void OnDisable()
@@ -40,24 +42,39 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 DoMovementGUI();
             }
+            else if (m_CurrentTab == 2) // Head bob
+            {
+                //DoHeadBobGUI();
+            }
             serializedObject.ApplyModifiedProperties();
         }
 
         private void DoCameraGUI()
         {
             EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
-            SerializedProperty it = m_Camera.Copy ();
-            while (it.NextVisible(true)) {
-                if(!it.propertyPath.StartsWith("m_Movement") && it.depth < 2) EditorGUILayout.PropertyField(it, false);
+            SerializedProperty it = m_Camera.Copy();
+            while (it.NextVisible(true))
+            {
+                if ((!it.propertyPath.StartsWith("m_Movement") && !it.propertyPath.StartsWith("m_HeadBob")) && it.depth < 2) EditorGUILayout.PropertyField(it, true);
             }
         }
 
         private void DoMovementGUI()
         {
-            SerializedProperty it = m_Movement.Copy ();
-            while (it.NextVisible(true)) {
-                if(!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, false);
-            }        
+            SerializedProperty it = m_Movement.Copy();
+            while (it.NextVisible(true))
+            {
+                if (!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+            }
+        }
+
+        private void DoHeadBobGUI()
+        {
+            SerializedProperty it = m_HeadBob.Copy();
+            while (it.NextVisible(true))
+            {
+                if (!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+            }
         }
     }
 }

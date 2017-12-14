@@ -8,12 +8,10 @@ namespace Hertzole.GoldPlayer
     {
         [SerializeField]
         private PlayerCamera m_Camera;
-        /// <summary> Everything related to the player camera (mouse movement). </summary>
-        public PlayerCamera Camera { get { return m_Camera; } set { m_Camera = value; } }
         [SerializeField]
         private PlayerMovement m_Movement;
-        /// <summary> Everything related to movement. </summary>
-        public PlayerMovement Movement { get { return m_Movement; } }
+        [SerializeField]
+        private PlayerBob m_HeadBob;
 
         private bool m_InitOnStart = true;
         protected bool m_HasBeenInitialized = false;
@@ -25,6 +23,13 @@ namespace Hertzole.GoldPlayer
         public bool HasBeenInitialized { get { return m_HasBeenInitialized; } }
         /// <summary> If false, 'Initialize()' will not be called on Start and will only be called once another script calls it. </summary>
         public bool InitOnStart { get { return m_InitOnStart; } set { m_InitOnStart = value; } }
+
+        /// <summary> Everything related to the player camera (mouse movement). </summary>
+        public PlayerCamera Camera { get { return m_Camera; } set { m_Camera = value; } }
+        /// <summary> Everything related to movement. </summary>
+        public PlayerMovement Movement { get { return m_Movement; } }
+        /// <summary> Everything related to the head bob. </summary>
+        public PlayerBob HeadBob { get { return m_HeadBob; } set { m_HeadBob = value; } }
 
         /// <summary> The input system for the player. </summary>
         public GoldInput PlayerInput { get { return m_PlayerInput; } }
