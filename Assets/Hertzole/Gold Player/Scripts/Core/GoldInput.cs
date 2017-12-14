@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer.Core
 {
     [DisallowMultipleComponent]
-    public class GoldInput : MonoBehaviour
+    public abstract class GoldInput : MonoBehaviour
     {
         [System.Serializable]
         public class InputItem
