@@ -205,6 +205,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.size
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -236,6 +241,21 @@ Prefab:
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[6].m_ButtonName
+      value: Sprint
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[6].m_InputName
+      value: Sprint
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[6].m_Key
+      value: 304
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}

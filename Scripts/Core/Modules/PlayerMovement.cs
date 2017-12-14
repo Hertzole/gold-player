@@ -24,6 +24,19 @@ namespace Hertzole.GoldPlayer.Core
             m_SidewaysSpeed = sidewaysSpeed;
             m_BackwardsSpeed = backwardsSpeed;
         }
+
+        public float Max()
+        {
+            if (m_ForwardSpeed > m_SidewaysSpeed && m_ForwardSpeed > m_BackwardsSpeed)
+                return m_ForwardSpeed;
+            else if (m_SidewaysSpeed > m_ForwardSpeed && m_SidewaysSpeed > m_BackwardsSpeed)
+                return m_SidewaysSpeed;
+            else if (m_BackwardsSpeed > m_ForwardSpeed && m_BackwardsSpeed > m_SidewaysSpeed)
+                return m_BackwardsSpeed;
+
+            Debug.LogWarning("Unknown max");
+            return 0;
+        }
     }
 
     [System.Serializable]
@@ -267,6 +280,8 @@ namespace Hertzole.GoldPlayer.Core
             BasicMovement();
             // Do crouching.
             Crouching();
+            // Do running.
+            Running();
 
             // Move the player using the character controller.
             PlayerController.Controller.Move(m_MoveDirection * Time.deltaTime);
@@ -301,8 +316,6 @@ namespace Hertzole.GoldPlayer.Core
                 else
                     m_MoveDirection.y = 0;
             }
-
-            //m_IsRunning = new Vector2(PlayerController.Controller.velocity.x, PlayerController.Controller.velocity.y).magnitude > 
 
             HandleMovementDirection();
 
@@ -350,6 +363,23 @@ namespace Hertzole.GoldPlayer.Core
             else
             {
                 m_MoveDirection.y = m_RealJumpHeight;
+            }
+        }
+
+        /// <summary>
+        /// Handles running.
+        /// </summary>
+        protected virtual void Running()
+        {
+            m_IsRunning = new Vector2(PlayerController.Controller.velocity.x, PlayerController.Controller.velocity.z).magnitude > m_RunSpeeds.Max() + 0.5f;
+
+            if (!m_IsCrouching && m_CanRun && GetButton("Sprint", KeyCode.LeftShift))
+            {
+                m_MoveSpeed = m_RunSpeeds;
+            }
+            else
+            {
+                m_MoveSpeed = m_WalkingSpeeds;
             }
         }
 
