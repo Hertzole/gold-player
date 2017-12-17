@@ -59,6 +59,8 @@ namespace Hertzole.GoldPlayer.Core
         private float m_SpringDampen = 0.8f;
         private float m_SpringVelocityThreshold = 0.05f;
         private float m_SpringPositionThreshold = 0.05f;
+        private float m_ZTilt = 0;
+        private float m_ZTiltVelocity = 0;
 
         protected override void OnInit()
         {
@@ -116,13 +118,15 @@ namespace Hertzole.GoldPlayer.Core
 
             float speedHeightFactor = 1 + (flatVelocity * m_HeightSpeed);
 
+            m_ZTilt = Mathf.SmoothDamp(m_ZTilt, -GetAxisRaw("Horizontal"), ref m_ZTiltVelocity, 0.2f);
+
             float xPos = -m_SideMovement * bobSwayFactor;
             float yPos = m_SpringPos * m_LandMove + bobFactor * m_BobHeight * m_BobFade * speedHeightFactor;
             float xTilt = -m_SpringPos * m_LandTilt;
-            float zTilt = bobSwayFactor * m_SwayAngle * m_BobFade + -GetAxis("Horizontal") * m_StrafeTilt;
+            float zTilt = bobSwayFactor * m_SwayAngle * m_BobFade + m_ZTilt * m_StrafeTilt;
 
             m_BobTarget.localPosition = m_OriginalHeadLocalPosition + new Vector3(xPos, yPos, m_BobTarget.localPosition.z);
-            m_BobTarget.localRotation = Quaternion.Euler(m_BobTarget.localRotation.x + xTilt, m_BobTarget.localRotation.y, m_BobTarget.localRotation.z + zTilt);
+            m_BobTarget.localRotation = Quaternion.Euler(xTilt, m_BobTarget.localRotation.y, m_BobTarget.localRotation.z + zTilt);
         }
     }
 }
