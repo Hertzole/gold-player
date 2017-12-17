@@ -7,11 +7,11 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerController : MonoBehaviour
     {
         [SerializeField]
-        private PlayerCamera m_Camera;
+        private PlayerCamera m_Camera = new PlayerCamera();
         [SerializeField]
-        private PlayerMovement m_Movement;
+        private PlayerMovement m_Movement = new PlayerMovement();
         [SerializeField]
-        private PlayerBob m_HeadBob;
+        private PlayerBob m_HeadBob = new PlayerBob();
 
         private bool m_InitOnStart = true;
         protected bool m_HasBeenInitialized = false;
@@ -48,6 +48,7 @@ namespace Hertzole.GoldPlayer
             {
                 Movement.OnUpdate();
                 Camera.OnUpdate();
+                HeadBob.OnUpdate();
             }
         }
 
@@ -57,6 +58,7 @@ namespace Hertzole.GoldPlayer
             {
                 Movement.OnFixedUpdate();
                 Camera.OnFixedUpdate();
+                HeadBob.OnFixedUpdate();
             }
         }
 
@@ -66,6 +68,7 @@ namespace Hertzole.GoldPlayer
             {
                 Movement.OnLateUpdate();
                 Camera.OnLateUpdate();
+                HeadBob.OnLateUpdate();
             }
         }
 
@@ -97,6 +100,7 @@ namespace Hertzole.GoldPlayer
         {
             Movement.Init(this, PlayerInput);
             Camera.Init(this, PlayerInput);
+            HeadBob.Init(this, PlayerInput);
         }
 
 #if UNITY_EDITOR
@@ -104,6 +108,7 @@ namespace Hertzole.GoldPlayer
         {
             Movement.OnValidate();
             Camera.OnValidate();
+            HeadBob.OnValidate();
         }
 #endif
     }
