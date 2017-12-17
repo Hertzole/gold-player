@@ -44,14 +44,13 @@ namespace Hertzole.GoldPlayer.Editor
             }
             else if (m_CurrentTab == 2) // Head bob
             {
-                //DoHeadBobGUI();
+                DoHeadBobGUI();
             }
             serializedObject.ApplyModifiedProperties();
         }
 
         private void DoCameraGUI()
         {
-            EditorGUILayout.LabelField("Camera Settings", EditorStyles.boldLabel);
             SerializedProperty it = m_Camera.Copy();
             while (it.NextVisible(true))
             {
@@ -64,7 +63,7 @@ namespace Hertzole.GoldPlayer.Editor
             SerializedProperty it = m_Movement.Copy();
             while (it.NextVisible(true))
             {
-                if (!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+                if ((!it.propertyPath.StartsWith("m_Camera") && !it.propertyPath.StartsWith("m_HeadBob")) && it.depth < 2) EditorGUILayout.PropertyField(it, true);
             }
         }
 
@@ -73,7 +72,7 @@ namespace Hertzole.GoldPlayer.Editor
             SerializedProperty it = m_HeadBob.Copy();
             while (it.NextVisible(true))
             {
-                if (!it.propertyPath.StartsWith("m_Camera") && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+                if ((!it.propertyPath.StartsWith("m_Camera") && !it.propertyPath.StartsWith("m_Movement")) && it.depth < 2) EditorGUILayout.PropertyField(it, true);
             }
         }
     }

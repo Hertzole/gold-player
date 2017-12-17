@@ -7,6 +7,12 @@ namespace Hertzole.GoldPlayer
     {
         private GoldPlayerController m_PlayerController;
         protected GoldPlayerController PlayerController { get { return m_PlayerController; } }
+
+        protected CharacterController CharacterController { get { return m_PlayerController.Controller; } }
+
+        private Transform m_PlayerTransform;
+        protected Transform PlayerTransform { get { if (m_PlayerTransform == null) m_PlayerTransform = m_PlayerController.transform; return m_PlayerTransform; } }
+
         private GoldInput m_PlayerInput;
         protected GoldInput PlayerInput { get { return m_PlayerInput; } }
 

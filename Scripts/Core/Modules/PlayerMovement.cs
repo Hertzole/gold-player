@@ -184,9 +184,9 @@ namespace Hertzole.GoldPlayer.Core
             // Calculate the real jump height.
             m_RealJumpHeight = CalculateJumpHeight(m_JumpHeight);
             // Set the original controller height.
-            m_OriginalControllerHeight = PlayerController.Controller.height;
+            m_OriginalControllerHeight = CharacterController.height;
             // Set the original controller center.
-            m_OriginalControllerCenter = PlayerController.Controller.center;
+            m_OriginalControllerCenter = CharacterController.center;
             //TODO: Fetch camera head in a more elegant way.
             m_OriginalCameraPosition = PlayerController.Camera.CameraHead.localPosition.y;
             m_ControllerCrouchCenter = CrouchHeight / 2;
@@ -210,7 +210,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns>Is the player grounded?</returns>
         public bool CheckGrounded()
         {
-            m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerController.transform.position.x, PlayerController.transform.position.y + PlayerController.Controller.radius - 0.1f, PlayerController.transform.position.z), PlayerController.Controller.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
+            m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
             return m_IsGrounded;
         }
 
@@ -247,7 +247,7 @@ namespace Hertzole.GoldPlayer.Core
             Running();
 
             // Move the player using the character controller.
-            PlayerController.Controller.Move(m_MoveDirection * Time.deltaTime);
+            CharacterController.Move(m_MoveDirection * Time.deltaTime);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Hertzole.GoldPlayer.Core
             if (!m_IsGrounded)
             {
                 // Make sure the player can't walk around in the ceiling.
-                if ((PlayerController.Controller.collisionFlags & CollisionFlags.Above) != 0)
+                if ((CharacterController.collisionFlags & CollisionFlags.Above) != 0)
                     m_MoveDirection.y = -1f;
 
                 if (!m_IsFalling && !m_IsJumping)
@@ -295,7 +295,7 @@ namespace Hertzole.GoldPlayer.Core
         {
             if (m_CanMove)
             {
-                m_MoveDirection = PlayerController.transform.TransformDirection(new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y));
+                m_MoveDirection = PlayerTransform.TransformDirection(new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y));
                 if (m_MovementInput.y > 0)
                     m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
                 else
@@ -334,7 +334,7 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Running()
         {
-            m_IsRunning = new Vector2(PlayerController.Controller.velocity.x, PlayerController.Controller.velocity.z).magnitude > m_RunSpeeds.Max() + 0.5f;
+            m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_RunSpeeds.Max() + 0.5f;
 
             if (!m_IsCrouching && m_CanRun && GetButton("Sprint", KeyCode.LeftShift))
             {
@@ -361,8 +361,8 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_OriginalCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
                     m_IsCrouching = false;
-                    PlayerController.Controller.height = m_OriginalControllerHeight;
-                    PlayerController.Controller.center = m_OriginalControllerCenter;
+                    CharacterController.height = m_OriginalControllerHeight;
+                    CharacterController.center = m_OriginalControllerCenter;
 
                     m_MoveSpeed = m_WalkingSpeeds;
                 }
@@ -370,9 +370,9 @@ namespace Hertzole.GoldPlayer.Core
                 if (m_IsCrouching)
                 {
                     m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_CrouchCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
-                    m_CanStandUp = CheckCanStandUp(PlayerController.Controller.radius);
-                    PlayerController.Controller.height = m_CrouchHeight;
-                    PlayerController.Controller.center = new Vector3(PlayerController.Controller.center.x, m_ControllerCrouchCenter, PlayerController.Controller.center.z);
+                    m_CanStandUp = CheckCanStandUp(CharacterController.radius);
+                    CharacterController.height = m_CrouchHeight;
+                    CharacterController.center = new Vector3(CharacterController.center.x, m_ControllerCrouchCenter, CharacterController.center.z);
 
                     m_MoveSpeed = m_CrouchSpeeds;
                 }
@@ -393,7 +393,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         protected virtual bool CheckCanStandUp(float radius)
         {
-            return !Physics.CheckSphere(new Vector3(PlayerController.transform.position.x, PlayerController.transform.position.y + m_OriginalControllerHeight, PlayerController.transform.position.z), radius - 0.1f, m_GroundLayer);
+            return !Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + m_OriginalControllerHeight, PlayerTransform.position.z), radius - 0.1f, m_GroundLayer);
         }
 
 #if UNITY_EDITOR
