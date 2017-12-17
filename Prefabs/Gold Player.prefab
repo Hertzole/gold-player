@@ -305,9 +305,9 @@ MonoBehaviour:
   m_Movement:
     m_CanMove: 1
     m_WalkingSpeeds:
-      m_ForwardSpeed: 4
-      m_SidewaysSpeed: 3.5
-      m_BackwardsSpeed: 3
+      m_ForwardSpeed: 3
+      m_SidewaysSpeed: 2.5
+      m_BackwardsSpeed: 2
     m_CanRun: 1
     m_RunSpeeds:
       m_ForwardSpeed: 7
@@ -335,13 +335,13 @@ MonoBehaviour:
     m_BobFrequency: 1.5
     m_BobHeight: 0.3
     m_SwayAngle: 0.5
-    m_SideMovement: 0
-    m_HeightSpeed: 0.3
-    m_StrideSpeed: 0.3
+    m_SideMovement: 0.05
+    m_HeightMultiplier: 0.3
+    m_StrideMultiplier: 0.3
     m_LandMove: 0.4
     m_LandTilt: 20
     m_StrafeTilt: 3
-    m_BobTarget: {fileID: 4901321065046222}
+    m_BobTarget: {fileID: 4497441301862272}
 --- !u!124 &124554619675669960
 Behaviour:
   m_ObjectHideFlags: 1

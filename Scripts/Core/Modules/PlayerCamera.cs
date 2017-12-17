@@ -73,6 +73,11 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The camera head that should be moved around. </summary>
         public Transform CameraHead { get { return m_CameraHead; } set { m_CameraHead = value; } }
 
+        public Vector3 TargetHeadAngles { get { return m_TargetHeadAngles; } }
+        public Vector3 TargetBodyAngles { get { return m_TargetBodyAngles; } }
+        public Vector3 FollowHeadAngles { get { return m_FollowHeadAngles; } }
+        public Vector3 FollowBodyAngles { get { return m_FollowBodyAngles; } }
+
         protected override void OnInit()
         {
             if (m_CameraHead == null)
