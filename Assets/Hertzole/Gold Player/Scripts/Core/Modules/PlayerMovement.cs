@@ -299,13 +299,15 @@ namespace Hertzole.GoldPlayer.Core
         {
             if (m_CanMove)
             {
-                m_MoveDirection = PlayerTransform.TransformDirection(new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y));
+                m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);
                 if (m_MovementInput.y > 0)
                     m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
                 else
                     m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
 
                 m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
+
+                m_MoveDirection = PlayerTransform.TransformDirection(m_MoveDirection);
             }
             else
             {
@@ -344,7 +346,7 @@ namespace Hertzole.GoldPlayer.Core
             {
                 m_MoveSpeed = m_RunSpeeds;
             }
-            else
+            else if (!m_IsCrouching && !m_IsRunning)
             {
                 m_MoveSpeed = m_WalkingSpeeds;
             }
@@ -361,9 +363,8 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     m_IsCrouching = true;
                 }
-                else if (m_CanStandUp)
+                else if (m_CanStandUp && m_IsCrouching)
                 {
-                    m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_OriginalCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
                     m_IsCrouching = false;
                     CharacterController.height = m_OriginalControllerHeight;
                     CharacterController.center = m_OriginalControllerCenter;
@@ -373,7 +374,6 @@ namespace Hertzole.GoldPlayer.Core
 
                 if (m_IsCrouching)
                 {
-                    m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_CrouchCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
                     m_CanStandUp = CheckCanStandUp(CharacterController.radius);
                     CharacterController.height = m_CrouchHeight;
                     CharacterController.center = new Vector3(CharacterController.center.x, m_ControllerCrouchCenter, CharacterController.center.z);
@@ -381,6 +381,7 @@ namespace Hertzole.GoldPlayer.Core
                     m_MoveSpeed = m_CrouchSpeeds;
                 }
 
+                m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_IsCrouching ? m_CrouchCameraPosition : m_OriginalCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
                 //TODO: Fetch camera head in a more elegant way.
                 PlayerController.Camera.CameraHead.localPosition = new Vector3(PlayerController.Camera.CameraHead.localPosition.x, m_CurrentCrouchCameraPosition, PlayerController.Camera.CameraHead.localPosition.z);
             }
@@ -405,6 +406,7 @@ namespace Hertzole.GoldPlayer.Core
         {
             WalkingSpeeds = m_WalkingSpeeds;
             RunSpeeds = m_RunSpeeds;
+            CrouchSpeeds = m_CrouchSpeeds;
             JumpHeight = m_JumpHeight;
         }
 #endif
