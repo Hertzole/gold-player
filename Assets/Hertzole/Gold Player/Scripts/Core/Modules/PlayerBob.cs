@@ -2,51 +2,58 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
+    /*  This head bob code is based on Unitys standard assets player released
+     *  some time in 2014(?), when it was actually good. Something happened
+     *  and they turned real bad. The head bob they made was actually really
+     *  good. So props to Unity!
+     */
+
+    //TODO: Move bob code into own class and call that using PlayerBob module.
     [System.Serializable]
     public class PlayerBob : PlayerModule
     {
         [SerializeField]
+        [Tooltip("Determines if the bob effect should be enabled.")]
         private bool m_EnableBob = true;
-        public bool EnableBob { get { return m_EnableBob; } set { m_EnableBob = value; } }
 
         [Space]
 
         [SerializeField]
+        [Tooltip("Sets how frequent the bob happens.")]
         private float m_BobFrequency = 1.5f;
-        public float BobFrequency { get { return m_BobFrequency; } set { m_BobFrequency = value; } }
         [SerializeField]
+        [Tooltip("The height of the bob.")]
         private float m_BobHeight = 0.3f;
-        public float BobHeight { get { return m_BobHeight; } set { m_BobHeight = value; } }
         [SerializeField]
+        [Tooltip("How much the target will sway from side to side.")]
         private float m_SwayAngle = 0.5f;
-        public float SwayAngle { get { return m_SwayAngle; } set { m_SwayAngle = value; } }
         [SerializeField]
-        private float m_SideMovement;
-        public float SideMovement { get { return m_SideMovement; } set { m_SideMovement = value; } }
+        [Tooltip("How much the target will move to the sides.")]
+        private float m_SideMovement = 0.05f;
         [SerializeField]
-        private float m_HeightSpeed = 0.3f;
-        public float HeightSpeed { get { return m_HeightSpeed; } set { m_HeightSpeed = value; } }
+        [Tooltip("Adds extra movement to the bob height.")]
+        private float m_HeightMultiplier = 0.3f;
         [SerializeField]
-        private float m_StrideSpeed = 0.3f;
-        public float StrideSpeed { get { return m_StrideSpeed; } set { m_StrideSpeed = value; } }
+        [Tooltip("Multiplies the bob frequency speed.")]
+        private float m_StrideMultiplier = 0.3f;
 
         [Space]
 
         [SerializeField]
+        [Tooltip("How much the target will move when landing.")]
         private float m_LandMove = 0.4f;
-        public float LandMove { get { return m_LandMove; } set { m_LandMove = value; } }
         [SerializeField]
+        [Tooltip("How much the target will tilt when landing.")]
         private float m_LandTilt = 20f;
-        public float LandTilt { get { return m_LandTilt; } set { m_LandTilt = value; } }
         [SerializeField]
+        [Tooltip("How much the target will tilt when strafing.")]
         private float m_StrafeTilt = 3f;
-        public float StrafeTilt { get { return m_StrafeTilt; } set { m_StrafeTilt = value; } }
 
         [Space]
 
         [SerializeField]
+        [Tooltip("The object to bob.")]
         private Transform m_BobTarget = null;
-        public Transform BobTarget { get { return m_BobTarget; } set { m_BobTarget = value; } }
 
         private Vector3 m_PreviousVelocity = Vector3.zero;
         private Vector3 m_OriginalHeadLocalPosition = Vector3.zero;
@@ -61,6 +68,29 @@ namespace Hertzole.GoldPlayer.Core
         private float m_SpringPositionThreshold = 0.05f;
         private float m_ZTilt = 0;
         private float m_ZTiltVelocity = 0;
+
+        /// <summary> Determines if the bob effect should be enabled. </summary>
+        public bool EnableBob { get { return m_EnableBob; } set { m_EnableBob = value; } }
+        /// <summary> Sets how frequent the bob happens. </summary>
+        public float BobFrequency { get { return m_BobFrequency; } set { m_BobFrequency = value; } }
+        /// <summary> The height of the bob. </summary>
+        public float BobHeight { get { return m_BobHeight; } set { m_BobHeight = value; } }
+        /// <summary> How much the target will sway from side to side. </summary>
+        public float SwayAngle { get { return m_SwayAngle; } set { m_SwayAngle = value; } }
+        /// <summary> How much the target will move to the sides. </summary>
+        public float SideMovement { get { return m_SideMovement; } set { m_SideMovement = value; } }
+        /// <summary> Adds extra movement to the bob height. </summary>
+        public float HeightMultiplier { get { return m_HeightMultiplier; } set { m_HeightMultiplier = value; } }
+        /// <summary> Multiplies the bob frequency speed. </summary>
+        public float StrideMultiplier { get { return m_StrideMultiplier; } set { m_StrideMultiplier = value; } }
+        /// <summary> How much the target will move when landing. </summary>
+        public float LandMove { get { return m_LandMove; } set { m_LandMove = value; } }
+        /// <summary> How much the target will tilt when landing. </summary>
+        public float LandTilt { get { return m_LandTilt; } set { m_LandTilt = value; } }
+        /// <summary> How much the target will tilt when strafing. </summary>
+        public float StrafeTilt { get { return m_StrafeTilt; } set { m_StrafeTilt = value; } }
+        /// <summary> The object to bob. </summary>
+        public Transform BobTarget { get { return m_BobTarget; } set { m_BobTarget = value; } }
 
         protected override void OnInit()
         {
@@ -89,12 +119,17 @@ namespace Hertzole.GoldPlayer.Core
             Vector3 velocityChange = CharacterController.velocity - m_PreviousVelocity;
             m_PreviousVelocity = CharacterController.velocity;
 
-            // vertical head position "spring simulation" for jumping/landing impacts
-            m_SpringVelocity -= velocityChange.y;                         // input to spring from change in character Y velocity
-            m_SpringVelocity -= m_SpringPos * m_SpringElastic;                    // elastic spring force towards zero position
-            m_SpringVelocity *= m_SpringDampen;                             // damping towards zero velocity
-            m_SpringPos += m_SpringVelocity * Time.deltaTime;               // output to head Y position
-            m_SpringPos = Mathf.Clamp(m_SpringPos, -.3f, .3f);			// clamp spring distance
+            // Vertical head position "spring simulation" for jumping/landing impacts.
+            // Input to spring from change in character Y velocity.
+            m_SpringVelocity -= velocityChange.y;
+            // Elastic spring force towards zero position.
+            m_SpringVelocity -= m_SpringPos * m_SpringElastic;
+            // Damping towards zero velocity.
+            m_SpringVelocity *= m_SpringDampen;
+            // Output to head Y position.
+            m_SpringPos += m_SpringVelocity * Time.deltaTime;
+            // Clamp spring distance.
+            m_SpringPos = Mathf.Clamp(m_SpringPos, -.3f, .3f);
 
             if (Mathf.Abs(m_SpringVelocity) < m_SpringVelocityThreshold && Mathf.Abs(m_SpringPos) < m_SpringPositionThreshold)
             {
@@ -103,7 +138,7 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude;
-            float strideLengthen = 1 + (flatVelocity * m_StrideSpeed);
+            float strideLengthen = 1 + (flatVelocity * m_StrideMultiplier);
             m_BobCycle += (flatVelocity / strideLengthen) * (Time.deltaTime / m_BobFrequency);
 
             float bobFactor = Mathf.Sin(m_BobCycle * Mathf.PI * 2);
@@ -116,9 +151,9 @@ namespace Hertzole.GoldPlayer.Core
             else
                 m_BobFade = Mathf.Lerp(m_BobFade, 1, Time.deltaTime);
 
-            float speedHeightFactor = 1 + (flatVelocity * m_HeightSpeed);
+            float speedHeightFactor = 1 + (flatVelocity * m_HeightMultiplier);
 
-            m_ZTilt = Mathf.SmoothDamp(m_ZTilt, -GetAxisRaw("Horizontal"), ref m_ZTiltVelocity, 0.2f);
+            m_ZTilt = Mathf.SmoothDamp(m_ZTilt, -GetAxisRaw(PlayerMovement.HORIZONTAL_AXIS), ref m_ZTiltVelocity, 0.2f);
 
             float xPos = -m_SideMovement * bobSwayFactor;
             float yPos = m_SpringPos * m_LandMove + bobFactor * m_BobHeight * m_BobFade * speedHeightFactor;

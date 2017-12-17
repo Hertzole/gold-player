@@ -13,7 +13,7 @@ namespace Hertzole.GoldPlayer.Core
         [Header("Walking")]
         [SerializeField]
         [Tooltip("The movement speeds when walking.")]
-        private MovementSpeeds m_WalkingSpeeds = new MovementSpeeds(4f, 3.5f, 2.5f);
+        private MovementSpeeds m_WalkingSpeeds = new MovementSpeeds(3f, 2.5f, 2f);
 
         //////// RUNNING
         [Header("Running")]
@@ -259,7 +259,11 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // Make sure the player can't walk around in the ceiling.
                 if ((CharacterController.collisionFlags & CollisionFlags.Above) != 0)
-                    m_MoveDirection.y = -1f;
+                {
+                    m_MoveDirection.y = -5f;
+                    m_IsJumping = false;
+                    m_IsFalling = true;
+                }
 
                 if (!m_IsFalling && !m_IsJumping)
                 {
