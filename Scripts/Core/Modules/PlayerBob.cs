@@ -94,14 +94,13 @@ namespace Hertzole.GoldPlayer.Core
 
         protected override void OnInit()
         {
-            if (!m_EnableBob)
-                return;
-
-            if (m_BobTarget == null)
+            if (m_BobTarget == null && m_EnableBob)
             {
                 Debug.LogError("No Bob Target set on '" + PlayerController.gameObject.name + "'!");
                 return;
             }
+            else if (!m_EnableBob && m_BobTarget == null)
+                return;
 
             m_OriginalHeadLocalPosition = m_BobTarget.localPosition;
         }
