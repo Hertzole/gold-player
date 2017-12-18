@@ -374,7 +374,7 @@ namespace Hertzole.GoldPlayer.Core
 
                 if (m_IsCrouching)
                 {
-                    m_CanStandUp = CheckCanStandUp(CharacterController.radius);
+                    m_CanStandUp = CheckCanStandUp();
                     CharacterController.height = m_CrouchHeight;
                     CharacterController.center = new Vector3(CharacterController.center.x, m_ControllerCrouchCenter, CharacterController.center.z);
 
@@ -394,11 +394,10 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Checks if there's anything above the player that could stop the player from standing up.
         /// </summary>
-        /// <param name="radius"></param>
         /// <returns></returns>
-        protected virtual bool CheckCanStandUp(float radius)
+        protected virtual bool CheckCanStandUp()
         {
-            return !Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + m_OriginalControllerHeight, PlayerTransform.position.z), radius - 0.1f, m_GroundLayer);
+            return !Physics.CheckCapsule(PlayerTransform.position + Vector3.up * CharacterController.radius, PlayerTransform.position + (Vector3.up * m_OriginalControllerHeight) - (Vector3.up * CharacterController.radius), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
         }
 
 #if UNITY_EDITOR
