@@ -8,7 +8,7 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("Determines if the player can look around.")]
-        private bool m_CanLook = true;
+        private bool m_CanLookAround = true;
         [SerializeField]
         [Tooltip("Determines if the cursor should be locked.")]
         private bool m_ShouldLockCursor = true;
@@ -55,7 +55,7 @@ namespace Hertzole.GoldPlayer.Core
         private Quaternion m_OriginalHeadRotation = Quaternion.identity;
 
         /// <summary> Determines if the player can look around. </summary>
-        public bool CanLook { get { return m_CanLook; } set { m_CanLook = value; } }
+        public bool CanLookAround { get { return m_CanLookAround; } set { m_CanLookAround = value; } }
         /// <summary> Determines if the cursor should be locked. </summary>
         public bool ShouldLockCursor { get { return m_ShouldLockCursor; } set { m_ShouldLockCursor = value; } }
         /// <summary> Determines if the X axis should be inverted. </summary>
@@ -117,7 +117,7 @@ namespace Hertzole.GoldPlayer.Core
                 return;
 
             // If we can't look around, stop here.
-            if (!m_CanLook)
+            if (!m_CanLookAround)
                 return;
 
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.

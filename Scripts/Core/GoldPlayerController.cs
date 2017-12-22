@@ -12,6 +12,8 @@ namespace Hertzole.GoldPlayer
         private PlayerMovement m_Movement = new PlayerMovement();
         [SerializeField]
         private PlayerBob m_HeadBob = new PlayerBob();
+        [SerializeField]
+        private PlayerAudio m_Audio = new PlayerAudio();
 
         private bool m_InitOnStart = true;
         protected bool m_HasBeenInitialized = false;
@@ -30,6 +32,8 @@ namespace Hertzole.GoldPlayer
         public PlayerMovement Movement { get { return m_Movement; } }
         /// <summary> Everything related to the head bob. </summary>
         public PlayerBob HeadBob { get { return m_HeadBob; } set { m_HeadBob = value; } }
+        /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
+        public PlayerAudio Audio { get { return m_Audio; } set { m_Audio = value; } }
 
         /// <summary> The input system for the player. </summary>
         public GoldInput PlayerInput { get { return m_PlayerInput; } }
@@ -49,6 +53,7 @@ namespace Hertzole.GoldPlayer
                 Movement.OnUpdate();
                 Camera.OnUpdate();
                 HeadBob.OnUpdate();
+                Audio.OnUpdate();
             }
         }
 
@@ -59,6 +64,7 @@ namespace Hertzole.GoldPlayer
                 Movement.OnFixedUpdate();
                 Camera.OnFixedUpdate();
                 HeadBob.OnFixedUpdate();
+                Audio.OnFixedUpdate();
             }
         }
 
@@ -69,6 +75,7 @@ namespace Hertzole.GoldPlayer
                 Movement.OnLateUpdate();
                 Camera.OnLateUpdate();
                 HeadBob.OnLateUpdate();
+                Audio.OnLateUpdate();
             }
         }
 
@@ -101,6 +108,7 @@ namespace Hertzole.GoldPlayer
             Movement.Init(this, PlayerInput);
             Camera.Init(this, PlayerInput);
             HeadBob.Init(this, PlayerInput);
+            Audio.Init(this, PlayerInput);
         }
 
 #if UNITY_EDITOR
