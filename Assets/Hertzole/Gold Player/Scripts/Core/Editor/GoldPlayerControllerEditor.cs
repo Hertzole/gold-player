@@ -15,24 +15,32 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty m_Camera;
         private SerializedProperty m_Movement;
         private SerializedProperty m_HeadBob;
+        private SerializedProperty m_Audio;
 
         private void OnEnable()
         {
             m_CurrentTab = EditorPrefs.GetInt(SELECTED_TAB_PREFS, 0);
+
+            if (m_CurrentTab < 0)
+                m_CurrentTab = 0;
+            if (m_CurrentTab > 3)
+                m_CurrentTab = 3;
+
             m_Camera = serializedObject.FindProperty("m_Camera");
             m_Movement = serializedObject.FindProperty("m_Movement");
             m_HeadBob = serializedObject.FindProperty("m_HeadBob");
-        }
-
-        private void OnDisable()
-        {
-            EditorPrefs.SetInt(SELECTED_TAB_PREFS, m_CurrentTab);
+            m_Audio = serializedObject.FindProperty("m_Audio");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            m_CurrentTab = GUILayout.Toolbar(m_CurrentTab, m_Tabs);
+            int newTab = GUILayout.Toolbar(m_CurrentTab, m_Tabs);
+            if (newTab != m_CurrentTab)
+            {
+                m_CurrentTab = newTab;
+                EditorPrefs.SetInt(SELECTED_TAB_PREFS, m_CurrentTab);
+            }
 
             if (m_CurrentTab == 0) // Camera
             {
@@ -46,6 +54,10 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 DoHeadBobGUI();
             }
+            else if (m_CurrentTab == 3) // Audio
+            {
+                DoAudioGUI();
+            }
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -54,7 +66,8 @@ namespace Hertzole.GoldPlayer.Editor
             SerializedProperty it = m_Camera.Copy();
             while (it.NextVisible(true))
             {
-                if ((!it.propertyPath.StartsWith("m_Movement") && !it.propertyPath.StartsWith("m_HeadBob")) && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+                if (it.propertyPath.StartsWith(m_Camera.name) && it.depth < 2)
+                    EditorGUILayout.PropertyField(it, true);
             }
         }
 
@@ -63,7 +76,8 @@ namespace Hertzole.GoldPlayer.Editor
             SerializedProperty it = m_Movement.Copy();
             while (it.NextVisible(true))
             {
-                if ((!it.propertyPath.StartsWith("m_Camera") && !it.propertyPath.StartsWith("m_HeadBob")) && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+                if (it.propertyPath.StartsWith(m_Movement.name) && it.depth < 2)
+                    EditorGUILayout.PropertyField(it, true);
             }
         }
 
@@ -72,7 +86,18 @@ namespace Hertzole.GoldPlayer.Editor
             SerializedProperty it = m_HeadBob.Copy();
             while (it.NextVisible(true))
             {
-                if ((!it.propertyPath.StartsWith("m_Camera") && !it.propertyPath.StartsWith("m_Movement")) && it.depth < 2) EditorGUILayout.PropertyField(it, true);
+                if (it.propertyPath.StartsWith(m_HeadBob.name) && it.depth < 2)
+                    EditorGUILayout.PropertyField(it, true);
+            }
+        }
+
+        private void DoAudioGUI()
+        {
+            SerializedProperty it = m_Audio.Copy();
+            while (it.NextVisible(true))
+            {
+                if (it.propertyPath.StartsWith(m_Audio.name) && it.depth < 2)
+                    EditorGUILayout.PropertyField(it, true);
             }
         }
     }

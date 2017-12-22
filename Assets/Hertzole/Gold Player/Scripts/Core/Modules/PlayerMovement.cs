@@ -2,12 +2,13 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
+    //DOCUMENT: PlayerMovement
     [System.Serializable]
     public class PlayerMovement : PlayerModule
     {
         [SerializeField]
         [Tooltip("Determines if the player can move at all.")]
-        private bool m_CanMove;
+        private bool m_CanMoveAround;
 
         //////// WALKING
         [Header("Walking")]
@@ -113,7 +114,7 @@ namespace Hertzole.GoldPlayer.Core
         protected MovementSpeeds m_MoveSpeed = new MovementSpeeds();
 
         /// <summary> Determines if the player can move at all. </summary>
-        public bool CanMove { get { return m_CanMove; } set { m_CanMove = value; } }
+        public bool CanMoveAround { get { return m_CanMoveAround; } set { m_CanMoveAround = value; } }
 
         /// <summary> The speeds when walking. </summary>
         public MovementSpeeds WalkingSpeeds { get { return m_WalkingSpeeds; } set { m_WalkingSpeeds = value; if (!m_IsRunning) m_MoveSpeed = value; } }
@@ -187,7 +188,6 @@ namespace Hertzole.GoldPlayer.Core
             m_OriginalControllerHeight = CharacterController.height;
             // Set the original controller center.
             m_OriginalControllerCenter = CharacterController.center;
-            //TODO: Fetch camera head in a more elegant way.
             m_OriginalCameraPosition = PlayerController.Camera.CameraHead.localPosition.y;
             m_ControllerCrouchCenter = CrouchHeight / 2;
             m_CrouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - m_CrouchHeight;
@@ -286,7 +286,7 @@ namespace Hertzole.GoldPlayer.Core
 
             HandleMovementDirection();
 
-            if (GetButtonDown("Jump", KeyCode.Space) && m_CanJump && m_IsGrounded && m_CanMove)
+            if (GetButtonDown("Jump", KeyCode.Space) && m_CanJump && m_IsGrounded && m_CanMoveAround)
             {
                 Jump();
             }
@@ -297,7 +297,7 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void HandleMovementDirection()
         {
-            if (m_CanMove)
+            if (m_CanMoveAround)
             {
                 m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);
                 if (m_MovementInput.y > 0)
@@ -382,7 +382,6 @@ namespace Hertzole.GoldPlayer.Core
                 }
 
                 m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_IsCrouching ? m_CrouchCameraPosition : m_OriginalCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
-                //TODO: Fetch camera head in a more elegant way.
                 PlayerController.Camera.CameraHead.localPosition = new Vector3(PlayerController.Camera.CameraHead.localPosition.x, m_CurrentCrouchCameraPosition, PlayerController.Camera.CameraHead.localPosition.z);
             }
             else

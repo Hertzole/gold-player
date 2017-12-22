@@ -4,7 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Hertzole/Gold Player/Example/Gold Player Example.unity
-    guid: 80d8f40f7f892a645816ea047a8eb0f0
+  m_Scenes: []
+  m_configObjects: {}

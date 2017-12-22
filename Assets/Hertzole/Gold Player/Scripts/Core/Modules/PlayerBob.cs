@@ -58,16 +58,16 @@ namespace Hertzole.GoldPlayer.Core
         private Vector3 m_PreviousVelocity = Vector3.zero;
         private Vector3 m_OriginalHeadLocalPosition = Vector3.zero;
 
-        private float m_BobCycle = 0f;
-        private float m_BobFade = 0f;
-        private float m_SpringPos = 0f;
-        private float m_SpringVelocity = 0f;
-        private float m_SpringElastic = 1.1f;
-        private float m_SpringDampen = 0.8f;
-        private float m_SpringVelocityThreshold = 0.05f;
-        private float m_SpringPositionThreshold = 0.05f;
-        private float m_ZTilt = 0;
-        private float m_ZTiltVelocity = 0;
+        protected float m_BobCycle = 0f;
+        protected float m_BobFade = 0f;
+        protected float m_SpringPos = 0f;
+        protected float m_SpringVelocity = 0f;
+        protected float m_SpringElastic = 1.1f;
+        protected float m_SpringDampen = 0.8f;
+        protected float m_SpringVelocityThreshold = 0.05f;
+        protected float m_SpringPositionThreshold = 0.05f;
+        protected float m_ZTilt = 0;
+        protected float m_ZTiltVelocity = 0;
 
         /// <summary> Determines if the bob effect should be enabled. </summary>
         public bool EnableBob { get { return m_EnableBob; } set { m_EnableBob = value; } }
@@ -91,6 +91,16 @@ namespace Hertzole.GoldPlayer.Core
         public float StrafeTilt { get { return m_StrafeTilt; } set { m_StrafeTilt = value; } }
         /// <summary> The object to bob. </summary>
         public Transform BobTarget { get { return m_BobTarget; } set { m_BobTarget = value; } }
+
+        public float BobCycle { get { return m_BobCycle; } }
+        //public float BobFade { get { return m_BobFade; } }
+        //public float SpringPosition { get { return m_SpringPos; } }
+        //public float SpringVelocity { get { return m_SpringVelocity; } }
+        //public float SpringElastic { get { return m_SpringElastic; } }
+        //public float SpringDampen { get { return m_SpringDampen; } }
+        //public float SpringVelocityThreshold { get { return m_SpringVelocityThreshold; } }
+        //public float SpringPositionThreshold { get { return m_SpringPositionThreshold; } }
+        //public float ZTilt { get { return ZTilt; } }
 
         protected override void OnInit()
         {
