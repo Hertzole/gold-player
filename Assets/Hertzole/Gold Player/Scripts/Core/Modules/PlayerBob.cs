@@ -162,7 +162,7 @@ namespace Hertzole.GoldPlayer.Core
 
             float speedHeightFactor = 1 + (flatVelocity * m_HeightMultiplier);
 
-            m_ZTilt = Mathf.SmoothDamp(m_ZTilt, -GetAxisRaw(PlayerMovement.HORIZONTAL_AXIS), ref m_ZTiltVelocity, 0.2f);
+            m_ZTilt = Mathf.SmoothDamp(m_ZTilt, -GetAxisRaw(Constants.HORIZONTAL_AXIS), ref m_ZTiltVelocity, 0.2f);
 
             float xPos = -m_SideMovement * bobSwayFactor;
             float yPos = m_SpringPos * m_LandMove + bobFactor * m_BobHeight * m_BobFade * speedHeightFactor;

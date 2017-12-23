@@ -625,8 +625,8 @@ MonoBehaviour:
   - m_ButtonName: Crouch
     m_InputName: Crouch
     m_Key: 99
-  - m_ButtonName: Sprint
-    m_InputName: Sprint
+  - m_ButtonName: Run
+    m_InputName: Run
     m_Key: 304
 --- !u!114 &114880877538668738
 MonoBehaviour:
@@ -648,9 +648,16 @@ MonoBehaviour:
     m_MouseDamping: 0.05
     m_MinimumX: -90
     m_MaxiumumX: 90
+    m_FOVKick:
+      m_EnableFOVKick: 1
+      m_KickWhen: 0
+      m_KickAmount: 20
+      m_LerpTimeTo: 10
+      m_LerpTimeFrom: 2.5
+      m_TargetCamera: {fileID: 20774848469115984}
     m_CameraHead: {fileID: 4901321065046222}
   m_Movement:
-    m_CanMove: 1
+    m_CanMoveAround: 1
     m_WalkingSpeeds:
       m_ForwardSpeed: 3
       m_SidewaysSpeed: 2.5
