@@ -8,7 +8,7 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("Determines if the player can move at all.")]
-        private bool m_CanMoveAround;
+        private bool m_CanMoveAround = true;
 
         //////// WALKING
         [Header("Walking")]
@@ -155,7 +155,7 @@ namespace Hertzole.GoldPlayer.Core
         public bool IsGrounded { get { return m_IsGrounded; } }
         /// <summary> Is the player moving at all? </summary>
         public bool IsMoving { get { return m_IsMoving; } }
-        /// <summary> Is the player running? </summary>
+        /// <summary> Is the player running? NOTE: This is true when move speed is above walk speed, not just when the run button is held down. </summary>
         public bool IsRunning { get { return m_IsRunning; } }
         /// <summary> Is the player jumping? </summary>
         public bool IsJumping { get { return m_IsJumping; } }
@@ -165,11 +165,6 @@ namespace Hertzole.GoldPlayer.Core
         public bool IsCrouching { get { return m_IsCrouching; } }
         /// <summary> Can the player stand up while crouching </summary>
         public bool CanStandUp { get { return m_CanStandUp; } }
-
-        /// <summary> Used for moving left to right. </summary>
-        public const string HORIZONTAL_AXIS = "Horizontal";
-        /// <summary> Used for moving up and down. </summary>
-        public const string VERTICAL_AXIS = "Vertical";
 
         protected override void OnInit()
         {
@@ -220,8 +215,8 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
-            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw(HORIZONTAL_AXIS), ref m_ForwardSpeedVelocity, m_Acceleration);
-            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw(VERTICAL_AXIS), ref m_SidewaysSpeedVelocity, m_Acceleration);
+            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw(Constants.HORIZONTAL_AXIS), ref m_ForwardSpeedVelocity, m_Acceleration);
+            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw(Constants.VERTICAL_AXIS), ref m_SidewaysSpeedVelocity, m_Acceleration);
 
             if (m_MovementInput.sqrMagnitude > 1)
                 m_MovementInput.Normalize();
@@ -286,7 +281,7 @@ namespace Hertzole.GoldPlayer.Core
 
             HandleMovementDirection();
 
-            if (GetButtonDown("Jump", KeyCode.Space) && m_CanJump && m_IsGrounded && m_CanMoveAround)
+            if (GetButtonDown(Constants.JUMP_BUTTON_NAME, Constants.JUMP_DEFAULT_KEY) && m_CanJump && m_IsGrounded && m_CanMoveAround)
             {
                 Jump();
             }
@@ -340,13 +335,13 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Running()
         {
-            m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_RunSpeeds.Max() + 0.5f;
+            m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max() + 0.5f;
 
-            if (!m_IsCrouching && m_CanRun && GetButton("Sprint", KeyCode.LeftShift))
+            if (!m_IsCrouching && m_CanRun && GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
             {
                 m_MoveSpeed = m_RunSpeeds;
             }
-            else if (!m_IsCrouching && !m_IsRunning)
+            else if (!m_IsCrouching && !GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
             {
                 m_MoveSpeed = m_WalkingSpeeds;
             }
@@ -359,7 +354,7 @@ namespace Hertzole.GoldPlayer.Core
         {
             if (m_CanCrouch)
             {
-                if (GetButton("Crouch", KeyCode.C))
+                if (GetButton(Constants.CROUCH_BUTTON_NAME, Constants.CROUCH_DEFAULT_KEY))
                 {
                     m_IsCrouching = true;
                 }

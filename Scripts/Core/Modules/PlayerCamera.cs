@@ -3,6 +3,7 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer.Core
 {
     //FIX: Transform rotation can not be set at runtime and it's reflected here.
+    //DOCUMENT: PlayerCamera
     [System.Serializable]
     public class PlayerCamera : PlayerModule
     {
@@ -39,6 +40,12 @@ namespace Hertzole.GoldPlayer.Core
         [Space]
 
         [SerializeField]
+        [Tooltip("Settings related to field of view kick.")]
+        private FOVKickClass m_FOVKick = new FOVKickClass();
+
+        [Space]
+
+        [SerializeField]
         [Tooltip("The camera head that should be moved around.")]
         private Transform m_CameraHead = null;
 
@@ -70,6 +77,8 @@ namespace Hertzole.GoldPlayer.Core
         public float MinimumX { get { return m_MinimumX; } set { m_MinimumX = value; } }
         /// <summary> Sets how far up the player can look. </summary>
         public float MaxiumumX { get { return m_MaxiumumX; } set { m_MaxiumumX = value; } }
+        /// <summary> Settings related to field of view kick. </summary>
+        public FOVKickClass FOVKick { get { return m_FOVKick; } set { m_FOVKick = value; } }
         /// <summary> The camera head that should be moved around. </summary>
         public Transform CameraHead { get { return m_CameraHead; } set { m_CameraHead = value; } }
 
@@ -90,6 +99,8 @@ namespace Hertzole.GoldPlayer.Core
 
             m_OriginalHeadRotation = m_CameraHead.localRotation;
             m_OriginalPlayerRotation = PlayerController.transform.rotation;
+
+            FOVKick.Init(PlayerController, PlayerInput);
         }
 
         /// <summary>
@@ -105,6 +116,7 @@ namespace Hertzole.GoldPlayer.Core
         public override void OnUpdate()
         {
             MouseHandler();
+            FOVKick.OnUpdate();
         }
 
         /// <summary>
@@ -125,7 +137,7 @@ namespace Hertzole.GoldPlayer.Core
                 LockCursor(m_ShouldLockCursor);
 
             // Set the input.
-            m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis("Mouse X") : GetAxis("Mouse X"), m_InvertYAxis ? -GetAxis("Mouse Y") : GetAxis("Mouse Y")) * m_MouseSensitivity;
+            m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(Constants.MOUSE_X) : GetAxis(Constants.MOUSE_X), m_InvertYAxis ? -GetAxis(Constants.MOUSE_Y) : GetAxis(Constants.MOUSE_Y)) * m_MouseSensitivity;
 
             // Apply the input and mouse sensitivity.
             m_TargetHeadAngles.x += m_MouseInput.y * m_MouseSensitivity * Time.deltaTime;
