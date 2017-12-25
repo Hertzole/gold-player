@@ -24,6 +24,8 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("The movement speeds when running.")]
         private MovementSpeeds m_RunSpeeds = new MovementSpeeds(7f, 5.5f, 5f);
+        [SerializeField]
+        private StaminaClass m_Stamina;
 
         //////// JUMPING
         [Header("Jumping")]
@@ -123,6 +125,7 @@ namespace Hertzole.GoldPlayer.Core
         public bool CanRun { get { return m_CanRun; } set { m_CanRun = value; } }
         /// <summary> The speeds when running. </summary>
         public MovementSpeeds RunSpeeds { get { return m_RunSpeeds; } set { m_RunSpeeds = value; if (m_IsRunning) m_MoveSpeed = value; } }
+        public StaminaClass Stamina { get { return m_Stamina; } set { m_Stamina = value; } }
 
         /// <summary> Determines if the player can jump. </summary>
         public bool CanJump { get { return m_CanJump; } set { m_CanJump = value; } }
@@ -168,6 +171,8 @@ namespace Hertzole.GoldPlayer.Core
 
         protected override void OnInit()
         {
+            m_Stamina.Init(PlayerController, PlayerInput);
+
             // Make the gravity + if needed.
             if (m_Gravity < 0)
                 m_Gravity = -m_Gravity;
@@ -229,6 +234,8 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public override void OnUpdate()
         {
+            m_Stamina.OnUpdate();
+
             // Check the grounded state.
             CheckGrounded();
             // Update the input.
@@ -339,7 +346,12 @@ namespace Hertzole.GoldPlayer.Core
 
             if (!m_IsCrouching && m_CanRun && GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
             {
-                m_MoveSpeed = m_RunSpeeds;
+                if (m_Stamina.EnableStamina && m_Stamina.CurrentStamina > 0)
+                    m_MoveSpeed = m_RunSpeeds;
+                else if (!m_Stamina.EnableStamina)
+                    m_MoveSpeed = m_RunSpeeds;
+                else if (m_Stamina.EnableStamina && m_Stamina.CurrentStamina <= 0)
+                    m_MoveSpeed = m_WalkingSpeeds;
             }
             else if (!m_IsCrouching && !GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
             {
