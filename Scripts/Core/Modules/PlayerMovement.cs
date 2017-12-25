@@ -2,7 +2,9 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
-    //DOCUMENT: PlayerMovement
+    /// <summary>
+    /// Used for movement related calculations.
+    /// </summary>
     [System.Serializable]
     public class PlayerMovement : PlayerModule
     {
@@ -25,6 +27,7 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("The movement speeds when running.")]
         private MovementSpeeds m_RunSpeeds = new MovementSpeeds(7f, 5.5f, 5f);
         [SerializeField]
+        [Tooltip("Everything related to stamina (limited running).")]
         private StaminaClass m_Stamina;
 
         //////// JUMPING
@@ -125,6 +128,7 @@ namespace Hertzole.GoldPlayer.Core
         public bool CanRun { get { return m_CanRun; } set { m_CanRun = value; } }
         /// <summary> The speeds when running. </summary>
         public MovementSpeeds RunSpeeds { get { return m_RunSpeeds; } set { m_RunSpeeds = value; if (m_IsRunning) m_MoveSpeed = value; } }
+        /// <summary> Everything related to stamina (limited running). </summary>
         public StaminaClass Stamina { get { return m_Stamina; } set { m_Stamina = value; } }
 
         /// <summary> Determines if the player can jump. </summary>
@@ -171,6 +175,7 @@ namespace Hertzole.GoldPlayer.Core
 
         protected override void OnInit()
         {
+            // Initialize the stamina module.
             m_Stamina.Init(PlayerController, PlayerInput);
 
             // Make the gravity + if needed.
@@ -188,9 +193,13 @@ namespace Hertzole.GoldPlayer.Core
             m_OriginalControllerHeight = CharacterController.height;
             // Set the original controller center.
             m_OriginalControllerCenter = CharacterController.center;
+            // Set the original camera position.
             m_OriginalCameraPosition = PlayerController.Camera.CameraHead.localPosition.y;
+            // Calculate the crouch center for the character controller.
             m_ControllerCrouchCenter = CrouchHeight / 2;
+            // Calculate the camera position for when crouching.
             m_CrouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - m_CrouchHeight;
+            // Set the current crouch camera position to the original camera position.
             m_CurrentCrouchCameraPosition = m_OriginalCameraPosition;
         }
 
@@ -210,6 +219,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns>Is the player grounded?</returns>
         public bool CheckGrounded()
         {
+            // Check using a sphere at the player's feet.
             m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
             return m_IsGrounded;
         }
@@ -220,12 +230,16 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
-            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw(Constants.HORIZONTAL_AXIS), ref m_ForwardSpeedVelocity, m_Acceleration);
-            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw(Constants.VERTICAL_AXIS), ref m_SidewaysSpeedVelocity, m_Acceleration);
+            // Take the X input and smooth it.
+            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS), ref m_ForwardSpeedVelocity, m_Acceleration);
+            // Take the Y input and smooth it.
+            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS), ref m_SidewaysSpeedVelocity, m_Acceleration);
 
+            // Normalize the input so the player doesn't run faster when running diagonally.
             if (m_MovementInput.sqrMagnitude > 1)
                 m_MovementInput.Normalize();
 
+            // Return the input.
             return m_MovementInput;
         }
 
@@ -234,6 +248,7 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public override void OnUpdate()
         {
+            // Call update on the stamina module.
             m_Stamina.OnUpdate();
 
             // Check the grounded state.
@@ -257,9 +272,12 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void BasicMovement()
         {
+            // If the player isn't grounded, handle gravity.
+            // Else apply the ground stick so the player sticks to the ground.
             if (!m_IsGrounded)
             {
-                // Make sure the player can't walk around in the ceiling.
+                // If the player's head is touching the ceiling, move the player down so they don't
+                // get stuck on the ceiling.
                 if ((CharacterController.collisionFlags & CollisionFlags.Above) != 0)
                 {
                     m_MoveDirection.y = -5f;
@@ -267,28 +285,35 @@ namespace Hertzole.GoldPlayer.Core
                     m_IsFalling = true;
                 }
 
+                // If we're not grounded and not jumping, we are probably falling.
+                // So set falling to true and reset the Y move direction.
                 if (!m_IsFalling && !m_IsJumping)
                 {
                     m_IsFalling = true;
                     m_MoveDirection.y = 0;
                 }
 
+                // Apply gravity to the Y axis.
                 m_MoveDirection.y -= m_Gravity * Time.deltaTime;
             }
             else
             {
+                // We're on the ground so we're not falling or jumping.
                 m_IsFalling = false;
                 m_IsJumping = false;
 
+                // If ground stick is enabled and we're not jumping, apply the ground stick effect.
                 if (m_EnableGroundStick && !m_IsJumping)
                     m_MoveDirection.y = -m_GroundStick;
                 else
                     m_MoveDirection.y = 0;
             }
 
+            // Make sure we're moving in the right direction.
             HandleMovementDirection();
 
-            if (GetButtonDown(Constants.JUMP_BUTTON_NAME, Constants.JUMP_DEFAULT_KEY) && m_CanJump && m_IsGrounded && m_CanMoveAround)
+            // Jump if the jump button is pressed, we can jump, we're grounded, and if we can move around.
+            if (GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY) && m_CanJump && m_IsGrounded && m_CanMoveAround)
             {
                 Jump();
             }
@@ -299,20 +324,27 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void HandleMovementDirection()
         {
+            // Only run if we can move around.
             if (m_CanMoveAround)
             {
+                // Get the move direction from the movement input X and Y (on the Z axis).
                 m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);
+                // If movement input Y is above 0, we're moving forward, so apply forward move speed.
+                // Else if below 0, we're moving backwards, so apply backwards move speed.
                 if (m_MovementInput.y > 0)
                     m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
                 else
                     m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
 
+                // Apply the sideways movement speed to the X movement.
                 m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
 
+                // Make sure we're moving in the direction the transform is facing.
                 m_MoveDirection = PlayerTransform.TransformDirection(m_MoveDirection);
             }
             else
             {
+                // If we can't move around, just return zero.
                 m_MoveDirection = Vector3.zero;
             }
         }
@@ -322,10 +354,14 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Jump()
         {
+            // Set 'isJumping' to true to we tell everything we're jumping.
             m_IsJumping = true;
 
+            // If we're crouching when trying to jump, check if we can jump while crouched.
+            // If we're not crouching, just jump.
             if (m_IsCrouching)
             {
+                // If crouch jumping is enabled, jump. Else do nothing.
                 if (m_CrouchJumping)
                 {
                     m_MoveDirection.y = m_RealJumpHeight;
@@ -342,10 +378,15 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Running()
         {
+            // Set 'isRunning' to true if the player velocity is above the walking speed max.
             m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max() + 0.5f;
 
-            if (!m_IsCrouching && m_CanRun && GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
+            // Only run if we're not crouching, can run, and the run button is being held down.
+            if (!m_IsCrouching && m_CanRun && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
             {
+                // If stamina is enabled, only set move speed when stamina is above 0.
+                // Else if stamina is not enabled, simply set move speed to run speeds.
+                // Else if stamina is enabled and current stamina is 0 (or less), set move speed to walking speed.
                 if (m_Stamina.EnableStamina && m_Stamina.CurrentStamina > 0)
                     m_MoveSpeed = m_RunSpeeds;
                 else if (!m_Stamina.EnableStamina)
@@ -353,8 +394,9 @@ namespace Hertzole.GoldPlayer.Core
                 else if (m_Stamina.EnableStamina && m_Stamina.CurrentStamina <= 0)
                     m_MoveSpeed = m_WalkingSpeeds;
             }
-            else if (!m_IsCrouching && !GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
+            else if (!m_IsCrouching && !GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
             {
+                // If we're not crouching and not holding down the run button, walk.
                 m_MoveSpeed = m_WalkingSpeeds;
             }
         }
@@ -364,35 +406,50 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Crouching()
         {
+            // Only run the code if we can crouch. If we can't, always set 'isCrouching' to false.
             if (m_CanCrouch)
             {
-                if (GetButton(Constants.CROUCH_BUTTON_NAME, Constants.CROUCH_DEFAULT_KEY))
+                // If the crouch button is being held down, set is crouching to true.
+                // Else if we can stand up and we are crouching, stop crouching.
+                if (GetButton(GoldPlayerConstants.CROUCH_BUTTON_NAME, GoldPlayerConstants.CROUCH_DEFAULT_KEY))
                 {
                     m_IsCrouching = true;
                 }
                 else if (m_CanStandUp && m_IsCrouching)
                 {
+                    // Set 'isCrouching' to false.
                     m_IsCrouching = false;
+                    // Set the character controller height to the original height we got at the start.
                     CharacterController.height = m_OriginalControllerHeight;
+                    // Set the character controller center to the origianl center we got at the start.
                     CharacterController.center = m_OriginalControllerCenter;
 
+                    // Set the move speed to the walking speed.
                     m_MoveSpeed = m_WalkingSpeeds;
                 }
 
+                // Only run if we're crouching.
                 if (m_IsCrouching)
                 {
+                    // Check if we can stand up and update the 'canStandUp' value.
                     m_CanStandUp = CheckCanStandUp();
+                    // Set the character controller height to the crouch height.
                     CharacterController.height = m_CrouchHeight;
+                    // Set the character controller center to the crouch center.
                     CharacterController.center = new Vector3(CharacterController.center.x, m_ControllerCrouchCenter, CharacterController.center.z);
 
+                    // Set the move speed to the crouch speed.
                     m_MoveSpeed = m_CrouchSpeeds;
                 }
 
+                // Lerp the current crouch camera position to either the crouch camera position or the original camera position.
                 m_CurrentCrouchCameraPosition = Mathf.Lerp(m_CurrentCrouchCameraPosition, m_IsCrouching ? m_CrouchCameraPosition : m_OriginalCameraPosition, m_CrouchHeadLerp * Time.deltaTime);
+                // Set the camera head position to the current crouch camera position.
                 PlayerController.Camera.CameraHead.localPosition = new Vector3(PlayerController.Camera.CameraHead.localPosition.x, m_CurrentCrouchCameraPosition, PlayerController.Camera.CameraHead.localPosition.z);
             }
             else
             {
+                // We can't crouch, always set 'isCrouching' to false.
                 m_IsCrouching = false;
             }
         }
@@ -403,6 +460,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         protected virtual bool CheckCanStandUp()
         {
+            // Check if we can stand up using a capsule from the player bottom to the player top.
             return !Physics.CheckCapsule(PlayerTransform.position + Vector3.up * CharacterController.radius, PlayerTransform.position + (Vector3.up * m_OriginalControllerHeight) - (Vector3.up * CharacterController.radius), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
         }
 

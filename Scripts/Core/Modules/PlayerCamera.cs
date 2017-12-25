@@ -3,7 +3,9 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer.Core
 {
     //FIX: Transform rotation can not be set at runtime and it's reflected here.
-    //DOCUMENT: PlayerCamera
+    /// <summary>
+    /// Used to move a player camera around.
+    /// </summary>
     [System.Serializable]
     public class PlayerCamera : PlayerModule
     {
@@ -49,16 +51,25 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("The camera head that should be moved around.")]
         private Transform m_CameraHead = null;
 
+        // The current input from the mouse.
         private Vector2 m_MouseInput = Vector2.zero;
 
+        // Where the head should be looking.
         private Vector3 m_TargetHeadAngles = Vector3.zero;
+        // Where the body should be looking.
         private Vector3 m_TargetBodyAngles = Vector3.zero;
+        // Where the head should be looking, smoothed.
         private Vector3 m_FollowHeadAngles = Vector3.zero;
+        // Where the body should be looking, smoothed.
         private Vector3 m_FollowBodyAngles = Vector3.zero;
+        // The head smooth velocity.
         private Vector3 m_FollowHeadVelocity = Vector3.zero;
+        // The body smooth velocity.
         private Vector3 m_FollowBodyVelocity = Vector3.zero;
 
+        // The original player rotation.
         private Quaternion m_OriginalPlayerRotation = Quaternion.identity;
+        // The original head rotation.
         private Quaternion m_OriginalHeadRotation = Quaternion.identity;
 
         /// <summary> Determines if the player can look around. </summary>
@@ -82,24 +93,33 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The camera head that should be moved around. </summary>
         public Transform CameraHead { get { return m_CameraHead; } set { m_CameraHead = value; } }
 
+        /// <summary> Where the head should be looking. </summary>
         public Vector3 TargetHeadAngles { get { return m_TargetHeadAngles; } }
+        /// <summary> Where the body should be looking. </summary>
         public Vector3 TargetBodyAngles { get { return m_TargetBodyAngles; } }
+        /// <summary> Where the head should be looking, smoothed. </summary>
         public Vector3 FollowHeadAngles { get { return m_FollowHeadAngles; } }
+        /// <summary> Where the body should be looking, smoothed. </summary>
         public Vector3 FollowBodyAngles { get { return m_FollowBodyAngles; } }
 
         protected override void OnInit()
         {
+            // If the camera head is null, complain.
             if (m_CameraHead == null)
             {
                 Debug.LogError("'" + PlayerController.gameObject.name + "' needs to have Camera Head assigned in the Camera settings!");
                 return;
             }
 
+            // Lock the cursor, if it should.
             LockCursor(m_ShouldLockCursor);
 
+            // Set the original head rotation to the one on the camera head.
             m_OriginalHeadRotation = m_CameraHead.localRotation;
+            // Set the original player rotation to the player rotation.
             m_OriginalPlayerRotation = PlayerController.transform.rotation;
 
+            // Initialize the FOV kick module.
             FOVKick.Init(PlayerController, PlayerInput);
         }
 
@@ -109,7 +129,9 @@ namespace Hertzole.GoldPlayer.Core
         /// <param name="lockCursor">Should the cursor be locked?</param>
         public void LockCursor(bool lockCursor)
         {
+            // Set the cursor lock state to either locked or none, depennding on the lock cursor paramater.
             Cursor.lockState = lockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+            // Hide/Show the cursor based on the lock cursor paramater.
             Cursor.visible = !lockCursor;
         }
 
@@ -137,7 +159,7 @@ namespace Hertzole.GoldPlayer.Core
                 LockCursor(m_ShouldLockCursor);
 
             // Set the input.
-            m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(Constants.MOUSE_X) : GetAxis(Constants.MOUSE_X), m_InvertYAxis ? -GetAxis(Constants.MOUSE_Y) : GetAxis(Constants.MOUSE_Y)) * m_MouseSensitivity;
+            m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), m_InvertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * m_MouseSensitivity;
 
             // Apply the input and mouse sensitivity.
             m_TargetHeadAngles.x += m_MouseInput.y * m_MouseSensitivity * Time.deltaTime;

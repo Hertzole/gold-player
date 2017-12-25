@@ -5,13 +5,18 @@ namespace Hertzole.GoldPlayer.Core
     public class GoldPlayerInput : GoldInput
     {
         [SerializeField]
+        [Tooltip("Determines if the input should be based around KeyCodes. If false, Input Manager will be used.")]
         private bool m_UseKeyCodes;
-        public bool UseKeyCodes { get { return m_UseKeyCodes; } set { m_UseKeyCodes = value; } }
 
         [Space]
 
         [SerializeField]
+        [Tooltip("All the available inputs.")]
         private InputItem[] m_Inputs = new InputItem[0];
+
+        /// <summary> Determines if the input should be based around KeyCodes. If false, Input Manager will be used. </summary>
+        public bool UseKeyCodes { get { return m_UseKeyCodes; } set { m_UseKeyCodes = value; } }
+        /// <summary> All the available inputs. </summary>
         public InputItem[] Inputs { get { return m_Inputs; } set { m_Inputs = value; } }
 
         public override bool GetButton(string buttonName)
@@ -20,7 +25,7 @@ namespace Hertzole.GoldPlayer.Core
             if (item == null)
                 return false;
 
-            if (UseKeyCodes)
+            if (m_UseKeyCodes)
                 return Input.GetKey(item.Key);
             else
                 return Input.GetButton(item.InputName);
@@ -32,7 +37,7 @@ namespace Hertzole.GoldPlayer.Core
             if (item == null)
                 return false;
 
-            if (UseKeyCodes)
+            if (m_UseKeyCodes)
                 return Input.GetKeyDown(item.Key);
             else
                 return Input.GetButtonDown(item.InputName);
@@ -44,7 +49,7 @@ namespace Hertzole.GoldPlayer.Core
             if (item == null)
                 return false;
 
-            if (UseKeyCodes)
+            if (m_UseKeyCodes)
                 return Input.GetKeyUp(item.Key);
             else
                 return Input.GetButtonUp(item.InputName);

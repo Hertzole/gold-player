@@ -2,7 +2,9 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
-    //DOCUMENT: StaminaClass
+    /// <summary>
+    /// Used to calculate stamina/limited running.
+    /// </summary>
     [System.Serializable]
     public class StaminaClass : PlayerModule
     {
@@ -25,7 +27,9 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("How long it will wait before starting to regenerate stamina.")]
         private float m_RegenWait = 1f;
 
+        // The amount current stamina.
         private float m_CurrentStamina;
+        // The current regen wait time.
         private float m_CurrentRegenWait;
 
         /// <summary> Determines if stamina should be enabled. </summary>
@@ -48,69 +52,102 @@ namespace Hertzole.GoldPlayer.Core
 
         protected override void OnInit()
         {
+            // Set the current stamina to the max stamina. This way we always start with a full stamina bar.
             m_CurrentStamina = m_MaxStamina;
+            // Set the current regen wait to the regen wait. This way we will always start at a full regen time.
             m_CurrentRegenWait = m_RegenWait;
         }
 
         public override void OnUpdate()
         {
+            // Do the stamina logic.
             HandleStamina();
         }
 
+        /// <summary>
+        /// Handles all the stamina logic.
+        /// </summary>
         protected virtual void HandleStamina()
         {
+            // There's no point in doing stamina logic if we can't run. Stop here if running is disabled.
             if (!PlayerController.Movement.CanRun)
                 return;
 
+            // Stop here if stamina is disabled.
             if (!m_EnableStamina)
                 return;
 
+            // If we should drain stamina when move speed is above walk speed, drain stamina when 'isRunning' is true.
+            // Else drain it when 'isRunning' is true and the run button is being held down.
             if (m_DrainStaminaWhen == RunAction.MoveSpeedAboveRunSpeed)
             {
+                // If 'isRunning' is true, drain the stamina.
+                // Else if the run button is not being held down, regen the stamina.
                 if (PlayerController.Movement.IsRunning)
                     DrainStamina();
-                else if (!GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
+                else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
                     RegenStamina();
             }
             else if (m_DrainStaminaWhen == RunAction.MoveSpeedAboveRunSpeedAndRunning)
             {
-                if (PlayerController.Movement.IsRunning && GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
+                // If 'isRunning' is true and the run button is being held down, drain the stamina.
+                // Else if the run button is not being held down, regen the stamina.
+                if (PlayerController.Movement.IsRunning && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
                     DrainStamina();
-                else if (!GetButton(Constants.RUN_BUTTON_NAME, Constants.RUN_DEFAULT_KEY))
+                else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
                     RegenStamina();
             }
 
+            // Clamps the values so they stay within range.
             ClampValues();
         }
 
+        /// <summary>
+        /// Drains the stamina.
+        /// </summary>
         protected virtual void DrainStamina()
         {
+            // Only drain the stamina is the current stamina is above 0.
             if (m_CurrentStamina > 0)
                 m_CurrentStamina -= m_DrainRate * Time.deltaTime;
 
+            // Set the current regen wait to 0.
             m_CurrentRegenWait = 0;
         }
 
+        /// <summary>
+        /// Does the stamina regeneration logic.
+        /// </summary>
         protected virtual void RegenStamina()
         {
+            // If the current regen wait is less than the regen wait, increase the current regen wait.
             if (m_CurrentRegenWait < m_RegenWait)
                 m_CurrentRegenWait += 1 * Time.deltaTime;
 
+            // If the current regen wait is the same as regen wait and current stamina is less than max stamina,
+            // increase the current stamina with regen rate.
             if (m_CurrentRegenWait >= m_RegenWait && m_CurrentStamina < m_MaxStamina)
                 m_CurrentStamina += m_RegenRate * Time.deltaTime;
         }
 
+        /// <summary>
+        /// Clamps current stamina and current regen wait.
+        /// </summary>
         protected virtual void ClampValues()
         {
+            // Make sure current stamina doesn't go below 0.
             if (m_CurrentStamina < 0)
                 m_CurrentStamina = 0;
 
+            // Make sure current stamina doesn't go above max stamina.
             if (m_CurrentStamina > m_MaxStamina)
                 m_CurrentStamina = m_MaxStamina;
 
+            // Make sure current regen wait doesn't go above regen wait.
             if (m_CurrentRegenWait > m_RegenWait)
                 m_CurrentRegenWait = m_RegenWait;
 
+            // Make sure current regen wait doesn't go below 0.
             if (m_CurrentRegenWait < 0)
                 m_CurrentRegenWait = 0;
         }
