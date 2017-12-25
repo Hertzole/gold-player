@@ -7,19 +7,27 @@ Gold Player aims to be an easy to use first person player controller for your Un
 ## Why?
 I feel like the standard controllers provided by Unity is REALLY bad, like seriously bad. So I once set out to create a player controller that I could use in multiple projects without the need of editing the code for it. It worked fine at first but it was full of bad practices and bugs. So I used my new knowledge to create a new one and it went really good. It even got used in [a game I published](https://hertzole.itch.io/jumps)! But I once started a major refactor and I never finished it and I left it in a weird place. Half good, half really bad. And since that, my coding style has evolved even more. So I wanted to make "the ultimate controller" with all the knowledge I already have and fix stupid problems from the get-go. 
 
-## How do I use it?
-Right now the only way to get the full package is to download the entire repository. I will have releases later on whenever I feel like fits for a release. __And right now nothing really works. The start is there, but all the things that make a player controller aren't.__ It's in VERY early development and a lot may/will change, __so use at your own risk!__ But I will mark old stuff as obsolete and then remove it in a version later on, so you won't get a bunch of errors for each new version! But stuff added in between versions can be removed, so keep that in mind if you're using the code directly from the repository! 
+## How do I get started?
+#### If you want to use it in a game:  
+Go to [Releases](https://github.com/Hertzole/gold-player/releases) and get the latest release in the form of a Unity package. This will make sure you get a version that should work just fine without any problems.  
+However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it.
+#### If you want to contribute:
+Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files.
+
+## What do I get?
+When you use this player controller you will get the following:
+- A solid player controller
+- Head bob, running, crouching, step & landing & jumping sounds. All customizable!
+- Easy to use functions
+- Extendable classes
+- Documented code
 
 ## What can I expect?
 I have several things I want to do with this player controller. Right now I just need to get it moving, but here are some things I will add in the not so distant future!
-- Crouching
-- Head bob
-- Audio for footsteps, landing, and jumping
 - Extra components (stuff that could help you make your game and hooks into the player)
 - Built-in camera shake
-- ~~Rewired input~~ Replaced by new Unity input system.
 - Intergrate the [new Unity Input System](https://github.com/Unity-Technologies/InputSystem) (when it becomes more stable).
-- Easy to use API
+- More easy to use API
 
 Those are just some things I can think of right now. I will, of course, add more stuff as time goes on!
 
