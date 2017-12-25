@@ -13,7 +13,7 @@ namespace Hertzole.GoldPlayer.Core
         public const string MOUSE_X = "Mouse X";
         public const string MOUSE_Y = "Mouse Y";
 
-        public const string JUMP_BUTTON_NAME = "Space";
+        public const string JUMP_BUTTON_NAME = "Jump";
         public const KeyCode JUMP_DEFAULT_KEY = KeyCode.Space;
 
         public const string RUN_BUTTON_NAME = "Run";

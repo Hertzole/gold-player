@@ -9,7 +9,7 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         private bool m_EnableFOVKick = true;
         [SerializeField]
-        private FOVKickWhen m_KickWhen = FOVKickWhen.MoveSpeedAboveRunSpeed;
+        private RunAction m_KickWhen = RunAction.MoveSpeedAboveRunSpeed;
         [SerializeField]
         private float m_KickAmount = 20f;
         [SerializeField]
@@ -28,7 +28,7 @@ namespace Hertzole.GoldPlayer.Core
         private bool m_HasBeenInitialized = false;
 
         public bool EnableFOVKick { get { return m_EnableFOVKick; } set { m_EnableFOVKick = value; } }
-        public FOVKickWhen KickWhen { get { return m_KickWhen; } set { m_KickWhen = value; } }
+        public RunAction KickWhen { get { return m_KickWhen; } set { m_KickWhen = value; } }
         public float KickAmount { get { return m_KickAmount; } set { m_KickAmount = value; } }
         public float LerpTimeTo { get { return m_LerpTimeTo; } set { m_LerpTimeTo = value; } }
         public float LerpTimeFrom { get { return m_LerpTimeFrom; } set { m_LerpTimeFrom = value; } }
@@ -67,11 +67,11 @@ namespace Hertzole.GoldPlayer.Core
                 return;
             }
 
-            if (m_KickWhen == FOVKickWhen.MoveSpeedAboveRunSpeed)
+            if (m_KickWhen == RunAction.MoveSpeedAboveRunSpeed)
             {
                 DoFOV(PlayerController.Movement.IsRunning);
             }
-            else if (m_KickWhen == FOVKickWhen.MoveSpeedAboveRunSpeedAndRunning)
+            else if (m_KickWhen == RunAction.MoveSpeedAboveRunSpeedAndRunning)
             {
                 DoFOV(GetButton("Run") && PlayerController.Movement.IsRunning);
             }

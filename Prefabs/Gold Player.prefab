@@ -667,6 +667,13 @@ MonoBehaviour:
       m_ForwardSpeed: 7
       m_SidewaysSpeed: 5.5
       m_BackwardsSpeed: 5
+    m_Stamina:
+      m_EnableStamina: 0
+      m_DrainStaminaWhen: 1
+      m_MaxStamina: 10
+      m_DrainRate: 1
+      m_RegenRate: 0.8
+      m_RegenWait: 1
     m_CanJump: 1
     m_JumpHeight: 2
     m_CanCrouch: 1
