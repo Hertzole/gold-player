@@ -16,10 +16,10 @@ namespace Hertzole.GoldPlayer.Core
         private RunAction m_KickWhen = RunAction.MoveSpeedAboveRunSpeed;
         [SerializeField]
         [Tooltip("Sets how much the FOV will kick.")]
-        private float m_KickAmount = 20f;
+        private float m_KickAmount = 15f;
         [SerializeField]
         [Tooltip("Sets how fast the FOV will move to the new FOV.")]
-        private float m_LerpTimeTo = 10;
+        private float m_LerpTimeTo = 4f;
         [SerializeField]
         [Tooltip("Sets how fast the FOV will move back to the original FOV.")]
         private float m_LerpTimeFrom = 2.5f;
@@ -41,7 +41,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Determines if FOV kick should be enabled. </summary>
         public bool EnableFOVKick { get { return m_EnableFOVKick; } set { m_EnableFOVKick = value; } }
         /// <summary> Sets whenever the FOV kick should kick in. </summary>
-        public RunAction KickWhen { get { return m_KickWhen; } set { m_KickWhen = value; } }
+        public RunAction KickWhen { get { return m_KickWhen; } set { m_KickWhen = value; UpdateNewFOV(); } }
         /// <summary> Sets how much the FOV will kick. </summary>
         public float KickAmount { get { return m_KickAmount; } set { m_KickAmount = value; } }
         /// <summary> Sets how fast the FOV will move to the new FOV. </summary>
@@ -65,6 +65,19 @@ namespace Hertzole.GoldPlayer.Core
 
             // Get the original FOV from the target camera.
             m_OriginalFOV = m_TargetCamera.fieldOfView;
+            // Update the new FOV.
+            UpdateNewFOV();
+        }
+
+        /// <summary>
+        /// Updates the target FOV.
+        /// </summary>
+        private void UpdateNewFOV()
+        {
+            // If there's no target camera, stop here.
+            if (m_TargetCamera == null)
+                return;
+
             // Create the new FOV by taking the original FOV and adding kick amount.
             m_NewFOV = m_TargetCamera.fieldOfView + m_KickAmount;
         }
@@ -121,5 +134,16 @@ namespace Hertzole.GoldPlayer.Core
             else
                 m_TargetCamera.fieldOfView = Mathf.Lerp(m_TargetCamera.fieldOfView, m_OriginalFOV, m_LerpTimeFrom * Time.deltaTime);
         }
+
+#if UNITY_EDITOR
+        public override void OnValidate()
+        {
+            if (m_TargetCamera != null && Application.isPlaying)
+            {
+                // Create the new FOV by taking the original FOV and adding kick amount.
+                m_NewFOV = m_TargetCamera.fieldOfView + m_KickAmount;
+            }
+        }
+#endif
     }
 }
