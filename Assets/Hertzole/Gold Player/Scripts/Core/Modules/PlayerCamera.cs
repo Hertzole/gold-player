@@ -50,6 +50,16 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("The camera head that should be moved around.")]
         private Transform m_CameraHead = null;
 
+        private bool m_DoShake = false;
+        [SerializeField]
+        private float m_ShakeFrequency = 0;
+        [SerializeField]
+        private float m_ShakeMagnitude = 0;
+        [SerializeField]
+        private float m_ShakeDuration = 0;
+        [SerializeField]
+        private float m_ShakeTimer = 0;
+        private float m_ShakeStart;
         // The current input from the mouse.
         private Vector2 m_MouseInput = Vector2.zero;
 
@@ -68,6 +78,7 @@ namespace Hertzole.GoldPlayer.Core
 
         // The original head rotation.
         private Quaternion m_OriginalHeadRotation = Quaternion.identity;
+        private Quaternion m_TargetHeadRotation = Quaternion.identity;
 
         /// <summary> Determines if the player can look around. </summary>
         public bool CanLookAround { get { return m_CanLookAround; } set { m_CanLookAround = value; } }
@@ -134,6 +145,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             MouseHandler();
             FOVKick.OnUpdate();
+            ShakeHandler();
+
+            m_CameraHead.localRotation = m_TargetHeadRotation;
         }
 
         /// <summary>
@@ -168,16 +182,61 @@ namespace Hertzole.GoldPlayer.Core
             m_FollowBodyAngles = Vector3.SmoothDamp(m_FollowBodyAngles, m_TargetBodyAngles, ref m_FollowBodyVelocity, m_MouseDamping);
 
             // Set the rotation on the camera head and player.
-            m_CameraHead.localRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x, m_CameraHead.rotation.y, m_CameraHead.rotation.z);
+            m_TargetHeadRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x, m_CameraHead.rotation.y, m_CameraHead.rotation.z);
             PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-m_FollowBodyAngles.x, m_FollowBodyAngles.y, 0);
+
 
             // Reset the target body angles so we can set the transform rotation from other places.
             m_TargetBodyAngles = Vector3.zero;
         }
 
+        protected virtual void ShakeHandler()
+        {
+            if (m_DoShake)
+            {
+                m_TargetHeadRotation *= Quaternion.Euler(PerlinShake(m_ShakeFrequency, m_ShakeMagnitude));
+
+                m_ShakeTimer += 1 * Time.deltaTime;
+                if (m_ShakeTimer > m_ShakeDuration)
+                    m_DoShake = false;
+            }
+
+            float perc = m_ShakeTimer / m_ShakeDuration;
+            Debug.Log(perc);
+            m_ShakeMagnitude = Mathf.Lerp(m_ShakeMagnitude, 0f, perc);
+        }
+
+        public virtual void CameraShake(float frequency, float magnitude, float duration)
+        {
+            m_DoShake = true;
+            m_ShakeFrequency = frequency;
+            m_ShakeMagnitude = magnitude;
+            m_ShakeDuration = duration;
+            m_ShakeTimer = 0;
+            m_ShakeStart = Time.time;
+        }
+
+        public virtual void StopCameraShake()
+        {
+            m_DoShake = false;
+        }
+
+        private Vector3 PerlinShake(float frequency, float magnitude)
+        {
+            Vector3 result = Vector3.zero;
+            float seed = Time.time * frequency;
+            result.x = Mathf.Clamp01(Mathf.PerlinNoise(seed, 0f)) - 0.5f;
+            result.y = Mathf.Clamp01(Mathf.PerlinNoise(seed, seed)) - 0.5f;
+            result.z = Mathf.Clamp01(Mathf.PerlinNoise(0f, seed)) - 0.5f;
+            result = result * magnitude;
+            return result;
+        }
+
+#if UNITY_EDITOR
         public override void OnValidate()
         {
             m_FOVKick.OnValidate();
         }
+#endif
     }
 }

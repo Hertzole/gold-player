@@ -69,6 +69,14 @@ namespace Hertzole.GoldPlayer.Editor
                 if (it.propertyPath.StartsWith(m_Camera.name) && it.depth < 2)
                     EditorGUILayout.PropertyField(it, true);
             }
+
+            if (Application.isPlaying)
+            {
+                if (GUILayout.Button("Do Camera Shake"))
+                {
+                    ((GoldPlayerController)target).Camera.CameraShake(10, 4, 2f);
+                }
+            }
         }
 
         private void DoMovementGUI()
