@@ -50,16 +50,20 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("The camera head that should be moved around.")]
         private Transform m_CameraHead = null;
 
+        // Determines if a camera shake should be preformed.
         private bool m_DoShake = false;
-        [SerializeField]
+
+        // Sets how strong the camera shake is.
         private float m_ShakeFrequency = 0;
-        [SerializeField]
+        // Also sets how strong the camera shake.
         private float m_ShakeMagnitude = 0;
-        [SerializeField]
+        // The original magnitude of the camera shake.
+        private float m_ShakeMagnitudeFull = 0;
+        // How last the camera shake lasts.
         private float m_ShakeDuration = 0;
-        [SerializeField]
+        // The timer used to reach the duration.
         private float m_ShakeTimer = 0;
-        private float m_ShakeStart;
+
         // The current input from the mouse.
         private Vector2 m_MouseInput = Vector2.zero;
 
@@ -78,6 +82,7 @@ namespace Hertzole.GoldPlayer.Core
 
         // The original head rotation.
         private Quaternion m_OriginalHeadRotation = Quaternion.identity;
+        // The rotation the head should be facing.
         private Quaternion m_TargetHeadRotation = Quaternion.identity;
 
         /// <summary> Determines if the player can look around. </summary>
@@ -109,6 +114,9 @@ namespace Hertzole.GoldPlayer.Core
         public Vector3 FollowHeadAngles { get { return m_FollowHeadAngles; } }
         /// <summary> Where the body should be looking, smoothed. </summary>
         public Vector3 FollowBodyAngles { get { return m_FollowBodyAngles; } }
+
+        /// <summary> Is the camera currently shaking from a camera shake? </summary>
+        public bool IsCameraShaking { get { return m_DoShake; } }
 
         protected override void OnInit()
         {
@@ -147,6 +155,7 @@ namespace Hertzole.GoldPlayer.Core
             FOVKick.OnUpdate();
             ShakeHandler();
 
+            // Update the camera head rotation.
             m_CameraHead.localRotation = m_TargetHeadRotation;
         }
 
@@ -185,50 +194,77 @@ namespace Hertzole.GoldPlayer.Core
             m_TargetHeadRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x, m_CameraHead.rotation.y, m_CameraHead.rotation.z);
             PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-m_FollowBodyAngles.x, m_FollowBodyAngles.y, 0);
 
-
             // Reset the target body angles so we can set the transform rotation from other places.
             m_TargetBodyAngles = Vector3.zero;
         }
 
+        /// <summary>
+        /// Handles all the camera shake code.
+        /// </summary>
         protected virtual void ShakeHandler()
         {
+            // Only run the code if doShake is true.
             if (m_DoShake)
             {
+                // Apply the shake effect to the target head rotation.
                 m_TargetHeadRotation *= Quaternion.Euler(PerlinShake(m_ShakeFrequency, m_ShakeMagnitude));
 
-                m_ShakeTimer += 1 * Time.deltaTime;
-                if (m_ShakeTimer > m_ShakeDuration)
+                // Increase the shake timer.
+                m_ShakeTimer += Time.deltaTime;
+                // Stop shaking whenever the shake timer is above the shake duration.
+                if (m_ShakeTimer >= m_ShakeDuration)
                     m_DoShake = false;
-            }
 
-            float perc = m_ShakeTimer / m_ShakeDuration;
-            Debug.Log(perc);
-            m_ShakeMagnitude = Mathf.Lerp(m_ShakeMagnitude, 0f, perc);
+                // Calculate the percentage of the lerp.
+                float shakePercentage = m_ShakeTimer / m_ShakeDuration;
+                // Decrease the magnitude over time.
+                m_ShakeMagnitude = Mathf.Lerp(m_ShakeMagnitudeFull, 0f, shakePercentage);
+            }
         }
 
+        /// <summary>
+        /// Starts a camera shake.
+        /// </summary>
+        /// <param name="frequency">The frequency of the camera shake.</param>
+        /// <param name="magnitude">The magnitude of the camera shake.</param>
+        /// <param name="duration">The duration of the camera shake.</param>
         public virtual void CameraShake(float frequency, float magnitude, float duration)
         {
             m_DoShake = true;
             m_ShakeFrequency = frequency;
             m_ShakeMagnitude = magnitude;
+            m_ShakeMagnitudeFull = magnitude;
             m_ShakeDuration = duration;
             m_ShakeTimer = 0;
-            m_ShakeStart = Time.time;
         }
 
+        /// <summary>
+        /// Stops the camera shake.
+        /// </summary>
         public virtual void StopCameraShake()
         {
             m_DoShake = false;
         }
 
+        /// <summary>
+        /// Get a random Vector3 shake based on perlin noise.
+        /// </summary>
+        /// <param name="frequency"></param>
+        /// <param name="magnitude"></param>
+        /// <returns></returns>
         private Vector3 PerlinShake(float frequency, float magnitude)
         {
+            // Create the result variable.
             Vector3 result = Vector3.zero;
+            // Create the seed.
             float seed = Time.time * frequency;
+            // Apply perlin noise.
             result.x = Mathf.Clamp01(Mathf.PerlinNoise(seed, 0f)) - 0.5f;
             result.y = Mathf.Clamp01(Mathf.PerlinNoise(seed, seed)) - 0.5f;
             result.z = Mathf.Clamp01(Mathf.PerlinNoise(0f, seed)) - 0.5f;
+            // Multiple result with magnitude.
             result = result * magnitude;
+            // Return the result.
             return result;
         }
 
