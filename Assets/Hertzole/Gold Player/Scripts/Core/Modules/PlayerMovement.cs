@@ -467,6 +467,9 @@ namespace Hertzole.GoldPlayer.Core
 #if UNITY_EDITOR
         public override void OnValidate()
         {
+            if (!Application.isPlaying)
+                return;
+
             WalkingSpeeds = m_WalkingSpeeds;
             RunSpeeds = m_RunSpeeds;
             CrouchSpeeds = m_CrouchSpeeds;

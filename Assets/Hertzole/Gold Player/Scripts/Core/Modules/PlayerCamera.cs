@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
-    //FIX: Transform rotation can not be set at runtime and it's reflected here.
     /// <summary>
     /// Used to move a player camera around.
     /// </summary>
@@ -67,8 +66,6 @@ namespace Hertzole.GoldPlayer.Core
         // The body smooth velocity.
         private Vector3 m_FollowBodyVelocity = Vector3.zero;
 
-        // The original player rotation.
-        private Quaternion m_OriginalPlayerRotation = Quaternion.identity;
         // The original head rotation.
         private Quaternion m_OriginalHeadRotation = Quaternion.identity;
 
@@ -116,8 +113,6 @@ namespace Hertzole.GoldPlayer.Core
 
             // Set the original head rotation to the one on the camera head.
             m_OriginalHeadRotation = m_CameraHead.localRotation;
-            // Set the original player rotation to the player rotation.
-            m_OriginalPlayerRotation = PlayerController.transform.rotation;
 
             // Initialize the FOV kick module.
             FOVKick.Init(PlayerController, PlayerInput);
@@ -166,7 +161,7 @@ namespace Hertzole.GoldPlayer.Core
             m_TargetBodyAngles.y += m_MouseInput.x * m_MouseSensitivity * Time.deltaTime;
 
             // Clamp the head angle.
-            m_TargetHeadAngles = ClampValues(m_TargetHeadAngles, m_FollowHeadAngles, m_MinimumX, m_MaxiumumX);
+            m_TargetHeadAngles.x = Mathf.Clamp(m_TargetHeadAngles.x, m_MinimumX, m_MaxiumumX);
 
             // Smooth the movement.
             m_FollowHeadAngles = Vector3.SmoothDamp(m_FollowHeadAngles, m_TargetHeadAngles, ref m_FollowHeadVelocity, m_MouseDamping);
@@ -174,19 +169,15 @@ namespace Hertzole.GoldPlayer.Core
 
             // Set the rotation on the camera head and player.
             m_CameraHead.localRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x, m_CameraHead.rotation.y, m_CameraHead.rotation.z);
-            PlayerController.transform.rotation = m_OriginalPlayerRotation * Quaternion.Euler(-m_FollowBodyAngles.x, m_FollowBodyAngles.y, 0);
+            PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-m_FollowBodyAngles.x, m_FollowBodyAngles.y, 0);
+
+            // Reset the target body angles so we can set the transform rotation from other places.
+            m_TargetBodyAngles = Vector3.zero;
         }
 
-        protected virtual Vector3 ClampValues(Vector3 target, Vector3 follow, float minimum, float maximum)
+        public override void OnValidate()
         {
-            if (target.y > 180) { target.y -= 360; follow.y -= 360; }
-            if (target.x > 180) { target.x -= 360; follow.x -= 360; }
-            if (target.y < -180) { target.y += 360; follow.y += 360; }
-            if (target.x < -180) { target.x += 360; follow.x += 360; }
-
-            target.x = Mathf.Clamp(target.x, minimum, maximum);
-
-            return target;
+            m_FOVKick.OnValidate();
         }
     }
 }

@@ -201,7 +201,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1910683444252486}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.08, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4645849210123534}
@@ -651,8 +651,8 @@ MonoBehaviour:
     m_FOVKick:
       m_EnableFOVKick: 1
       m_KickWhen: 0
-      m_KickAmount: 20
-      m_LerpTimeTo: 10
+      m_KickAmount: 15
+      m_LerpTimeTo: 4
       m_LerpTimeFrom: 2.5
       m_TargetCamera: {fileID: 20774848469115984}
     m_CameraHead: {fileID: 4901321065046222}
