@@ -1820,6 +1820,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -1851,6 +1856,56 @@ Prefab:
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[0].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[0].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[0].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[1].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[1].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Camera.m_ShakeCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}

@@ -124,7 +124,6 @@ namespace Hertzole.GoldPlayer.Core
         public event GoldPlayerDelegates.PlayerEvent OnBeginCameraShake;
         /// <summary> Fires when the camera shake ends. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndCameraShake;
-
         protected override void OnInit()
         {
             // If the camera head is null, complain.
