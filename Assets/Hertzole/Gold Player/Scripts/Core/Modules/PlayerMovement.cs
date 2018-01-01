@@ -106,6 +106,12 @@ namespace Hertzole.GoldPlayer.Core
         protected bool m_IsCrouching = false;
         // Can the player stand up while crouching?
         protected bool m_CanStandUp = false;
+        // Was the player previously grounded?
+        protected bool m_PreviouslyGrounded = false;
+        // Was the player previously crouched?
+        protected bool m_PreviouslyCrouched = false;
+        // Was the player previously running?
+        protected bool m_PreviouslyRunning = false;
 
         // Input values for movement on the X and Z axis.
         protected Vector2 m_MovementInput = Vector2.zero;
@@ -170,8 +176,21 @@ namespace Hertzole.GoldPlayer.Core
         public bool IsFalling { get { return m_IsFalling; } }
         /// <summary> Is the player crouching? </summary>
         public bool IsCrouching { get { return m_IsCrouching; } }
-        /// <summary> Can the player stand up while crouching </summary>
+        /// <summary> Can the player stand up while crouching? </summary>
         public bool CanStandUp { get { return m_CanStandUp; } }
+
+        /// <summary> Fires when the player jumps. </summary>
+        public event GoldPlayerDelegates.JumpEvent OnJump;
+        /// <summary> Fires when the player lands. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnLand;
+        /// <summary> Fires when the player begins crouching. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnBeginCrouch;
+        /// <summary> Fires when the player stops crouching. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnEndCrouch;
+        /// <summary> Fires when the player begins running. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnBeginRun;
+        /// <summary> Fires when the player stops running. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnEndRun;
 
         protected override void OnInit()
         {
@@ -285,7 +304,10 @@ namespace Hertzole.GoldPlayer.Core
                     m_IsFalling = true;
                 }
 
-                // If we're not grounded and not jumping, we are probably falling.
+                // The player was previously not grounded.
+                m_PreviouslyGrounded = false;
+
+                // If the player isn't grounded and not jumping, it is probably falling.
                 // So set falling to true and reset the Y move direction.
                 if (!m_IsFalling && !m_IsJumping)
                 {
@@ -298,21 +320,35 @@ namespace Hertzole.GoldPlayer.Core
             }
             else
             {
-                // We're on the ground so we're not falling or jumping.
+                // If the player is grounded now and wasn't previously, the player just landed.
+                if (!m_PreviouslyGrounded)
+                {
+                    // Invoke the OnPlayerLand event.
+#if NET_4_6
+                    OnLand?.Invoke();
+#else
+                    if (OnLand != null)
+                        OnLand.Invoke();
+#endif
+                }
+
+                // The player is on the ground so it is not falling or jumping.
                 m_IsFalling = false;
                 m_IsJumping = false;
+                // The player was previously grounded.
+                m_PreviouslyGrounded = true;
 
-                // If ground stick is enabled and we're not jumping, apply the ground stick effect.
+                // If ground stick is enabled and the player isn't jumping, apply the ground stick effect.
                 if (m_EnableGroundStick && !m_IsJumping)
                     m_MoveDirection.y = -m_GroundStick;
                 else
                     m_MoveDirection.y = 0;
             }
 
-            // Make sure we're moving in the right direction.
+            // Make sure the player is moving in the right direction.
             HandleMovementDirection();
 
-            // Jump if the jump button is pressed, we can jump, we're grounded, and if we can move around.
+            // Jump if the jump button is pressed, the player can jump, the player grounded, and if the player can move around.
             if (GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY) && m_CanJump && m_IsGrounded && m_CanMoveAround)
             {
                 Jump();
@@ -354,11 +390,11 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Jump()
         {
-            // Set 'isJumping' to true to we tell everything we're jumping.
+            // Set 'isJumping' to true so the player tells everything we're jumping.
             m_IsJumping = true;
 
-            // If we're crouching when trying to jump, check if we can jump while crouched.
-            // If we're not crouching, just jump.
+            // If the player is crouching when trying to jump, check if the player can jump while crouched.
+            // If the player isn't crouching, just jump.
             if (m_IsCrouching)
             {
                 // If crouch jumping is enabled, jump. Else do nothing.
@@ -371,6 +407,14 @@ namespace Hertzole.GoldPlayer.Core
             {
                 m_MoveDirection.y = m_RealJumpHeight;
             }
+
+            // Invoke the OnPlayerJump event.
+#if NET_4_6
+            OnJump?.Invoke(m_JumpHeight);
+#else
+            if (OnJump != null)
+                OnJump.Invoke(m_JumpHeight);
+#endif
         }
 
         /// <summary>
@@ -399,6 +443,40 @@ namespace Hertzole.GoldPlayer.Core
                 // If we're not crouching and not holding down the run button, walk.
                 m_MoveSpeed = m_WalkingSpeeds;
             }
+
+            // Only run if m_isRunning is true.
+            if (m_IsRunning)
+            {
+                // If the player wasn't previously running, they just started. Fire the OnBeginRun event.
+                if (!m_PreviouslyRunning)
+                {
+#if NET_4_6
+                    OnBeginRun?.Invoke();
+#else
+                    if (OnBeginRun != null)
+                        OnBeginRun.Invoke();
+#endif
+                }
+
+                // The player was previously running.
+                m_PreviouslyRunning = true;
+            }
+            else
+            {
+                // If the player was previously running, fire the OnEndRun event.
+                if (m_PreviouslyRunning)
+                {
+#if NET_4_6
+                    OnEndRun?.Invoke();
+#else
+                    if (OnEndRun != null)
+                        OnEndRun.Invoke();
+#endif
+                }
+
+                // The player is no longer running.
+                m_PreviouslyRunning = false;
+            }
         }
 
         /// <summary>
@@ -417,6 +495,17 @@ namespace Hertzole.GoldPlayer.Core
                 }
                 else if (m_CanStandUp && m_IsCrouching)
                 {
+                    // If the player was previously crouched, fire the OnEndCrouch event, as the player is longer crouching.
+                    if (m_PreviouslyCrouched)
+                    {
+#if NET_4_6
+                        OnEndCrouch?.Invoke();
+#else
+                        if (OnEndCrouch != null)
+                            OnEndCrouch.Invoke();
+#endif
+                    }
+
                     // Set 'isCrouching' to false.
                     m_IsCrouching = false;
                     // Set the character controller height to the original height we got at the start.
@@ -426,11 +515,25 @@ namespace Hertzole.GoldPlayer.Core
 
                     // Set the move speed to the walking speed.
                     m_MoveSpeed = m_WalkingSpeeds;
+
+                    // The player was not previously crouched.
+                    m_PreviouslyCrouched = false;
                 }
 
-                // Only run if we're crouching.
+                // Only do the code if the player is crouching.
                 if (m_IsCrouching)
                 {
+                    // If the player wasn't previously crouched, fire the OnBeginCrouch event, as the player is now crouching.
+                    if (!m_PreviouslyCrouched)
+                    {
+#if NET_4_6
+                        OnBeginCrouch?.Invoke();
+#else
+                        if (OnBeginCrouch != null)
+                            OnBeginCrouch.Invoke();
+#endif
+                    }
+
                     // Check if we can stand up and update the 'canStandUp' value.
                     m_CanStandUp = CheckCanStandUp();
                     // Set the character controller height to the crouch height.
@@ -440,6 +543,9 @@ namespace Hertzole.GoldPlayer.Core
 
                     // Set the move speed to the crouch speed.
                     m_MoveSpeed = m_CrouchSpeeds;
+
+                    // The player was previously crouched.
+                    m_PreviouslyCrouched = true;
                 }
 
                 // Lerp the current crouch camera position to either the crouch camera position or the original camera position.
