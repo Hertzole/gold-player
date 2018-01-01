@@ -74,6 +74,9 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("Sets how much the player will stick to the ground.")]
         private float m_GroundStick = 10;
+        [SerializeField]
+        [Tooltip("The type of ground check method.")]
+        private GroundCheckType m_GroundCheckType = GroundCheckType.Sphere;
 
         // The real calculated jump height.
         protected float m_RealJumpHeight = 0;
@@ -163,6 +166,8 @@ namespace Hertzole.GoldPlayer.Core
         public bool EnableGroundStick { get { return m_EnableGroundStick; } set { m_EnableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
         public float GroundStick { get { return m_GroundStick; } set { float v = value; if (v < 0) v = -v; m_GroundStick = v; } }
+        /// <summary> The type of ground check method. </summary>
+        public GroundCheckType GroundCheckType { get { return m_GroundCheckType; } set { m_GroundCheckType = value; } }
 
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return m_IsGrounded; } }
@@ -238,8 +243,22 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns>Is the player grounded?</returns>
         public bool CheckGrounded()
         {
-            // Check using a sphere at the player's feet.
-            m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
+            if (m_GroundCheckType == GroundCheckType.Sphere)
+            {
+                // Check using a sphere at the player's feet.
+                m_IsGrounded = Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
+            }
+            else if (m_GroundCheckType == GroundCheckType.Box)
+            {
+                // Check using a box at the player's feet.
+                m_IsGrounded = Physics.CheckBox(PlayerTransform.position, new Vector3(CharacterController.radius, 0.1f, CharacterController.radius), Quaternion.identity, m_GroundLayer, QueryTriggerInteraction.Ignore);
+            }
+            else
+            {
+                // Something has gone wrong with the ground check type variable.
+                Debug.LogError("Unknown ground check type! How did this happen?");
+            }
+
             return m_IsGrounded;
         }
 

@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
-    //TODO: Move bob code into own class and call that using PlayerBob module.
     [System.Serializable]
     public class PlayerBob : PlayerModule
     {

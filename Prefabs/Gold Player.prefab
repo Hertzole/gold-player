@@ -691,6 +691,7 @@ MonoBehaviour:
     m_Gravity: 20
     m_EnableGroundStick: 1
     m_GroundStick: 10
+    m_GroundCheckType: 0
   m_HeadBob:
     m_BobClass:
       m_EnableBob: 1
