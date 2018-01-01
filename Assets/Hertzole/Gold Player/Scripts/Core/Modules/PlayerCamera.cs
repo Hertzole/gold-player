@@ -52,6 +52,8 @@ namespace Hertzole.GoldPlayer.Core
 
         // Determines if a camera shake should be preformed.
         private bool m_DoShake = false;
+        // Was the camera previously shaking?
+        private bool m_PreviouslyShaking = false;
 
         // Sets how strong the camera shake is.
         private float m_ShakeFrequency = 0;
@@ -117,6 +119,11 @@ namespace Hertzole.GoldPlayer.Core
 
         /// <summary> Is the camera currently shaking from a camera shake? </summary>
         public bool IsCameraShaking { get { return m_DoShake; } }
+
+        /// <summary> Fires when the camera shake begins. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnBeginCameraShake;
+        /// <summary> Fires when the camera shake ends. </summary>
+        public event GoldPlayerDelegates.PlayerEvent OnEndCameraShake;
 
         protected override void OnInit()
         {
@@ -219,6 +226,25 @@ namespace Hertzole.GoldPlayer.Core
                 float shakePercentage = m_ShakeTimer / m_ShakeDuration;
                 // Decrease the magnitude over time.
                 m_ShakeMagnitude = Mathf.Lerp(m_ShakeMagnitudeFull, 0f, shakePercentage);
+
+                // The camera was previously shaking.
+                m_PreviouslyShaking = true;
+            }
+            else
+            {
+                // If the camera is no longer shaking, but it just were, fire the OnEndCameraShake event.
+                if (m_PreviouslyShaking)
+                {
+#if NET_4_6
+                    OnEndCameraShake?.Invoke();
+#else
+                    if (OnEndCameraShake != null)
+                        OnEndCameraShake.Invoke();
+#endif
+                }
+
+                // The player was previously not shaking.
+                m_PreviouslyShaking = false;
             }
         }
 
@@ -236,6 +262,14 @@ namespace Hertzole.GoldPlayer.Core
             m_ShakeMagnitudeFull = magnitude;
             m_ShakeDuration = duration;
             m_ShakeTimer = 0;
+
+            // Fire the OnBeginCameraShake event.
+#if NET_4_6
+            OnBeginCameraShake?.Invoke();
+#else
+            if (OnBeginCameraShake != null)
+                OnBeginCameraShake.Invoke();
+#endif
         }
 
         /// <summary>
