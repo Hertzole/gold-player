@@ -86,7 +86,10 @@ namespace Hertzole.GoldPlayer.Editor
             SerializedProperty it = m_HeadBob.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_HeadBob.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(m_HeadBob.name) && !it.propertyPath.StartsWith(m_HeadBob.name + ".m_BobClass") && it.depth < 2)
+                    EditorGUILayout.PropertyField(it, true);
+
+                if (it.propertyPath.StartsWith(m_HeadBob.name + ".m_BobClass") && it.depth >= 2)
                     EditorGUILayout.PropertyField(it, true);
             }
         }

@@ -692,17 +692,18 @@ MonoBehaviour:
     m_EnableGroundStick: 1
     m_GroundStick: 10
   m_HeadBob:
-    m_EnableBob: 1
-    m_BobFrequency: 1.5
-    m_BobHeight: 0.3
-    m_SwayAngle: 0.5
-    m_SideMovement: 0.05
-    m_HeightMultiplier: 0.3
-    m_StrideMultiplier: 0.3
-    m_LandMove: 0.4
-    m_LandTilt: 20
-    m_StrafeTilt: 3
-    m_BobTarget: {fileID: 4125606828655648}
+    m_BobClass:
+      m_EnableBob: 1
+      m_BobFrequency: 1.5
+      m_BobHeight: 0.3
+      m_SwayAngle: 0.5
+      m_SideMovement: 0.05
+      m_HeightMultiplier: 0.3
+      m_StrideMultiplier: 0.3
+      m_LandMove: 0.4
+      m_LandTilt: 20
+      m_StrafeTilt: 3
+      m_BobTarget: {fileID: 4125606828655648}
   m_Audio:
     m_EnableAudio: 1
     m_BasedOnHeadBob: 1
