@@ -676,6 +676,8 @@ MonoBehaviour:
       m_RegenWait: 1
     m_CanJump: 1
     m_JumpHeight: 2
+    m_AirJump: 1
+    m_AirJumpTime: 0.1
     m_CanCrouch: 1
     m_CrouchSpeeds:
       m_ForwardSpeed: 2
