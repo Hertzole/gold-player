@@ -117,6 +117,7 @@ namespace Hertzole.GoldPlayer
             Movement.OnValidate();
             Camera.OnValidate();
             HeadBob.OnValidate();
+            Audio.OnValidate();
         }
 #endif
     }

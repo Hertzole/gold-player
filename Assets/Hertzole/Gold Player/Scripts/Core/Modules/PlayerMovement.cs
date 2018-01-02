@@ -38,6 +38,12 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("The height the player can jump in Unity units.")]
         private float m_JumpHeight = 2f;
+        [SerializeField]
+        [Tooltip("Determines if the player can jump for some time when falling.")]
+        private bool m_AirJump = true;
+        [SerializeField]
+        [Tooltip("How long the player can be in the air and still jump.")]
+        private float m_AirJumpTime = 0.1f;
 
         //////// CROUCHING
         [Header("Crouching")]
@@ -94,6 +100,8 @@ namespace Hertzole.GoldPlayer.Core
         protected float m_ForwardSpeedVelocity = 0;
         // Just used in Input smoothing.
         protected float m_SidewaysSpeedVelocity = 0;
+        // The current air time of the player.
+        protected float m_CurrentAirTime = 0;
 
         // Is the player grounded?
         protected bool m_IsGrounded = false;
@@ -115,6 +123,8 @@ namespace Hertzole.GoldPlayer.Core
         protected bool m_PreviouslyCrouched = false;
         // Was the player previously running?
         protected bool m_PreviouslyRunning = false;
+        // Determines if the player should jump.
+        protected bool m_ShouldJump = false;
 
         // Input values for movement on the X and Z axis.
         protected Vector2 m_MovementInput = Vector2.zero;
@@ -144,6 +154,10 @@ namespace Hertzole.GoldPlayer.Core
         public bool CanJump { get { return m_CanJump; } set { m_CanJump = value; } }
         /// <summary> The height the player can jump in Unity units. </summary>
         public float JumpHeight { get { return m_JumpHeight; } set { m_JumpHeight = value; m_RealJumpHeight = CalculateJumpHeight(value); } }
+        /// <summary> Determines if the player can jump for some time when falling. </summary>
+        public bool AirJump { get { return m_AirJump; } set { m_AirJump = value; } }
+        /// <summary> How long the player can be in the air and still jump. </summary>
+        public float AirJumpTime { get { return m_AirJumpTime; } set { m_AirJumpTime = value; } }
 
         /// <summary> Determines if the player can crouch. </summary>
         public bool CanCrouch { get { return m_CanCrouch; } set { m_CanCrouch = value; } }
@@ -310,6 +324,18 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void BasicMovement()
         {
+            // Only run if air jump is enabled.
+            if (m_AirJump)
+            {
+                // If the current air time is above 0, decrease it.
+                if (m_CurrentAirTime > 0)
+                    m_CurrentAirTime -= Time.deltaTime;
+
+                // If current air time is less than or equal to 0, the player should no longer jump.
+                if (m_CurrentAirTime <= 0)
+                    m_ShouldJump = false;
+            }
+
             // If the player isn't grounded, handle gravity.
             // Else apply the ground stick so the player sticks to the ground.
             if (!m_IsGrounded)
@@ -330,6 +356,7 @@ namespace Hertzole.GoldPlayer.Core
                 // So set falling to true and reset the Y move direction.
                 if (!m_IsFalling && !m_IsJumping)
                 {
+                    m_CurrentAirTime = m_AirJumpTime;
                     m_IsFalling = true;
                     m_MoveDirection.y = 0;
                 }
@@ -366,9 +393,24 @@ namespace Hertzole.GoldPlayer.Core
 
             // Make sure the player is moving in the right direction.
             HandleMovementDirection();
+            // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
+            if (GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY) && m_CanJump && m_CanMoveAround)
+            {
+                // If air jump is enabled, set should jump to true and set the current air time to the max air time.
+                // Else only set 'shouldJump' to true if the player is grounded.
+                if (m_AirJump)
+                {
+                    m_ShouldJump = true;
+                    m_CurrentAirTime = m_AirJumpTime;
+                }
+                else if (m_IsGrounded)
+                {
+                    m_ShouldJump = true;
+                }
+            }
 
-            // Jump if the jump button is pressed, the player can jump, the player grounded, and if the player can move around.
-            if (GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY) && m_CanJump && m_IsGrounded && m_CanMoveAround)
+            // If the player is either grounded or falling, should jump, and isn't already jumping, jump.
+            if ((m_IsGrounded || m_IsFalling) && m_ShouldJump && !m_IsJumping)
             {
                 Jump();
             }
@@ -400,7 +442,7 @@ namespace Hertzole.GoldPlayer.Core
             else
             {
                 // If we can't move around, just return zero.
-                m_MoveDirection = Vector3.zero;
+                m_MoveDirection = new Vector3(0, m_MoveDirection.y, 0);
             }
         }
 
@@ -411,6 +453,10 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Set 'isJumping' to true so the player tells everything we're jumping.
             m_IsJumping = true;
+            // The player should no longer jump.
+            m_ShouldJump = false;
+            // Reset the current air time.
+            m_CurrentAirTime = 0;
 
             // If the player is crouching when trying to jump, check if the player can jump while crouched.
             // If the player isn't crouching, just jump.
@@ -592,13 +638,21 @@ namespace Hertzole.GoldPlayer.Core
 #if UNITY_EDITOR
         public override void OnValidate()
         {
-            if (!Application.isPlaying)
-                return;
+            // Update the values if they have been changed during playmode.
+            if (Application.isPlaying)
+            {
+                WalkingSpeeds = m_WalkingSpeeds;
+                RunSpeeds = m_RunSpeeds;
+                CrouchSpeeds = m_CrouchSpeeds;
+                JumpHeight = m_JumpHeight;
+            }
 
-            WalkingSpeeds = m_WalkingSpeeds;
-            RunSpeeds = m_RunSpeeds;
-            CrouchSpeeds = m_CrouchSpeeds;
-            JumpHeight = m_JumpHeight;
+            // Make sure gravity is always positive.
+            if (m_Gravity < 0)
+                m_Gravity = -m_Gravity;
+            // Make sure ground stick is always positive.
+            if (m_GroundStick < 0)
+                m_GroundStick = -m_GroundStick;
         }
 #endif
     }
