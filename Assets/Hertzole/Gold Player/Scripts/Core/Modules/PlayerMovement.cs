@@ -75,6 +75,10 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("Sets the gravity of the player.")]
         private float m_Gravity = 20;
         [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("How much control the player will have in the air.")]
+        private float m_AirControl = 0.5f;
+        [SerializeField]
         [Tooltip("Determines if groundstick should be enabled. This would stop the player for bouncing down slopes.")]
         private bool m_EnableGroundStick = true;
         [SerializeField]
@@ -133,6 +137,10 @@ namespace Hertzole.GoldPlayer.Core
         protected Vector3 m_OriginalControllerCenter = Vector3.zero;
         // The direction the player is moving in.
         protected Vector3 m_MoveDirection = Vector3.zero;
+        // The current ground velocity.
+        protected Vector3 m_GroundVelocity = Vector3.zero;
+        // The velocity while the player is in the air.
+        protected Vector3 m_AirVelocity = Vector3.zero;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         protected MovementSpeeds m_MoveSpeed = new MovementSpeeds();
@@ -176,6 +184,8 @@ namespace Hertzole.GoldPlayer.Core
         public float Acceleration { get { return m_Acceleration; } set { m_Acceleration = value; } }
         /// <summary> Sets the gravity of the player. </summary>
         public float Gravity { get { return m_Gravity; } set { float v = value; if (v < 0) v = -v; m_Gravity = v; } }
+        /// <summary> How much control the player will have in the air. </summary>
+        public float AirControl { get { return m_AirControl; } set { if (value > 1) m_AirControl = 1; else if (value < 0) m_AirControl = 0; else m_AirControl = value; } }
         /// <summary> Determines if groundstick should be enabled. This would stop the player for bouncing down slopes. </summary>
         public bool EnableGroundStick { get { return m_EnableGroundStick; } set { m_EnableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
@@ -425,17 +435,41 @@ namespace Hertzole.GoldPlayer.Core
             // Only run if we can move around.
             if (m_CanMoveAround)
             {
-                // Get the move direction from the movement input X and Y (on the Z axis).
-                m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);
-                // If movement input Y is above 0, we're moving forward, so apply forward move speed.
-                // Else if below 0, we're moving backwards, so apply backwards move speed.
-                if (m_MovementInput.y > 0)
-                    m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
-                else
-                    m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
+                if (m_IsGrounded)
+                {
+                    // Get the move direction from the movement input X and Y (on the Z axis).
+                    m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);
+                    // If movement input Y is above 0, we're moving forward, so apply forward move speed.
+                    // Else if below 0, we're moving backwards, so apply backwards move speed.
+                    if (m_MovementInput.y > 0)
+                        m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
+                    else
+                        m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
 
-                // Apply the sideways movement speed to the X movement.
-                m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
+                    // Apply the sideways movement speed to the X movement.
+                    m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
+
+                    // Update the grounded velocity to the current move direction.
+                    m_GroundVelocity = m_MoveDirection;
+                }
+                else
+                {
+                    // Get the "inverted air control". (Inspector value being 1, this is 0. Value is 0.2, this is 0.8)
+                    float airControl = 1 - m_AirControl;
+                    // Set the air velocity based on the ground velocity multiplied with the air control.
+                    m_AirVelocity = new Vector3(m_GroundVelocity.x * airControl, m_MoveDirection.y, m_GroundVelocity.z * airControl);
+                    // Apply the same movement speeds as when grounded.
+                    if (m_MovementInput.y > 0)
+                        m_AirVelocity.z += (m_MoveSpeed.ForwardSpeed * m_AirControl) * m_MovementInput.y;
+                    else
+                        m_AirVelocity.z += (m_MoveSpeed.BackwardsSpeed * m_AirControl) * m_MovementInput.y;
+
+                    // Sideways movement speed.
+                    m_AirVelocity.x += (m_MoveSpeed.SidewaysSpeed * m_AirControl) * m_MovementInput.x;
+
+                    // Set the move direction to the air velocity.
+                    m_MoveDirection = m_AirVelocity;
+                }
 
                 // Make sure we're moving in the direction the transform is facing.
                 m_MoveDirection = PlayerTransform.TransformDirection(m_MoveDirection);
