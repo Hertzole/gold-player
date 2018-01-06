@@ -180,7 +180,7 @@ namespace Hertzole.GoldPlayer.Core
 
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.
             if (Input.GetMouseButtonDown(0) && m_ShouldLockCursor)
-                LockCursor(m_ShouldLockCursor);
+                LockCursor(true);
 
             // Set the input.
             m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), m_InvertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * m_MouseSensitivity;
