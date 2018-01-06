@@ -398,10 +398,11 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // If air jump is enabled, set should jump to true and set the current air time to the max air time.
                 // Else only set 'shouldJump' to true if the player is grounded.
-                if (m_AirJump)
+                if (m_AirJump && (m_IsFalling && m_CurrentAirTime > 0) || m_IsJumping)
                 {
                     m_ShouldJump = true;
-                    m_CurrentAirTime = m_AirJumpTime;
+                    if (!m_IsFalling)
+                        m_CurrentAirTime = m_AirJumpTime;
                 }
                 else if (m_IsGrounded)
                 {
@@ -441,8 +442,11 @@ namespace Hertzole.GoldPlayer.Core
             }
             else
             {
-                // If we can't move around, just return zero.
-                m_MoveDirection = new Vector3(0, m_MoveDirection.y, 0);
+                if (m_IsGrounded)
+                {
+                    // If we can't move around, just return zero.
+                    m_MoveDirection = new Vector3(0, m_MoveDirection.y, 0);
+                }
             }
         }
 
