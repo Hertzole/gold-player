@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Core
 {
@@ -36,7 +37,8 @@ namespace Hertzole.GoldPlayer.Core
         private float m_MinimumX = -90f;
         [SerializeField]
         [Tooltip("Sets how far up the player can look.")]
-        private float m_MaxiumumX = 90f;
+        [FormerlySerializedAs("m_MaxiumumX")]
+        private float m_MaximumX = 90f;
 
         [Space]
 
@@ -102,7 +104,9 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Sets how far down the player can look. </summary>
         public float MinimumX { get { return m_MinimumX; } set { m_MinimumX = value; } }
         /// <summary> Sets how far up the player can look. </summary>
-        public float MaxiumumX { get { return m_MaxiumumX; } set { m_MaxiumumX = value; } }
+        public float MaximumX { get { return m_MaximumX; } set { m_MaximumX = value; } }
+        [System.Obsolete("Typo property. Use 'MaximumX' instead.")]
+        public float MaxiumumX { get { return m_MaximumX; } set { m_MaximumX = value; } }
         /// <summary> Settings related to field of view kick. </summary>
         public FOVKickClass FOVKick { get { return m_FOVKick; } set { m_FOVKick = value; } }
         /// <summary> The camera head that should be moved around. </summary>
@@ -190,7 +194,7 @@ namespace Hertzole.GoldPlayer.Core
             m_TargetBodyAngles.y += m_MouseInput.x * m_MouseSensitivity * Time.deltaTime;
 
             // Clamp the head angle.
-            m_TargetHeadAngles.x = Mathf.Clamp(m_TargetHeadAngles.x, m_MinimumX, m_MaxiumumX);
+            m_TargetHeadAngles.x = Mathf.Clamp(m_TargetHeadAngles.x, m_MinimumX, m_MaximumX);
 
             // Smooth the movement.
             m_FollowHeadAngles = Vector3.SmoothDamp(m_FollowHeadAngles, m_TargetHeadAngles, ref m_FollowHeadVelocity, m_MouseDamping);
