@@ -16,6 +16,9 @@ namespace Hertzole.GoldPlayer.Example
         private GameObject m_Panel;
         public GameObject Panel { get { return m_Panel; } set { m_Panel = value; } }
         [SerializeField]
+        private RectTransform m_Viewport;
+        public RectTransform Viewport { get { return m_Viewport; } set { m_Viewport = value; } }
+        [SerializeField]
         private Text m_HeaderLabel;
         public Text HeaderLabel { get { return m_HeaderLabel; } set { m_HeaderLabel = value; } }
         [SerializeField]
@@ -44,6 +47,9 @@ namespace Hertzole.GoldPlayer.Example
                 m_PreviousCanMove = TargetPlayer.Movement.CanMoveAround;
                 m_PreviousLockCursor = TargetPlayer.Camera.ShouldLockCursor;
                 m_TweakText.text = "Press " + ToggleKey + " to tweak settings";
+                m_Viewport.anchorMin = new Vector2(0, 0);
+                m_Viewport.anchorMax = new Vector2(1, 1);
+                m_Viewport.sizeDelta = new Vector2(0, 0);
 
                 SetupUI();
             }
