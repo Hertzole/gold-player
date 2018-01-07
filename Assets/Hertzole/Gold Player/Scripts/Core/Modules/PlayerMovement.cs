@@ -141,6 +141,8 @@ namespace Hertzole.GoldPlayer.Core
         protected Vector3 m_GroundVelocity = Vector3.zero;
         // The velocity while the player is in the air.
         protected Vector3 m_AirVelocity = Vector3.zero;
+        // The position the player was at when jumping.
+        protected Vector3 m_JumpPosition = Vector3.zero;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         protected MovementSpeeds m_MoveSpeed = new MovementSpeeds();
@@ -211,7 +213,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Fires when the player jumps. </summary>
         public event GoldPlayerDelegates.JumpEvent OnJump;
         /// <summary> Fires when the player lands. </summary>
-        public event GoldPlayerDelegates.PlayerEvent OnLand;
+        public event GoldPlayerDelegates.LandEvent OnLand;
         /// <summary> Fires when the player begins crouching. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnBeginCrouch;
         /// <summary> Fires when the player stops crouching. </summary>
@@ -350,6 +352,14 @@ namespace Hertzole.GoldPlayer.Core
             // Else apply the ground stick so the player sticks to the ground.
             if (!m_IsGrounded)
             {
+                // If the player was just grounded, set the jump position.
+                // The player probably just jumped or started falling.
+                if (m_PreviouslyGrounded)
+                {
+                    // Set the jump position to the current player transform.
+                    m_JumpPosition = PlayerTransform.position;
+                }
+
                 // If the player's head is touching the ceiling, move the player down so they don't
                 // get stuck on the ceiling.
                 if ((CharacterController.collisionFlags & CollisionFlags.Above) != 0)
@@ -379,12 +389,15 @@ namespace Hertzole.GoldPlayer.Core
                 // If the player is grounded now and wasn't previously, the player just landed.
                 if (!m_PreviouslyGrounded)
                 {
+                    // Calculate the fall height.
+                    float fallHeight = m_JumpPosition.y - PlayerTransform.position.y;
+
                     // Invoke the OnPlayerLand event.
 #if NET_4_6
-                    OnLand?.Invoke();
+                    OnLand?.Invoke(fallHeight);
 #else
                     if (OnLand != null)
-                        OnLand.Invoke();
+                        OnLand.Invoke(fallHeight);
 #endif
                 }
 
