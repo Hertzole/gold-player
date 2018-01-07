@@ -13,7 +13,7 @@ Prefab:
   m_IsPrefabParent: 1
 --- !u!1 &1055733673661600
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -61,7 +61,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1195861138661340
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
@@ -147,12 +147,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1195861138661340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4497441301862272}
-  m_Father: {fileID: 4901321065046222}
-  m_RootOrder: 0
+  - {fileID: 4901321065046222}
+  m_Father: {fileID: 4745972171593554}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4161223128924368
 Transform:
@@ -174,10 +174,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1845761137599094}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4125606828655648}
+  m_Father: {fileID: 4901321065046222}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4645849210123534
@@ -205,7 +205,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4645849210123534}
-  - {fileID: 4901321065046222}
+  - {fileID: 4125606828655648}
   - {fileID: 4161223128924368}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -216,13 +216,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1055733673661600}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4125606828655648}
-  m_Father: {fileID: 4745972171593554}
-  m_RootOrder: 1
+  - {fileID: 4497441301862272}
+  m_Father: {fileID: 4125606828655648}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20774848469115984
 Camera:
@@ -647,7 +647,7 @@ MonoBehaviour:
     m_MouseSensitivity: 10
     m_MouseDamping: 0.05
     m_MinimumX: -90
-    m_MaxiumumX: 90
+    m_MaximumX: 90
     m_FOVKick:
       m_EnableFOVKick: 1
       m_KickWhen: 0
@@ -691,6 +691,7 @@ MonoBehaviour:
       m_Bits: 4294967293
     m_Acceleration: 0.1
     m_Gravity: 20
+    m_AirControl: 0.5
     m_EnableGroundStick: 1
     m_GroundStick: 10
     m_GroundCheckType: 0
