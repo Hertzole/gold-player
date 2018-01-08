@@ -4,6 +4,8 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer
 {
     [RequireComponent(typeof(CharacterController))]
+    [DisallowMultipleComponent]
+    [AddComponentMenu("Gold Player/Gold Player Controller", 01)]
     public class GoldPlayerController : MonoBehaviour
     {
         [SerializeField]
