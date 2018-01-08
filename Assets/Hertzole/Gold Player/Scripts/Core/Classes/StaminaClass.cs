@@ -13,7 +13,7 @@ namespace Hertzole.GoldPlayer.Core
         private bool m_EnableStamina = false;
         [SerializeField]
         [Tooltip("Sets when the stamina should be drained.")]
-        private RunAction m_DrainStaminaWhen = RunAction.MoveSpeedAboveRunSpeedAndRunning;
+        private RunAction m_DrainStaminaWhen = RunAction.FasterThanRunSpeedAndPressingRun;
         [SerializeField]
         [Tooltip("The maximum amount of stamina.")]
         private float m_MaxStamina = 10f;
@@ -79,7 +79,7 @@ namespace Hertzole.GoldPlayer.Core
 
             // If we should drain stamina when move speed is above walk speed, drain stamina when 'isRunning' is true.
             // Else drain it when 'isRunning' is true and the run button is being held down.
-            if (m_DrainStaminaWhen == RunAction.MoveSpeedAboveRunSpeed)
+            if (m_DrainStaminaWhen == RunAction.FasterThanRunSpeed)
             {
                 // If 'isRunning' is true, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
@@ -88,7 +88,7 @@ namespace Hertzole.GoldPlayer.Core
                 else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
                     RegenStamina();
             }
-            else if (m_DrainStaminaWhen == RunAction.MoveSpeedAboveRunSpeedAndRunning)
+            else if (m_DrainStaminaWhen == RunAction.FasterThanRunSpeedAndPressingRun)
             {
                 // If 'isRunning' is true and the run button is being held down, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.

@@ -1,7 +1,10 @@
+using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
+    [AddComponentMenu("Gold Player/Gold Player Input", 02)]
+    [DisallowMultipleComponent]
     public class GoldPlayerInput : GoldInput
     {
         [SerializeField]

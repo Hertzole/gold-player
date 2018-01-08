@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer.Example
 {
+    [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker", 21)]
     public class GoldPlayerTweaker : MonoBehaviour
     {
         [SerializeField]
