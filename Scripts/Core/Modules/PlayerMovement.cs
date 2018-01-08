@@ -87,6 +87,9 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("The type of ground check method.")]
         private GroundCheckType m_GroundCheckType = GroundCheckType.Sphere;
+        [SerializeField]
+        [Tooltip("Everything related to moving platforms.")]
+        private MovingPlatformsClass m_MovingPlatforms = new MovingPlatformsClass();
 
         // The real calculated jump height.
         protected float m_RealJumpHeight = 0;
@@ -194,6 +197,8 @@ namespace Hertzole.GoldPlayer.Core
         public float GroundStick { get { return m_GroundStick; } set { float v = value; if (v < 0) v = -v; m_GroundStick = v; } }
         /// <summary> The type of ground check method. </summary>
         public GroundCheckType GroundCheckType { get { return m_GroundCheckType; } set { m_GroundCheckType = value; } }
+        /// <summary> Everything related to moving platforms. </summary>
+        public MovingPlatformsClass MovingPlatforms { get { return m_MovingPlatforms; } set { m_MovingPlatforms = value; } }
 
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return m_IsGrounded; } }
@@ -227,6 +232,8 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Initialize the stamina module.
             m_Stamina.Init(PlayerController, PlayerInput);
+            // Initialize the moving platforms module.
+            m_MovingPlatforms.Init(PlayerController, PlayerInput);
 
             // Make the gravity + if needed.
             if (m_Gravity < 0)
@@ -314,6 +321,8 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Call update on the stamina module.
             m_Stamina.OnUpdate();
+            // Call update on the moving platforms module.
+            m_MovingPlatforms.OnUpdate();
 
             // Check the grounded state.
             CheckGrounded();
