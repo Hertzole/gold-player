@@ -17,21 +17,23 @@ Fork the project and start making your changes. Commit them in your own reposito
 ## What do I get?
 When you use this player controller you will get the following:
 - A solid player controller
-- Head bob, running, crouching, step & landing & jumping sounds. All customizable!
+- Running and crouching
+- Head bob
+- Audio for footsteps, jumping, and landing
+- Moving platforms support
 - Easy to use functions
 - Extendable classes
 - Documented code
 
-## What can I expect?
-I have several things I want to do with this player controller. Right now I just need to get it moving, but here are some things I will add in the not so distant future!
+## What can I expect later?
+I have several things I want to do with this player controller. Here are some thing I would like to do.
 - Extra components (stuff that could help you make your game and hooks into the player)
-- Built-in camera shake
 - Intergrate the [new Unity Input System](https://github.com/Unity-Technologies/InputSystem) (when it becomes more stable).
 - More easy to use API
 
 Those are just some things I can think of right now. I will, of course, add more stuff as time goes on!
 
-### Q&A
+## Q&A
 Q: Why the name 'Gold Player'?  
 A: I'm a big fan of the player controller is [GoldSrc](https://en.wikipedia.org/wiki/GoldSrc) engine and I want to make a player controller that feels just as good, so I went with "Gold Player".
 
@@ -43,3 +45,8 @@ A: Nope. Probably never will. I'm too much of a Unity fanboy.
 
 Q: Can I use this for my project?  
 A: Yes! No restrictions! You can do whatever you want with it. The only thing you can't do is directly reselling my player controller. 
+
+## Screenshots and testing
+The available editors.
+![Editor](https://raw.githubusercontent.com/Hertzole/gold-player/gh-pages/docs/screenshots/editor.png)
+You can also try out a web version of the player controller [here](http://hertzole.github.io/gold-player/docs/play). You can tweak almost all the settings at runtime.
