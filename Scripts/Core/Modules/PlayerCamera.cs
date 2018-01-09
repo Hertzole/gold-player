@@ -178,16 +178,22 @@ namespace Hertzole.GoldPlayer.Core
             if (m_CameraHead == null)
                 return;
 
-            // If we can't look around, stop here.
-            if (!m_CanLookAround)
-                return;
-
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.
             if (Input.GetMouseButtonDown(0) && m_ShouldLockCursor)
                 LockCursor(true);
 
-            // Set the input.
-            m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), m_InvertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * m_MouseSensitivity;
+            // If the player can look around, get the input. 
+            // Else just set the input to zero.
+            if (m_CanLookAround)
+            {
+                // Set the input.
+                m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), m_InvertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * m_MouseSensitivity;
+            }
+            else
+            {
+                // Can't look around, just set input to zero.
+                m_MouseInput = Vector2.zero;
+            }
 
             // Apply the input and mouse sensitivity.
             m_TargetHeadAngles.x += m_MouseInput.y * m_MouseSensitivity * Time.deltaTime;
