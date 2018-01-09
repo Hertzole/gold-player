@@ -1,5 +1,6 @@
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer.Example
@@ -25,9 +26,13 @@ namespace Hertzole.GoldPlayer.Example
         [SerializeField]
         private GoldPlayerTweakField m_TweakField;
         public GoldPlayerTweakField TweakField { get { return m_TweakField; } set { m_TweakField = value; } }
+        [Space]
         [SerializeField]
         private KeyCode m_ToggleKey = KeyCode.F1;
         public KeyCode ToggleKey { get { return m_ToggleKey; } set { m_ToggleKey = value; } }
+        [SerializeField]
+        private KeyCode m_ResetSceneKey = KeyCode.F2;
+        public KeyCode ResetSceneKey { get { return m_ResetSceneKey; } set { m_ResetSceneKey = value; } }
 
         private bool m_Showing = false;
         private bool m_PreviousCanLook = false;
@@ -137,9 +142,14 @@ namespace Hertzole.GoldPlayer.Example
             if (!m_TargetPlayer)
                 return;
 
-            if (Input.GetKeyDown(ToggleKey))
+            if (Input.GetKeyDown(m_ToggleKey))
             {
                 SetShowing(!m_Showing);
+            }
+
+            if (Input.GetKeyDown(m_ResetSceneKey))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
 
