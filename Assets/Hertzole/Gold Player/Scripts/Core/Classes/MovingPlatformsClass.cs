@@ -18,12 +18,12 @@ namespace Hertzole.GoldPlayer.Core
         public string[] PlatformTags { get { return m_PlatformTags; } set { m_PlatformTags = value; } }
 
         // The parent the player was using from the start.
-        private Transform m_OriginalParent;
+        private Transform m_OriginalParent = null;
         // The current platform the player should be moving with.
-        private Transform m_CurrentPlatform;
+        private Transform m_CurrentPlatform = null;
 
         // All the colliders currently under the player.
-        private Collider[] m_GroundColliders;
+        private Collider[] m_GroundColliders = new Collider[0];
 
         // The current hit directly underneat the player.
         private RaycastHit m_GroundHit;

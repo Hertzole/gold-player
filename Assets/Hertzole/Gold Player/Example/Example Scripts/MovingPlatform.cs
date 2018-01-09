@@ -33,7 +33,7 @@ namespace Hertzole.GoldPlayer.Example
         private Color m_GizmosColor = Color.red;
 #endif
         private int m_CurrentWaypoint = 0;
-        private float m_NextMoveTime;
+        private float m_NextMoveTime = 0;
 
         // Use this for initialization
         void Start()
