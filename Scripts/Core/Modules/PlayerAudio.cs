@@ -158,16 +158,12 @@ namespace Hertzole.GoldPlayer.Core
                     {
                         // Play the land sound.
                         PlayLandSound();
-                        // Add some time to the next step time.
-                        m_NextStepTime = m_StepCycle + 0.5f;
                     }
                     else
                     {
                         // If the step cycle is above the next step time, play a footstep sound.
                         if (m_StepCycle > m_NextStepTime)
                         {
-                            // Add some time to the next step time.
-                            m_NextStepTime = m_StepCycle + 0.5f;
                             // Play a footstep sound.
                             PlayFootstepSound();
                         }
@@ -206,6 +202,9 @@ namespace Hertzole.GoldPlayer.Core
                     m_CrouchFootsteps.Play(m_FootstepsSource);
                 else
                     m_WalkFootsteps.Play(m_FootstepsSource);
+
+                // Add some time to the next step time.
+                m_NextStepTime = m_StepCycle + 0.5f;
             }
         }
 
@@ -214,9 +213,11 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public virtual void PlayJumpSound()
         {
-            // Only play if the audio feature is enabled.
-            if (m_EnableAudio)
+            // Only play if the audio feature is enabled and the jump sound is enabled.
+            if (m_EnableAudio && m_Jumping.Enabled)
+            {
                 m_Jumping.Play(m_JumpSource);
+            }
         }
 
         /// <summary>
@@ -224,9 +225,13 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public virtual void PlayLandSound()
         {
-            // Only play if the audio feature is enabled.
-            if (m_EnableAudio)
+            // Only play if the audio feature is enabled and the landing sound is enabled.
+            if (m_EnableAudio && m_Landing.Enabled)
+            {
                 m_Landing.Play(m_LandSource);
+                // Add some time to the next step time.
+                m_NextStepTime = m_StepCycle + 0.5f;
+            }
         }
 
         /// <summary>
