@@ -153,9 +153,9 @@ namespace Hertzole.GoldPlayer.Core
         /// <param name="lockCursor">Should the cursor be locked?</param>
         public void LockCursor(bool lockCursor)
         {
-            // Set the cursor lock state to either locked or none, depennding on the lock cursor paramater.
+            // Set the cursor lock state to either locked or none, depending on the lock cursor parameter.
             Cursor.lockState = lockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-            // Hide/Show the cursor based on the lock cursor paramater.
+            // Hide/Show the cursor based on the lock cursor parameter.
             Cursor.visible = !lockCursor;
         }
 

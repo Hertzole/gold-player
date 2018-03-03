@@ -79,7 +79,7 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("How much control the player will have in the air.")]
         private float m_AirControl = 0.5f;
         [SerializeField]
-        [Tooltip("Determines if groundstick should be enabled. This would stop the player for bouncing down slopes.")]
+        [Tooltip("Determines if ground stick should be enabled. This would stop the player for bouncing down slopes.")]
         private bool m_EnableGroundStick = true;
         [SerializeField]
         [Tooltip("Sets how much the player will stick to the ground.")]
@@ -191,7 +191,7 @@ namespace Hertzole.GoldPlayer.Core
         public float Gravity { get { return m_Gravity; } set { float v = value; if (v < 0) v = -v; m_Gravity = v; } }
         /// <summary> How much control the player will have in the air. </summary>
         public float AirControl { get { return m_AirControl; } set { if (value > 1) m_AirControl = 1; else if (value < 0) m_AirControl = 0; else m_AirControl = value; } }
-        /// <summary> Determines if groundstick should be enabled. This would stop the player for bouncing down slopes. </summary>
+        /// <summary> Determines if ground stick should be enabled. This would stop the player for bouncing down slopes. </summary>
         public bool EnableGroundStick { get { return m_EnableGroundStick; } set { m_EnableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
         public float GroundStick { get { return m_GroundStick; } set { float v = value; if (v < 0) v = -v; m_GroundStick = v; } }
@@ -283,6 +283,7 @@ namespace Hertzole.GoldPlayer.Core
             }
             else if (m_GroundCheckType == GroundCheckType.Box)
             {
+                Debug.LogWarning("Box is currently marked as broken and will be replaced at a later date. Please use 'Sphere' as your ground check for now!");
                 // Check using a box at the player's feet.
                 m_IsGrounded = Physics.CheckBox(PlayerTransform.position, new Vector3(CharacterController.radius, 0.1f, CharacterController.radius), Quaternion.identity, m_GroundLayer, QueryTriggerInteraction.Ignore);
             }
@@ -635,7 +636,7 @@ namespace Hertzole.GoldPlayer.Core
                     m_IsCrouching = false;
                     // Set the character controller height to the original height we got at the start.
                     CharacterController.height = m_OriginalControllerHeight;
-                    // Set the character controller center to the origianl center we got at the start.
+                    // Set the character controller center to the original center we got at the start.
                     CharacterController.center = m_OriginalControllerCenter;
 
                     // Set the move speed to the walking speed.
@@ -698,7 +699,7 @@ namespace Hertzole.GoldPlayer.Core
 #if UNITY_EDITOR
         public override void OnValidate()
         {
-            // Update the values if they have been changed during playmode.
+            // Update the values if they have been changed during play-mode.
             if (Application.isPlaying)
             {
                 WalkingSpeeds = m_WalkingSpeeds;
