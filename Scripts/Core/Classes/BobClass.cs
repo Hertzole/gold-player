@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Core
 {
-    /*  This head bob code is based on Unitys standard assets player released
+    /*  This head bob code is based on Unity's standard assets player released
      *  some time in 2014(?), when it was actually good. Something happened
      *  and they turned real bad. The head bob they made was actually really
      *  good. So props to Unity!
