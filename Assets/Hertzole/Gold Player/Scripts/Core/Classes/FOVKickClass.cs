@@ -51,7 +51,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The camera that the FOV kick should be applied to. </summary>
         public Camera TargetCamera { get { return m_TargetCamera; } set { m_TargetCamera = value; } }
 
-        protected override void OnInit()
+        protected override void OnInitialize()
         {
             // If FOV kick is enabled and there's no target camera, complain.
             if (m_EnableFOVKick && !m_TargetCamera)
@@ -96,7 +96,7 @@ namespace Hertzole.GoldPlayer.Core
             if (!m_EnableFOVKick)
                 return;
 
-            // If "Init" hasn't been called yet, complain and stop here.
+            // If "Initialize" hasn't been called yet, complain and stop here.
             if (!m_HasBeenInitialized)
             {
                 Debug.LogError("You need to call 'Initialize()' on your FOV kick before using it!");

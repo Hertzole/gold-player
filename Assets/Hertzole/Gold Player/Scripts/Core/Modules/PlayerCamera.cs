@@ -128,7 +128,8 @@ namespace Hertzole.GoldPlayer.Core
         public event GoldPlayerDelegates.PlayerEvent OnBeginCameraShake;
         /// <summary> Fires when the camera shake ends. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndCameraShake;
-        protected override void OnInit()
+
+        protected override void OnInitialize()
         {
             // If the camera head is null, complain.
             if (m_CameraHead == null)
@@ -144,7 +145,7 @@ namespace Hertzole.GoldPlayer.Core
             m_OriginalHeadRotation = m_CameraHead.localRotation;
 
             // Initialize the FOV kick module.
-            FOVKick.Init(PlayerController, PlayerInput);
+            FOVKick.Initialize(PlayerController, PlayerInput);
         }
 
         /// <summary>
