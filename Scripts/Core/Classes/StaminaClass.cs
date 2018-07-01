@@ -50,7 +50,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The current regen wait time. </summary>
         public float CurrentRegenWait { get { return m_CurrentRegenWait; } set { m_CurrentRegenWait = value; } }
 
-        protected override void OnInit()
+        protected override void OnInitialize()
         {
             // Set the current stamina to the max stamina. This way we always start with a full stamina bar.
             m_CurrentStamina = m_MaxStamina;

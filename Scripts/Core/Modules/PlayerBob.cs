@@ -33,7 +33,7 @@ namespace Hertzole.GoldPlayer.Core
 
         public float BobCycle { get { return m_BobClass.BobCycle; } }
 
-        protected override void OnInit()
+        protected override void OnInitialize()
         {
             if (m_BobClass.BobTarget == null && m_BobClass.EnableBob)
             {

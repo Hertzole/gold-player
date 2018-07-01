@@ -228,12 +228,12 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Fires when the player stops running. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndRun;
 
-        protected override void OnInit()
+        protected override void OnInitialize()
         {
             // Initialize the stamina module.
-            m_Stamina.Init(PlayerController, PlayerInput);
+            m_Stamina.Initialize(PlayerController, PlayerInput);
             // Initialize the moving platforms module.
-            m_MovingPlatforms.Init(PlayerController, PlayerInput);
+            m_MovingPlatforms.Initialize(PlayerController, PlayerInput);
 
             // Make the gravity + if needed.
             if (m_Gravity < 0)

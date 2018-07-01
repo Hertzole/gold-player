@@ -21,18 +21,27 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="player">The player controller itself.</param>
         /// <param name="input">Input, if available.</param>
-        public void Init(GoldPlayerController player, GoldInput input = null)
+        public void Initialize(GoldPlayerController player, GoldInput input = null)
         {
             m_PlayerController = player;
             if (input != null)
                 m_PlayerInput = input;
 
-            OnInit();
+            OnInitialize();
+        }
+
+        [System.Obsolete("Use 'Initialize' instead! This will be removed in a future version.")]
+        public void Init(GoldPlayerController player, GoldInput input = null)
+        {
+            Initialize(player, input);
         }
 
         /// <summary>
         /// Called when the module is initialized.
         /// </summary>
+        protected virtual void OnInitialize() { }
+
+        [System.Obsolete("Use 'OnInitialize' instead! This will be removed in a future version.")]
         protected virtual void OnInit() { }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("The minimum pitch the audio can play at.")]
         private float m_MinPitch = 0.9f;
         [SerializeField]
-        [Tooltip("The maximium pitch the audio can play at.")]
+        [Tooltip("The maximum pitch the audio can play at.")]
         private float m_MaxPitch = 1.1f;
         [SerializeField]
         [Tooltip("Determines if the volume should be changed when playing.")]
@@ -42,7 +42,7 @@ namespace Hertzole.GoldPlayer.Core
         public float Pitch { get { return m_Pitch; } set { m_Pitch = value; } }
         /// <summary> The minimum pitch the audio can play at. </summary>
         public float MinPitch { get { return m_MinPitch; } set { m_MinPitch = value; } }
-        /// <summary> The maximium pitch the audio can play at. </summary>
+        /// <summary> The maximum pitch the audio can play at. </summary>
         public float MaxPitch { get { return m_MaxPitch; } set { m_MaxPitch = value; } }
         /// <summary> Determines if the volume should be changed when playing. </summary>
         public bool ChangeVolume { get { return m_ChangeVolume; } set { m_ChangeVolume = value; } }
@@ -63,13 +63,13 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Set enabled to the provided enabled parameter.
             m_Enabled = enabled;
-            // Set random pitch to the provided random pitch paramater.
+            // Set random pitch to the provided random pitch parameter.
             m_RandomPitch = randomPitch;
-            // Set pitch to the provided pitch paramater.
+            // Set pitch to the provided pitch parameter.
             m_Pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch paramater.
+            // Set the minimum pitch to the provided minimum pitch parameter.
             m_MinPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch paramater.
+            // Set the maximum pitch to the provided maximum pitch parameter.
             m_MaxPitch = maxPitch;
         }
 
@@ -77,13 +77,13 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Set enabled to the provided enabled parameter.
             m_Enabled = enabled;
-            // Set random pitch to the provided random pitch paramater.
+            // Set random pitch to the provided random pitch parameter.
             m_RandomPitch = randomPitch;
-            // Set pitch to the provided pitch paramater.
+            // Set pitch to the provided pitch parameter.
             m_Pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch paramater.
+            // Set the minimum pitch to the provided minimum pitch parameter.
             m_MinPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch paramater.
+            // Set the maximum pitch to the provided maximum pitch parameter.
             m_MaxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
             m_ChangeVolume = changeVolume;
@@ -95,13 +95,13 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Set enabled to the provided enabled parameter.
             m_Enabled = enabled;
-            // Set random pitch to the provided random pitch paramater.
+            // Set random pitch to the provided random pitch parameter.
             m_RandomPitch = randomPitch;
-            // Set pitch to the provided pitch paramater.
+            // Set pitch to the provided pitch parameter.
             m_Pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch paramater.
+            // Set the minimum pitch to the provided minimum pitch parameter.
             m_MinPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch paramater.
+            // Set the maximum pitch to the provided maximum pitch parameter.
             m_MaxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
             m_ChangeVolume = changeVolume;
@@ -115,13 +115,13 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Set enabled to the provided enabled parameter.
             m_Enabled = enabled;
-            // Set random pitch to the provided random pitch paramater.
+            // Set random pitch to the provided random pitch parameter.
             m_RandomPitch = randomPitch;
-            // Set pitch to the provided pitch paramater.
+            // Set pitch to the provided pitch parameter.
             m_Pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch paramater.
+            // Set the minimum pitch to the provided minimum pitch parameter.
             m_MinPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch paramater.
+            // Set the maximum pitch to the provided maximum pitch parameter.
             m_MaxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
             m_ChangeVolume = changeVolume;

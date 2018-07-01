@@ -25,10 +25,10 @@ namespace Hertzole.GoldPlayer.Core
         // All the colliders currently under the player.
         private Collider[] m_GroundColliders = new Collider[0];
 
-        // The current hit directly underneat the player.
+        // The current hit directly underneath the player.
         private RaycastHit m_GroundHit;
 
-        protected override void OnInit()
+        protected override void OnInitialize()
         {
             // Set the original parent.
             m_OriginalParent = PlayerTransform.parent;

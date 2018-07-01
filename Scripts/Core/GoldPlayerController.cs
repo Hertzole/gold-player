@@ -107,10 +107,10 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         protected virtual void InitializeModules()
         {
-            Movement.Init(this, PlayerInput);
-            Camera.Init(this, PlayerInput);
-            HeadBob.Init(this, PlayerInput);
-            Audio.Init(this, PlayerInput);
+            Movement.Initialize(this, PlayerInput);
+            Camera.Initialize(this, PlayerInput);
+            HeadBob.Initialize(this, PlayerInput);
+            Audio.Initialize(this, PlayerInput);
         }
 
 #if UNITY_EDITOR
