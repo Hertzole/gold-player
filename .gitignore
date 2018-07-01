@@ -82,7 +82,3 @@ atlassian-ide-plugin.xml
 
 /Assets/Plugins/Editor/JetBrains/Unity3DRider.cs
 /Assets/Plugins/Editor/JetBrains/Unity3DRider.cs.meta
-
-# ProCore
-/Assets/ProCore*
-/Assets/Hertzole/Gold Player/Example/ProBuilder*

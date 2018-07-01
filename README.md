@@ -10,9 +10,9 @@ I feel like the standard controllers provided by Unity is REALLY bad, like serio
 ## How do I get started?
 #### If you want to use it in a game:  
 Go to [Releases](https://github.com/Hertzole/gold-player/releases) and get the latest release in the form of a Unity package. This will make sure you get a version that should work just fine without any problems.  
-However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it.
+However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it. **NOTICE THAT THE PROJECT REQUIRES AT LEAST UNITY VERSION 2018.1!**
 #### If you want to contribute:
-Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files.
+Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files. **NOTICE THAT THE PROJECT REQUIRES AT LEAST UNITY VERSION 2018.1!**
 
 ## What do I get?
 When you use this player controller you will get the following:
@@ -39,9 +39,6 @@ A: I'm a big fan of the player controller is [GoldSrc](https://en.wikipedia.org/
 
 Q: Why open source?  
 A: I had my other two player controllers closed source, but I treated them as open source with documentation and such, so I thought it would be fun to make it open source and it could help someone looking for a solid player controller!
-
-Q: Plans to port it outside of Unity?  
-A: Nope. Probably never will. I'm too much of a Unity fanboy.
 
 Q: Can I use this for my project?  
 A: Yes! No restrictions! You can do whatever you want with it. The only thing you can't do is directly reselling my player controller. 
