@@ -5,7 +5,7 @@
     "com.unity.ads": "exclude",
     "com.unity.analytics": "exclude",
     "com.unity.standardevents": "exclude",
-    "com.unity.probuilder": "4.0.0-preview.6",
+    "com.unity.probuilder": "4.0.0-preview.8",
     "com.unity.progrids": "3.0.3-preview.0"
   },
   "registry": "https://staging-packages.unity.com"
