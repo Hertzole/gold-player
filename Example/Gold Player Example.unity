@@ -2097,6 +2097,29 @@ Transform:
   m_PrefabParentObject: {fileID: 4076314253090974, guid: e9ef3720f21d94447b188b15f14dcc8f,
     type: 2}
   m_PrefabInternal: {fileID: 382511600}
+--- !u!1 &387556921 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1910683444252486, guid: b39e894a00b89e445b34cd77b22140b4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1613039723}
+--- !u!114 &387556925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 387556921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd97a8e4ed1fe8e43949b305a4b8ab20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InteractionRange: 4
+  m_InteractionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  m_IgnoreTriggers: 1
+  m_InteractMessage: Press {key} to interact
+  m_InteractInput: Interact
 --- !u!1001 &396132879
 Prefab:
   m_ObjectHideFlags: 0
@@ -5976,7 +5999,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1126783923
 Prefab:
@@ -8327,7 +8350,7 @@ GameObject:
   - component: {fileID: 1605832916}
   - component: {fileID: 1605832920}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Gold Player Tweaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8403,7 +8426,7 @@ RectTransform:
   - {fileID: 1601291128}
   - {fileID: 842506846}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8491,6 +8514,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.size
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -8521,7 +8549,22 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[7].m_ButtonName
+      value: Interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[7].m_InputName
+      value: Interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[7].m_Key
+      value: 101
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
@@ -10030,7 +10073,7 @@ Transform:
   - {fileID: 967421607}
   - {fileID: 79444770}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1917267440
 Prefab:
@@ -11406,7 +11449,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2136065814
 Prefab:

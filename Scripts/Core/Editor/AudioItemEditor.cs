@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer.Editor
 {
     [CustomPropertyDrawer(typeof(AudioItem))]
-    public class AudioItemEditor : PropertyDrawer
+    internal class AudioItemEditor : PropertyDrawer
     {
         // The full complete rect.
         private Rect m_FullRect;

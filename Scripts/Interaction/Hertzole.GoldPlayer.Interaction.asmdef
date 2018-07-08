@@ -1,0 +1,10 @@
+{
+    "name": "Hertzole.GoldPlayer.Interaction",
+    "references": [
+        "Hertzole.GoldPlayer.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Hertzole.GoldPlayer.Interaction.Editor",
+    "references": [
+        "Hertzole.GoldPlayer.Interaction"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

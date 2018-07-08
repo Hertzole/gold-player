@@ -1,11 +1,10 @@
-#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Editor
 {
     [CustomEditor(typeof(GoldPlayerController))]
-    public class GoldPlayerControllerEditor : UnityEditor.Editor
+    internal class GoldPlayerControllerEditor : UnityEditor.Editor
     {
         private int m_CurrentTab = 0;
 
@@ -105,4 +104,3 @@ namespace Hertzole.GoldPlayer.Editor
         }
     }
 }
-#endif
