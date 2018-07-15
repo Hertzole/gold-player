@@ -2097,29 +2097,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4076314253090974, guid: e9ef3720f21d94447b188b15f14dcc8f,
     type: 2}
   m_PrefabInternal: {fileID: 382511600}
---- !u!1 &387556921 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1910683444252486, guid: b39e894a00b89e445b34cd77b22140b4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1613039723}
---- !u!114 &387556925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 387556921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd97a8e4ed1fe8e43949b305a4b8ab20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionRange: 4
-  m_InteractionLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  m_IgnoreTriggers: 1
-  m_InteractMessage: Press {key} to interact
-  m_InteractInput: Interact
 --- !u!1001 &396132879
 Prefab:
   m_ObjectHideFlags: 0
@@ -8409,7 +8386,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

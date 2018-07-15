@@ -31,7 +31,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> Everything related to the player camera (mouse movement). </summary>
         public PlayerCamera Camera { get { return m_Camera; } set { m_Camera = value; } }
         /// <summary> Everything related to movement. </summary>
-        public PlayerMovement Movement { get { return m_Movement; } }
+        public PlayerMovement Movement { get { return m_Movement; } set { m_Movement = value; } }
         /// <summary> Everything related to the head bob. </summary>
         public PlayerBob HeadBob { get { return m_HeadBob; } set { m_HeadBob = value; } }
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>

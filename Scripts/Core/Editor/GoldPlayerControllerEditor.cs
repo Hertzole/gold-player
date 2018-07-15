@@ -8,7 +8,7 @@ namespace Hertzole.GoldPlayer.Editor
     {
         private int m_CurrentTab = 0;
 
-        private string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
+        private readonly string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
         private const string SELECTED_TAB_PREFS = "HERTZ_GOLD_PLAYER_SELECTED_TAB";
 
         private SerializedProperty m_Camera;

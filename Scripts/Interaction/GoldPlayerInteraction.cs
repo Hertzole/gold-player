@@ -1,5 +1,3 @@
-#define GOLD_PLAYER_INTERACTION
-
 using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 
@@ -11,7 +9,7 @@ namespace Hertzole.GoldPlayer.Interaction
     {
         [SerializeField]
         [Tooltip("Sets how far the interaction reach is.")]
-        private float m_InteractionRange = 4f;
+        private float m_InteractionRange = 2f;
         [SerializeField]
         [Tooltip("Sets the layers that the player can interact with.")]
         private LayerMask m_InteractionLayer = 0;
@@ -24,7 +22,7 @@ namespace Hertzole.GoldPlayer.Interaction
 #endif
         [SerializeField]
         [Tooltip("A default message for UI elements to show when the player can interact.")]
-        private string m_InteractMessage = "Press {key} to interact";
+        private string m_InteractMessage = "Press E to interact";
 
 #if UNITY_EDITOR
         [Header("Input")]

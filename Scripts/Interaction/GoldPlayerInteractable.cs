@@ -26,7 +26,7 @@ namespace Hertzole.GoldPlayer.Interaction
         private bool m_UseCustomMessage = false;
         [SerializeField]
         [Tooltip("A custom interaction message for UI elements.")]
-        private string m_CustomMessage = "Press {key} to interact";
+        private string m_CustomMessage = "Press E to interact";
 
 #if UNITY_EDITOR
         [Space]

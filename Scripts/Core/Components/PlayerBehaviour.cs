@@ -7,7 +7,6 @@ namespace Hertzole.GoldPlayer.Core
     /// Features some shortcuts in regard to the player.
     /// </summary>
     [RequireComponent(typeof(GoldPlayerController))]
-    [DisallowMultipleComponent]
     [AddComponentMenu("")]
     public abstract class PlayerBehaviour : MonoBehaviour
     {
