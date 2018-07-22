@@ -119,6 +119,7 @@ namespace Hertzole.GoldPlayer.Interaction
                 // There's nothing to interact with.
                 CanInteract = false;
                 CurrentHitInteractable = null;
+                m_CurrentHit = null;
             }
         }
 
