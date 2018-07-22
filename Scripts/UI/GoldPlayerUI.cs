@@ -4,7 +4,6 @@
 #define USE_TMP
 #endif
 
-using Hertzole.GoldPlayer.Core;
 #if GOLD_PLAYER_INTERACTION
 using Hertzole.GoldPlayer.Interaction;
 #endif
@@ -16,7 +15,7 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer.UI
 {
     [AddComponentMenu("Gold Player/UI/Gold Player UI")]
-    public class GoldPlayerUI : PlayerBehaviour
+    public class GoldPlayerUI : MonoBehaviour
     {
         // Only show if GoldPlayer interaction is enabled.
 #if GOLD_PLAYER_INTERACTION
@@ -48,22 +47,31 @@ namespace Hertzole.GoldPlayer.UI
 
 #if GOLD_PLAYER_INTERACTION
         // Player interaction reference.
-        protected GoldPlayerInteraction m_PlayerInteraction;
+        private GoldPlayerInteraction m_PlayerInteraction;
+        protected GoldPlayerInteraction PlayerInteraction
+        {
+            // If the player is null, find it.
+            get { if (!m_PlayerInteraction) m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>(); return m_PlayerInteraction; }
+        }
 #endif
 
-        protected override void OnAwake()
+        private void Awake()
         {
 #if GOLD_PLAYER_INTERACTION
             // Call all Player Interaction awake stuff.
             AwakePlayerInteraction();
 #endif
+
+            OnAwake();
         }
+
+        protected virtual void OnAwake() { }
 
 #if GOLD_PLAYER_INTERACTION
         protected virtual void AwakePlayerInteraction()
         {
             // Get the player interaction.
-            m_PlayerInteraction = GetComponent<GoldPlayerInteraction>();
+            m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>();
         }
 #endif
 
@@ -78,24 +86,24 @@ namespace Hertzole.GoldPlayer.UI
         protected virtual void InteractionUpdate()
         {
             // Only call if player interaction is added to the player.
-            if (m_PlayerInteraction)
+            if (PlayerInteraction)
             {
                 // Toggle the interaction box based on if it can be seen.
 #if NET_4_6
-                m_InteractionBox?.SetActive(m_PlayerInteraction.CanInteract && !m_PlayerInteraction.CurrentHitInteractable.IsHidden);
+                m_InteractionBox?.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
 #else
                 if (m_InteractionBox != null)
-                    m_InteractionBox.SetActive(m_PlayerInteraction.CanInteract && !m_PlayerInteraction.CurrentHitInteractable.IsHidden);
+                    m_InteractionBox.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
 #endif
 
                 // If the player can interact the the interactable isn't hidden,
                 // set the message to either a custom message or the one in Player Interaction.
-                if (m_PlayerInteraction.CanInteract && !m_PlayerInteraction.CurrentHitInteractable.IsHidden && m_InteractionLabel != null)
+                if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden && m_InteractionLabel != null)
                 {
-                    if (m_PlayerInteraction.CurrentHitInteractable != null && m_PlayerInteraction.CurrentHitInteractable.UseCustomMessage)
-                        m_InteractionLabel.text = m_PlayerInteraction.CurrentHitInteractable.CustomMessage;
+                    if (PlayerInteraction.CurrentHitInteractable != null && PlayerInteraction.CurrentHitInteractable.UseCustomMessage)
+                        m_InteractionLabel.text = PlayerInteraction.CurrentHitInteractable.CustomMessage;
                     else
-                        m_InteractionLabel.text = m_PlayerInteraction.InteractMessage;
+                        m_InteractionLabel.text = PlayerInteraction.InteractMessage;
                 }
             }
         }
