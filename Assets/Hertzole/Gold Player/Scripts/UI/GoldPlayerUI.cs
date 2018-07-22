@@ -17,6 +17,13 @@ namespace Hertzole.GoldPlayer.UI
     [AddComponentMenu("Gold Player/UI/Gold Player UI")]
     public class GoldPlayerUI : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("If true, the component will always attempt to find the player.\nIf false, you will have to manually set the player.")]
+        private bool m_AutoFindPlayer;
+        [SerializeField]
+        [Tooltip("The target player.")]
+        private GoldPlayerController m_Player;
+
         // Only show if GoldPlayer interaction is enabled.
 #if GOLD_PLAYER_INTERACTION
 #if UNITY_EDITOR
@@ -33,6 +40,10 @@ namespace Hertzole.GoldPlayer.UI
         private Text m_InteractionLabel;
 #endif
 #endif
+        /// <summary> If true, the component will always attempt to find the player. If false, you will have to manually set the player. </summary>
+        public bool AutoFindPlayer { get { return m_AutoFindPlayer; } set { m_AutoFindPlayer = value; } }
+        /// <summary> The target player. </summary>
+        public GoldPlayerController Player { get { return m_Player; } set { SetPlayer(value); } }
 
 #if GOLD_PLAYER_INTERACTION
         /// <summary> The box/label that should be toggled when the player can interact. </summary>
@@ -51,7 +62,7 @@ namespace Hertzole.GoldPlayer.UI
         protected GoldPlayerInteraction PlayerInteraction
         {
             // If the player is null, find it.
-            get { if (!m_PlayerInteraction) m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>(); return m_PlayerInteraction; }
+            get { if (!m_PlayerInteraction && m_AutoFindPlayer) m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>(); return m_PlayerInteraction; }
         }
 #endif
 
@@ -71,7 +82,10 @@ namespace Hertzole.GoldPlayer.UI
         protected virtual void AwakePlayerInteraction()
         {
             // Get the player interaction.
-            m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>();
+            if (m_Player)
+                m_PlayerInteraction = m_Player.GetComponent<GoldPlayerInteraction>();
+            else if (m_AutoFindPlayer)
+                m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>();
         }
 #endif
 
@@ -108,5 +122,19 @@ namespace Hertzole.GoldPlayer.UI
             }
         }
 #endif
+
+        /// <summary>
+        /// Sets the player and finds all required components.
+        /// </summary>
+        private void SetPlayer(GoldPlayerController player)
+        {
+#if GOLD_PLAYER_INTERACTION
+            // Only get the interaction if the previous set player isn't the new player.
+            if (!m_Player || (m_Player && m_Player != player))
+                m_PlayerInteraction = player.GetComponent<GoldPlayerInteraction>();
+#endif
+            // Set the player.
+            m_Player = player;
+        }
     }
 }
