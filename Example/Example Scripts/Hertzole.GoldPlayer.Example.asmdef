@@ -1,7 +1,7 @@
 {
-    "name": "Hertzole.GoldPlayer.Interaction",
+    "name": "Hertzole.GoldPlayer.Example",
     "references": [
-        "Hertzole.GoldPlayer.Core"
+        "Hertzole.GoldPlayer"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
