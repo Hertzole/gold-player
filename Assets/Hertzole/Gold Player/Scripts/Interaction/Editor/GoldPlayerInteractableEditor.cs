@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -39,3 +40,4 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
         }
     }
 }
+#endif
