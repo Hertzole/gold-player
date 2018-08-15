@@ -14,9 +14,9 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
             string scriptDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             if (!scriptDefines.Contains(DEFINE))
             {
-                string toAdd = string.Empty;
+                string toAdd = scriptDefines;
                 if (!scriptDefines.EndsWith(";"))
-                    toAdd = ";";
+                    toAdd += ";";
                 toAdd += DEFINE;
 
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, toAdd);
