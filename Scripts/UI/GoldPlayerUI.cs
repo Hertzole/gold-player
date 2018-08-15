@@ -11,18 +11,49 @@ using Hertzole.GoldPlayer.Interaction;
 using TMPro;
 #endif
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer.UI
 {
     [AddComponentMenu("Gold Player/UI/Gold Player UI")]
     public class GoldPlayerUI : MonoBehaviour
     {
+        // The type of progress bar.
+        public enum ProgressBarType { Slider = 0, Image = 1 }
+        // The type of label display.
+        // Direct is basically current/max, so for example, 70/110.
+        // Percentage is self-explanatory. Shows a percentage.
+        public enum LabelDisplayType { Direct = 0, Percentage = 1 }
+
         [SerializeField]
         [Tooltip("If true, the component will always attempt to find the player.\nIf false, you will have to manually set the player.")]
         private bool m_AutoFindPlayer;
         [SerializeField]
         [Tooltip("The target player.")]
         private GoldPlayerController m_Player;
+
+#if UNITY_EDITOR
+        [Header("Sprinting")]
+#endif
+        [SerializeField]
+        [Tooltip("The type of progress bar that will be used.")]
+        private ProgressBarType m_SprintingBarType = ProgressBarType.Image;
+        [SerializeField]
+        [Tooltip("The progress bar as an image.")]
+        private Image m_SprintingBarImage;
+        [SerializeField]
+        [Tooltip("The progress bar as a slider.")]
+        private Slider m_SprintingBarSlider;
+        [SerializeField]
+        [Tooltip("The label for showing player stamina.")]
+#if USE_TMP
+        private TextMeshProUGUI m_SprintingLabel;
+#else
+        private Text m_SprintingLabel;
+#endif
+        [SerializeField]
+        [Tooltip("The type of display if there's a label.")]
+        private LabelDisplayType m_SprintingLabelDisplay = LabelDisplayType.Percentage;
 
         // Only show if GoldPlayer interaction is enabled.
 #if GOLD_PLAYER_INTERACTION
@@ -44,6 +75,21 @@ namespace Hertzole.GoldPlayer.UI
         public bool AutoFindPlayer { get { return m_AutoFindPlayer; } set { m_AutoFindPlayer = value; } }
         /// <summary> The target player. </summary>
         public GoldPlayerController Player { get { return m_Player; } set { SetPlayer(value); } }
+
+        /// <summary> The type of progress bar that will be used. </summary>
+        public ProgressBarType SprintingBarType { get { return m_SprintingBarType; } set { m_SprintingBarType = value; AdaptSprintingUI(); } }
+        /// <summary> The progress bar as an image. </summary>
+        public Image SprintingBarImage { get { return m_SprintingBarImage; } set { m_SprintingBarImage = value; } }
+        /// <summary> The progress bar as a slider. </summary>
+        public Slider SprintingBarSlider { get { return m_SprintingBarSlider; } set { m_SprintingBarSlider = value; } }
+        /// <summary> The label for showing player stamina. </summary>
+#if USE_TMP
+        public TextMeshProUGUI SprintingLabel { get { return m_SprintingLabel; } set { m_SprintingLabel = value; } }
+#else
+        public Text SprintingLabel { get { return m_SprintingLabel; } set { m_SprintingLabel = value; } }
+#endif
+        /// <summary> The type of display if there's a label. </summary>
+        public LabelDisplayType SprintingLabelDisplay { get { return m_SprintingLabelDisplay; } set { m_SprintingLabelDisplay = value; } }
 
 #if GOLD_PLAYER_INTERACTION
         /// <summary> The box/label that should be toggled when the player can interact. </summary>
@@ -68,6 +114,8 @@ namespace Hertzole.GoldPlayer.UI
 
         private void Awake()
         {
+            // Call all the Player Sprinting awake stuff.
+            AwakePlayerSprinting();
 #if GOLD_PLAYER_INTERACTION
             // Call all Player Interaction awake stuff.
             AwakePlayerInteraction();
@@ -77,6 +125,72 @@ namespace Hertzole.GoldPlayer.UI
         }
 
         protected virtual void OnAwake() { }
+
+        protected virtual void AwakePlayerSprinting()
+        {
+            AdaptSprintingUI();
+        }
+
+        /// <summary>
+        /// Enables and disables sprinting UI elements based
+        /// on how it's setup.
+        /// </summary>
+        public virtual void AdaptSprintingUI()
+        {
+            // If the player can't run or no stamina enabled, disable all elements.
+            if (!Player.Movement.CanRun || !Player.Movement.Stamina.EnableStamina)
+            {
+#if NET_4_6
+                m_SprintingBarImage?.gameObject.SetActive(false);
+                m_SprintingBarSlider?.gameObject.SetActive(false);
+                m_SprintingLabel?.gameObject.SetActive(false);
+#else
+                if (m_SprintingBarImage != null)
+                    m_SprintingBarImage.gameObject.SetActive(false);
+                if (m_SprintingBarSlider != null)
+                    m_SprintingBarSlider.gameObject.SetActive(false);
+                if (m_SprintingLabel != null)
+                    m_SprintingLabel.gameObject.SetActive(false);
+#endif
+
+                return;
+            }
+
+            switch (m_SprintingBarType)
+            {
+                case ProgressBarType.Slider:
+#if NET_4_6
+                    m_SprintingBarImage?.gameObject.SetActive(false);
+                    m_SprintingBarSlider?.gameObject.SetActive(true);
+#else
+                    if (m_SprintingBarImage != null)
+                    {
+                        m_SprintingBarImage.gameObject.SetActive(false);
+                    }
+
+                    if (m_SprintingBarSlider != null)
+                    {
+                        m_SprintingBarSlider.gameObject.SetActive(true);
+                        m_SprintingBarSlider.minValue = 0;
+                        m_SprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
+                    }
+#endif
+                    break;
+                case ProgressBarType.Image:
+#if NET_4_6
+                    m_SprintingBarImage?.gameObject.SetActive(true);
+                    m_SprintingBarSlider?.gameObject.SetActive(false);
+#else
+                    if (m_SprintingBarImage != null)
+                        m_SprintingBarImage.gameObject.SetActive(true);
+                    if (m_SprintingBarSlider != null)
+                        m_SprintingBarSlider.gameObject.SetActive(false);
+#endif
+                    break;
+                default:
+                    throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+            }
+        }
 
 #if GOLD_PLAYER_INTERACTION
         protected virtual void AwakePlayerInteraction()
@@ -91,9 +205,45 @@ namespace Hertzole.GoldPlayer.UI
 
         private void Update()
         {
+            SprintingUpdate();
 #if GOLD_PLAYER_INTERACTION
             InteractionUpdate();
 #endif
+        }
+
+        protected virtual void SprintingUpdate()
+        {
+            if (Player && Player.Movement.CanRun && Player.Movement.Stamina.EnableStamina)
+            {
+                switch (m_SprintingBarType)
+                {
+                    case ProgressBarType.Slider:
+#if NET_4_6
+                        m_SprintingBarSlider?.value = Player.Movement.Stamina.CurrentStamina;
+#else
+                        if (m_SprintingBarSlider != null)
+                            m_SprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina;
+#endif
+                        break;
+                    case ProgressBarType.Image:
+#if NET_4_6
+                        m_SprintingBarImage?.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
+#else
+                        if (m_SprintingBarImage != null)
+                            m_SprintingBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
+#endif
+                        break;
+                    default:
+                        throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+                }
+
+#if NET_4_6
+                m_SprintingLabel?.text = GetLabel(m_SprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+#else
+                if (m_SprintingLabel != null)
+                    m_SprintingLabel.text = GetLabel(m_SprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+#endif
+            }
         }
 
 #if GOLD_PLAYER_INTERACTION
@@ -120,6 +270,15 @@ namespace Hertzole.GoldPlayer.UI
                         m_InteractionLabel.text = PlayerInteraction.InteractMessage;
                 }
             }
+            else
+            {
+#if NET_4_6
+                m_InteractionBox?.SetActive(false);
+#else
+                if (m_InteractionBox != null)
+                    m_InteractionBox.SetActive(false);
+#endif
+            }
         }
 #endif
 
@@ -135,6 +294,22 @@ namespace Hertzole.GoldPlayer.UI
 #endif
             // Set the player.
             m_Player = player;
+        }
+
+        /// <summary>
+        /// Returns a formatted label based on the display type.
+        /// </summary>
+        protected virtual string GetLabel(LabelDisplayType displayType, float current, float max)
+        {
+            switch (displayType)
+            {
+                case LabelDisplayType.Direct:
+                    return string.Format("{0}/{1}", current, max);
+                case LabelDisplayType.Percentage:
+                    return string.Format("{0}%", ((current / max) * 100).ToString("F0"));
+                default:
+                    throw new System.NotImplementedException("There's no support for label display type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+            }
         }
     }
 }
