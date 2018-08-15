@@ -1,3 +1,6 @@
+#if HERTZLIB_UPDATE_MANAGER
+using Hertzole.HertzLib;
+#endif
 using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 
@@ -5,7 +8,11 @@ namespace Hertzole.GoldPlayer.Interaction
 {
     [AddComponentMenu("Gold Player/Interaction/Player Interaction")]
     [DisallowMultipleComponent]
+#if HERTZLIB_UPDATE_MANAGER
+    public class GoldPlayerInteraction : PlayerBehaviour, IUpdate
+#else
     public class GoldPlayerInteraction : PlayerBehaviour
+#endif
     {
         [SerializeField]
         [Tooltip("Sets how far the interaction reach is.")]
@@ -70,6 +77,18 @@ namespace Hertzole.GoldPlayer.Interaction
             m_CameraHead = PlayerController.Camera.CameraHead;
         }
 
+#if HERTZLIB_UPDATE_MANAGER
+        private void OnEnable()
+        {
+            UpdateManager.AddUpdate(this);
+        }
+
+        private void OnDisable()
+        {
+            UpdateManager.RemoveUpdate(this);
+        }
+#endif
+
         /// <summary>
         /// Sets how it should behave with triggers.
         /// </summary>
@@ -79,7 +98,11 @@ namespace Hertzole.GoldPlayer.Interaction
         }
 
         // Update is called once per frame
+#if HERTZLIB_UPDATE_MANAGER
+        public void OnUpdate()
+#else
         private void Update()
+#endif
         {
             // Do the raycast.
             if (Physics.Raycast(m_CameraHead.position, m_CameraHead.forward, out m_InteractableHit, m_InteractionRange, m_InteractionLayer, m_TriggerInteraction))

@@ -12,11 +12,18 @@ using TMPro;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
+#if HERTZLIB_UPDATE_MANAGER
+using Hertzole.HertzLib;
+#endif
 
 namespace Hertzole.GoldPlayer.UI
 {
     [AddComponentMenu("Gold Player/UI/Gold Player UI")]
+#if HERTZLIB_UPDATE_MANAGER
+    public class GoldPlayerUI : MonoBehaviour, IUpdate
+#else
     public class GoldPlayerUI : MonoBehaviour
+#endif
     {
         // The type of progress bar.
         public enum ProgressBarType { Slider = 0, Image = 1 }
@@ -124,6 +131,18 @@ namespace Hertzole.GoldPlayer.UI
             OnAwake();
         }
 
+#if HERTZLIB_UPDATE_MANAGER
+        private void OnEnable()
+        {
+            UpdateManager.AddUpdate(this);
+        }
+
+        private void OnDisable()
+        {
+            UpdateManager.RemoveUpdate(this);
+        }
+#endif
+
         protected virtual void OnAwake() { }
 
         protected virtual void AwakePlayerSprinting()
@@ -203,7 +222,11 @@ namespace Hertzole.GoldPlayer.UI
         }
 #endif
 
+#if HERTZLIB_UPDATE_MANAGER
+        public void OnUpdate()
+#else
         private void Update()
+#endif
         {
             SprintingUpdate();
 #if GOLD_PLAYER_INTERACTION

@@ -1,3 +1,6 @@
+#if HERTZLIB_UPDATE_MANAGER
+using Hertzole.HertzLib;
+#endif
 using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 
@@ -6,7 +9,11 @@ namespace Hertzole.GoldPlayer
     [RequireComponent(typeof(CharacterController))]
     [DisallowMultipleComponent]
     [AddComponentMenu("Gold Player/Gold Player Controller", 01)]
+#if HERTZLIB_UPDATE_MANAGER
+    public class GoldPlayerController : MonoBehaviour, IUpdate, IFixedUpdate, ILateUpdate
+#else
     public class GoldPlayerController : MonoBehaviour
+#endif
     {
         [SerializeField]
         private PlayerCamera m_Camera = new PlayerCamera();
@@ -48,7 +55,27 @@ namespace Hertzole.GoldPlayer
                 Initialize();
         }
 
+#if HERTZLIB_UPDATE_MANAGER
+        private void OnEnable()
+        {
+            UpdateManager.AddUpdate(this);
+            UpdateManager.AddFixedUpdate(this);
+            UpdateManager.AddLateUpdate(this);
+        }
+
+        private void OnDisable()
+        {
+            UpdateManager.RemoveUpdate(this);
+            UpdateManager.RemoveFixedUpdate(this);
+            UpdateManager.RemoveLateUpdate(this);
+        }
+#endif
+
+#if HERTZLIB_UPDATE_MANAGER
+        public void OnUpdate()
+#else
         private void Update()
+#endif
         {
             if (HasBeenInitialized)
             {
@@ -59,7 +86,11 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+#if HERTZLIB_UPDATE_MANAGER
+        public void OnFixedUpdate()
+#else
         private void FixedUpdate()
+#endif
         {
             if (HasBeenInitialized)
             {
@@ -70,7 +101,11 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+#if HERTZLIB_UPDATE_MANAGER
+        public void OnLateUpdate()
+#else
         private void LateUpdate()
+#endif
         {
             if (HasBeenInitialized)
             {
