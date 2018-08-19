@@ -18,7 +18,9 @@ public static class ExportTool
                     continue;
                 if (allPaths[i].ToLower().Contains("probuilder"))
                     continue;
-                if (allPaths[i].ToLower().Contains("Gold Player Tests"))
+                if (allPaths[i].ToLower().Contains("gold player tests"))
+                    continue;
+                if (allPaths[i].ToLower().Contains("textmesh pro"))
                     continue;
 
                 validPaths.Add(allPaths[i]);
