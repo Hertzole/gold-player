@@ -81,7 +81,14 @@ namespace Hertzole.GoldPlayer.UI
         /// <summary> If true, the component will always attempt to find the player. If false, you will have to manually set the player. </summary>
         public bool AutoFindPlayer { get { return m_AutoFindPlayer; } set { m_AutoFindPlayer = value; } }
         /// <summary> The target player. </summary>
-        public GoldPlayerController Player { get { return m_Player; } set { SetPlayer(value); } }
+        public GoldPlayerController Player
+        {
+            get
+            {
+                if (!m_Player && m_AutoFindPlayer) m_Player = FindObjectOfType<GoldPlayerController>(); return m_Player;
+            }
+            set { SetPlayer(value); }
+        }
 
         /// <summary> The type of progress bar that will be used. </summary>
         public ProgressBarType SprintingBarType { get { return m_SprintingBarType; } set { m_SprintingBarType = value; AdaptSprintingUI(); } }
@@ -159,18 +166,12 @@ namespace Hertzole.GoldPlayer.UI
             // If the player can't run or no stamina enabled, disable all elements.
             if (!Player.Movement.CanRun || !Player.Movement.Stamina.EnableStamina)
             {
-#if NET_4_6
-                m_SprintingBarImage?.gameObject.SetActive(false);
-                m_SprintingBarSlider?.gameObject.SetActive(false);
-                m_SprintingLabel?.gameObject.SetActive(false);
-#else
                 if (m_SprintingBarImage != null)
                     m_SprintingBarImage.gameObject.SetActive(false);
                 if (m_SprintingBarSlider != null)
                     m_SprintingBarSlider.gameObject.SetActive(false);
                 if (m_SprintingLabel != null)
                     m_SprintingLabel.gameObject.SetActive(false);
-#endif
 
                 return;
             }
@@ -178,10 +179,6 @@ namespace Hertzole.GoldPlayer.UI
             switch (m_SprintingBarType)
             {
                 case ProgressBarType.Slider:
-#if NET_4_6
-                    m_SprintingBarImage?.gameObject.SetActive(false);
-                    m_SprintingBarSlider?.gameObject.SetActive(true);
-#else
                     if (m_SprintingBarImage != null)
                     {
                         m_SprintingBarImage.gameObject.SetActive(false);
@@ -193,18 +190,12 @@ namespace Hertzole.GoldPlayer.UI
                         m_SprintingBarSlider.minValue = 0;
                         m_SprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
                     }
-#endif
                     break;
                 case ProgressBarType.Image:
-#if NET_4_6
-                    m_SprintingBarImage?.gameObject.SetActive(true);
-                    m_SprintingBarSlider?.gameObject.SetActive(false);
-#else
                     if (m_SprintingBarImage != null)
                         m_SprintingBarImage.gameObject.SetActive(true);
                     if (m_SprintingBarSlider != null)
                         m_SprintingBarSlider.gameObject.SetActive(false);
-#endif
                     break;
                 default:
                     throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
@@ -264,12 +255,8 @@ namespace Hertzole.GoldPlayer.UI
             if (PlayerInteraction)
             {
                 // Toggle the interaction box based on if it can be seen.
-#if NET_4_6
-                m_InteractionBox?.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
-#else
                 if (m_InteractionBox != null)
                     m_InteractionBox.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
-#endif
 
                 // If the player can interact the the interactable isn't hidden,
                 // set the message to either a custom message or the one in Player Interaction.
@@ -283,12 +270,8 @@ namespace Hertzole.GoldPlayer.UI
             }
             else
             {
-#if NET_4_6
-                m_InteractionBox?.SetActive(false);
-#else
                 if (m_InteractionBox != null)
                     m_InteractionBox.SetActive(false);
-#endif
             }
         }
 #endif
@@ -315,12 +298,26 @@ namespace Hertzole.GoldPlayer.UI
             switch (displayType)
             {
                 case LabelDisplayType.Direct:
-                    return string.Format("{0}/{1}", current, max);
+                    return string.Format("{0}/{1}", current.ToString("F2"), max);
                 case LabelDisplayType.Percentage:
                     return string.Format("{0}%", ((current / max) * 100).ToString("F0"));
                 default:
                     throw new System.NotImplementedException("There's no support for label display type '" + m_SprintingBarType + "' in GoldPlayerUI!");
             }
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// ONLY TO BE CALLED IN UNITY EDITOR!
+        /// Called every time something is changed in the inspector.
+        /// </summary>
+        protected virtual void OnValidate()
+        {
+            if (Application.isPlaying)
+            {
+                AdaptSprintingUI();
+            }
+        }
+#endif
     }
 }
