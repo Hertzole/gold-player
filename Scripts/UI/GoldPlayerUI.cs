@@ -241,31 +241,19 @@ namespace Hertzole.GoldPlayer.UI
                 switch (m_SprintingBarType)
                 {
                     case ProgressBarType.Slider:
-#if NET_4_6
-                        m_SprintingBarSlider?.value = Player.Movement.Stamina.CurrentStamina;
-#else
                         if (m_SprintingBarSlider != null)
                             m_SprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina;
-#endif
                         break;
                     case ProgressBarType.Image:
-#if NET_4_6
-                        m_SprintingBarImage?.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
-#else
                         if (m_SprintingBarImage != null)
                             m_SprintingBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
-#endif
                         break;
                     default:
                         throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
                 }
 
-#if NET_4_6
-                m_SprintingLabel?.text = GetLabel(m_SprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
-#else
                 if (m_SprintingLabel != null)
                     m_SprintingLabel.text = GetLabel(m_SprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
-#endif
             }
         }
 
