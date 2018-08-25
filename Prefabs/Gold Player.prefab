@@ -635,6 +635,42 @@ MonoBehaviour:
   - m_ButtonName: Interact
     m_InputName: Interact
     m_Key: 101
+  - m_ButtonName: Primary Attack
+    m_InputName: Primary Attack
+    m_Key: 323
+  - m_ButtonName: Secondary Attack
+    m_InputName: Secondary Attack
+    m_Key: 324
+  - m_ButtonName: Change Weapon Scroll
+    m_InputName: Mouse ScrollWheel
+    m_Key: 0
+  - m_ButtonName: Change Weapon 1
+    m_InputName: Change Weapon 1
+    m_Key: 49
+  - m_ButtonName: Change Weapon 2
+    m_InputName: Change Weapon 2
+    m_Key: 50
+  - m_ButtonName: Change Weapon 3
+    m_InputName: Change Weapon 3
+    m_Key: 51
+  - m_ButtonName: Change Weapon 4
+    m_InputName: Change Weapon 4
+    m_Key: 52
+  - m_ButtonName: Change Weapon 5
+    m_InputName: Change Weapon 5
+    m_Key: 53
+  - m_ButtonName: Change Weapon 6
+    m_InputName: Change Weapon 6
+    m_Key: 54
+  - m_ButtonName: Change Weapon 7
+    m_InputName: Change Weapon 7
+    m_Key: 55
+  - m_ButtonName: Change Weapon 8
+    m_InputName: Change Weapon 8
+    m_Key: 56
+  - m_ButtonName: Change Weapon 9
+    m_InputName: Change Weapon 9
+    m_Key: 57
 --- !u!114 &114880877538668738
 MonoBehaviour:
   m_ObjectHideFlags: 1
