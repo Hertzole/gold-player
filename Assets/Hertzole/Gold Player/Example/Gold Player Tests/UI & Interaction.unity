@@ -113,6 +113,108 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &92504309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92504311}
+  - component: {fileID: 92504310}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &92504310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 92504309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10fbdadb3552da541b69779cfadf70ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UseKeyCodes: 0
+  m_Inputs:
+  - m_ButtonName: Horizontal
+    m_InputName: Horizontal
+    m_Key: 0
+  - m_ButtonName: Vertical
+    m_InputName: Vertical
+    m_Key: 0
+  - m_ButtonName: Mouse X
+    m_InputName: Mouse X
+    m_Key: 0
+  - m_ButtonName: Mouse Y
+    m_InputName: Mouse Y
+    m_Key: 0
+  - m_ButtonName: Jump
+    m_InputName: Jump
+    m_Key: 32
+  - m_ButtonName: Crouch
+    m_InputName: Crouch
+    m_Key: 99
+  - m_ButtonName: Run
+    m_InputName: Run
+    m_Key: 304
+  - m_ButtonName: Interact
+    m_InputName: Interact
+    m_Key: 101
+  - m_ButtonName: Primary Attack
+    m_InputName: Primary Attack
+    m_Key: 323
+  - m_ButtonName: Secondary Attack
+    m_InputName: Secondary Attack
+    m_Key: 324
+  - m_ButtonName: Change Weapon Scroll
+    m_InputName: Mouse ScrollWheel
+    m_Key: 0
+  - m_ButtonName: Change Weapon 1
+    m_InputName: Change Weapon 1
+    m_Key: 49
+  - m_ButtonName: Change Weapon 2
+    m_InputName: Change Weapon 2
+    m_Key: 50
+  - m_ButtonName: Change Weapon 3
+    m_InputName: Change Weapon 3
+    m_Key: 51
+  - m_ButtonName: Change Weapon 4
+    m_InputName: Change Weapon 4
+    m_Key: 52
+  - m_ButtonName: Change Weapon 5
+    m_InputName: Change Weapon 5
+    m_Key: 53
+  - m_ButtonName: Change Weapon 6
+    m_InputName: Change Weapon 6
+    m_Key: 54
+  - m_ButtonName: Change Weapon 7
+    m_InputName: Change Weapon 7
+    m_Key: 55
+  - m_ButtonName: Change Weapon 8
+    m_InputName: Change Weapon 8
+    m_Key: 56
+  - m_ButtonName: Change Weapon 9
+    m_InputName: Change Weapon 9
+    m_Key: 57
+--- !u!4 &92504311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 92504309}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1356822, y: 2.044375, z: 2.6728008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &188162477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,11 +1288,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
-        type: 2}
-      propertyPath: m_Movement.m_Stamina.m_EnableStamina
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
   m_IsPrefabAsset: 0
@@ -1657,29 +1754,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1783250175 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1910683444252486, guid: b39e894a00b89e445b34cd77b22140b4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1072208069}
---- !u!114 &1783250176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1783250175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd97a8e4ed1fe8e43949b305a4b8ab20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionRange: 2
-  m_InteractionLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  m_IgnoreTriggers: 1
-  m_InteractMessage: Press E to interact
-  m_InteractInput: Interact
 --- !u!1 &2105715064
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ namespace Hertzole.GoldPlayer.Core
     /// Used in Gold Player to make Input a little bit easier to handle.
     /// </summary>
     [Serializable]
-    public class InputItem
+    public struct InputItem
     {
         [SerializeField]
         [Tooltip("The name code will reference the item with.")]
@@ -26,5 +26,11 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The key code for the item. </summary>
         public KeyCode Key { get { return m_Key; } set { m_Key = value; } }
 
+        public InputItem(string buttonName, string inputName, KeyCode key)
+        {
+            m_ButtonName = buttonName;
+            m_InputName = inputName;
+            m_Key = key;
+        }
     }
 }

@@ -543,7 +543,7 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 0
   scriptingDefineSymbols:
-    1: GOLD_PLAYER_INTERACTION
+    1: GOLD_PLAYER_INTERACTION;GOLD_PLAYER_WEAPONS
     13: GOLD_PLAYER_INTERACTION
   platformArchitecture: {}
   scriptingBackend:
@@ -624,7 +624,7 @@ PlayerSettings:
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled: {}
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 
   projectName: 
   organizationId: 

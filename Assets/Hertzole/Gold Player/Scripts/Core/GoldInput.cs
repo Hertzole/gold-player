@@ -60,7 +60,7 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             Debug.LogError("No input with the name '" + buttonName + "' assigned on '" + gameObject.name + "'!");
-            return null;
+            return new InputItem();
         }
     }
 }
