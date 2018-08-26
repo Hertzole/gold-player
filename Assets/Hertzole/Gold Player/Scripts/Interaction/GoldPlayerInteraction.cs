@@ -15,6 +15,14 @@ namespace Hertzole.GoldPlayer.Interaction
 #endif
     {
         [SerializeField]
+        [Tooltip("The player camera head.")]
+        private Transform m_CameraHead;
+
+#if UNITY_EDITOR
+        [Space]
+#endif
+
+        [SerializeField]
         [Tooltip("Sets how far the interaction reach is.")]
         private float m_InteractionRange = 2f;
         [SerializeField]
@@ -44,8 +52,6 @@ namespace Hertzole.GoldPlayer.Interaction
         // How it should behave with triggers.
         private QueryTriggerInteraction m_TriggerInteraction = QueryTriggerInteraction.Ignore;
 
-        // The camera head.
-        private Transform m_CameraHead;
         // The current hit transform.
         private Transform m_CurrentHit;
 
@@ -58,6 +64,8 @@ namespace Hertzole.GoldPlayer.Interaction
         /// <summary> True if the player can currently interact. </summary>
         public bool CanInteract { get; private set; }
 
+        /// <summary> The player camera head. </summary>
+        public Transform CameraHead { get { return m_CameraHead; } set { m_CameraHead = value; } }
         /// <summary> Sets how far the interaction reach is. </summary>
         public float InteractionRange { get { return m_InteractionRange; } set { m_InteractionRange = value; } }
         /// <summary> Sets the layers that the player can interact with. </summary>
@@ -69,12 +77,10 @@ namespace Hertzole.GoldPlayer.Interaction
         /// <summary> The input name for interaction to use. </summary>
         public string InteractInput { get { return m_InteractInput; } set { m_InteractInput = value; } }
 
-        protected override void OnAwake()
+        protected virtual void Awake()
         {
             // Apply the trigger interaction.
             SetTriggerInteraction();
-            // Fetch the camera head for easy access.
-            m_CameraHead = PlayerController.Camera.CameraHead;
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -99,9 +105,9 @@ namespace Hertzole.GoldPlayer.Interaction
 
         // Update is called once per frame
 #if HERTZLIB_UPDATE_MANAGER
-        public void OnUpdate()
+        public virtual void OnUpdate()
 #else
-        private void Update()
+        protected virtual void Update()
 #endif
         {
             // Do the raycast.

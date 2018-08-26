@@ -6,26 +6,21 @@ namespace Hertzole.GoldPlayer.Core
     /// Used for external player components that need to be a MonoBehaviour.
     /// Features some shortcuts in regard to the player.
     /// </summary>
-    [RequireComponent(typeof(GoldPlayerController))]
     [AddComponentMenu("")]
     public abstract class PlayerBehaviour : MonoBehaviour
     {
         private GoldInput m_PlayerInput;
-        protected GoldInput PlayerInput { get { return m_PlayerInput; } }
         private GoldPlayerController m_PlayerController;
+
+        /// <summary> Player input shortcut. It is not certain that this actually exists on the player! </summary>
+        protected GoldInput PlayerInput { get { if (!m_PlayerInput) m_PlayerInput = GetComponent<GoldInput>(); return m_PlayerInput; } }
+        /// <summary> Player controller shortcut. It is not certain that this actually exists on the player! </summary>
         public GoldPlayerController PlayerController { get { if (!m_PlayerController) m_PlayerController = GetComponent<GoldPlayerController>(); return m_PlayerController; } }
-
-        // Use this for initialization
-        private void Awake()
-        {
-            m_PlayerInput = GetComponent<GoldInput>();
-
-            OnAwake();
-        }
 
         /// <summary>
         /// Called in Awake.
         /// </summary>
+        [System.Obsolete("No longer used. You can use Awake normally now.")]
         protected virtual void OnAwake() { }
 
         /// <summary>

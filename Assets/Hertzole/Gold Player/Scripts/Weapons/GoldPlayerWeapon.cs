@@ -7,6 +7,7 @@ namespace Hertzole.GoldPlayer.Weapons
     public class GoldPlayerWeapon : MonoBehaviour
     {
         public enum TriggerTypeEnum { Manual, Automatic }
+        public enum ProjectileTypeEnum { Raycast, Projectile }
 
 #if UNITY_EDITOR
         [Header("Basic Information")]
@@ -27,8 +28,24 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_FireDelay = 0.2f;
         public float FireDelay { get { return m_FireDelay; } set { m_FireDelay = value; } }
         [SerializeField]
-        private TriggerTypeEnum m_TriggerType = TriggerTypeEnum.Automatic;
-        public TriggerTypeEnum TriggerType { get { return m_TriggerType; } set { m_TriggerType = value; } }
+        private TriggerTypeEnum m_PrimaryTriggerType = TriggerTypeEnum.Automatic;
+        public TriggerTypeEnum PrimaryTriggerType { get { return m_PrimaryTriggerType; } set { m_PrimaryTriggerType = value; } }
+        [SerializeField]
+        private TriggerTypeEnum m_SecondaryTriggerType = TriggerTypeEnum.Manual;
+        public TriggerTypeEnum SecondaryTriggerType { get { return m_SecondaryTriggerType; } set { m_SecondaryTriggerType = value; } }
+
+#if UNITY_EDITOR
+        [Header("Projectile Settings")]
+#endif
+        [SerializeField]
+        private ProjectileTypeEnum m_ProjectileType = ProjectileTypeEnum.Raycast;
+        public ProjectileTypeEnum ProjectileType { get { return m_ProjectileType; } set { m_ProjectileType = value; } }
+        [SerializeField]
+        private float m_ProjectileLength = 1000f;
+        public float ProjectileLength { get { return m_ProjectileLength; } set { m_ProjectileLength = value; } }
+        [SerializeField]
+        private GoldPlayerProjectile m_ProjectilePrefab;
+        public GoldPlayerProjectile ProjectilePrefab { get { return m_ProjectilePrefab; } set { m_ProjectilePrefab = value; } }
 
 #if UNITY_EDITOR
         [Header("Recoil Settings")]
@@ -55,6 +72,20 @@ namespace Hertzole.GoldPlayer.Weapons
         [SerializeField]
         private AudioClip m_DryShootSound;
         public AudioClip DryShootSound { get { return m_DryShootSound; } set { m_DryShootSound = value; } }
+        [SerializeField]
+        private AudioClip m_ReloadSound;
+        public AudioClip ReloadSound { get { return m_ReloadSound; } set { m_ReloadSound = value; } }
+        [SerializeField]
+        private AudioSource m_ShootAudioSource;
+        public AudioSource ShootAudioSource { get { return m_ShootAudioSource; } set { m_ShootAudioSource = value; } }
+        [SerializeField]
+        private AudioSource m_DryShootAudioSource;
+        public AudioSource DryShootAudioSource { get { return m_DryShootAudioSource; } set { m_DryShootAudioSource = value; } }
+        [SerializeField]
+        private AudioSource m_ReloadAudioSource;
+        public AudioSource ReloadAudioSource { get { return m_ReloadAudioSource; } set { m_ReloadAudioSource = value; } }
+
+        public bool IsReloading { get; protected set; }
 
         protected LayerMask m_HitLayer;
 
@@ -66,5 +97,19 @@ namespace Hertzole.GoldPlayer.Weapons
         public virtual void OnEquip() { }
 
         public virtual void OnPutAway() { }
+
+        public virtual void PrimaryAttack()
+        {
+            if (IsReloading)
+                return;
+        }
+
+        public virtual void SecondaryAttack() { }
+
+        public virtual void Reload()
+        {
+            if (IsReloading)
+                return;
+        }
     }
 }

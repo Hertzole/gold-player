@@ -46,13 +46,28 @@ namespace Hertzole.GoldPlayer.Weapons
         private int m_NewWeaponIndex = -1;
         protected int m_CurrentWeaponIndex = -1;
 
+        protected bool m_DoPrimaryAttack = false;
+        protected bool m_DoSecondaryAttack = false;
+
         protected float m_NextScroll = 0;
 
         private List<int> m_MyWeapons = new List<int>();
 
         protected GoldPlayerWeapon m_PreviousWeapon = null;
 
-        public GoldPlayerWeapon CurrentWeapon { get; protected set; }
+        public GoldPlayerWeapon CurrentWeapon
+        {
+            get
+            {
+                if (m_MyWeapons == null || m_MyWeapons.Count == 0)
+                    return null;
+
+                if (m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > m_MyWeapons.Count - 1)
+                    return null;
+
+                return m_AvailableWeapons[m_MyWeapons[m_CurrentWeaponIndex]];
+            }
+        }
 
 #if HERTZLIB_UPDATE_MANAGER
         private void OnEnable()
@@ -88,6 +103,9 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
         {
             HandleWeaponChanging();
+            HandlePrimaryAttacking();
+            HandleSecondaryAttacking();
+            HandleReloading();
         }
 
         protected virtual void HandleWeaponChanging()
@@ -143,6 +161,59 @@ namespace Hertzole.GoldPlayer.Weapons
                     if (m_EnableScrollDelay)
                         m_NextScroll = Time.time + m_ScrollDelay;
                 }
+            }
+        }
+
+        protected virtual void HandlePrimaryAttacking()
+        {
+            if (CurrentWeapon == null)
+                return;
+
+            switch (CurrentWeapon.PrimaryTriggerType)
+            {
+                case GoldPlayerWeapon.TriggerTypeEnum.Manual:
+                    m_DoPrimaryAttack = PlayerInput.GetButtonDown("Primary Attack");
+                    break;
+                case GoldPlayerWeapon.TriggerTypeEnum.Automatic:
+                    m_DoPrimaryAttack = PlayerInput.GetButton("Primary Attack");
+                    break;
+                default:
+                    throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryTriggerType + " trigger type!");
+            }
+
+            if (m_DoPrimaryAttack)
+                CurrentWeapon.PrimaryAttack();
+        }
+
+        protected virtual void HandleSecondaryAttacking()
+        {
+            if (CurrentWeapon == null)
+                return;
+
+            switch (CurrentWeapon.SecondaryTriggerType)
+            {
+                case GoldPlayerWeapon.TriggerTypeEnum.Manual:
+                    m_DoSecondaryAttack = PlayerInput.GetButtonDown("Secondary Attack");
+                    break;
+                case GoldPlayerWeapon.TriggerTypeEnum.Automatic:
+                    m_DoSecondaryAttack = PlayerInput.GetButton("Secondary Attack");
+                    break;
+                default:
+                    throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryTriggerType + " trigger type!");
+            }
+
+            if (m_DoSecondaryAttack)
+                CurrentWeapon.SecondaryAttack();
+        }
+
+        protected virtual void HandleReloading()
+        {
+            if (CurrentWeapon == null)
+                return;
+
+            if (PlayerInput.GetButton("Reload"))
+            {
+                CurrentWeapon.Reload();
             }
         }
 
@@ -232,15 +303,13 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public virtual void ChangeWeapon(int index)
         {
-            if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0)
+            if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_CurrentWeaponIndex == index)
                 return;
 
             if (index < 0)
                 index = 0;
             else if (index > m_AvailableWeapons.Length - 1)
                 index = m_AvailableWeapons.Length - 1;
-
-            m_CurrentWeaponIndex = index;
 
             if (CurrentWeapon != null)
             {
@@ -250,7 +319,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
             m_PreviousWeapon = CurrentWeapon;
 
-            CurrentWeapon = m_AvailableWeapons[m_MyWeapons[index]];
+            m_CurrentWeaponIndex = index;
             CurrentWeapon.gameObject.SetActive(true);
             CurrentWeapon.OnEquip();
         }
