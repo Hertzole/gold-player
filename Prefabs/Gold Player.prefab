@@ -644,6 +644,9 @@ MonoBehaviour:
   - m_ButtonName: Change Weapon Scroll
     m_InputName: Mouse ScrollWheel
     m_Key: 0
+  - m_ButtonName: Reload
+    m_InputName: Reload
+    m_Key: 114
   - m_ButtonName: Change Weapon 1
     m_InputName: Change Weapon 1
     m_Key: 49

@@ -311,14 +311,15 @@ MonoBehaviour:
   m_MaxClip: 50
   m_MaxAmmo: 200
   m_FireDelay: 0.05
+  m_ReloadTime: 0.8
   m_PrimaryTriggerType: 1
   m_SecondaryTriggerType: 0
   m_ProjectileType: 0
   m_ProjectileLength: 1000
   m_ProjectilePrefab: {fileID: 0}
   m_EnableRecoil: 1
-  m_RecoilAmount: 5
-  m_KickbackAmount: 0.1
+  m_RecoilAmount: 1
+  m_KickbackAmount: 0.05
   m_RecoilTime: 0.1
   m_ShootSound: {fileID: 0}
   m_DryShootSound: {fileID: 0}
@@ -326,6 +327,56 @@ MonoBehaviour:
   m_ShootAudioSource: {fileID: 0}
   m_DryShootAudioSource: {fileID: 0}
   m_ReloadAudioSource: {fileID: 0}
+  m_IdleAnimation:
+    m_AnimationType: 0
+    m_AnimationSpeed: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_ShootAnimation:
+    m_AnimationType: 0
+    m_AnimationSpeed: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_ReloadAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 1.2
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_EquipAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 2.5
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_PutAwayAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 2.5
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
 --- !u!1 &319584414 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1910683444252486, guid: b39e894a00b89e445b34cd77b22140b4,
@@ -608,21 +659,72 @@ MonoBehaviour:
   m_MaxClip: 2
   m_MaxAmmo: 8
   m_FireDelay: 1
+  m_ReloadTime: 0.8
   m_PrimaryTriggerType: 1
   m_SecondaryTriggerType: 0
   m_ProjectileType: 1
   m_ProjectileLength: 0
   m_ProjectilePrefab: {fileID: 0}
   m_EnableRecoil: 1
-  m_RecoilAmount: 5
-  m_KickbackAmount: 0.2
-  m_RecoilTime: 0.1
+  m_RecoilAmount: 0
+  m_KickbackAmount: 0.4
+  m_RecoilTime: 0.3
   m_ShootSound: {fileID: 0}
   m_DryShootSound: {fileID: 0}
   m_ReloadSound: {fileID: 0}
   m_ShootAudioSource: {fileID: 0}
   m_DryShootAudioSource: {fileID: 0}
   m_ReloadAudioSource: {fileID: 0}
+  m_IdleAnimation:
+    m_AnimationType: 0
+    m_AnimationSpeed: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_ShootAnimation:
+    m_AnimationType: 0
+    m_AnimationSpeed: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_ReloadAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 1.2
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_EquipAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 2.5
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_PutAwayAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 2.5
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
 --- !u!1 &548337683
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +806,7 @@ GameObject:
   m_Component:
   - component: {fileID: 559481131}
   - component: {fileID: 559481132}
+  - component: {fileID: 559481133}
   m_Layer: 1
   m_Name: Simple Gun
   m_TagString: Untagged
@@ -744,14 +847,15 @@ MonoBehaviour:
   m_MaxClip: 16
   m_MaxAmmo: 64
   m_FireDelay: 0.3
+  m_ReloadTime: 0.8
   m_PrimaryTriggerType: 1
   m_SecondaryTriggerType: 0
   m_ProjectileType: 0
   m_ProjectileLength: 1000
   m_ProjectilePrefab: {fileID: 0}
   m_EnableRecoil: 1
-  m_RecoilAmount: 5
-  m_KickbackAmount: 0.1
+  m_RecoilAmount: 35
+  m_KickbackAmount: 0.05
   m_RecoilTime: 0.1
   m_ShootSound: {fileID: 0}
   m_DryShootSound: {fileID: 0}
@@ -759,6 +863,88 @@ MonoBehaviour:
   m_ShootAudioSource: {fileID: 0}
   m_DryShootAudioSource: {fileID: 0}
   m_ReloadAudioSource: {fileID: 0}
+  m_IdleAnimation:
+    m_AnimationType: 0
+    m_AnimationSpeed: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_ShootAnimation:
+    m_AnimationType: 0
+    m_AnimationSpeed: 0
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_ReloadAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 1.2
+    m_Curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_EquipAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 2.5
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+  m_PutAwayAnimation:
+    m_AnimationType: 1
+    m_AnimationSpeed: 2.5
+    m_Curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_Clip: {fileID: 0}
+--- !u!111 &559481133
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 559481130}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &560962167
 GameObject:
   m_ObjectHideFlags: 0
@@ -1855,6 +2041,21 @@ Prefab:
         type: 2}
       propertyPath: m_Camera.m_MouseSensitivity
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[20].m_ButtonName
+      value: Change Weapon 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[20].m_InputName
+      value: Change Weapon 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 2}
+      propertyPath: m_Inputs.Array.data[20].m_Key
+      value: 57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 2}
