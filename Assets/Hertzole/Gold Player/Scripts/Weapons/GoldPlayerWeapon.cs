@@ -1,4 +1,6 @@
+using Hertzole.GoldPlayer.Core;
 using Hertzole.HertzLib;
+using System.Collections;
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Weapons
@@ -11,37 +13,9 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
     {
         public enum TriggerTypeEnum { Manual = 0, Automatic = 1 }
-        public enum ProjectileTypeEnum { Raycast = 0, Projectile = 1 }
-        public enum AnimationTypeEnum { None = 0, CodeDriven = 1, Animation = 2 }
+        public enum ProjectileTypeEnum { Raycast = 0, Prefab = 1 }
 
-        [System.Serializable]
-        public struct WeaponAnimationInfo
-        {
-            [SerializeField]
-            private AnimationTypeEnum m_AnimationType;
-            public AnimationTypeEnum AnimationType { get { return m_AnimationType; } set { m_AnimationType = value; } }
-            [SerializeField]
-            private float m_AnimationSpeed;
-            public float AnimationSpeed { get { return m_AnimationSpeed; } set { m_AnimationSpeed = value; } }
-            [SerializeField]
-            private AnimationCurve m_Curve;
-            public AnimationCurve Curve { get { return m_Curve; } set { m_Curve = value; } }
-            [SerializeField]
-            private AnimationClip m_Clip;
-            public AnimationClip Clip { get { return m_Clip; } set { m_Clip = value; } }
-
-            public WeaponAnimationInfo(AnimationTypeEnum animationType, float animationSpeed)
-            {
-                m_AnimationType = animationType;
-                m_AnimationSpeed = animationSpeed;
-                m_Clip = null;
-                m_Curve = new AnimationCurve();
-            }
-        }
-
-#if UNITY_EDITOR
-        [Header("Basic Information")]
-#endif
+        // Basic info
         [SerializeField]
         private string m_WeaponName = "New Weapon";
         public string WeaponName { get { return m_WeaponName; } set { m_WeaponName = value; } }
@@ -49,8 +23,20 @@ namespace Hertzole.GoldPlayer.Weapons
         private RandomInt m_Damage = new RandomInt(9, 11);
         public RandomInt Damage { get { return m_Damage; } set { m_Damage = value; } }
         [SerializeField]
+        private bool m_IsMelee = false;
+        public bool IsMelee { get { return m_IsMelee; } set { m_IsMelee = value; } }
+        [SerializeField]
+        private float m_MeleeAttackTime = 0f;
+        public float MeleeAttackTime { get { return m_MeleeAttackTime; } set { m_MeleeAttackTime = value; } }
+        [SerializeField]
+        private bool m_InfiniteClip = false;
+        public bool InfiniteClip { get { return m_InfiniteClip; } set { m_InfiniteClip = value; } }
+        [SerializeField]
         private int m_MaxClip = 16;
         public int MaxClip { get { return m_MaxClip; } set { m_MaxClip = value; } }
+        [SerializeField]
+        private bool m_InfiniteAmmo = false;
+        public bool InfiniteAmmo { get { return m_InfiniteAmmo; } set { m_InfiniteAmmo = value; } }
         [SerializeField]
         private int m_MaxAmmo = 64;
         public int MaxAmmo { get { return m_MaxAmmo; } set { m_MaxAmmo = value; } }
@@ -58,8 +44,14 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_FireDelay = 0.2f;
         public float FireDelay { get { return m_FireDelay; } set { m_FireDelay = value; } }
         [SerializeField]
+        private bool m_AutoReloadEmptyClip = true;
+        public bool AutoReloadEmptyClip { get { return m_AutoReloadEmptyClip; } set { m_AutoReloadEmptyClip = value; } }
+        [SerializeField]
         private float m_ReloadTime = 0.8f;
         public float ReloadTIme { get { return m_ReloadTime; } set { m_ReloadTime = value; } }
+        [SerializeField]
+        private float m_EquipTime = 0.2f;
+        public float EquipTime { get { return m_EquipTime; } set { m_EquipTime = value; } }
         [SerializeField]
         private TriggerTypeEnum m_PrimaryTriggerType = TriggerTypeEnum.Automatic;
         public TriggerTypeEnum PrimaryTriggerType { get { return m_PrimaryTriggerType; } set { m_PrimaryTriggerType = value; } }
@@ -67,9 +59,7 @@ namespace Hertzole.GoldPlayer.Weapons
         private TriggerTypeEnum m_SecondaryTriggerType = TriggerTypeEnum.Manual;
         public TriggerTypeEnum SecondaryTriggerType { get { return m_SecondaryTriggerType; } set { m_SecondaryTriggerType = value; } }
 
-#if UNITY_EDITOR
-        [Header("Projectile Settings")]
-#endif
+        // Projectile info
         [SerializeField]
         private ProjectileTypeEnum m_ProjectileType = ProjectileTypeEnum.Raycast;
         public ProjectileTypeEnum ProjectileType { get { return m_ProjectileType; } set { m_ProjectileType = value; } }
@@ -77,12 +67,13 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_ProjectileLength = 1000f;
         public float ProjectileLength { get { return m_ProjectileLength; } set { m_ProjectileLength = value; } }
         [SerializeField]
+        private Transform m_RaycastOrigin = null;
+        public Transform RaycastOrigin { get { return m_RaycastOrigin; } set { m_RaycastOrigin = value; } }
+        [SerializeField]
         private GoldPlayerProjectile m_ProjectilePrefab;
         public GoldPlayerProjectile ProjectilePrefab { get { return m_ProjectilePrefab; } set { m_ProjectilePrefab = value; } }
 
-#if UNITY_EDITOR
-        [Header("Recoil Settings")]
-#endif
+        // Recoil settings
         [SerializeField]
         private bool m_EnableRecoil = true;
         public bool EnableRecoil { get { return m_EnableRecoil; } set { m_EnableRecoil = value; } }
@@ -96,21 +87,25 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_RecoilTime = 0.1f;
         public float RecoilTime { get { return m_RecoilTime; } set { m_RecoilTime = value; } }
 
-#if UNITY_EDITOR
-        [Header("Sound Settings")]
-#endif
+        // Sound settings
         [SerializeField]
-        private AudioClip m_ShootSound;
-        public AudioClip ShootSound { get { return m_ShootSound; } set { m_ShootSound = value; } }
+        private AudioItem m_EquipSound;
+        public AudioItem EquipSound { get { return m_EquipSound; } set { m_EquipSound = value; } }
         [SerializeField]
-        private AudioClip m_DryShootSound;
-        public AudioClip DryShootSound { get { return m_DryShootSound; } set { m_DryShootSound = value; } }
+        private AudioItem m_PrimaryAttackSound;
+        public AudioItem PrimaryAttackSound { get { return m_PrimaryAttackSound; } set { m_PrimaryAttackSound = value; } }
         [SerializeField]
-        private AudioClip m_ReloadSound;
-        public AudioClip ReloadSound { get { return m_ReloadSound; } set { m_ReloadSound = value; } }
+        private AudioItem m_DryShootSound;
+        public AudioItem DryShootSound { get { return m_DryShootSound; } set { m_DryShootSound = value; } }
         [SerializeField]
-        private AudioSource m_ShootAudioSource;
-        public AudioSource ShootAudioSource { get { return m_ShootAudioSource; } set { m_ShootAudioSource = value; } }
+        private AudioItem m_ReloadSound;
+        public AudioItem ReloadSound { get { return m_ReloadSound; } set { m_ReloadSound = value; } }
+        [SerializeField]
+        private AudioSource m_EquipAudioSource;
+        public AudioSource EquipAudioSource { get { return m_EquipAudioSource; } set { m_EquipAudioSource = value; } }
+        [SerializeField]
+        private AudioSource m_PrimaryAttackAudioSource;
+        public AudioSource PrimaryAttackAudioSource { get { return m_PrimaryAttackAudioSource; } set { m_PrimaryAttackAudioSource = value; } }
         [SerializeField]
         private AudioSource m_DryShootAudioSource;
         public AudioSource DryShootAudioSource { get { return m_DryShootAudioSource; } set { m_DryShootAudioSource = value; } }
@@ -118,29 +113,56 @@ namespace Hertzole.GoldPlayer.Weapons
         private AudioSource m_ReloadAudioSource;
         public AudioSource ReloadAudioSource { get { return m_ReloadAudioSource; } set { m_ReloadAudioSource = value; } }
 
-#if UNITY_EDITOR
-        [Header("Animations")]
-#endif
+        // Animations
         [SerializeField]
-        private WeaponAnimationInfo m_IdleAnimation = new WeaponAnimationInfo(AnimationTypeEnum.None, 0f);
+        private WeaponAnimationInfo m_IdleAnimation = new WeaponAnimationInfo(WeaponAnimationType.None);
         public WeaponAnimationInfo IdleAnimation { get { return m_IdleAnimation; } set { m_IdleAnimation = value; } }
         [SerializeField]
-        private WeaponAnimationInfo m_ShootAnimation = new WeaponAnimationInfo(AnimationTypeEnum.None, 0f);
+        private WeaponAnimationInfo m_ShootAnimation = new WeaponAnimationInfo(WeaponAnimationType.None);
         public WeaponAnimationInfo ShootAnimation { get { return m_ShootAnimation; } set { m_ShootAnimation = value; } }
         [SerializeField]
-        private WeaponAnimationInfo m_ReloadAnimation = new WeaponAnimationInfo(AnimationTypeEnum.CodeDriven, 1.2f);
+        private WeaponAnimationInfo m_ReloadAnimation = new WeaponAnimationInfo(WeaponAnimationType.CodeDriven);
         public WeaponAnimationInfo ReloadAnimation { get { return m_ReloadAnimation; } set { m_ReloadAnimation = value; } }
         [SerializeField]
-        private WeaponAnimationInfo m_EquipAnimation = new WeaponAnimationInfo(AnimationTypeEnum.CodeDriven, 2.5f);
+        private WeaponAnimationInfo m_EquipAnimation = new WeaponAnimationInfo(WeaponAnimationType.CodeDriven);
         public WeaponAnimationInfo EquipAnimation { get { return m_EquipAnimation; } set { m_EquipAnimation = value; } }
-        [SerializeField]
-        private WeaponAnimationInfo m_PutAwayAnimation = new WeaponAnimationInfo(AnimationTypeEnum.CodeDriven, 2.5f);
-        public WeaponAnimationInfo PutAwayAnimation { get { return m_PutAwayAnimation; } set { m_PutAwayAnimation = value; } }
 
         protected float m_NextFire = 0F;
         protected float m_OriginalAngle = 0f;
         protected float m_RecoilAngle = 0f;
         protected float m_RecoilRotationVelocity = 0f;
+
+        private int m_CurrentClip = 0;
+        public int CurrentClip
+        {
+            get { return m_CurrentClip; }
+            protected set
+            {
+                m_CurrentClip = value;
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                OnAmmoChanged?.Invoke(m_CurrentClip, m_CurrentAmmo);
+#else
+                if (OnAmmoChanged != null)
+                    OnAmmoChanged.Invoke(m_CurrentClip, m_CurrentAmmo);
+#endif
+            }
+        }
+
+        private int m_CurrentAmmo = 0;
+        public int CurrentAmmo
+        {
+            get { return m_CurrentAmmo; }
+            protected set
+            {
+                m_CurrentAmmo = value;
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                OnAmmoChanged?.Invoke(m_CurrentClip, m_CurrentAmmo);
+#else
+                if (OnAmmoChanged != null)
+                    OnAmmoChanged.Invoke(m_CurrentClip, m_CurrentAmmo);
+#endif
+            }
+        }
 
         protected bool m_PlayingEquipAnimation = false;
         protected bool m_PlayingPutAwayAnimation = false;
@@ -152,9 +174,16 @@ namespace Hertzole.GoldPlayer.Weapons
         private string m_PutAwayAnimationName;
 
         protected Vector3 m_OriginalPosition = Vector3.zero;
+        protected Vector3 m_OriginalRotation = Vector3.zero;
         protected Vector3 m_RecoilSmoothVelocity = Vector3.zero;
+        protected Vector3 m_EquipVelocity = Vector3.zero;
 
-        protected Animation m_Animation;
+        protected Animator m_Animator;
+
+        private RaycastHit m_RaycastHit;
+
+        private Transform m_PreviousHit;
+        private IDamageable m_Damageable;
 
         private Coroutine m_EquipAnimationRoutine;
 
@@ -162,112 +191,118 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected LayerMask m_HitLayer;
 
+        public delegate void AmmoEvent(int clip, int ammo);
+        public event AmmoEvent OnAmmoChanged;
+
         public virtual void Initialize(LayerMask hitLayer)
         {
             m_HitLayer = hitLayer;
 
             m_OriginalPosition = transform.localPosition;
             m_OriginalAngle = transform.localEulerAngles.x;
+            m_OriginalRotation = transform.localEulerAngles;
 
-            SetupAnimation();
+            CurrentClip = m_MaxClip;
+            CurrentAmmo = m_MaxAmmo;
+
+            ValidateAnimations();
+            ValidateWeapon();
         }
 
-        protected virtual void SetupAnimation()
+        protected virtual void ValidateAnimations()
         {
-            AddAnimationClip(m_IdleAnimation, "idle", ref m_IdleAnimationName);
-            AddAnimationClip(m_ShootAnimation, "shoot", ref m_ShootAnimationName);
-            AddAnimationClip(m_ReloadAnimation, "reload", ref m_ReloadAnimationName);
-            AddAnimationClip(m_EquipAnimation, "equip", ref m_EquipAnimationName);
-            AddAnimationClip(m_PutAwayAnimation, "put_away", ref m_PutAwayAnimationName);
+            //if (m_IdleAnimation.AnimationType == AnimationTypeEnum.Animator || m_ShootAnimation.AnimationType == AnimationTypeEnum.Animator ||
+            //    m_ReloadAnimation.AnimationType == AnimationTypeEnum.Animator || m_EquipAnimation.AnimationType == AnimationTypeEnum.Animator ||
+            //    m_PutAwayAnimation.AnimationType == AnimationTypeEnum.Animator)
+            //{
+            //    MakeSureAnimatorComponentExists();
+            //}
         }
 
-        private void AddAnimationClip(WeaponAnimationInfo info, string animationName, ref string animationNameString)
+        protected virtual void ValidateWeapon()
         {
-            if (info.AnimationType == AnimationTypeEnum.Animation)
+            if (m_ProjectileType == ProjectileTypeEnum.Raycast && m_RaycastOrigin == null)
             {
-                MakeSureAnimationComponentExists();
-                animationNameString = "reload";
-                m_Animation.AddClip(info.Clip, animationNameString);
+                throw new System.NullReferenceException("There's no Raycast Origin assigned to weapon '" + gameObject.name + "'!");
+            }
+
+            if (m_ProjectileType == ProjectileTypeEnum.Prefab && m_ProjectilePrefab == null)
+            {
+                throw new System.NullReferenceException("There's no Projectile Prefab assigned to weapon '" + gameObject.name + "'!");
             }
         }
 
-        private void MakeSureAnimationComponentExists()
+        private void MakeSureAnimatorComponentExists()
         {
-            if (m_Animation == null)
-                m_Animation = GetComponent<Animation>();
+            if (m_Animator == null)
+                m_Animator = GetComponent<Animator>();
 
-            if (m_Animation == null)
-                throw new System.NullReferenceException("There's no Animation component attached to " + gameObject.name + "!");
+            if (m_Animator == null)
+                throw new System.NullReferenceException("There's no Animator component attached to " + gameObject.name + "! It requires one to play animations.");
         }
 
 #if HERTZLIB_UPDATE_MANAGER
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UpdateManager.AddUpdate(this);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             UpdateManager.RemoveUpdate(this);
         }
-#endif        
+#endif
 
         public virtual void OnEquip()
         {
+            if (m_EquipAudioSource)
+                m_EquipSound.Play(m_EquipAudioSource);
+
             PlayEquipAnimation();
+        }
+
+        public virtual void OnPutAway()
+        {
+            m_RecoilRotationVelocity = 0f;
+            m_RecoilSmoothVelocity = Vector3.zero;
+
+            transform.localPosition = m_OriginalPosition;
+            transform.localEulerAngles = m_OriginalRotation;
+
+            if (m_EquipAnimationRoutine != null)
+                StopCoroutine(m_EquipAnimationRoutine);
         }
 
         protected virtual void PlayEquipAnimation()
         {
-            //switch (m_EquipAnimation.AnimationType)
-            //{
-            //    case AnimationTypeEnum.None:
-            //        break;
-            //    case AnimationTypeEnum.CodeDriven:
-            //    case AnimationTypeEnum.Animation:
-            //        m_EquipAnimationRoutine = StartCoroutine(AnimationEquip());
-            //        break;
-            //    default:
-            //        throw new System.NotImplementedException("No support for animation type '" + m_EquipAnimation + "'!");
-            //}
+            switch (m_EquipAnimation.AnimationType)
+            {
+                case WeaponAnimationType.None:
+                    break;
+                case WeaponAnimationType.CodeDriven:
+                    m_EquipAnimationRoutine = StartCoroutine(AnimationEquip());
+                    break;
+                default:
+                    throw new System.NotImplementedException("No support for animation type '" + m_EquipAnimation + "'!");
+            }
         }
 
-        //protected virtual IEnumerator AnimationEquip()
-        //{
-        //    m_PlayingEquipAnimation = true;
+        protected virtual IEnumerator AnimationEquip()
+        {
+            m_PlayingEquipAnimation = true;
+            transform.localPosition = m_OriginalPosition - new Vector3(0, 1, 0);
 
-        //    if (m_EquipAnimation.AnimationType == AnimationTypeEnum.Animation)
-        //    {
-        //        m_Animation.Play(m_EquipAnimationName);
-        //        while (m_Animation.IsPlaying(m_EquipAnimationName))
-        //        {
-        //            yield return null;
-        //        }
-        //    }
-        //    else if (m_EquipAnimation.AnimationType == AnimationTypeEnum.CodeDriven)
-        //    {
-        //        float curveTime = 0;
-        //        float curveAmount = m_EquipAnimation.Curve.Evaluate(curveTime);
-        //        transform.localPosition = m_OriginalPosition - new Vector3(0, 3, 0);
+            float equipTime = 0;
+            while (equipTime < m_EquipTime)
+            {
+                equipTime += Time.deltaTime;
+                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, m_OriginalPosition, ref m_EquipVelocity, m_EquipTime / 3);
+                yield return null;
+            }
 
-
-        //        while (curveAmount < 1.0f)
-        //        {
-        //            Debug.Log("Equip code driven");
-        //            curveTime += Time.deltaTime * m_EquipAnimation.AnimationSpeed;
-        //            curveAmount = m_EquipAnimation.Curve.Evaluate(curveTime);
-        //            transform.localPosition = new Vector3(transform.localPosition.x, m_OriginalPosition.y * curveAmount, transform.localPosition.z);
-        //            yield return null;
-        //        }
-        //    }
-
-        //    m_PlayingEquipAnimation = false;
-
-        //    Debug.Log("Done with equip animation");
-        //    m_EquipAnimationRoutine = null;
-        //}
-
-        public virtual void OnPutAway() { }
+            m_PlayingEquipAnimation = false;
+            m_EquipAnimationRoutine = null;
+        }
 
         public virtual void PrimaryAttack()
         {
@@ -277,13 +312,18 @@ namespace Hertzole.GoldPlayer.Weapons
             if (Time.time >= m_NextFire)
             {
                 m_NextFire = Time.time + m_FireDelay;
-                Shoot();
+                DoPrimaryAttack();
             }
         }
 
-        protected virtual void Shoot()
+        protected virtual void DoPrimaryAttack()
         {
             ApplyRecoil();
+            PlayPrimaryAttackSound();
+            DoProjectile();
+
+            if (!m_InfiniteClip)
+                CurrentClip--;
         }
 
         public virtual void SecondaryAttack() { }
@@ -303,10 +343,66 @@ namespace Hertzole.GoldPlayer.Weapons
             RecoilUpdate();
         }
 
+        protected virtual void PlayPrimaryAttackSound()
+        {
+            if (m_CurrentClip > 0)
+            {
+                if (m_PrimaryAttackAudioSource)
+                    m_PrimaryAttackSound.Play(m_PrimaryAttackAudioSource);
+            }
+            else
+            {
+                if (m_DryShootAudioSource)
+                    m_DryShootSound.Play(m_DryShootAudioSource);
+            }
+        }
+
+        private void DoProjectile()
+        {
+            if (m_CurrentClip > 0)
+            {
+                switch (m_ProjectileType)
+                {
+                    case ProjectileTypeEnum.Raycast:
+                        DoRaycastProjectile();
+                        break;
+                    case ProjectileTypeEnum.Prefab:
+                        DoPrefabProjectile();
+                        break;
+                    default:
+                        throw new System.NotSupportedException("No support for '" + m_ProjectileType + "' projectile type!");
+                }
+            }
+        }
+
+        protected virtual void DoRaycastProjectile()
+        {
+            Physics.Raycast(m_RaycastOrigin.position, m_RaycastOrigin.forward, out m_RaycastHit, m_ProjectileLength, m_HitLayer, QueryTriggerInteraction.Ignore);
+            if (m_RaycastHit.transform != null)
+            {
+                if (m_PreviousHit != m_RaycastHit.transform)
+                {
+                    m_PreviousHit = m_RaycastHit.transform;
+                    m_Damageable = m_RaycastHit.transform != null ? m_RaycastHit.transform.GetComponent<IDamageable>() : null;
+                }
+
+                if (m_Damageable != null)
+                    m_Damageable.TakeDamage(m_Damage);
+            }
+        }
+
+        protected virtual void DoPrefabProjectile()
+        {
+
+        }
+
         protected virtual void ApplyRecoil()
         {
-            transform.localPosition -= Vector3.forward * m_KickbackAmount;
-            m_RecoilAngle += m_RecoilAmount;
+            if (!m_PlayingEquipAnimation && m_CurrentClip > 0)
+            {
+                transform.localPosition -= Vector3.forward * m_KickbackAmount;
+                m_RecoilAngle += m_RecoilAmount;
+            }
         }
 
         protected virtual void RecoilUpdate()

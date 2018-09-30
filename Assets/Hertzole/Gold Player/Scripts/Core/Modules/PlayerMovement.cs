@@ -187,7 +187,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Sets the gravity of the player. </summary>
         public float Gravity { get { return m_Gravity; } set { float v = value; if (v < 0) v = -v; m_Gravity = v; } }
         /// <summary> How much control the player will have in the air. </summary>
-        public float AirControl { get { return m_AirControl; } set { if (value > 1) m_AirControl = 1; else if (value < 0) m_AirControl = 0; else m_AirControl = value; } }
+        public float AirControl { get { return m_AirControl; } set { m_AirControl = value > 1 ? 1 : value < 0 ? 0 : value; } }
         /// <summary> Determines if ground stick should be enabled. This would stop the player for bouncing down slopes. </summary>
         public bool EnableGroundStick { get { return m_EnableGroundStick; } set { m_EnableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
@@ -400,10 +400,7 @@ namespace Hertzole.GoldPlayer.Core
                 m_PreviouslyGrounded = true;
 
                 // If ground stick is enabled and the player isn't jumping, apply the ground stick effect.
-                if (m_EnableGroundStick && !m_IsJumping)
-                    m_MoveDirection.y = -m_GroundStick;
-                else
-                    m_MoveDirection.y = 0;
+                m_MoveDirection.y = m_EnableGroundStick && !m_IsJumping ? -m_GroundStick : 0;
             }
 
             // Make sure the player is moving in the right direction.
