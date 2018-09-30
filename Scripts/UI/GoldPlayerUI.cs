@@ -139,12 +139,12 @@ namespace Hertzole.GoldPlayer.UI
         }
 
 #if HERTZLIB_UPDATE_MANAGER
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UpdateManager.AddUpdate(this);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             UpdateManager.RemoveUpdate(this);
         }
@@ -163,6 +163,8 @@ namespace Hertzole.GoldPlayer.UI
         /// </summary>
         public virtual void AdaptSprintingUI()
         {
+            //FIX: Only run if Player isn't null.
+
             // If the player can't run or no stamina enabled, disable all elements.
             if (!Player.Movement.CanRun || !Player.Movement.Stamina.EnableStamina)
             {

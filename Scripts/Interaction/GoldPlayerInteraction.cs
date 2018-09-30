@@ -84,12 +84,12 @@ namespace Hertzole.GoldPlayer.Interaction
         }
 
 #if HERTZLIB_UPDATE_MANAGER
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UpdateManager.AddUpdate(this);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             UpdateManager.RemoveUpdate(this);
         }

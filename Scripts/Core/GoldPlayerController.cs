@@ -56,14 +56,14 @@ namespace Hertzole.GoldPlayer
         }
 
 #if HERTZLIB_UPDATE_MANAGER
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UpdateManager.AddUpdate(this);
             UpdateManager.AddFixedUpdate(this);
             UpdateManager.AddLateUpdate(this);
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             UpdateManager.RemoveUpdate(this);
             UpdateManager.RemoveFixedUpdate(this);

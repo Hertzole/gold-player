@@ -62,20 +62,20 @@ namespace Hertzole.GoldPlayer.Weapons
                 if (m_MyWeapons == null || m_MyWeapons.Count == 0)
                     return null;
 
-                if (m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > m_MyWeapons.Count - 1)
-                    return null;
-
-                return m_AvailableWeapons[m_MyWeapons[m_CurrentWeaponIndex]];
+                return m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > m_MyWeapons.Count - 1 ? null : m_AvailableWeapons[m_MyWeapons[m_CurrentWeaponIndex]];
             }
         }
 
+        public delegate void WeaponChangeEvent(GoldPlayerWeapon previousWeapon, GoldPlayerWeapon newWeapon);
+        public event WeaponChangeEvent OnWeaponChanged;
+
 #if HERTZLIB_UPDATE_MANAGER
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             UpdateManager.AddUpdate(this);
         }
 
-        private void OnDisable()
+        protected virtual OnDisable()
         {
             UpdateManager.RemoveUpdate(this);
         }
@@ -322,6 +322,13 @@ namespace Hertzole.GoldPlayer.Weapons
             m_CurrentWeaponIndex = index;
             CurrentWeapon.gameObject.SetActive(true);
             CurrentWeapon.OnEquip();
+
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+            OnWeaponChanged?.Invoke(m_PreviousWeapon, CurrentWeapon);
+#else
+            if (OnWeaponChanged != null)
+                OnWeaponChanged.Invoke(m_PreviousWeapon, CurrentWeapon);
+#endif
         }
     }
 }
