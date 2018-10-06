@@ -385,7 +385,7 @@ namespace Hertzole.GoldPlayer.Core
                     float fallHeight = m_JumpPosition.y - PlayerTransform.position.y;
 
                     // Invoke the OnPlayerLand event.
-#if NET_4_6
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
                     OnLand?.Invoke(fallHeight);
 #else
                     if (OnLand != null)
@@ -514,7 +514,7 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Invoke the OnPlayerJump event.
-#if NET_4_6
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
             OnJump?.Invoke(m_JumpHeight);
 #else
             if (OnJump != null)
@@ -555,7 +555,7 @@ namespace Hertzole.GoldPlayer.Core
                 // If the player wasn't previously running, they just started. Fire the OnBeginRun event.
                 if (!m_PreviouslyRunning)
                 {
-#if NET_4_6
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
                     OnBeginRun?.Invoke();
 #else
                     if (OnBeginRun != null)
@@ -571,7 +571,7 @@ namespace Hertzole.GoldPlayer.Core
                 // If the player was previously running, fire the OnEndRun event.
                 if (m_PreviouslyRunning)
                 {
-#if NET_4_6
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
                     OnEndRun?.Invoke();
 #else
                     if (OnEndRun != null)
@@ -603,7 +603,7 @@ namespace Hertzole.GoldPlayer.Core
                     // If the player was previously crouched, fire the OnEndCrouch event, as the player is longer crouching.
                     if (m_PreviouslyCrouched)
                     {
-#if NET_4_6
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
                         OnEndCrouch?.Invoke();
 #else
                         if (OnEndCrouch != null)
@@ -631,7 +631,7 @@ namespace Hertzole.GoldPlayer.Core
                     // If the player wasn't previously crouched, fire the OnBeginCrouch event, as the player is now crouching.
                     if (!m_PreviouslyCrouched)
                     {
-#if NET_4_6
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
                         OnBeginCrouch?.Invoke();
 #else
                         if (OnBeginCrouch != null)
