@@ -56,17 +56,20 @@ namespace Hertzole.GoldPlayer.Core
             // If FOV kick is enabled and there's no target camera, complain.
             if (m_EnableFOVKick && !m_TargetCamera)
             {
-                Debug.LogError("There's no Target Camera set!");
-                return;
+                throw new System.NullReferenceException("There's no Target Camera set!");
             }
 
             // Set hasBeenInitialized to true.
             m_HasBeenInitialized = true;
 
-            // Get the original FOV from the target camera.
-            m_OriginalFOV = m_TargetCamera.fieldOfView;
-            // Update the new FOV.
-            UpdateNewFOV();
+            // Only call code if it's enabled.
+            if (m_EnableFOVKick)
+            {
+                // Get the original FOV from the target camera.
+                m_OriginalFOV = m_TargetCamera.fieldOfView;
+                // Update the new FOV.
+                UpdateNewFOV();
+            }
         }
 
         /// <summary>

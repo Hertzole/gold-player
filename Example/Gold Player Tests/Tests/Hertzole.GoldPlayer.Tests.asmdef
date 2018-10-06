@@ -1,0 +1,16 @@
+{
+    "name": "Hertzole.GoldPlayer.Tests",
+    "references": [
+        "Hertzole.GoldPlayer"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

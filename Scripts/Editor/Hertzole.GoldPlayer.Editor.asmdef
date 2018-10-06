@@ -1,0 +1,16 @@
+{
+    "name": "Hertzole.GoldPlayer.Editor",
+    "references": [
+        "Hertzole.GoldPlayer"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

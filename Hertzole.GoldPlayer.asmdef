@@ -1,0 +1,15 @@
+{
+    "name": "Hertzole.GoldPlayer",
+    "references": [
+        "Unity.TextMeshPro",
+        "Hertzole.HertzLib"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

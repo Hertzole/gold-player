@@ -141,7 +141,6 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void CheckBox()
         {
-            //TODO: Convert to Physics.OverlapBoxNonAlloc
             m_GroundColliders = Physics.OverlapBox(PlayerTransform.position, new Vector3(CharacterController.radius, 0.2f, CharacterController.radius), Quaternion.identity, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore);
         }
 

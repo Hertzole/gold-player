@@ -32,7 +32,7 @@ namespace Hertzole.GoldPlayer.Core
         private float m_Volume = 1f;
         [SerializeField]
         [Tooltip("All the audio clips.")]
-        private AudioClip[] m_AudioClips;
+        private AudioClip[] m_AudioClips = new AudioClip[0];
 
         /// <summary> Determines if this audio should be enabled. </summary>
         public bool Enabled { get { return m_Enabled; } set { m_Enabled = value; } }
@@ -137,8 +137,8 @@ namespace Hertzole.GoldPlayer.Core
         /// <param name="audioSource">The source to play the sounds on.</param>
         public void Play(AudioSource audioSource)
         {
-            // Only play if the audio item is enabled-
-            if (m_Enabled)
+            // Only play if the audio item is enabled.
+            if (m_Enabled && audioSource != null)
             {
                 // Only play if there are any audio clips.
                 if (m_AudioClips.Length > 0)

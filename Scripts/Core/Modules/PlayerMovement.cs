@@ -28,7 +28,7 @@ namespace Hertzole.GoldPlayer.Core
         private MovementSpeeds m_RunSpeeds = new MovementSpeeds(7f, 5.5f, 5f);
         [SerializeField]
         [Tooltip("Everything related to stamina (limited running).")]
-        private StaminaClass m_Stamina;
+        private StaminaClass m_Stamina = new StaminaClass();
 
         //////// JUMPING
         [Header("Jumping")]

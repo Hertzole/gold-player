@@ -95,10 +95,11 @@ namespace Hertzole.GoldPlayer.Core
 
         public void Initialize()
         {
-            if (m_BobTarget == null && m_EnableBob)
+            if (m_EnableBob && m_BobTarget == null)
             {
-                Debug.LogError("No Bob Target set!");
-                return;
+                //Debug.LogError("No Bob Target set!");
+                //return;
+                throw new System.NullReferenceException("No Bob Target set!");
             }
             else if (!m_EnableBob && m_BobTarget == null)
                 return;
