@@ -47,6 +47,9 @@ namespace Hertzole.GoldPlayer.Weapons
         private bool m_AutoReloadEmptyClip = true;
         public bool AutoReloadEmptyClip { get { return m_AutoReloadEmptyClip; } set { m_AutoReloadEmptyClip = value; } }
         [SerializeField]
+        private bool m_CanReloadInBackground = false;
+        public bool CanReloadInBackground { get { return m_CanReloadInBackground; } set { m_CanReloadInBackground = value; } }
+        [SerializeField]
         private float m_ReloadTime = 0.8f;
         public float ReloadTIme { get { return m_ReloadTime; } set { m_ReloadTime = value; } }
         [SerializeField]
@@ -131,6 +134,7 @@ namespace Hertzole.GoldPlayer.Weapons
         protected float m_OriginalAngle = 0f;
         protected float m_RecoilAngle = 0f;
         protected float m_RecoilRotationVelocity = 0f;
+        protected float m_FinishReloadTime = 0f;
 
         private int m_CurrentClip = 0;
         public int CurrentClip
@@ -193,6 +197,8 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public delegate void AmmoEvent(int clip, int ammo);
         public event AmmoEvent OnAmmoChanged;
+        public event System.Action OnStartReloading;
+        public event System.Action OnFinishReload;
 
         public virtual void Initialize(LayerMask hitLayer)
         {
@@ -241,12 +247,28 @@ namespace Hertzole.GoldPlayer.Weapons
                 throw new System.NullReferenceException("There's no Animator component attached to " + gameObject.name + "! It requires one to play animations.");
         }
 
-#if HERTZLIB_UPDATE_MANAGER
         protected virtual void OnEnable()
         {
+#if HERTZLIB_UPDATE_MANAGER
             UpdateManager.AddUpdate(this);
+#endif
+            if (IsReloading && m_CanReloadInBackground && Time.time >= m_FinishReloadTime)
+            {
+                FinishReloading();
+            }
+            else if (IsReloading && !m_CanReloadInBackground)
+            {
+                m_FinishReloadTime = Time.time + m_ReloadTime + m_EquipTime;
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                OnStartReloading?.Invoke();
+#else
+                if (OnStartReloading != null)
+                    OnStartReloading.Invoke();
+#endif
+            }
         }
 
+#if HERTZLIB_UPDATE_MANAGER
         protected virtual void OnDisable()
         {
             UpdateManager.RemoveUpdate(this);
@@ -322,16 +344,74 @@ namespace Hertzole.GoldPlayer.Weapons
             PlayPrimaryAttackSound();
             DoProjectile();
 
-            if (!m_InfiniteClip)
+            if (!m_InfiniteClip && m_CurrentClip > 0)
                 CurrentClip--;
+            else if (!m_InfiniteClip && m_CurrentClip == 0 && m_AutoReloadEmptyClip && !IsReloading)
+                Reload();
         }
 
         public virtual void SecondaryAttack() { }
 
         public virtual void Reload()
         {
-            if (IsReloading)
+            if (IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0)
                 return;
+
+            IsReloading = true;
+            m_FinishReloadTime = Time.time + m_ReloadTime;
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+            OnStartReloading?.Invoke();
+#else
+                if (OnStartReloading != null)
+                    OnStartReloading.Invoke();
+#endif
+        }
+
+        protected virtual void FinishReloading()
+        {
+            IsReloading = false;
+            if (m_MaxAmmo == -1)
+            {
+                m_CurrentClip = m_MaxClip;
+            }
+            else
+            {
+                if (m_CurrentClip >= m_MaxClip)
+                {
+                    int toReload = m_MaxClip - m_CurrentClip;
+                    m_CurrentClip += toReload;
+                    m_CurrentAmmo -= toReload;
+                }
+                else
+                {
+                    int toReload = m_MaxClip - m_CurrentClip;
+                    if (toReload > m_CurrentAmmo)
+                        toReload = m_CurrentAmmo;
+                    m_CurrentClip += toReload;
+                    m_CurrentAmmo -= toReload;
+                }
+            }
+
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+            OnAmmoChanged?.Invoke(m_CurrentClip, m_CurrentAmmo);
+#else
+                if (OnAmmoChanged != null)
+                    OnAmmoChanged.Invoke(m_CurrentClip, m_CurrentAmmo);
+#endif
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+            OnFinishReload?.Invoke();
+#else
+                if (OnFinishReload != null)
+                    OnFinishReload.Invoke();
+#endif
+        }
+
+        protected virtual void ReloadUpdate()
+        {
+            if (IsReloading && Time.time >= m_FinishReloadTime)
+            {
+                FinishReloading();
+            }
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -341,6 +421,7 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
         {
             RecoilUpdate();
+            ReloadUpdate();
         }
 
         protected virtual void PlayPrimaryAttackSound()
@@ -383,7 +464,11 @@ namespace Hertzole.GoldPlayer.Weapons
                 if (m_PreviousHit != m_RaycastHit.transform)
                 {
                     m_PreviousHit = m_RaycastHit.transform;
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                    m_Damageable = m_RaycastHit.transform?.GetComponent<IDamageable>();
+#else
                     m_Damageable = m_RaycastHit.transform != null ? m_RaycastHit.transform.GetComponent<IDamageable>() : null;
+#endif
                 }
 
                 if (m_Damageable != null)

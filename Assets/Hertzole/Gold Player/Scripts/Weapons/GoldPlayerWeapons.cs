@@ -81,7 +81,7 @@ namespace Hertzole.GoldPlayer.Weapons
         }
 #endif
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
             {
@@ -89,9 +89,10 @@ namespace Hertzole.GoldPlayer.Weapons
                 m_AvailableWeapons[i].Initialize(m_HitLayer);
             }
 
+            //TODO: Add a way in the editor to set what weapons are included.
             AddWeapon(0);
             AddWeapon(1);
-            AddWeapon(2);
+            //AddWeapon(2);
 
             ChangeWeapon(0);
         }
@@ -172,10 +173,10 @@ namespace Hertzole.GoldPlayer.Weapons
             switch (CurrentWeapon.PrimaryTriggerType)
             {
                 case GoldPlayerWeapon.TriggerTypeEnum.Manual:
-                    m_DoPrimaryAttack = PlayerInput.GetButtonDown("Primary Attack");
+                    m_DoPrimaryAttack = GetButtonDown("Primary Attack");
                     break;
                 case GoldPlayerWeapon.TriggerTypeEnum.Automatic:
-                    m_DoPrimaryAttack = PlayerInput.GetButton("Primary Attack");
+                    m_DoPrimaryAttack = GetButton("Primary Attack");
                     break;
                 default:
                     throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryTriggerType + " trigger type!");
@@ -193,10 +194,10 @@ namespace Hertzole.GoldPlayer.Weapons
             switch (CurrentWeapon.SecondaryTriggerType)
             {
                 case GoldPlayerWeapon.TriggerTypeEnum.Manual:
-                    m_DoSecondaryAttack = PlayerInput.GetButtonDown("Secondary Attack");
+                    m_DoSecondaryAttack = GetButtonDown("Secondary Attack");
                     break;
                 case GoldPlayerWeapon.TriggerTypeEnum.Automatic:
-                    m_DoSecondaryAttack = PlayerInput.GetButton("Secondary Attack");
+                    m_DoSecondaryAttack = GetButton("Secondary Attack");
                     break;
                 default:
                     throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryTriggerType + " trigger type!");
@@ -211,7 +212,7 @@ namespace Hertzole.GoldPlayer.Weapons
             if (CurrentWeapon == null)
                 return;
 
-            if (PlayerInput.GetButton("Reload"))
+            if (GetButtonDown("Reload"))
             {
                 CurrentWeapon.Reload();
             }
@@ -320,8 +321,11 @@ namespace Hertzole.GoldPlayer.Weapons
             m_PreviousWeapon = CurrentWeapon;
 
             m_CurrentWeaponIndex = index;
-            CurrentWeapon.gameObject.SetActive(true);
-            CurrentWeapon.OnEquip();
+            if (CurrentWeapon != null)
+            {
+                CurrentWeapon.gameObject.SetActive(true);
+                CurrentWeapon.OnEquip();
+            }
 
 #if NET_4_6 || UNITY_2018_3_OR_NEWER
             OnWeaponChanged?.Invoke(m_PreviousWeapon, CurrentWeapon);

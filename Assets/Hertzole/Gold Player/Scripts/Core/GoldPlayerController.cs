@@ -74,7 +74,7 @@ namespace Hertzole.GoldPlayer
 #if HERTZLIB_UPDATE_MANAGER
         public void OnUpdate()
 #else
-        private void Update()
+        public void Update()
 #endif
         {
             if (HasBeenInitialized)
@@ -89,7 +89,7 @@ namespace Hertzole.GoldPlayer
 #if HERTZLIB_UPDATE_MANAGER
         public void OnFixedUpdate()
 #else
-        private void FixedUpdate()
+        public void FixedUpdate()
 #endif
         {
             if (HasBeenInitialized)
@@ -104,7 +104,7 @@ namespace Hertzole.GoldPlayer
 #if HERTZLIB_UPDATE_MANAGER
         public void OnLateUpdate()
 #else
-        private void LateUpdate()
+        public void LateUpdate()
 #endif
         {
             if (HasBeenInitialized)
@@ -133,8 +133,8 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         protected virtual void GetReferences()
         {
-            m_PlayerInput = GetComponent<GoldInput>();
-            m_Controller = GetComponent<CharacterController>();
+            m_PlayerInput = gameObject.GetComponent<GoldInput>();
+            m_Controller = gameObject.GetComponent<CharacterController>();
         }
 
         /// <summary>
