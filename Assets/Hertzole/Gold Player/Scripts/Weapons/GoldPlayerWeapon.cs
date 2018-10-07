@@ -1,11 +1,13 @@
 using Hertzole.GoldPlayer.Core;
 using Hertzole.HertzLib;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Weapons
 {
     [AddComponentMenu("Gold Player/Weapons/Gold Player Weapon")]
+    [SelectionBase]
 #if HERTZLIB_UPDATE_MANAGER
     public class GoldPlayerWeapon : MonoBehaviour, IUpdate
 #else
@@ -70,16 +72,47 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_ProjectileLength = 1000f;
         public float ProjectileLength { get { return m_ProjectileLength; } set { m_ProjectileLength = value; } }
         [SerializeField]
-        private Transform m_RaycastOrigin = null;
-        public Transform RaycastOrigin { get { return m_RaycastOrigin; } set { m_RaycastOrigin = value; } }
+        private Transform m_ShootOrigin = null;
+        public Transform ShootOrigin { get { return m_ShootOrigin; } set { m_ShootOrigin = value; } }
+        [SerializeField]
+        private bool m_PoolPrefabs = true;
+        public bool PoolPrefabs { get { return m_PoolPrefabs; } set { m_PoolPrefabs = value; } }
+        [SerializeField]
+        private int m_InitialPrefabPool = 20;
+        public int InitialPrefabPool { get { return m_InitialPrefabPool; } set { m_InitialPrefabPool = value; } }
         [SerializeField]
         private GoldPlayerProjectile m_ProjectilePrefab;
         public GoldPlayerProjectile ProjectilePrefab { get { return m_ProjectilePrefab; } set { m_ProjectilePrefab = value; } }
+        [SerializeField]
+        private float m_ProjectileMoveSpeed = 20f;
+        public float ProjectileMoveSpeed { get { return m_ProjectileMoveSpeed; } set { m_ProjectileMoveSpeed = value; } }
+        [SerializeField]
+        private float m_ProjectileLifetime = 5f;
+        public float ProjectileLifetime { get { return m_ProjectileLifetime; } set { m_ProjectileLifetime = value; } }
+        [SerializeField]
+        private int m_BulletsPerShot = 1;
+        public int BulletsPerShot { get { return m_BulletsPerShot; } set { m_BulletsPerShot = value; } }
+        [SerializeField]
+        [Range(0, 90)]
+        private float m_BulletSpread = 0f;
+        public float BulletSpread { get { return m_BulletSpread; } set { m_BulletSpread = value; } }
+        [SerializeField]
+        private bool m_ApplyRigidbodyForce = false;
+        public bool ApplyRigidbodyForce { get { return m_ApplyRigidbodyForce; } set { m_ApplyRigidbodyForce = value; } }
+        [SerializeField]
+        private float m_RigidbodyForce = 1f;
+        public float RigidbodyForce { get { return m_RigidbodyForce; } set { m_RigidbodyForce = value; } }
+        [SerializeField]
+        private ForceMode m_ForceType = ForceMode.Impulse;
+        public ForceMode ForceType { get { return m_ForceType; } set { m_ForceType = value; } }
 
         // Recoil settings
         [SerializeField]
         private bool m_EnableRecoil = true;
         public bool EnableRecoil { get { return m_EnableRecoil; } set { m_EnableRecoil = value; } }
+        [SerializeField]
+        private Transform m_RecoilTarget = null;
+        public Transform RecoilTarget { get { return m_RecoilTarget; } set { m_RecoilTarget = value; } }
         [SerializeField]
         private float m_RecoilAmount = 5f;
         public float RecoilAmount { get { return m_RecoilAmount; } set { m_RecoilAmount = value; } }
@@ -131,7 +164,7 @@ namespace Hertzole.GoldPlayer.Weapons
         public WeaponAnimationInfo EquipAnimation { get { return m_EquipAnimation; } set { m_EquipAnimation = value; } }
 
         protected float m_NextFire = 0F;
-        protected float m_OriginalAngle = 0f;
+        protected float m_OriginalRecoilAngle = 0f;
         protected float m_RecoilAngle = 0f;
         protected float m_RecoilRotationVelocity = 0f;
         protected float m_FinishReloadTime = 0f;
@@ -171,6 +204,8 @@ namespace Hertzole.GoldPlayer.Weapons
         protected bool m_PlayingEquipAnimation = false;
         protected bool m_PlayingPutAwayAnimation = false;
 
+        public bool HasEnoughClip { get { return m_InfiniteClip ? true : m_CurrentClip > 0; } }
+
         private string m_IdleAnimationName;
         private string m_ShootAnimationName;
         private string m_ReloadAnimationName;
@@ -178,6 +213,7 @@ namespace Hertzole.GoldPlayer.Weapons
         private string m_PutAwayAnimationName;
 
         protected Vector3 m_OriginalPosition = Vector3.zero;
+        protected Vector3 m_OriginalRecoilPosition = Vector3.zero;
         protected Vector3 m_OriginalRotation = Vector3.zero;
         protected Vector3 m_RecoilSmoothVelocity = Vector3.zero;
         protected Vector3 m_EquipVelocity = Vector3.zero;
@@ -187,7 +223,8 @@ namespace Hertzole.GoldPlayer.Weapons
         private RaycastHit m_RaycastHit;
 
         private Transform m_PreviousHit;
-        private IDamageable m_Damageable;
+        private IDamageable m_HitDamageable;
+        private Rigidbody m_HitRigidbody;
 
         private Coroutine m_EquipAnimationRoutine;
 
@@ -195,21 +232,52 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected LayerMask m_HitLayer;
 
+        protected Stack<GoldPlayerProjectile> m_PooledProjectiles = new Stack<GoldPlayerProjectile>();
+        protected List<GoldPlayerProjectile> m_ActiveProjectiles = new List<GoldPlayerProjectile>();
+
+        private static Transform s_ProjectilePool;
+        public static Transform ProjectilePool
+        {
+            get
+            {
+                if (!s_ProjectilePool)
+                    s_ProjectilePool = new GameObject("Projectile Pool").transform;
+
+                return s_ProjectilePool;
+            }
+        }
+
         public delegate void AmmoEvent(int clip, int ammo);
+        public delegate void HitEvent(RaycastHit hit, int damage);
         public event AmmoEvent OnAmmoChanged;
         public event System.Action OnStartReloading;
         public event System.Action OnFinishReload;
+        public event HitEvent OnHit;
+        public event HitEvent OnHitDamagable;
+        public static event HitEvent OnHitGlobal;
+        public static event HitEvent OnHitDamagableGlobal;
 
         public virtual void Initialize(LayerMask hitLayer)
         {
             m_HitLayer = hitLayer;
 
             m_OriginalPosition = transform.localPosition;
-            m_OriginalAngle = transform.localEulerAngles.x;
+            m_OriginalRecoilPosition = m_RecoilTarget.localPosition;
+            m_OriginalRecoilAngle = m_RecoilTarget.localEulerAngles.x;
             m_OriginalRotation = transform.localEulerAngles;
 
-            CurrentClip = m_MaxClip;
-            CurrentAmmo = m_MaxAmmo;
+            m_CurrentClip = m_InfiniteClip ? -1 : m_MaxClip;
+            m_CurrentAmmo = m_InfiniteAmmo ? -1 : m_MaxAmmo;
+
+            if (m_ProjectileType == ProjectileTypeEnum.Prefab && m_PoolPrefabs)
+            {
+                for (int i = 0; i < m_InitialPrefabPool; i++)
+                {
+                    GoldPlayerProjectile projectile = Instantiate(m_ProjectilePrefab, ProjectilePool);
+                    projectile.gameObject.SetActive(false);
+                    m_PooledProjectiles.Push(projectile);
+                }
+            }
 
             ValidateAnimations();
             ValidateWeapon();
@@ -227,7 +295,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected virtual void ValidateWeapon()
         {
-            if (m_ProjectileType == ProjectileTypeEnum.Raycast && m_RaycastOrigin == null)
+            if (m_ProjectileType == ProjectileTypeEnum.Raycast && m_ShootOrigin == null)
             {
                 throw new System.NullReferenceException("There's no Raycast Origin assigned to weapon '" + gameObject.name + "'!");
             }
@@ -252,6 +320,8 @@ namespace Hertzole.GoldPlayer.Weapons
 #if HERTZLIB_UPDATE_MANAGER
             UpdateManager.AddUpdate(this);
 #endif
+            m_NextFire = Time.time + m_EquipTime;
+
             if (IsReloading && m_CanReloadInBackground && Time.time >= m_FinishReloadTime)
             {
                 FinishReloading();
@@ -312,13 +382,18 @@ namespace Hertzole.GoldPlayer.Weapons
         protected virtual IEnumerator AnimationEquip()
         {
             m_PlayingEquipAnimation = true;
-            transform.localPosition = m_OriginalPosition - new Vector3(0, 1, 0);
+            Vector3 startPosition = m_OriginalPosition - new Vector3(0, 1, 0);
+            transform.localPosition = startPosition;
 
-            float equipTime = 0;
-            while (equipTime < m_EquipTime)
+            float currentEquipTime = 0;
+            while (currentEquipTime < m_EquipTime)
             {
-                equipTime += Time.deltaTime;
-                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, m_OriginalPosition, ref m_EquipVelocity, m_EquipTime / 3);
+                currentEquipTime += Time.deltaTime;
+                if (currentEquipTime > m_EquipTime)
+                    currentEquipTime = m_EquipTime;
+
+                float perc = currentEquipTime / m_EquipTime;
+                transform.localPosition = Vector3.Lerp(startPosition, m_OriginalPosition, m_EquipAnimation.Curve.Evaluate(perc));
                 yield return null;
             }
 
@@ -331,23 +406,24 @@ namespace Hertzole.GoldPlayer.Weapons
             if (IsReloading)
                 return;
 
-            if (Time.time >= m_NextFire)
+            if (Time.time >= m_NextFire && !m_PlayingEquipAnimation)
             {
                 m_NextFire = Time.time + m_FireDelay;
-                DoPrimaryAttack();
+                PlayPrimaryAttackSound();
+                if (HasEnoughClip)
+                    DoPrimaryAttack();
+                else if (!m_InfiniteClip && m_CurrentClip == 0 && m_AutoReloadEmptyClip && !IsReloading)
+                    Reload();
             }
         }
 
         protected virtual void DoPrimaryAttack()
         {
             ApplyRecoil();
-            PlayPrimaryAttackSound();
             DoProjectile();
 
             if (!m_InfiniteClip && m_CurrentClip > 0)
                 CurrentClip--;
-            else if (!m_InfiniteClip && m_CurrentClip == 0 && m_AutoReloadEmptyClip && !IsReloading)
-                Reload();
         }
 
         public virtual void SecondaryAttack() { }
@@ -359,18 +435,22 @@ namespace Hertzole.GoldPlayer.Weapons
 
             IsReloading = true;
             m_FinishReloadTime = Time.time + m_ReloadTime;
+
+            if (m_ReloadAudioSource != null)
+                m_ReloadSound.Play(m_ReloadAudioSource);
+
 #if NET_4_6 || UNITY_2018_3_OR_NEWER
             OnStartReloading?.Invoke();
 #else
-                if (OnStartReloading != null)
-                    OnStartReloading.Invoke();
+            if (OnStartReloading != null)
+                OnStartReloading.Invoke();
 #endif
         }
 
         protected virtual void FinishReloading()
         {
             IsReloading = false;
-            if (m_MaxAmmo == -1)
+            if (m_CurrentAmmo == -1)
             {
                 m_CurrentClip = m_MaxClip;
             }
@@ -388,7 +468,8 @@ namespace Hertzole.GoldPlayer.Weapons
                     if (toReload > m_CurrentAmmo)
                         toReload = m_CurrentAmmo;
                     m_CurrentClip += toReload;
-                    m_CurrentAmmo -= toReload;
+                    if (!m_InfiniteAmmo)
+                        m_CurrentAmmo -= toReload;
                 }
             }
 
@@ -426,12 +507,12 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected virtual void PlayPrimaryAttackSound()
         {
-            if (m_CurrentClip > 0)
+            if (m_InfiniteClip || m_CurrentClip > 0)
             {
                 if (m_PrimaryAttackAudioSource)
                     m_PrimaryAttackSound.Play(m_PrimaryAttackAudioSource);
             }
-            else
+            else if (!m_InfiniteClip)
             {
                 if (m_DryShootAudioSource)
                     m_DryShootSound.Play(m_DryShootAudioSource);
@@ -440,7 +521,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
         private void DoProjectile()
         {
-            if (m_CurrentClip > 0)
+            if (HasEnoughClip)
             {
                 switch (m_ProjectileType)
                 {
@@ -458,45 +539,125 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected virtual void DoRaycastProjectile()
         {
-            Physics.Raycast(m_RaycastOrigin.position, m_RaycastOrigin.forward, out m_RaycastHit, m_ProjectileLength, m_HitLayer, QueryTriggerInteraction.Ignore);
-            if (m_RaycastHit.transform != null)
-            {
-                if (m_PreviousHit != m_RaycastHit.transform)
-                {
-                    m_PreviousHit = m_RaycastHit.transform;
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
-                    m_Damageable = m_RaycastHit.transform?.GetComponent<IDamageable>();
-#else
-                    m_Damageable = m_RaycastHit.transform != null ? m_RaycastHit.transform.GetComponent<IDamageable>() : null;
-#endif
-                }
+            int damage = m_Damage / m_BulletsPerShot;
 
-                if (m_Damageable != null)
-                    m_Damageable.TakeDamage(m_Damage);
+            for (int i = 0; i < m_BulletsPerShot; i++)
+            {
+                Vector3 rotation = new Vector3(Random.Range(-m_BulletSpread, m_BulletSpread) / 360, Random.Range(-m_BulletSpread, m_BulletSpread) / 360, Random.Range(-m_BulletSpread, m_BulletSpread) / 360);
+                Physics.Raycast(m_ShootOrigin.position, m_ShootOrigin.forward + rotation, out m_RaycastHit, m_ProjectileLength, m_HitLayer, QueryTriggerInteraction.Ignore);
+                if (m_RaycastHit.transform != null)
+                {
+                    if (m_PreviousHit != m_RaycastHit.transform)
+                    {
+                        m_PreviousHit = m_RaycastHit.transform;
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                        m_HitDamageable = m_RaycastHit.transform?.GetComponent<IDamageable>();
+                        if (m_ApplyRigidbodyForce)
+                            m_HitRigidbody = m_RaycastHit.transform?.GetComponent<Rigidbody>();
+#else
+                        m_HitDamageable = m_RaycastHit.transform != null ? m_RaycastHit.transform.GetComponent<IDamageable>() : null;
+                        if (m_ApplyRigidbodyForce)
+                            m_HitRigdbody = m_RaycastHit.transform != null ? m_RaycastHit.transform.GetComponent<Rigidbody>() : null;
+#endif
+                    }
+
+                    if (m_HitDamageable != null)
+                    {
+                        m_HitDamageable.TakeDamage(damage);
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                        OnHitDamagable?.Invoke(m_RaycastHit, damage);
+                        OnHitDamagableGlobal?.Invoke(m_RaycastHit, damage);
+#else
+                        if (OnHitDamagable != null)
+                            OnHitDamagable.Invoke(m_RaycastHit, damage);
+                        if (OnHitDamagableGlobal != null)
+                            OnHitDamagableGlobal.Invoke(m_RaycastHit, damage);
+#endif
+                    }
+
+                    if (m_ApplyRigidbodyForce && m_HitRigidbody)
+                        m_HitRigidbody.AddForceAtPosition(transform.forward * m_RigidbodyForce, m_RaycastHit.point, m_ForceType);
+                }
             }
         }
 
         protected virtual void DoPrefabProjectile()
         {
+            int damage = m_Damage / m_BulletsPerShot;
 
+            for (int i = 0; i < m_BulletsPerShot; i++)
+            {
+                Quaternion rotation = Quaternion.Euler(m_ShootOrigin.eulerAngles.x + 90 + Random.Range(-m_BulletSpread, m_BulletSpread), m_ShootOrigin.eulerAngles.y, Random.Range(-m_BulletSpread, m_BulletSpread));
+                GoldPlayerProjectile projectile = GetProjectile(m_ShootOrigin.position, rotation);
+                projectile.Initialize(this, damage, m_HitLayer);
+            }
+        }
+
+        protected virtual GoldPlayerProjectile GetProjectile(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            if (m_PoolPrefabs)
+            {
+                GoldPlayerProjectile projectile = null;
+
+                if (m_PooledProjectiles.Count > 0)
+                {
+                    projectile = m_PooledProjectiles.Pop();
+                    projectile.transform.SetPositionAndRotation(position, rotation);
+                    if (parent != null)
+                        projectile.transform.SetParent(parent);
+                    projectile.gameObject.SetActive(true);
+                }
+                else
+                {
+                    projectile = Instantiate(m_ProjectilePrefab, position, rotation, parent == null ? ProjectilePool : parent);
+                    projectile.gameObject.SetActive(true);
+                }
+
+                m_ActiveProjectiles.Add(projectile);
+
+                return projectile;
+            }
+            else
+            {
+                GoldPlayerProjectile projectile = Instantiate(m_ProjectilePrefab, position, rotation, parent);
+                m_ActiveProjectiles.Add(projectile);
+                return projectile;
+            }
+        }
+
+        public virtual void DestroyProjectile(GoldPlayerProjectile projectile)
+        {
+            if (m_PoolPrefabs)
+            {
+                projectile.gameObject.SetActive(false);
+                if (m_ActiveProjectiles.Contains(projectile))
+                    m_ActiveProjectiles.Remove(projectile);
+                m_PooledProjectiles.Push(projectile);
+            }
+            else
+            {
+                if (m_ActiveProjectiles.Contains(projectile))
+                    m_ActiveProjectiles.Remove(projectile);
+                Destroy(projectile.gameObject);
+            }
         }
 
         protected virtual void ApplyRecoil()
         {
-            if (!m_PlayingEquipAnimation && m_CurrentClip > 0)
+            if (!m_PlayingEquipAnimation && HasEnoughClip && m_EnableRecoil)
             {
-                transform.localPosition -= Vector3.forward * m_KickbackAmount;
+                m_RecoilTarget.localPosition -= Vector3.forward * m_KickbackAmount;
                 m_RecoilAngle += m_RecoilAmount;
             }
         }
 
         protected virtual void RecoilUpdate()
         {
-            if (!m_PlayingEquipAnimation)
+            if (!m_PlayingEquipAnimation && m_EnableRecoil)
             {
-                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, m_OriginalPosition, ref m_RecoilSmoothVelocity, m_RecoilTime);
-                m_RecoilAngle = Mathf.SmoothDamp(m_RecoilAngle, m_OriginalAngle, ref m_RecoilRotationVelocity, m_RecoilTime);
-                transform.localEulerAngles = Vector3.left * m_RecoilAngle;
+                m_RecoilTarget.localPosition = Vector3.SmoothDamp(m_RecoilTarget.localPosition, m_OriginalRecoilPosition, ref m_RecoilSmoothVelocity, m_RecoilTime);
+                m_RecoilAngle = Mathf.SmoothDamp(m_RecoilAngle, m_OriginalRecoilAngle, ref m_RecoilRotationVelocity, m_RecoilTime);
+                m_RecoilTarget.localEulerAngles = Vector3.left * m_RecoilAngle;
             }
         }
     }

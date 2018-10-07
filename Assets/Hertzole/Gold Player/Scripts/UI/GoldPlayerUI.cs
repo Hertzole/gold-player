@@ -103,6 +103,8 @@ namespace Hertzole.GoldPlayer.UI
         [SerializeField]
         private string m_NoWeaponText = "Nothing Equipped";
         [SerializeField]
+        private string m_InfiniteText = "∞";
+        [SerializeField]
 #if USE_TMP
         private TextMeshProUGUI m_AmmoText;
 #else
@@ -147,6 +149,7 @@ namespace Hertzole.GoldPlayer.UI
 #endif
 #if USE_TMP
         public string NoWeaponEquippedLabel { get { return m_NoWeaponText; } set { m_NoWeaponText = value; } }
+        public string InfiniteSymbol { get { return m_InfiniteText; } set { m_InfiniteText = value; } }
         public TextMeshProUGUI AmmoText { get { return m_AmmoText; } set { m_AmmoText = value; } }
 #else
         public Text AmmoText { get { return m_AmmoText; } set { m_AmmoText = value; } }
@@ -386,7 +389,17 @@ namespace Hertzole.GoldPlayer.UI
         protected virtual void OnAmmoChanged(int clip, int ammo)
         {
             if (m_AmmoText)
-                m_AmmoText.text = "<size=" + m_ClipTextSize + ">" + clip + "</size>/<size=" + m_AmmoTextSize + ">" + ammo + "</size>";
+            {
+                if (m_PlayerWeapons != null && m_PlayerWeapons.CurrentWeapon != null)
+                {
+                    if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
+                        m_AmmoText.text = "<size=" + m_ClipTextSize + ">" + m_InfiniteText + "</size>";
+                    else
+                        m_AmmoText.text = "<size=" + m_ClipTextSize + ">" + clip + "</size>/<size=" +
+                            m_AmmoTextSize + ">" + (m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString()) + "</size>";
+
+                }
+            }
         }
 #endif
 

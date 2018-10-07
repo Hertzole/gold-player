@@ -22,6 +22,8 @@ public static class ExportTool
                     continue;
                 if (allPaths[i].ToLower().Contains("textmesh pro"))
                     continue;
+                if (allPaths[i].ToLower().Contains("editor generator"))
+                    continue;
 
                 validPaths.Add(allPaths[i]);
             }
