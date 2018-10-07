@@ -25,6 +25,9 @@ namespace Hertzole.GoldPlayer.Weapons
         [Header("Change Weapon Settings")]
 #endif
         [SerializeField]
+        private bool m_CanChangeWeapon = true;
+        public bool CanChangeWeapon { get { return m_CanChangeWeapon; } set { m_CanChangeWeapon = value; } }
+        [SerializeField]
         private bool m_CanScrollThrough = true;
         public bool CanScrollThrough { get { return m_CanScrollThrough; } set { m_CanScrollThrough = value; } }
         [SerializeField]
@@ -92,7 +95,7 @@ namespace Hertzole.GoldPlayer.Weapons
             //TODO: Add a way in the editor to set what weapons are included.
             AddWeapon(0);
             AddWeapon(1);
-            //AddWeapon(2);
+            AddWeapon(2);
 
             ChangeWeapon(0);
         }
@@ -111,6 +114,9 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected virtual void HandleWeaponChanging()
         {
+            if (!m_CanChangeWeapon)
+                return;
+
             if (m_CanUseNumberKeys)
             {
                 if (GetButtonDown("Change Weapon 1", KeyCode.Alpha1))

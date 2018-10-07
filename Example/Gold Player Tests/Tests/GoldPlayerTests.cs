@@ -132,7 +132,7 @@ namespace Hertzole.GoldPlayer.Tests
             GameObject raycastWeaponGO = new GameObject("[Test] Raycast Weapon");
             GoldPlayerWeapon raycastWeapon = raycastWeaponGO.AddComponent<GoldPlayerWeapon>();
             raycastWeapon.ProjectileType = GoldPlayerWeapon.ProjectileTypeEnum.Raycast;
-            raycastWeapon.RaycastOrigin = playerCameraHead.transform;
+            raycastWeapon.ShootOrigin = playerCameraHead.transform;
 
             GoldPlayerWeapons weapons = playerGO.AddComponent<GoldPlayerWeapons>();
             weapons.AvailableWeapons = new GoldPlayerWeapon[] { raycastWeapon };
