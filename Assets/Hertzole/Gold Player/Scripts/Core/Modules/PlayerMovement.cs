@@ -253,7 +253,7 @@ namespace Hertzole.GoldPlayer.Core
             // Calculate the crouch center for the character controller.
             m_ControllerCrouchCenter = CrouchHeight / 2;
             // Calculate the camera position for when crouching.
-            m_CrouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - m_CrouchHeight;
+            m_CrouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - (CharacterController.height - m_CrouchHeight);
             // Set the current crouch camera position to the original camera position.
             m_CurrentCrouchCameraPosition = m_OriginalCameraPosition;
         }
