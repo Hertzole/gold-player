@@ -686,7 +686,8 @@ MonoBehaviour:
       m_RotationOrder: 4
 --- !u!1 &319584414 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 1910683444252486, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1910683444252486, guid: b39e894a00b89e445b34cd77b22140b4,
+    type: 3}
   m_PrefabInstance: {fileID: 1072208069}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &319584415
@@ -1015,7 +1016,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -1024,6 +1026,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!222 &380356168
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1302,11 +1305,12 @@ MonoBehaviour:
   m_ShootOrigin: {fileID: 1128440497}
   m_PoolPrefabs: 1
   m_InitialPrefabPool: 20
-  m_ProjectilePrefab: {fileID: 3508894877331151936, guid: cbda0e0cbd16b0643ad3d6090e2cc099, type: 3}
+  m_ProjectilePrefab: {fileID: 3508894877331151936, guid: cbda0e0cbd16b0643ad3d6090e2cc099,
+    type: 3}
   m_ProjectileMoveSpeed: 15
   m_ProjectileLifetime: 5
   m_BulletsPerShot: 8
-  m_BulletSpread: 4
+  m_BulletSpread: 8
   m_ApplyRigidbodyForce: 1
   m_RigidbodyForce: 2
   m_ForceType: 1
@@ -3009,7 +3013,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -3018,6 +3023,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+  m_UseSpriteMesh: 0
 --- !u!222 &934999790
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3496,21 +3502,39 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
-      propertyPath: m_Camera.m_MouseSensitivity
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
       propertyPath: m_Inputs.Array.data[20].m_ButtonName
       value: Change Weapon 9
       objectReference: {fileID: 0}
-    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
       propertyPath: m_Inputs.Array.data[20].m_InputName
       value: Change Weapon 9
       objectReference: {fileID: 0}
-    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
+    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
       propertyPath: m_Inputs.Array.data[20].m_Key
       value: 57
+      objectReference: {fileID: 0}
+    - target: {fileID: 143172321462429172, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
+      propertyPath: m_Height
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 143172321462429172, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114569525944042, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
+      propertyPath: m_Camera.m_MouseSensitivity
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
@@ -3593,7 +3617,8 @@ MeshFilter:
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1128440497 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4901321065046222, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4901321065046222, guid: b39e894a00b89e445b34cd77b22140b4,
+    type: 3}
   m_PrefabInstance: {fileID: 1072208069}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1128664797
@@ -7534,6 +7559,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -13567,6 +13593,7 @@ ParticleSystem:
     inheritParticleColor: 1
     generateLightingData: 0
     splitSubEmitterRibbons: 0
+    attachRibbonsToTransform: 0
     colorOverLifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -14477,7 +14504,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 999/<size=20>999</size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -14670,7 +14698,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Weapon Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -12,6 +12,8 @@ namespace Hertzole.GoldPlayer.Editor
         private readonly string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
         private const string SELECTED_TAB_PREFS = "HERTZ_GOLD_PLAYER_SELECTED_TAB";
 
+        private CharacterController m_CharacterController;
+
         private SerializedProperty m_Camera;
         private SerializedProperty m_Movement;
         private SerializedProperty m_HeadBob;
@@ -30,10 +32,15 @@ namespace Hertzole.GoldPlayer.Editor
             m_Movement = serializedObject.FindProperty("m_Movement");
             m_HeadBob = serializedObject.FindProperty("m_HeadBob");
             m_Audio = serializedObject.FindProperty("m_Audio");
+
+            m_CharacterController = ((GoldPlayerController)target).GetComponent<CharacterController>();
         }
 
         public override void OnInspectorGUI()
         {
+            if (m_CharacterController.center.y != m_CharacterController.height / 2)
+                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + m_CharacterController.height / 2 + "!", MessageType.Warning);
+
             serializedObject.Update();
             int newTab = GUILayout.Toolbar(m_CurrentTab, m_Tabs);
             if (newTab != m_CurrentTab)
@@ -77,7 +84,11 @@ namespace Hertzole.GoldPlayer.Editor
             while (it.NextVisible(true))
             {
                 if (it.propertyPath.StartsWith(m_Movement.name) && it.depth < 2)
+                {
                     EditorGUILayout.PropertyField(it, true);
+                    if (it.name.Equals("m_CrouchHeight") && it.floatValue < 0.8f)
+                        EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
+                }
             }
         }
 
