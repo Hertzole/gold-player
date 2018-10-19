@@ -3536,6 +3536,11 @@ PrefabInstance:
       propertyPath: m_Camera.m_MouseSensitivity
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
+      propertyPath: m_Movement.m_EnableGroundStick
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
 --- !u!1 &1083960498

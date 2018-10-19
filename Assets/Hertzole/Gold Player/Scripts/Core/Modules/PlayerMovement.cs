@@ -143,6 +143,8 @@ namespace Hertzole.GoldPlayer.Core
         protected Vector3 m_AirVelocity = Vector3.zero;
         // The position the player was at when jumping.
         protected Vector3 m_JumpPosition = Vector3.zero;
+        // The impact of the applied force.
+        protected Vector3 m_ForceImpact = Vector3.zero;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         protected MovementSpeeds m_MoveSpeed = new MovementSpeeds();
@@ -318,6 +320,8 @@ namespace Hertzole.GoldPlayer.Core
             Crouching();
             // Do running.
             Running();
+            // Do force update.
+            ForceUpdate();
 
             // Move the player using the character controller.
             CharacterController.Move(m_MoveDirection * Time.deltaTime);
@@ -673,6 +677,48 @@ namespace Hertzole.GoldPlayer.Core
         {
             // Check if we can stand up using a capsule from the player bottom to the player top.
             return !Physics.CheckCapsule(PlayerTransform.position + Vector3.up * CharacterController.radius, PlayerTransform.position + (Vector3.up * m_OriginalControllerHeight) - (Vector3.up * CharacterController.radius), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
+        }
+
+        /// <summary>
+        /// Do updates related to force.
+        /// </summary>
+        protected virtual void ForceUpdate()
+        {
+            // If the force impact is over 0.2, apply the force impact to the move direction.
+            if (m_ForceImpact.magnitude > 0.2f)
+                m_MoveDirection = new Vector3(m_ForceImpact.x, m_MoveDirection.y, m_ForceImpact.z);
+
+            // Lerp the force impact to zero over time.
+            m_ForceImpact = Vector3.Lerp(m_ForceImpact, Vector3.zero, 5 * Time.deltaTime);
+        }
+
+        /// <summary>
+        /// Applies force to the player.
+        /// </summary>
+        /// <param name="direction">The direction of the force.</param>
+        /// <param name="force">Force multiplier.</param>
+        public virtual void AddForce(Vector3 direction, float force)
+        {
+            // Normalize the direction.
+            direction.Normalize();
+
+            // Reflect down force on the ground.
+            if (direction.y < 0)
+                direction.y = -direction.y;
+            if (direction.y > 0)
+            {
+                // Set 'isJumping' to true so the player tells everything we're jumping.
+                m_IsJumping = true;
+                // The player shouldn't jump if they are being knocked upwards.
+                m_ShouldJump = false;
+                // Reset the current air time.
+                m_CurrentAirTime = 0;
+            }
+
+            // Apply the direction and force to the force impact.
+            m_ForceImpact += direction.normalized * force;
+            // Set the move direction to the force impact.
+            m_MoveDirection = m_ForceImpact;
         }
 
 #if UNITY_EDITOR
