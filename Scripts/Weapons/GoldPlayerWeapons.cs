@@ -45,6 +45,9 @@ namespace Hertzole.GoldPlayer.Weapons
         [SerializeField]
         private bool m_CanUseNumberKeys = true;
         public bool CanUseNumberKeys { get { return m_CanUseNumberKeys; } set { m_CanUseNumberKeys = value; } }
+        [SerializeField]
+        private bool m_CanChangeWhenReloading = true;
+        public bool CanChangeWhenReloading { get { return m_CanChangeWhenReloading; } set { m_CanChangeWhenReloading = value; } }
 
         private int m_NewWeaponIndex = -1;
         protected int m_CurrentWeaponIndex = -1;
@@ -313,10 +316,17 @@ namespace Hertzole.GoldPlayer.Weapons
             if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_CurrentWeaponIndex == index)
                 return;
 
+            if (!m_CanChangeWhenReloading && CurrentWeapon != null && CurrentWeapon.IsReloading)
+                return;
+
             if (index < 0)
                 index = 0;
             else if (index > m_AvailableWeapons.Length - 1)
+            {
                 index = m_AvailableWeapons.Length - 1;
+                if (index == m_CurrentWeaponIndex)
+                    return;
+            }
 
             if (CurrentWeapon != null)
             {
