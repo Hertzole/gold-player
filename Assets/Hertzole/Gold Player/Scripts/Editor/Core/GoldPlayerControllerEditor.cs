@@ -12,6 +12,7 @@ namespace Hertzole.GoldPlayer.Editor
         private readonly string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
         private const string SELECTED_TAB_PREFS = "HERTZ_GOLD_PLAYER_SELECTED_TAB";
 
+        private GoldPlayerController m_GoldPlayer;
         private CharacterController m_CharacterController;
 
         private SerializedProperty m_Camera;
@@ -33,7 +34,8 @@ namespace Hertzole.GoldPlayer.Editor
             m_HeadBob = serializedObject.FindProperty("m_HeadBob");
             m_Audio = serializedObject.FindProperty("m_Audio");
 
-            m_CharacterController = ((GoldPlayerController)target).GetComponent<CharacterController>();
+            m_GoldPlayer = (GoldPlayerController)target;
+            m_CharacterController = m_GoldPlayer.GetComponent<CharacterController>();
         }
 
         public override void OnInspectorGUI()
@@ -88,6 +90,8 @@ namespace Hertzole.GoldPlayer.Editor
                     EditorGUILayout.PropertyField(it, true);
                     if (it.name.Equals("m_CrouchHeight") && it.floatValue < 0.8f)
                         EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
+                    if (it.name.Equals("m_GroundLayer") && it.intValue == (it.intValue | (1 << m_GoldPlayer.gameObject.layer)))
+                        EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
                 }
             }
         }

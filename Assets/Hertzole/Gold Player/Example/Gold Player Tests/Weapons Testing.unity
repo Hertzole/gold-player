@@ -716,6 +716,7 @@ MonoBehaviour:
   m_EnableScrollDelay: 0
   m_ScrollDelay: 0.1
   m_CanUseNumberKeys: 1
+  m_CanChangeWhenReloading: 0
 --- !u!1 &331810978
 GameObject:
   m_ObjectHideFlags: 0
