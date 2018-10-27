@@ -58,6 +58,8 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_ReloadAnimation;
         private SerializedProperty m_EquipAnimation;
 
+        //private SerializedProperty m_BulletDecals;
+
         private readonly Color r_HeaderBackgroundDark = new Color(0.1f, 0.1f, 0.1f, 0.2f);
         private readonly Color r_HeaderBackgroundLight = new Color(1f, 1f, 1f, 0.2f);
         private Color HeaderBackground { get { return EditorGUIUtility.isProSkin ? r_HeaderBackgroundDark : r_HeaderBackgroundLight; } }
@@ -67,6 +69,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private bool RecoilSettingsExpanded { get { return m_EnableRecoil.isExpanded; } set { m_EnableRecoil.isExpanded = value; } }
         private bool AudioSettingsExpanded { get { return m_RecoilTime.isExpanded; } set { m_RecoilTime.isExpanded = value; } }
         private bool AnimationSettingsExpanded { get { return m_RecoilAmount.isExpanded; } set { m_RecoilAmount.isExpanded = value; } }
+        private bool CosmeticSettingsExpanded { get { return m_EquipAnimation.isExpanded; } set { m_EquipAnimation.isExpanded = value; } }
 
         // Get all the serialized properties from the target script.
         private void OnEnable()
@@ -121,6 +124,8 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_ShootAnimation = serializedObject.FindProperty("m_ShootAnimation");
             m_ReloadAnimation = serializedObject.FindProperty("m_ReloadAnimation");
             m_EquipAnimation = serializedObject.FindProperty("m_EquipAnimation");
+
+            //m_BulletDecals = serializedObject.FindProperty("m_BulletDecals");
         }
 
         // Draw all the GUI in the inspector.
@@ -168,6 +173,14 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             if (AnimationSettingsExpanded)
             {
                 DrawAnimationSettings();
+            }
+
+            EditorGUILayout.Space();
+            CosmeticSettingsExpanded = DrawHeader("Cosmetic Settings", CosmeticSettingsExpanded);
+
+            if (CosmeticSettingsExpanded)
+            {
+                DrawCosmeticSettings();
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -278,6 +291,11 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             EditorGUILayout.PropertyField(m_ShootAnimation, true);
             EditorGUILayout.PropertyField(m_ReloadAnimation, true);
             EditorGUILayout.PropertyField(m_EquipAnimation, true);
+        }
+
+        protected virtual void DrawCosmeticSettings()
+        {
+            //EditorGUILayout.PropertyField(m_BulletDecals, true);
         }
 
         // Borrowed from Unity's post processing stack.
