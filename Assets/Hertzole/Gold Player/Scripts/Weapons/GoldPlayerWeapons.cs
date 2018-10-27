@@ -49,13 +49,24 @@ namespace Hertzole.GoldPlayer.Weapons
         private bool m_CanChangeWhenReloading = true;
         public bool CanChangeWhenReloading { get { return m_CanChangeWhenReloading; } set { m_CanChangeWhenReloading = value; } }
 
-        private int m_NewWeaponIndex = -1;
+#if UNITY_EDITOR
+        [Header("Cosmetic Changes")]
+#endif
+        [SerializeField]
+        private ParticleSystem m_BulletDecals = null;
+        public ParticleSystem BulletDecals { get { return m_BulletDecals; } set { m_BulletDecals = value; } }
+
+        protected int m_NewWeaponIndex = -1;
         protected int m_CurrentWeaponIndex = -1;
+        protected int m_DecalParticleDataIndex = 0;
 
         protected bool m_DoPrimaryAttack = false;
         protected bool m_DoSecondaryAttack = false;
 
         protected float m_NextScroll = 0;
+
+        private BulletDecalData[] m_DecalData;
+        private ParticleSystem.Particle[] m_DecalParticles;
 
         private List<int> m_MyWeapons = new List<int>();
 
@@ -92,7 +103,7 @@ namespace Hertzole.GoldPlayer.Weapons
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
             {
                 m_AvailableWeapons[i].gameObject.SetActive(false);
-                m_AvailableWeapons[i].Initialize(m_HitLayer);
+                m_AvailableWeapons[i].Initialize(this, m_HitLayer);
             }
 
             //TODO: Add a way in the editor to set what weapons are included.
@@ -101,6 +112,21 @@ namespace Hertzole.GoldPlayer.Weapons
             AddWeapon(2);
 
             ChangeWeapon(0);
+
+            SetupBulletDecals();
+        }
+
+        protected virtual void SetupBulletDecals()
+        {
+            if (m_BulletDecals)
+            {
+                m_DecalParticles = new ParticleSystem.Particle[m_BulletDecals.main.maxParticles];
+                m_DecalData = new BulletDecalData[m_BulletDecals.main.maxParticles];
+                for (int i = 0; i < m_BulletDecals.main.maxParticles; i++)
+                {
+                    m_DecalData[i] = new BulletDecalData();
+                }
+            }
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -349,6 +375,52 @@ namespace Hertzole.GoldPlayer.Weapons
             if (OnWeaponChanged != null)
                 OnWeaponChanged.Invoke(m_PreviousWeapon, CurrentWeapon);
 #endif
+        }
+
+        public virtual void DoBulletDecal(RaycastHit hit)
+        {
+            if (m_BulletDecals)
+            {
+                if (m_DecalParticleDataIndex >= m_BulletDecals.main.maxParticles)
+                    m_DecalParticleDataIndex = 0;
+
+                m_DecalData[m_DecalParticleDataIndex].position = hit.point;
+                Vector3 particleRotationEuler = Quaternion.LookRotation(hit.normal).eulerAngles;
+                particleRotationEuler.z = Random.Range(0f, 360f);
+                m_DecalData[m_DecalParticleDataIndex].rotation = particleRotationEuler;
+
+                if (m_BulletDecals.main.startSize.mode == ParticleSystemCurveMode.Constant)
+                    m_DecalData[m_DecalParticleDataIndex].size = m_BulletDecals.main.startSize.constant;
+                else if (m_BulletDecals.main.startSize.mode == ParticleSystemCurveMode.TwoConstants)
+                    m_DecalData[m_DecalParticleDataIndex].size = Random.Range(m_BulletDecals.main.startSize.constantMin, m_BulletDecals.main.startSize.constantMax);
+
+                if (m_BulletDecals.main.startColor.mode == ParticleSystemGradientMode.Color)
+                    m_DecalData[m_DecalParticleDataIndex].color = m_BulletDecals.main.startColor.color;
+                else if (m_BulletDecals.main.startColor.mode == ParticleSystemGradientMode.TwoColors) // FIX: This is the incorrect color.
+                    m_DecalData[m_DecalParticleDataIndex].color = RandomColor(m_BulletDecals.main.startColor.colorMin, m_BulletDecals.main.startColor.colorMax);
+
+                m_DecalParticleDataIndex++;
+
+                for (int i = 0; i < m_DecalParticles.Length; i++)
+                {
+                    m_DecalParticles[i].position = m_DecalData[i].position;
+                    m_DecalParticles[i].rotation3D = m_DecalData[i].rotation;
+                    m_DecalParticles[i].startSize = m_DecalData[i].size;
+                    m_DecalParticles[i].startColor = m_DecalData[i].color;
+                }
+
+                m_BulletDecals.SetParticles(m_DecalParticles, m_DecalParticles.Length);
+            }
+        }
+
+        protected Color RandomColor()
+        {
+            return new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+        }
+
+        protected Color RandomColor(Color minColor, Color maxColor)
+        {
+            return new Color(Random.Range(minColor.r, maxColor.r), Random.Range(minColor.g, maxColor.g), Random.Range(minColor.b, maxColor.b), Random.Range(minColor.a, maxColor.a));
         }
     }
 }

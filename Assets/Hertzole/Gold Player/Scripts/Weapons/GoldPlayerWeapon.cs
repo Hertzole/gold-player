@@ -163,6 +163,8 @@ namespace Hertzole.GoldPlayer.Weapons
         private WeaponAnimationInfo m_EquipAnimation = new WeaponAnimationInfo(WeaponAnimationType.CodeDriven);
         public WeaponAnimationInfo EquipAnimation { get { return m_EquipAnimation; } set { m_EquipAnimation = value; } }
 
+        // Cosmetic
+
         protected float m_NextFire = 0F;
         protected float m_OriginalRecoilAngle = 0f;
         protected float m_RecoilAngle = 0f;
@@ -205,6 +207,7 @@ namespace Hertzole.GoldPlayer.Weapons
         protected bool m_PlayingPutAwayAnimation = false;
 
         public bool HasEnoughClip { get { return m_InfiniteClip ? true : m_CurrentClip > 0; } }
+        public bool IsReloading { get; protected set; }
 
         private string m_IdleAnimationName;
         private string m_ShootAnimationName;
@@ -228,9 +231,9 @@ namespace Hertzole.GoldPlayer.Weapons
 
         private Coroutine m_EquipAnimationRoutine;
 
-        public bool IsReloading { get; protected set; }
-
         protected LayerMask m_HitLayer;
+
+        protected GoldPlayerWeapons Weapons { get; private set; }
 
         protected Stack<GoldPlayerProjectile> m_PooledProjectiles = new Stack<GoldPlayerProjectile>();
         protected List<GoldPlayerProjectile> m_ActiveProjectiles = new List<GoldPlayerProjectile>();
@@ -257,8 +260,9 @@ namespace Hertzole.GoldPlayer.Weapons
         public static event HitEvent OnHitGlobal;
         public static event HitEvent OnHitDamagableGlobal;
 
-        public virtual void Initialize(LayerMask hitLayer)
+        public virtual void Initialize(GoldPlayerWeapons weapons, LayerMask hitLayer)
         {
+            Weapons = weapons;
             m_HitLayer = hitLayer;
 
             m_OriginalPosition = transform.localPosition;
@@ -430,7 +434,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public virtual void Reload()
         {
-            if (IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0)
+            if (IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0 || m_InfiniteClip)
                 return;
 
             IsReloading = true;
@@ -561,24 +565,39 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
                     }
 
-                    if (m_HitDamageable != null)
-                    {
-                        m_HitDamageable.TakeDamage(damage);
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
-                        OnHitDamagable?.Invoke(m_RaycastHit, damage);
-                        OnHitDamagableGlobal?.Invoke(m_RaycastHit, damage);
-#else
-                        if (OnHitDamagable != null)
-                            OnHitDamagable.Invoke(m_RaycastHit, damage);
-                        if (OnHitDamagableGlobal != null)
-                            OnHitDamagableGlobal.Invoke(m_RaycastHit, damage);
-#endif
-                    }
-
-                    if (m_ApplyRigidbodyForce && m_HitRigidbody)
-                        m_HitRigidbody.AddForceAtPosition(transform.forward * m_RigidbodyForce, m_RaycastHit.point, m_ForceType);
+                    OnRaycastHit(damage);
                 }
             }
+        }
+
+        protected virtual void OnRaycastHit(int damage)
+        {
+            ApplyHitDamage(damage);
+            ApplyHitForce(m_RigidbodyForce, m_ForceType);
+            Weapons.DoBulletDecal(m_RaycastHit);
+        }
+
+        protected virtual void ApplyHitDamage(int damage)
+        {
+            if (m_HitDamageable != null)
+            {
+                m_HitDamageable.TakeDamage(damage);
+#if NET_4_6 || UNITY_2018_3_OR_NEWER
+                OnHitDamagable?.Invoke(m_RaycastHit, damage);
+                OnHitDamagableGlobal?.Invoke(m_RaycastHit, damage);
+#else
+                if (OnHitDamagable != null)
+                    OnHitDamagable.Invoke(m_RaycastHit, damage);
+                if (OnHitDamagableGlobal != null)
+                    OnHitDamagableGlobal.Invoke(m_RaycastHit, damage);
+#endif
+            }
+        }
+
+        protected virtual void ApplyHitForce(float force, ForceMode forceType)
+        {
+            if (m_ApplyRigidbodyForce && m_HitRigidbody)
+                m_HitRigidbody.AddForceAtPosition(transform.forward * force, m_RaycastHit.point, forceType);
         }
 
         protected virtual void DoPrefabProjectile()
