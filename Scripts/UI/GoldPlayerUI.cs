@@ -256,31 +256,31 @@ namespace Hertzole.GoldPlayer.UI
 
                     return;
                 }
-            }
 
-            switch (m_SprintingBarType)
-            {
-                case ProgressBarType.Slider:
-                    if (m_SprintingBarImage != null)
-                    {
-                        m_SprintingBarImage.gameObject.SetActive(false);
-                    }
+                switch (m_SprintingBarType)
+                {
+                    case ProgressBarType.Slider:
+                        if (m_SprintingBarImage != null)
+                        {
+                            m_SprintingBarImage.gameObject.SetActive(false);
+                        }
 
-                    if (m_SprintingBarSlider != null)
-                    {
-                        m_SprintingBarSlider.gameObject.SetActive(true);
-                        m_SprintingBarSlider.minValue = 0;
-                        m_SprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
-                    }
-                    break;
-                case ProgressBarType.Image:
-                    if (m_SprintingBarImage != null)
-                        m_SprintingBarImage.gameObject.SetActive(true);
-                    if (m_SprintingBarSlider != null)
-                        m_SprintingBarSlider.gameObject.SetActive(false);
-                    break;
-                default:
-                    throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+                        if (m_SprintingBarSlider != null)
+                        {
+                            m_SprintingBarSlider.gameObject.SetActive(true);
+                            m_SprintingBarSlider.minValue = 0;
+                            m_SprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
+                        }
+                        break;
+                    case ProgressBarType.Image:
+                        if (m_SprintingBarImage != null)
+                            m_SprintingBarImage.gameObject.SetActive(true);
+                        if (m_SprintingBarSlider != null)
+                            m_SprintingBarSlider.gameObject.SetActive(false);
+                        break;
+                    default:
+                        throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+                }
             }
         }
 
@@ -345,7 +345,7 @@ namespace Hertzole.GoldPlayer.UI
         protected virtual void InteractionUpdate()
         {
             // Only call if player interaction is added to the player.
-            if (PlayerInteraction)
+            if (PlayerInteraction && PlayerInteraction.CurrentHitInteractable != null)
             {
                 // Toggle the interaction box based on if it can be seen.
                 if (m_InteractionBox != null)
@@ -355,7 +355,7 @@ namespace Hertzole.GoldPlayer.UI
                 // set the message to either a custom message or the one in Player Interaction.
                 if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden && m_InteractionLabel != null)
                 {
-                    if (PlayerInteraction.CurrentHitInteractable != null && PlayerInteraction.CurrentHitInteractable.UseCustomMessage)
+                    if (PlayerInteraction.CurrentHitInteractable.UseCustomMessage)
                         m_InteractionLabel.text = PlayerInteraction.CurrentHitInteractable.CustomMessage;
                     else
                         m_InteractionLabel.text = PlayerInteraction.InteractMessage;
@@ -374,16 +374,14 @@ namespace Hertzole.GoldPlayer.UI
         {
             if (previousWeapon)
                 previousWeapon.OnAmmoChanged -= OnAmmoChanged;
-            if (newWeapon)
+            if (newWeapon != null)
             {
                 newWeapon.OnAmmoChanged += OnAmmoChanged;
                 OnAmmoChanged(newWeapon.CurrentClip, newWeapon.CurrentAmmo);
             }
 
             if (m_WeaponNameText != null)
-            {
                 m_WeaponNameText.text = newWeapon != null ? newWeapon.WeaponName : m_NoWeaponText;
-            }
         }
 
         protected virtual void OnAmmoChanged(int clip, int ammo)
@@ -393,10 +391,10 @@ namespace Hertzole.GoldPlayer.UI
                 if (m_PlayerWeapons != null && m_PlayerWeapons.CurrentWeapon != null)
                 {
                     if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
-                        m_AmmoText.text = "<size=" + m_ClipTextSize + ">" + m_InfiniteText + "</size>";
+                        m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
                     else
-                        m_AmmoText.text = "<size=" + m_ClipTextSize + ">" + clip + "</size>/<size=" +
-                            m_AmmoTextSize + ">" + (m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString()) + "</size>";
+                        m_AmmoText.text = string.Format("<size={0}>{1}</size>/<size={2}>{3}</size>", m_ClipTextSize, clip, m_AmmoTextSize,
+                            (m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString()));
 
                 }
             }
@@ -410,13 +408,13 @@ namespace Hertzole.GoldPlayer.UI
         {
 #if GOLD_PLAYER_INTERACTION
             // Only get the interaction if the previous set player isn't the new player.
-            if ((!m_Player || (m_Player && m_Player != player)) && player != null)
+            if (player != null && m_Player != player)
                 m_PlayerInteraction = player.GetComponent<GoldPlayerInteraction>();
 #endif
 
 #if GOLD_PLAYER_WEAPONS
             // Only get the weapons if the previous set player isn't the new player.
-            if ((!m_Player || (m_Player && m_Player != player)) && player != null)
+            if (player != null && m_Player != player)
                 PlayerWeapons = player.GetComponent<GoldPlayerWeapons>();
 #endif
 

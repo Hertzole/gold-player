@@ -1,8 +1,10 @@
 using UnityEngine;
+#if HERTZLIB_UPDATE_MANAGER
+using Hertzole.HertzLib;
+#endif
 
 namespace Hertzole.GoldPlayer.Weapons
 {
-    [SelectionBase]
 #if HERTZLIB_UPDATE_MANAGER
     public class GoldPlayerProjectile : MonoBehaviour, IUpdate
 #else
@@ -10,123 +12,98 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
     {
         [SerializeField]
-        private float m_HitDetectRange = 1f;
-        public float HitDetectRange { get { return m_HitDetectRange; } set { m_HitDetectRange = value; } }
+        private bool m_MoveProjectile = true;
+        public bool MoveProjectile { get { return m_MoveProjectile; } set { m_MoveProjectile = value; } }
         [SerializeField]
-        private Vector3 m_HitDetectOffset;
-        public Vector3 HitDetectOffset { get { return m_HitDetectOffset; } set { m_HitDetectOffset = value; } }
+        private QueryTriggerInteraction m_TriggerInteraction = QueryTriggerInteraction.Ignore;
+        public QueryTriggerInteraction TriggerInteraction { get { return m_TriggerInteraction; } set { m_TriggerInteraction = value; } }
 
-        protected float m_ExpireTime = 0f;
-        protected float m_MoveSpeed = 0f;
-        protected float m_RigidbodyForce = 0f;
+        protected float m_MoveSpeed = 0;
+        protected float m_LifeTime = 0;
+        private float m_MoveDistance = 0;
 
         protected int m_Damage = 0;
 
-        protected bool m_Destroyed = false;
-        protected bool m_ApplyForceToRigidbody = false;
-
-        protected ForceMode m_RigidbodyForceMode = ForceMode.Impulse;
-
+        private Ray m_Ray;
         private RaycastHit m_Hit;
 
-        private LayerMask m_HitLayer;
+        protected GoldPlayerWeapon m_Weapon;
 
-        private GoldPlayerWeapon m_MyWeapon;
+        protected LayerMask m_HitLayer;
 
-        public void Initialize(GoldPlayerWeapon myWeapon, int damage, LayerMask hitLayer)
+        public void Initialize(float moveSpeed, float lifeTime, LayerMask hitLayer, int damage, GoldPlayerWeapon weapon)
         {
-            m_MyWeapon = myWeapon;
-
-            m_ExpireTime = Time.time + m_MyWeapon.ProjectileLifetime;
-            m_MoveSpeed = m_MyWeapon.ProjectileMoveSpeed;
-            m_RigidbodyForce = m_MyWeapon.RigidbodyForce;
+            m_MoveSpeed = moveSpeed;
+            m_LifeTime = lifeTime;
 
             m_Damage = damage;
 
-            m_Destroyed = false;
-            m_ApplyForceToRigidbody = m_MyWeapon.ApplyRigidbodyForce;
-
-            m_RigidbodyForceMode = m_MyWeapon.ForceType;
-
+            m_Weapon = weapon;
             m_HitLayer = hitLayer;
 
-            OnIntiailized();
+            if (weapon == null)
+                throw new System.ArgumentNullException("weapon", "GoldPlayerWeapon reference passed to projectile was null!");
         }
 
-        protected virtual void OnIntiailized() { }
-
-#if HERTZLIB_UPDATE_MANAGER
         private void OnEnable()
         {
+#if HERTZLIB_UPDATE_MANAGER
             UpdateManager.AddUpdate(this);
+#endif
+
+            OnEnabled();
         }
+
+        protected virtual void OnEnabled() { }
 
         private void OnDisable()
         {
-            UpdateManager.RemoveUpdate(this);
-        }
-#endif
 #if HERTZLIB_UPDATE_MANAGER
-        public virtual void OnUpdate()
+            UpdateManager.RemoveUpdate(this);
+#endif
+
+            OnDisabled();
+        }
+
+        protected virtual void OnDisabled() { }
+
+        // Update is called once per frame
+#if HERTZLIB_UPDATE_MANAGER
+        public void OnUpdate()
 #else
-        public virtual void Update()
+        private void Update()
 #endif
         {
-            DoMovement();
-            DoHitDetection();
-            DoLifeChecking();
+            DoCollisionChecking();
+            transform.Translate(Vector3.forward * m_MoveDistance);
+
+            DoUpdate();
         }
 
-        protected virtual void DoMovement()
-        {
-            transform.Translate(Vector3.up * Time.deltaTime * m_MoveSpeed, Space.Self);
-        }
+        protected virtual void DoUpdate() { }
 
-        protected virtual void DoHitDetection()
+        protected void DoCollisionChecking()
         {
-            Vector3 offset = transform.TransformDirection(m_HitDetectOffset);
-            if (Physics.Raycast(transform.position + offset, transform.position + transform.up + offset, out m_Hit, m_HitDetectRange, m_HitLayer, QueryTriggerInteraction.Ignore) && !m_Destroyed)
+            m_MoveDistance = m_MoveSpeed * Time.deltaTime;
+            m_Ray = new Ray(transform.position, transform.forward);
+
+            if (Physics.Raycast(m_Ray, out m_Hit, m_MoveDistance, m_HitLayer, m_TriggerInteraction))
             {
-                m_Destroyed = true;
-                OnImpact(m_Hit);
-                m_MyWeapon.DestroyProjectile(this);
+                OnHitObject(m_Hit);
             }
         }
 
-        protected virtual void DoLifeChecking()
+        protected virtual void OnHitObject(RaycastHit hit)
         {
-            if (Time.time >= m_ExpireTime)
-            {
-                m_Destroyed = true;
-                m_MyWeapon.DestroyProjectile(this);
-            }
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+            if (damageable != null)
+                damageable.TakeDamage(m_Damage, hit);
+            DestroyProjectile();
         }
 
-        protected virtual void OnImpact(RaycastHit hit)
+        public void DestroyProjectile()
         {
-            if (hit.transform != null)
-            {
-                IDamageable damageable = hit.transform.GetComponent<IDamageable>();
-                if (damageable != null)
-                    damageable.TakeDamage(m_Damage);
-
-                if (m_ApplyForceToRigidbody)
-                {
-                    Rigidbody rig = hit.transform.GetComponent<Rigidbody>();
-                    if (rig != null)
-                        rig.AddForceAtPosition(transform.up * m_RigidbodyForce, hit.point, m_RigidbodyForceMode);
-                }
-            }
+            m_Weapon.DestroyProjectile(this);
         }
-
-#if UNITY_EDITOR
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.green;
-            Vector3 offset = transform.TransformDirection(m_HitDetectOffset);
-            Gizmos.DrawLine(transform.position + offset, transform.position + transform.up * m_HitDetectRange + offset);
-            Gizmos.DrawCube(transform.position + transform.up * m_HitDetectRange + offset, Vector3.one * 0.02f);
-        }
-#endif
     }
 }

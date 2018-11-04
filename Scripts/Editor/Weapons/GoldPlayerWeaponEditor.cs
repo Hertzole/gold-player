@@ -5,12 +5,17 @@ using UnityEngine;
 namespace Hertzole.GoldPlayer.Weapons.Editor
 {
     [CustomEditor(typeof(GoldPlayerWeapon), true)]
+    [CanEditMultipleObjects]
     public class GoldPlayerWeaponEditor : UnityEditor.Editor
     {
         private SerializedProperty m_WeaponName;
         private SerializedProperty m_Damage;
         private SerializedProperty m_IsMelee;
         private SerializedProperty m_MeleeAttackTime;
+        private SerializedProperty m_EquipTime;
+        private SerializedProperty m_PrimaryAttackTrigger;
+        //private SerializedProperty m_SecondaryTriggerType;
+
         private SerializedProperty m_InfiniteClip;
         private SerializedProperty m_MaxClip;
         private SerializedProperty m_InfiniteAmmo;
@@ -19,9 +24,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_AutoReloadEmptyClip;
         private SerializedProperty m_CanReloadInBackground;
         private SerializedProperty m_ReloadTime;
-        private SerializedProperty m_EquipTime;
-        private SerializedProperty m_PrimaryTriggerType;
-        private SerializedProperty m_SecondaryTriggerType;
+        private SerializedProperty m_ReloadType;
 
         private SerializedProperty m_ProjectileType;
         private SerializedProperty m_ProjectileLength;
@@ -30,9 +33,12 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_InitialPrefabPool;
         private SerializedProperty m_ProjectilePrefab;
         private SerializedProperty m_ProjectileMoveSpeed;
-        private SerializedProperty m_ProjectileLifetime;
+        private SerializedProperty m_ProjectileLifeTime;
+
+        private SerializedProperty m_SpreadType;
         private SerializedProperty m_BulletsPerShot;
         private SerializedProperty m_BulletSpread;
+        private SerializedProperty m_BulletPoints;
         private SerializedProperty m_ApplyRigidbodyForce;
         private SerializedProperty m_RigidbodyForce;
         private SerializedProperty m_ForceType;
@@ -53,23 +59,33 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_DryShootAudioSource;
         private SerializedProperty m_ReloadAudioSource;
 
+        private SerializedProperty m_AnimationType;
+        private SerializedProperty m_AnimationTarget;
         private SerializedProperty m_IdleAnimation;
         private SerializedProperty m_ShootAnimation;
         private SerializedProperty m_ReloadAnimation;
         private SerializedProperty m_EquipAnimation;
 
+        private SerializedProperty m_MuzzleFlashObject;
+        private SerializedProperty m_ObjectFlashTime;
+        private SerializedProperty m_MuzzleFlashParticles;
+        private SerializedProperty m_MuzzleFlashParticlesEmitAmount;
+        private SerializedProperty m_LineEffect;
+        private SerializedProperty m_LineFlashTime;
+
         //private SerializedProperty m_BulletDecals;
 
         private readonly Color r_HeaderBackgroundDark = new Color(0.1f, 0.1f, 0.1f, 0.2f);
-        private readonly Color r_HeaderBackgroundLight = new Color(1f, 1f, 1f, 0.2f);
+        private readonly Color r_HeaderBackgroundLight = new Color(0.35f, 0.35f, 0.35f, 0.2f);
         private Color HeaderBackground { get { return EditorGUIUtility.isProSkin ? r_HeaderBackgroundDark : r_HeaderBackgroundLight; } }
 
         private bool BasicSettingsExpanded { get { return m_WeaponName.isExpanded; } set { m_WeaponName.isExpanded = value; } }
+        private bool AmmoSettingsExpanded { get { return m_InfiniteClip.isExpanded; } set { m_InfiniteClip.isExpanded = value; } }
         private bool ProjectileSettingsExpanded { get { return m_ProjectileType.isExpanded; } set { m_ProjectileType.isExpanded = value; } }
         private bool RecoilSettingsExpanded { get { return m_EnableRecoil.isExpanded; } set { m_EnableRecoil.isExpanded = value; } }
         private bool AudioSettingsExpanded { get { return m_RecoilTime.isExpanded; } set { m_RecoilTime.isExpanded = value; } }
         private bool AnimationSettingsExpanded { get { return m_RecoilAmount.isExpanded; } set { m_RecoilAmount.isExpanded = value; } }
-        private bool CosmeticSettingsExpanded { get { return m_EquipAnimation.isExpanded; } set { m_EquipAnimation.isExpanded = value; } }
+        private bool CosmeticSettingsExpanded { get { return m_MuzzleFlashObject.isExpanded; } set { m_MuzzleFlashObject.isExpanded = value; } }
 
         // Get all the serialized properties from the target script.
         private void OnEnable()
@@ -78,6 +94,10 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_Damage = serializedObject.FindProperty("m_Damage");
             m_IsMelee = serializedObject.FindProperty("m_IsMelee");
             m_MeleeAttackTime = serializedObject.FindProperty("m_MeleeAttackTime");
+            m_EquipTime = serializedObject.FindProperty("m_EquipTime");
+            m_PrimaryAttackTrigger = serializedObject.FindProperty("m_PrimaryAttackTrigger");
+            //m_SecondaryTriggerType = serializedObject.FindProperty("m_SecondaryTriggerType");
+
             m_InfiniteClip = serializedObject.FindProperty("m_InfiniteClip");
             m_MaxClip = serializedObject.FindProperty("m_MaxClip");
             m_InfiniteAmmo = serializedObject.FindProperty("m_InfiniteAmmo");
@@ -86,9 +106,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_AutoReloadEmptyClip = serializedObject.FindProperty("m_AutoReloadEmptyClip");
             m_CanReloadInBackground = serializedObject.FindProperty("m_CanReloadInBackground");
             m_ReloadTime = serializedObject.FindProperty("m_ReloadTime");
-            m_EquipTime = serializedObject.FindProperty("m_EquipTime");
-            m_PrimaryTriggerType = serializedObject.FindProperty("m_PrimaryTriggerType");
-            m_SecondaryTriggerType = serializedObject.FindProperty("m_SecondaryTriggerType");
+            m_ReloadType = serializedObject.FindProperty("m_ReloadType");
 
             m_ProjectileType = serializedObject.FindProperty("m_ProjectileType");
             m_ProjectileLength = serializedObject.FindProperty("m_ProjectileLength");
@@ -97,9 +115,12 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_InitialPrefabPool = serializedObject.FindProperty("m_InitialPrefabPool");
             m_ProjectilePrefab = serializedObject.FindProperty("m_ProjectilePrefab");
             m_ProjectileMoveSpeed = serializedObject.FindProperty("m_ProjectileMoveSpeed");
-            m_ProjectileLifetime = serializedObject.FindProperty("m_ProjectileLifetime");
+            m_ProjectileLifeTime = serializedObject.FindProperty("m_ProjectileLifeTime");
+
+            m_SpreadType = serializedObject.FindProperty("m_SpreadType");
             m_BulletsPerShot = serializedObject.FindProperty("m_BulletsPerShot");
             m_BulletSpread = serializedObject.FindProperty("m_BulletSpread");
+            m_BulletPoints = serializedObject.FindProperty("m_BulletPoints");
             m_ApplyRigidbodyForce = serializedObject.FindProperty("m_ApplyRigidbodyForce");
             m_RigidbodyForce = serializedObject.FindProperty("m_RigidbodyForce");
             m_ForceType = serializedObject.FindProperty("m_ForceType");
@@ -120,12 +141,19 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_DryShootAudioSource = serializedObject.FindProperty("m_DryShootAudioSource");
             m_ReloadAudioSource = serializedObject.FindProperty("m_ReloadAudioSource");
 
+            m_AnimationType = serializedObject.FindProperty("m_AnimationType");
+            m_AnimationTarget = serializedObject.FindProperty("m_AnimationTarget");
             m_IdleAnimation = serializedObject.FindProperty("m_IdleAnimation");
             m_ShootAnimation = serializedObject.FindProperty("m_ShootAnimation");
             m_ReloadAnimation = serializedObject.FindProperty("m_ReloadAnimation");
             m_EquipAnimation = serializedObject.FindProperty("m_EquipAnimation");
 
-            //m_BulletDecals = serializedObject.FindProperty("m_BulletDecals");
+            m_MuzzleFlashObject = serializedObject.FindProperty("m_MuzzleFlashObject");
+            m_ObjectFlashTime = serializedObject.FindProperty("m_ObjectFlashTime");
+            m_MuzzleFlashParticles = serializedObject.FindProperty("m_MuzzleFlashParticles");
+            m_MuzzleFlashParticlesEmitAmount = serializedObject.FindProperty("m_ParticleEmitAmount");
+            m_LineEffect = serializedObject.FindProperty("m_LineEffect");
+            m_LineFlashTime = serializedObject.FindProperty("m_LineFlashTime");
         }
 
         // Draw all the GUI in the inspector.
@@ -144,6 +172,15 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
 
             EditorGUILayout.Space();
 
+            AmmoSettingsExpanded = DrawHeader("Ammo & Reload Settings", AmmoSettingsExpanded);
+
+            if (AmmoSettingsExpanded)
+            {
+                DrawAmmoSettings();
+            }
+
+            EditorGUILayout.Space();
+
             ProjectileSettingsExpanded = DrawHeader(m_IsMelee.boolValue ? "Raycast Settings" : "Projectile Settings", ProjectileSettingsExpanded);
 
             if (ProjectileSettingsExpanded)
@@ -152,6 +189,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             }
 
             EditorGUILayout.Space();
+
             RecoilSettingsExpanded = DrawHeader("Recoil Settings", RecoilSettingsExpanded);
 
             if (RecoilSettingsExpanded)
@@ -160,6 +198,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             }
 
             EditorGUILayout.Space();
+
             AudioSettingsExpanded = DrawHeader("Audio Settings", AudioSettingsExpanded);
 
             if (AudioSettingsExpanded)
@@ -168,6 +207,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             }
 
             EditorGUILayout.Space();
+
             AnimationSettingsExpanded = DrawHeader("Animation Settings", AnimationSettingsExpanded);
 
             if (AnimationSettingsExpanded)
@@ -176,11 +216,12 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             }
 
             EditorGUILayout.Space();
-            CosmeticSettingsExpanded = DrawHeader("Cosmetic Settings", CosmeticSettingsExpanded);
+
+            CosmeticSettingsExpanded = DrawHeader("Effect Settings", CosmeticSettingsExpanded);
 
             if (CosmeticSettingsExpanded)
             {
-                DrawCosmeticSettings();
+                DrawEffectsSettings();
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -192,29 +233,28 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             EditorGUILayout.PropertyField(m_Damage, true);
             EditorGUILayout.PropertyField(m_IsMelee, true);
             if (m_IsMelee.boolValue)
-            {
                 EditorGUILayout.PropertyField(m_MeleeAttackTime, true);
-                EditorGUILayout.PropertyField(m_FireDelay, true);
-            }
-            else
-            {
-                EditorGUILayout.PropertyField(m_InfiniteClip, true);
-                GUI.enabled = !m_InfiniteClip.boolValue;
-                EditorGUILayout.PropertyField(m_MaxClip, true);
-                GUI.enabled = true;
-                EditorGUILayout.PropertyField(m_InfiniteAmmo, true);
-                GUI.enabled = !m_InfiniteAmmo.boolValue;
-                EditorGUILayout.PropertyField(m_MaxAmmo, true);
-                GUI.enabled = true;
-                EditorGUILayout.PropertyField(m_FireDelay, true);
-                EditorGUILayout.PropertyField(m_AutoReloadEmptyClip, true);
-                EditorGUILayout.PropertyField(m_CanReloadInBackground, true);
-                EditorGUILayout.PropertyField(m_ReloadTime, true);
-            }
 
+            EditorGUILayout.PropertyField(m_FireDelay, true);
             EditorGUILayout.PropertyField(m_EquipTime, true);
-            EditorGUILayout.PropertyField(m_PrimaryTriggerType, true);
-            EditorGUILayout.PropertyField(m_SecondaryTriggerType, true);
+            EditorGUILayout.PropertyField(m_PrimaryAttackTrigger, true);
+            //EditorGUILayout.PropertyField(m_SecondaryTriggerType, true);
+        }
+
+        protected virtual void DrawAmmoSettings()
+        {
+            EditorGUILayout.PropertyField(m_InfiniteClip, true);
+            GUI.enabled = !m_InfiniteClip.boolValue;
+            EditorGUILayout.PropertyField(m_MaxClip, true);
+            GUI.enabled = true;
+            EditorGUILayout.PropertyField(m_InfiniteAmmo, true);
+            GUI.enabled = !m_InfiniteAmmo.boolValue;
+            EditorGUILayout.PropertyField(m_MaxAmmo, true);
+            GUI.enabled = true;
+            EditorGUILayout.PropertyField(m_AutoReloadEmptyClip, true);
+            EditorGUILayout.PropertyField(m_CanReloadInBackground, true);
+            EditorGUILayout.PropertyField(m_ReloadTime, true);
+            EditorGUILayout.PropertyField(m_ReloadType, true);
         }
 
         protected virtual void DrawProjectileSettings()
@@ -232,14 +272,21 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
                     EditorGUILayout.PropertyField(m_ShootOrigin, true);
                     EditorGUILayout.PropertyField(m_ProjectilePrefab, true);
                     EditorGUILayout.PropertyField(m_ProjectileMoveSpeed, true);
-                    EditorGUILayout.PropertyField(m_ProjectileLifetime);
+                    EditorGUILayout.PropertyField(m_ProjectileLifeTime);
                     EditorGUILayout.PropertyField(m_PoolPrefabs, true);
                     GUI.enabled = m_PoolPrefabs.boolValue;
                     EditorGUILayout.PropertyField(m_InitialPrefabPool, true);
                     GUI.enabled = true;
                 }
-                EditorGUILayout.PropertyField(m_BulletsPerShot);
-                EditorGUILayout.PropertyField(m_BulletSpread);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(m_SpreadType, true);
+                EditorGUILayout.PropertyField(m_BulletsPerShot, true);
+                if (m_SpreadType.enumValueIndex == 1) // Random spread.
+                    EditorGUILayout.PropertyField(m_BulletSpread, true);
+                else if (m_SpreadType.enumValueIndex == 2) // Fixed spread.
+                    EditorGUILayout.PropertyField(m_BulletPoints, true);
                 EditorGUILayout.PropertyField(m_ApplyRigidbodyForce, true);
                 GUI.enabled = m_ApplyRigidbodyForce.boolValue;
                 EditorGUILayout.PropertyField(m_RigidbodyForce, true);
@@ -287,15 +334,57 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
 
         protected virtual void DrawAnimationSettings()
         {
-            EditorGUILayout.PropertyField(m_IdleAnimation, true);
-            EditorGUILayout.PropertyField(m_ShootAnimation, true);
-            EditorGUILayout.PropertyField(m_ReloadAnimation, true);
-            EditorGUILayout.PropertyField(m_EquipAnimation, true);
+            EditorGUILayout.PropertyField(m_AnimationType, true);
+            if (m_AnimationType.enumValueIndex != 0) // None
+            {
+                if (m_AnimationType.enumValueIndex == 2) // Animator.
+                    EditorGUILayout.PropertyField(m_AnimationTarget, true);
+
+                DrawAnimationInfo(m_IdleAnimation);
+                DrawAnimationInfo(m_ShootAnimation);
+                DrawAnimationInfo(m_ReloadAnimation);
+                DrawAnimationInfo(m_EquipAnimation);
+            }
         }
 
-        protected virtual void DrawCosmeticSettings()
+        protected virtual void DrawEffectsSettings()
         {
-            //EditorGUILayout.PropertyField(m_BulletDecals, true);
+            EditorGUILayout.PropertyField(m_MuzzleFlashObject, true);
+            if (m_MuzzleFlashObject.objectReferenceValue != null)
+                EditorGUILayout.PropertyField(m_ObjectFlashTime, true);
+
+            EditorGUILayout.PropertyField(m_MuzzleFlashParticles, true);
+            if (m_MuzzleFlashParticles.objectReferenceValue != null)
+                EditorGUILayout.PropertyField(m_MuzzleFlashParticlesEmitAmount, true);
+
+            if (m_ProjectileType.enumValueIndex == 0) // Raycast.
+            {
+                EditorGUILayout.PropertyField(m_LineEffect, true);
+                if (m_LineEffect.objectReferenceValue != null)
+                    EditorGUILayout.PropertyField(m_LineFlashTime, true);
+            }
+        }
+
+        protected void DrawAnimationInfo(SerializedProperty property)
+        {
+            EditorGUILayout.PropertyField(property, false);
+            if (property.isExpanded)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(property.FindPropertyRelative("m_Enabled"));
+                GUI.enabled = property.FindPropertyRelative("m_Enabled").boolValue;
+                if (m_AnimationType.enumValueIndex == 1) // Code driven.
+                {
+                    EditorGUILayout.PropertyField(property.FindPropertyRelative("m_Curve"));
+                }
+                else if (m_AnimationType.enumValueIndex == 2) // Animator.
+                {
+                    EditorGUILayout.PropertyField(property.FindPropertyRelative("m_ParameterType"));
+                    EditorGUILayout.PropertyField(property.FindPropertyRelative("m_ParameterName"));
+                }
+                GUI.enabled = true;
+                EditorGUI.indentLevel--;
+            }
         }
 
         // Borrowed from Unity's post processing stack.

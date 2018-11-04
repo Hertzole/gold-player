@@ -197,8 +197,8 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Apply the input and mouse sensitivity.
-            m_TargetHeadAngles.x += m_MouseInput.y * m_MouseSensitivity * Time.deltaTime;
-            m_TargetBodyAngles.y += m_MouseInput.x * m_MouseSensitivity * Time.deltaTime;
+            m_TargetHeadAngles.x += m_MouseInput.y * m_MouseSensitivity * Time.unscaledDeltaTime;
+            m_TargetBodyAngles.y += m_MouseInput.x * m_MouseSensitivity * Time.unscaledDeltaTime;
 
             // Clamp the head angle.
             m_TargetHeadAngles.x = Mathf.Clamp(m_TargetHeadAngles.x, m_MinimumX, m_MaximumX);
@@ -245,7 +245,7 @@ namespace Hertzole.GoldPlayer.Core
                 // If the camera is no longer shaking, but it just were, fire the OnEndCameraShake event.
                 if (m_PreviouslyShaking)
                 {
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                     OnEndCameraShake?.Invoke();
 #else
                     if (OnEndCameraShake != null)
@@ -274,7 +274,7 @@ namespace Hertzole.GoldPlayer.Core
             m_ShakeTimer = 0;
 
             // Fire the OnBeginCameraShake event.
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             OnBeginCameraShake?.Invoke();
 #else
             if (OnBeginCameraShake != null)

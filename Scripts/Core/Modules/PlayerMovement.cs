@@ -389,7 +389,7 @@ namespace Hertzole.GoldPlayer.Core
                     float fallHeight = m_JumpPosition.y - PlayerTransform.position.y;
 
                     // Invoke the OnPlayerLand event.
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                     OnLand?.Invoke(fallHeight);
 #else
                     if (OnLand != null)
@@ -404,7 +404,7 @@ namespace Hertzole.GoldPlayer.Core
                 m_PreviouslyGrounded = true;
 
                 // If ground stick is enabled and the player isn't jumping, apply the ground stick effect.
-                m_MoveDirection.y = m_EnableGroundStick && !m_IsJumping ? -m_GroundStick : 0;
+                m_MoveDirection.y = m_EnableGroundStick ? -m_GroundStick : 0;
             }
 
             // Make sure the player is moving in the right direction.
@@ -518,7 +518,7 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Invoke the OnPlayerJump event.
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             OnJump?.Invoke(m_JumpHeight);
 #else
             if (OnJump != null)
@@ -544,7 +544,7 @@ namespace Hertzole.GoldPlayer.Core
                     m_MoveSpeed = m_RunSpeeds;
                 else if (!m_Stamina.EnableStamina)
                     m_MoveSpeed = m_RunSpeeds;
-                else if (m_Stamina.EnableStamina && m_Stamina.CurrentStamina <= 0)
+                else if (m_Stamina.CurrentStamina <= 0)
                     m_MoveSpeed = m_WalkingSpeeds;
             }
             else if (!m_IsCrouching && !GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
@@ -559,7 +559,7 @@ namespace Hertzole.GoldPlayer.Core
                 // If the player wasn't previously running, they just started. Fire the OnBeginRun event.
                 if (!m_PreviouslyRunning)
                 {
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                     OnBeginRun?.Invoke();
 #else
                     if (OnBeginRun != null)
@@ -575,7 +575,7 @@ namespace Hertzole.GoldPlayer.Core
                 // If the player was previously running, fire the OnEndRun event.
                 if (m_PreviouslyRunning)
                 {
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                     OnEndRun?.Invoke();
 #else
                     if (OnEndRun != null)
@@ -607,7 +607,7 @@ namespace Hertzole.GoldPlayer.Core
                     // If the player was previously crouched, fire the OnEndCrouch event, as the player is longer crouching.
                     if (m_PreviouslyCrouched)
                     {
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                         OnEndCrouch?.Invoke();
 #else
                         if (OnEndCrouch != null)
@@ -635,7 +635,7 @@ namespace Hertzole.GoldPlayer.Core
                     // If the player wasn't previously crouched, fire the OnBeginCrouch event, as the player is now crouching.
                     if (!m_PreviouslyCrouched)
                     {
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                         OnBeginCrouch?.Invoke();
 #else
                         if (OnBeginCrouch != null)

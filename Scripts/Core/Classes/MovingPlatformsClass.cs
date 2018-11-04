@@ -67,8 +67,8 @@ namespace Hertzole.GoldPlayer.Core
                     // Go through every platform tag and see if the ground hit has a tag.
                     for (int i = 0; i < m_PlatformTags.Length; i++)
                     {
-                        // If the ground hit isn't null and the ground hit has a platform tag, assign the current platform.
-                        if (m_GroundHit.transform != null && m_GroundHit.transform.CompareTag(m_PlatformTags[i]))
+                        // If the ground hit has a platform tag, assign the current platform.
+                        if (m_GroundHit.transform.CompareTag(m_PlatformTags[i]))
                         {
                             // Set the current platform to the ground hit.
                             m_CurrentPlatform = m_GroundHit.transform;
@@ -121,7 +121,7 @@ namespace Hertzole.GoldPlayer.Core
                     m_CurrentPlatform = null;
                 }
             }
-            else if (m_GroundColliders.Length == 0 && m_GroundHit.transform == null)
+            else if (m_GroundHit.transform == null)
             {
                 // If there are no ground colliders and no ground hit, set the current platform to null.
                 m_CurrentPlatform = null;
