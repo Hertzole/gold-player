@@ -122,7 +122,7 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the current regen wait is less than the regen wait, increase the current regen wait.
             if (m_CurrentRegenWait < m_RegenWait)
-                m_CurrentRegenWait += 1 * Time.deltaTime;
+                m_CurrentRegenWait += Time.deltaTime;
 
             // If the current regen wait is the same as regen wait and current stamina is less than max stamina,
             // increase the current stamina with regen rate.

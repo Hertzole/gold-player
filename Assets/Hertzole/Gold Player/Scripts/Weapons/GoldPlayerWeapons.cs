@@ -7,70 +7,81 @@ using Hertzole.HertzLib;
 
 namespace Hertzole.GoldPlayer.Weapons
 {
-    [AddComponentMenu("Gold Player/Weapons/Gold Player Weapon Manager")]
+    //[AddComponentMenu("Gold Player/Weapons/Gold Player Weapon Manager")]
 #if HERTZLIB_UPDATE_MANAGER
     public class GoldPlayerWeapons : PlayerBehaviour, IUpdate
 #else
+    [DisallowMultipleComponent]
     public class GoldPlayerWeapons : PlayerBehaviour
 #endif
     {
         [SerializeField]
-        private GoldPlayerWeapon[] m_AvailableWeapons;
-        public GoldPlayerWeapon[] AvailableWeapons { get { return m_AvailableWeapons; } set { m_AvailableWeapons = value; } }
+        private GoldPlayerWeapon[] m_AvailableWeapons = new GoldPlayerWeapon[0];
         [SerializeField]
-        private LayerMask m_HitLayer;
-        public LayerMask HitLayer { get { return m_HitLayer; } set { m_HitLayer = value; } }
+        private List<int> m_MyWeapons = new List<int>();
+
+#if UNITY_EDITOR
+        [Space]
+#endif
+
+        [SerializeField]
+        private LayerMask m_HitLayer = 1;
 
 #if UNITY_EDITOR
         [Header("Change Weapon Settings")]
 #endif
         [SerializeField]
         private bool m_CanChangeWeapon = true;
-        public bool CanChangeWeapon { get { return m_CanChangeWeapon; } set { m_CanChangeWeapon = value; } }
         [SerializeField]
         private bool m_CanScrollThrough = true;
-        public bool CanScrollThrough { get { return m_CanScrollThrough; } set { m_CanScrollThrough = value; } }
         [SerializeField]
         private bool m_LoopScroll = true;
-        public bool LoopScroll { get { return m_LoopScroll; } set { m_LoopScroll = value; } }
         [SerializeField]
         private bool m_InvertScroll = false;
-        public bool InvertScroll { get { return m_InvertScroll; } set { m_InvertScroll = value; } }
         [SerializeField]
         private bool m_EnableScrollDelay = false;
-        public bool EnableScrollDelay { get { return m_EnableScrollDelay; } set { m_EnableScrollDelay = value; } }
         [SerializeField]
         private float m_ScrollDelay = 0.1f;
-        public float ScrollDelay { get { return m_ScrollDelay; } set { m_ScrollDelay = value; } }
         [SerializeField]
         private bool m_CanUseNumberKeys = true;
-        public bool CanUseNumberKeys { get { return m_CanUseNumberKeys; } set { m_CanUseNumberKeys = value; } }
         [SerializeField]
         private bool m_CanChangeWhenReloading = true;
-        public bool CanChangeWhenReloading { get { return m_CanChangeWhenReloading; } set { m_CanChangeWhenReloading = value; } }
 
 #if UNITY_EDITOR
         [Header("Cosmetic Changes")]
 #endif
         [SerializeField]
         private ParticleSystem m_BulletDecals = null;
-        public ParticleSystem BulletDecals { get { return m_BulletDecals; } set { m_BulletDecals = value; } }
 
         protected int m_NewWeaponIndex = -1;
         protected int m_CurrentWeaponIndex = -1;
         protected int m_DecalParticleDataIndex = 0;
 
+        protected float m_NextScroll = 0;
+
         protected bool m_DoPrimaryAttack = false;
         protected bool m_DoSecondaryAttack = false;
 
-        protected float m_NextScroll = 0;
+        protected GoldPlayerWeapon m_PreviousWeapon = null;
 
         private BulletDecalData[] m_DecalData;
         private ParticleSystem.Particle[] m_DecalParticles;
 
-        private List<int> m_MyWeapons = new List<int>();
+        public GoldPlayerWeapon[] AvailableWeapons { get { return m_AvailableWeapons; } set { m_AvailableWeapons = value; } }
+        public List<int> MyWeapons { get { return m_MyWeapons; } set { m_MyWeapons = value; } }
 
-        protected GoldPlayerWeapon m_PreviousWeapon = null;
+        public LayerMask HitLayer { get { return m_HitLayer; } set { m_HitLayer = value; } }
+
+        public bool CanChangeWeapon { get { return m_CanChangeWeapon; } set { m_CanChangeWeapon = value; } }
+        public bool CanScrollThrough { get { return m_CanScrollThrough; } set { m_CanScrollThrough = value; } }
+        public bool LoopScroll { get { return m_LoopScroll; } set { m_LoopScroll = value; } }
+        public bool InvertScroll { get { return m_InvertScroll; } set { m_InvertScroll = value; } }
+        public bool EnableScrollDelay { get { return m_EnableScrollDelay; } set { m_EnableScrollDelay = value; } }
+        public float ScrollDelay { get { return m_ScrollDelay; } set { m_ScrollDelay = value; } }
+        public bool CanUseNumberKeys { get { return m_CanUseNumberKeys; } set { m_CanUseNumberKeys = value; } }
+        public bool CanChangeWhenReloading { get { return m_CanChangeWhenReloading; } set { m_CanChangeWhenReloading = value; } }
+
+        public ParticleSystem BulletDecals { get { return m_BulletDecals; } set { m_BulletDecals = value; } }
 
         public GoldPlayerWeapon CurrentWeapon
         {
@@ -86,34 +97,48 @@ namespace Hertzole.GoldPlayer.Weapons
         public delegate void WeaponChangeEvent(GoldPlayerWeapon previousWeapon, GoldPlayerWeapon newWeapon);
         public event WeaponChangeEvent OnWeaponChanged;
 
+        private void OnEnable()
+        {
 #if HERTZLIB_UPDATE_MANAGER
-        protected virtual void OnEnable()
-        {
             UpdateManager.AddUpdate(this);
-        }
-
-        protected virtual OnDisable()
-        {
-            UpdateManager.RemoveUpdate(this);
-        }
 #endif
 
-        protected virtual void Start()
+            OnEnabled();
+        }
+
+        protected virtual void OnEnabled() { }
+
+        private void OnDisable()
+        {
+#if HERTZLIB_UPDATE_MANAGER
+            UpdateManager.RemoveUpdate(this);
+#endif
+
+            OnDisabled();
+        }
+
+        protected virtual void OnDisabled() { }
+
+        private void Start()
+        {
+            SetupWeapons();
+            SetupBulletDecals();
+
+            if (m_MyWeapons.Count > 0)
+                ChangeWeapon(0);
+
+            OnStart();
+        }
+
+        protected virtual void OnStart() { }
+
+        protected virtual void SetupWeapons()
         {
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
             {
                 m_AvailableWeapons[i].gameObject.SetActive(false);
                 m_AvailableWeapons[i].Initialize(this, m_HitLayer);
             }
-
-            //TODO: Add a way in the editor to set what weapons are included.
-            AddWeapon(0);
-            AddWeapon(1);
-            AddWeapon(2);
-
-            ChangeWeapon(0);
-
-            SetupBulletDecals();
         }
 
         protected virtual void SetupBulletDecals()
@@ -137,7 +162,6 @@ namespace Hertzole.GoldPlayer.Weapons
         {
             HandleWeaponChanging();
             HandlePrimaryAttacking();
-            HandleSecondaryAttacking();
             HandleReloading();
         }
 
@@ -205,7 +229,7 @@ namespace Hertzole.GoldPlayer.Weapons
             if (CurrentWeapon == null)
                 return;
 
-            switch (CurrentWeapon.PrimaryTriggerType)
+            switch (CurrentWeapon.PrimaryAttackTrigger)
             {
                 case GoldPlayerWeapon.TriggerTypeEnum.Manual:
                     m_DoPrimaryAttack = GetButtonDown("Primary Attack");
@@ -214,46 +238,26 @@ namespace Hertzole.GoldPlayer.Weapons
                     m_DoPrimaryAttack = GetButton("Primary Attack");
                     break;
                 default:
-                    throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryTriggerType + " trigger type!");
+                    throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryAttackTrigger + " trigger type!");
             }
 
             if (m_DoPrimaryAttack)
                 CurrentWeapon.PrimaryAttack();
         }
 
-        protected virtual void HandleSecondaryAttacking()
-        {
-            if (CurrentWeapon == null)
-                return;
-
-            switch (CurrentWeapon.SecondaryTriggerType)
-            {
-                case GoldPlayerWeapon.TriggerTypeEnum.Manual:
-                    m_DoSecondaryAttack = GetButtonDown("Secondary Attack");
-                    break;
-                case GoldPlayerWeapon.TriggerTypeEnum.Automatic:
-                    m_DoSecondaryAttack = GetButton("Secondary Attack");
-                    break;
-                default:
-                    throw new System.NotImplementedException("No support for " + CurrentWeapon.PrimaryTriggerType + " trigger type!");
-            }
-
-            if (m_DoSecondaryAttack)
-                CurrentWeapon.SecondaryAttack();
-        }
-
         protected virtual void HandleReloading()
         {
-            if (CurrentWeapon == null)
-                return;
-
             if (GetButtonDown("Reload"))
-            {
-                CurrentWeapon.Reload();
-            }
+                ReloadCurrentWeapon();
         }
 
-        protected void GoUpWeaponList()
+        public void ReloadCurrentWeapon()
+        {
+            if (CurrentWeapon != null)
+                CurrentWeapon.Reload();
+        }
+
+        public void GoUpWeaponList()
         {
             if (m_MyWeapons == null || m_MyWeapons.Count == 0)
                 return;
@@ -268,7 +272,7 @@ namespace Hertzole.GoldPlayer.Weapons
             ChangeWeapon(m_NewWeaponIndex);
         }
 
-        protected void GoDownWeaponList()
+        public void GoDownWeaponList()
         {
             if (m_MyWeapons == null || m_MyWeapons.Count == 0)
                 return;
@@ -283,7 +287,7 @@ namespace Hertzole.GoldPlayer.Weapons
             ChangeWeapon(m_NewWeaponIndex);
         }
 
-        public virtual void AddWeapon(GoldPlayerWeapon weapon)
+        public void AddWeapon(GoldPlayerWeapon weapon)
         {
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
             {
@@ -297,7 +301,7 @@ namespace Hertzole.GoldPlayer.Weapons
             throw new System.ArgumentException(weapon.gameObject.name + " has not been added to the list of available weapons!");
         }
 
-        public virtual void AddWeapon(int weaponIndex)
+        public void AddWeapon(int weaponIndex)
         {
             if (m_MyWeapons.Contains(weaponIndex))
             {
@@ -305,10 +309,19 @@ namespace Hertzole.GoldPlayer.Weapons
                 return;
             }
 
-            m_MyWeapons.Add(weaponIndex);
+            for (int i = 0; i < m_AvailableWeapons.Length; i++)
+            {
+                if (i == weaponIndex)
+                {
+                    m_MyWeapons.Add(weaponIndex);
+                    return;
+                }
+            }
+
+            Debug.LogError("There's no Weapon with the index '" + weaponIndex + "' in the available weapons!");
         }
 
-        public virtual void RemoveWeapon(GoldPlayerWeapon weapon)
+        public void RemoveWeapon(GoldPlayerWeapon weapon)
         {
             int weaponToRemoveIndex = -1;
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
@@ -328,7 +341,7 @@ namespace Hertzole.GoldPlayer.Weapons
             RemoveWeapon(weaponToRemoveIndex);
         }
 
-        public virtual void RemoveWeapon(int weaponIndex)
+        public void RemoveWeapon(int weaponIndex)
         {
             if (!m_MyWeapons.Contains(weaponIndex))
             {
@@ -339,25 +352,18 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public virtual void ChangeWeapon(int index)
         {
-            if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_CurrentWeaponIndex == index)
+            index = Mathf.Clamp(index, 0, m_MyWeapons.Count - 1);
+
+            if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_MyWeapons.Count == 0 || m_CurrentWeaponIndex == index)
                 return;
 
             if (!m_CanChangeWhenReloading && CurrentWeapon != null && CurrentWeapon.IsReloading)
                 return;
 
-            if (index < 0)
-                index = 0;
-            else if (index > m_AvailableWeapons.Length - 1)
-            {
-                index = m_AvailableWeapons.Length - 1;
-                if (index == m_CurrentWeaponIndex)
-                    return;
-            }
-
             if (CurrentWeapon != null)
             {
                 CurrentWeapon.gameObject.SetActive(false);
-                CurrentWeapon.OnPutAway();
+                CurrentWeapon.Unequip();
             }
 
             m_PreviousWeapon = CurrentWeapon;
@@ -366,15 +372,33 @@ namespace Hertzole.GoldPlayer.Weapons
             if (CurrentWeapon != null)
             {
                 CurrentWeapon.gameObject.SetActive(true);
-                CurrentWeapon.OnEquip();
+                CurrentWeapon.Equip();
             }
 
-#if NET_4_6 || UNITY_2018_3_OR_NEWER
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             OnWeaponChanged?.Invoke(m_PreviousWeapon, CurrentWeapon);
 #else
             if (OnWeaponChanged != null)
                 OnWeaponChanged.Invoke(m_PreviousWeapon, CurrentWeapon);
 #endif
+
+            //
+
+            //if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_MyWeapons.Count == 0 || m_CurrentWeaponIndex == index)
+            //    return;
+
+            //if (!m_CanChangeWhenReloading && CurrentWeapon != null && CurrentWeapon.IsReloading)
+            //    return;
+
+            //if (CurrentWeapon != null)
+            //{
+            //    CurrentWeapon.gameObject.SetActive(false);
+            //    CurrentWeapon.Unequip();
+            //}
+
+            //m_PreviousWeapon = CurrentWeapon;
+
+            //m_CurrentWeaponIndex = index;
         }
 
         public virtual void DoBulletDecal(RaycastHit hit)

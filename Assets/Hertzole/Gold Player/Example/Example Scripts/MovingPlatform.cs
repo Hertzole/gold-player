@@ -49,7 +49,7 @@ namespace Hertzole.GoldPlayer.Example
             if (Time.time >= m_NextMoveTime)
                 transform.position = Vector3.MoveTowards(transform.position, m_Waypoints[m_CurrentWaypoint].Position, m_MoveSpeed * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, m_Waypoints[m_CurrentWaypoint].Position) == 0)
+            if (Vector3.Distance(transform.position, m_Waypoints[m_CurrentWaypoint].Position) <= 0.1f)
             {
                 NextWaypoint();
             }
@@ -110,7 +110,7 @@ namespace Hertzole.GoldPlayer.Example.Editor
             waypointsList = new ReorderableList(serializedObject, serializedObject.FindProperty("m_Waypoints"), true, true, true, true);
             waypointsList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
-                var element = waypointsList.serializedProperty.GetArrayElementAtIndex(index);
+                SerializedProperty element = waypointsList.serializedProperty.GetArrayElementAtIndex(index);
 
                 EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 70, EditorGUIUtility.singleLineHeight), element.FindPropertyRelative("m_Position"), GUIContent.none);
                 EditorGUI.LabelField(new Rect(rect.x + rect.width - 65, rect.y, rect.width - 65, EditorGUIUtility.singleLineHeight), "T");

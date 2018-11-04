@@ -14,8 +14,13 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("Determines if the bob effect should be enabled.")]
         private bool m_EnableBob = true;
+        [SerializeField]
+        [Tooltip("If true, Unscaled Delta Time will be used and bobbing will be just as fast when time moves slower.")]
+        private bool m_UnscaledTime = false;
 
+#if UNITY_EDITOR
         [Space]
+#endif
 
         [SerializeField]
         [Tooltip("Sets how frequent the bob happens.")]
@@ -36,7 +41,9 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("Multiplies the bob frequency speed.")]
         private float m_StrideMultiplier = 0.3f;
 
+#if UNITY_EDITOR
         [Space]
+#endif
 
         [SerializeField]
         [Tooltip("How much the target will move when landing.")]
@@ -48,7 +55,9 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("How much the target will tilt when strafing.")]
         private float m_StrafeTilt = 3f;
 
+#if UNITY_EDITOR
         [Space]
+#endif
 
         [SerializeField]
         [Tooltip("The object to bob.")]
@@ -70,6 +79,8 @@ namespace Hertzole.GoldPlayer.Core
 
         /// <summary> Determines if the bob effect should be enabled. </summary>
         public bool EnableBob { get { return m_EnableBob; } set { m_EnableBob = value; } }
+        /// <summary> If true, Unscaled Delta Time will be used and bobbing will be just as fast when time moves slower. </summary>
+        public bool UnscaledTime { get { return m_UnscaledTime; } set { m_UnscaledTime = value; } }
         /// <summary> Sets how frequent the bob happens. </summary>
         public float BobFrequency { get { return m_BobFrequency; } set { m_BobFrequency = value; } }
         /// <summary> The height of the bob. </summary>
@@ -95,16 +106,13 @@ namespace Hertzole.GoldPlayer.Core
 
         public void Initialize()
         {
-            if (m_EnableBob && m_BobTarget == null)
+            if (m_EnableBob)
             {
-                //Debug.LogError("No Bob Target set!");
-                //return;
-                throw new System.NullReferenceException("No Bob Target set!");
-            }
-            else if (!m_EnableBob && m_BobTarget == null)
-                return;
+                if (!m_BobTarget)
+                    throw new System.NullReferenceException("No Bob Target set!");
 
-            m_OriginalHeadLocalPosition = m_BobTarget.localPosition;
+                m_OriginalHeadLocalPosition = m_BobTarget.localPosition;
+            }
         }
 
         public void DoBob(Vector3 velocity)
@@ -128,7 +136,7 @@ namespace Hertzole.GoldPlayer.Core
             // Damping towards zero velocity.
             m_SpringVelocity *= m_SpringDampen;
             // Output to head Y position.
-            m_SpringPos += m_SpringVelocity * Time.deltaTime;
+            m_SpringPos += m_SpringVelocity * (m_UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime);
             // Clamp spring distance.
             m_SpringPos = Mathf.Clamp(m_SpringPos, -.3f, .3f);
 
@@ -140,7 +148,7 @@ namespace Hertzole.GoldPlayer.Core
 
             float flatVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
             float strideLengthen = 1 + (flatVelocity * m_StrideMultiplier);
-            m_BobCycle += (flatVelocity / strideLengthen) * (Time.deltaTime / m_BobFrequency);
+            m_BobCycle += (flatVelocity / strideLengthen) * ((m_UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime) / m_BobFrequency);
 
             float bobFactor = Mathf.Sin(m_BobCycle * Mathf.PI * 2);
             float bobSwayFactor = Mathf.Sin(m_BobCycle * Mathf.PI * 2 + Mathf.PI * .5f);
@@ -148,9 +156,9 @@ namespace Hertzole.GoldPlayer.Core
             bobFactor *= bobFactor;
 
             if (new Vector3(velocity.x, 0, velocity.z).magnitude < 0.1f)
-                m_BobFade = Mathf.Lerp(m_BobFade, 0, Time.deltaTime);
+                m_BobFade = Mathf.Lerp(m_BobFade, 0, (m_UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime));
             else
-                m_BobFade = Mathf.Lerp(m_BobFade, 1, Time.deltaTime);
+                m_BobFade = Mathf.Lerp(m_BobFade, 1, (m_UnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime));
 
             float speedHeightFactor = 1 + (flatVelocity * m_HeightMultiplier);
 
