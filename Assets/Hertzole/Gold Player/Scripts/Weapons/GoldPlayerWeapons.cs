@@ -381,24 +381,6 @@ namespace Hertzole.GoldPlayer.Weapons
             if (OnWeaponChanged != null)
                 OnWeaponChanged.Invoke(m_PreviousWeapon, CurrentWeapon);
 #endif
-
-            //
-
-            //if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_MyWeapons.Count == 0 || m_CurrentWeaponIndex == index)
-            //    return;
-
-            //if (!m_CanChangeWhenReloading && CurrentWeapon != null && CurrentWeapon.IsReloading)
-            //    return;
-
-            //if (CurrentWeapon != null)
-            //{
-            //    CurrentWeapon.gameObject.SetActive(false);
-            //    CurrentWeapon.Unequip();
-            //}
-
-            //m_PreviousWeapon = CurrentWeapon;
-
-            //m_CurrentWeaponIndex = index;
         }
 
         public virtual void DoBulletDecal(RaycastHit hit)
@@ -408,7 +390,7 @@ namespace Hertzole.GoldPlayer.Weapons
                 if (m_DecalParticleDataIndex >= m_BulletDecals.main.maxParticles)
                     m_DecalParticleDataIndex = 0;
 
-                m_DecalData[m_DecalParticleDataIndex].position = hit.point;
+                m_DecalData[m_DecalParticleDataIndex].position = hit.point + (hit.normal * 0.01f);
                 Vector3 particleRotationEuler = Quaternion.LookRotation(hit.normal).eulerAngles;
                 particleRotationEuler.z = Random.Range(0f, 360f);
                 m_DecalData[m_DecalParticleDataIndex].rotation = particleRotationEuler;
