@@ -15,6 +15,9 @@ namespace Hertzole.GoldPlayer.Weapons
         private bool m_MoveProjectile = true;
         public bool MoveProjectile { get { return m_MoveProjectile; } set { m_MoveProjectile = value; } }
         [SerializeField]
+        private bool m_HandleHitsMyself = false;
+        public bool HandleHitsMyself { get { return m_HandleHitsMyself; } set { m_HandleHitsMyself = value; } }
+        [SerializeField]
         private QueryTriggerInteraction m_TriggerInteraction = QueryTriggerInteraction.Ignore;
         public QueryTriggerInteraction TriggerInteraction { get { return m_TriggerInteraction; } set { m_TriggerInteraction = value; } }
 
@@ -22,7 +25,7 @@ namespace Hertzole.GoldPlayer.Weapons
         protected float m_LifeTime = 0;
         private float m_MoveDistance = 0;
 
-        protected int m_Damage = 0;
+        public int Damage { get; private set; }
 
         private Ray m_Ray;
         private RaycastHit m_Hit;
@@ -31,12 +34,15 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected LayerMask m_HitLayer;
 
+        public delegate void ProjectileHitEvent(GoldPlayerProjectile projectile, RaycastHit hit);
+        public event ProjectileHitEvent OnProjectileHit;
+
         public void Initialize(float moveSpeed, float lifeTime, LayerMask hitLayer, int damage, GoldPlayerWeapon weapon)
         {
             m_MoveSpeed = moveSpeed;
-            m_LifeTime = lifeTime;
+            m_LifeTime = Time.time + lifeTime;
 
-            m_Damage = damage;
+            Damage = damage;
 
             m_Weapon = weapon;
             m_HitLayer = hitLayer;
@@ -75,14 +81,15 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
         {
             DoCollisionChecking();
-            transform.Translate(Vector3.forward * m_MoveDistance);
+            DoMovement();
+            DoLifeTime();
 
             DoUpdate();
         }
 
         protected virtual void DoUpdate() { }
 
-        protected void DoCollisionChecking()
+        protected virtual void DoCollisionChecking()
         {
             m_MoveDistance = m_MoveSpeed * Time.deltaTime;
             m_Ray = new Ray(transform.position, transform.forward);
@@ -93,17 +100,37 @@ namespace Hertzole.GoldPlayer.Weapons
             }
         }
 
+        protected virtual void DoMovement()
+        {
+            if (m_MoveProjectile)
+                transform.Translate(Vector3.forward * m_MoveDistance);
+        }
+
+        protected virtual void DoLifeTime()
+        {
+            if (Time.time >= m_LifeTime)
+                DestroyProjectile();
+        }
+
         protected virtual void OnHitObject(RaycastHit hit)
         {
-            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-            if (damageable != null)
-                damageable.TakeDamage(m_Damage, hit);
+            CallHitEvent(hit);
             DestroyProjectile();
         }
 
         public void DestroyProjectile()
         {
             m_Weapon.DestroyProjectile(this);
+        }
+
+        protected void CallHitEvent(RaycastHit hit)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            OnProjectileHit?.Invoke(this, hit);
+#else
+            if (OnProjectileHit != null)
+                OnProjectileHit.Invoke(this, hit);
+#endif
         }
     }
 }
