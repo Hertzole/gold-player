@@ -74,10 +74,10 @@ namespace Hertzole.GoldPlayer.Weapons
             RecoilUpdate();
             EffectsUpdate();
 
-            OnUpdate();
+            DoUpdate();
         }
 
-        protected virtual void OnUpdate() { }
+        protected virtual void DoUpdate() { }
 
         public void Equip()
         {

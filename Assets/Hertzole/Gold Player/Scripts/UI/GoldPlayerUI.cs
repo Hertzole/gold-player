@@ -355,10 +355,8 @@ namespace Hertzole.GoldPlayer.UI
                 // set the message to either a custom message or the one in Player Interaction.
                 if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden && m_InteractionLabel != null)
                 {
-                    if (PlayerInteraction.CurrentHitInteractable.UseCustomMessage)
-                        m_InteractionLabel.text = PlayerInteraction.CurrentHitInteractable.CustomMessage;
-                    else
-                        m_InteractionLabel.text = PlayerInteraction.InteractMessage;
+                    m_InteractionLabel.text = PlayerInteraction.CurrentHitInteractable.UseCustomMessage ?
+                        PlayerInteraction.CurrentHitInteractable.CustomMessage : PlayerInteraction.InteractMessage;
                 }
             }
             else

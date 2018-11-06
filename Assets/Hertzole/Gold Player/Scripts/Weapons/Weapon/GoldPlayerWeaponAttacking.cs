@@ -67,11 +67,13 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected float m_NextFire = 0;
 
-        private RaycastHit m_RaycastHit;
+        protected int m_BulletPointIndex = 0;
 
-        private Transform m_PreviousHit;
-        private IDamageable m_HitDamageable;
-        private Rigidbody m_HitRigidbody;
+        protected RaycastHit m_RaycastHit;
+
+        protected Transform m_PreviousHit;
+        protected IDamageable m_HitDamageable;
+        protected Rigidbody m_HitRigidbody;
 
         protected Stack<GoldPlayerProjectile> m_PooledProjectiles = new Stack<GoldPlayerProjectile>();
         protected List<GoldPlayerProjectile> m_ActiveProjectiles = new List<GoldPlayerProjectile>();
@@ -177,56 +179,79 @@ namespace Hertzole.GoldPlayer.Weapons
         {
             int damage = m_Damage / m_BulletsPerShot;
 
+            Vector3 rotation = Vector3.zero;
+
             for (int i = 0; i < m_BulletsPerShot; i++)
             {
-                //TODO: Implement spread type.
-                Vector3 rotation = new Vector3(Random.Range(-m_BulletSpread, m_BulletSpread) / 360, Random.Range(-m_BulletSpread, m_BulletSpread) / 360, Random.Range(-m_BulletSpread, m_BulletSpread) / 360);
-                Physics.Raycast(m_ShootOrigin.position, m_ShootOrigin.forward + rotation, out m_RaycastHit, m_ProjectileLength, HitLayer, QueryTriggerInteraction.Ignore);
+                switch (m_SpreadType)
+                {
+                    case BulletSpreadTypeEnum.NoSpread:
+                        rotation = m_ShootOrigin.forward;
+                        break;
+                    case BulletSpreadTypeEnum.RandomSpread:
+                        rotation = m_ShootOrigin.forward + new Vector3(
+                            Random.Range(-m_BulletSpread, m_BulletSpread) / 360f,
+                            Random.Range(-m_BulletSpread, m_BulletSpread) / 360f,
+                            Random.Range(-m_BulletSpread, m_BulletSpread) / 360f);
+                        break;
+                    case BulletSpreadTypeEnum.FixedSpread:
+                        {
+                            if (m_BulletPointIndex >= m_BulletPoints.Length)
+                                m_BulletPointIndex = 0;
+                            rotation = m_ShootOrigin.forward + m_BulletPoints[m_BulletPointIndex].forward;
+                            m_BulletPointIndex++;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                Physics.Raycast(m_ShootOrigin.position, rotation, out m_RaycastHit, m_ProjectileLength, HitLayer, QueryTriggerInteraction.Ignore);
                 if (m_RaycastHit.transform != null)
                 {
-                    if (m_PreviousHit != m_RaycastHit.transform)
-                    {
-                        m_PreviousHit = m_RaycastHit.transform;
-                        m_HitDamageable = m_RaycastHit.transform.GetComponent<IDamageable>();
-                        if (m_ApplyRigidbodyForce)
-                            m_HitRigidbody = m_RaycastHit.transform.GetComponent<Rigidbody>();
-                    }
-
-                    OnRaycastHit(damage);
+                    OnRaycastHit(m_RaycastHit, damage);
                 }
             }
         }
 
-        protected virtual void OnRaycastHit(int damage)
+        protected virtual void OnRaycastHit(RaycastHit hit, int damage)
         {
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
-            OnHit?.Invoke(m_RaycastHit, damage);
-            OnHitGlobal?.Invoke(m_RaycastHit, damage);
+            OnHit?.Invoke(hit, damage);
+            OnHitGlobal?.Invoke(hit, damage);
 #else
             if (OnHit != null)
-                OnHit.Invoke(m_RaycastHit, damage);
+                OnHit.Invoke(hit, damage);
             if (OnHitGlobal != null)
-                OnHitGlobal.Invoke(m_RaycastHit, damage);
+                OnHitGlobal.Invoke(hit, damage);
 #endif
+
+            if (hit.transform != null && m_PreviousHit != hit.transform)
+            {
+                m_PreviousHit = hit.transform;
+                m_HitDamageable = hit.transform.GetComponent<IDamageable>();
+                if (m_ApplyRigidbodyForce)
+                    m_HitRigidbody = hit.transform.GetComponent<Rigidbody>();
+            }
 
             if (m_HitDamageable != null)
             {
-                m_HitDamageable.TakeDamage(damage, m_RaycastHit);
+                m_HitDamageable.TakeDamage(damage, hit);
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
-                OnHitDamagable?.Invoke(m_RaycastHit, damage);
-                OnHitDamagableGlobal?.Invoke(m_RaycastHit, damage);
+                OnHitDamagable?.Invoke(hit, damage);
+                OnHitDamagableGlobal?.Invoke(hit, damage);
 #else
                 if (OnHitDamagable != null)
-                    OnHitDamagable.Invoke(m_RaycastHit, damage);
+                    OnHitDamagable.Invoke(hit, damage);
                 if (OnHitDamagableGlobal != null)
-                    OnHitDamagableGlobal.Invoke(m_RaycastHit, damage);
+                    OnHitDamagableGlobal.Invoke(hit, damage);
 #endif
             }
 
             if (m_ApplyRigidbodyForce && m_HitRigidbody)
-                m_HitRigidbody.AddForceAtPosition(transform.forward * m_RigidbodyForce, m_RaycastHit.point, m_ForceType);
+                m_HitRigidbody.AddForceAtPosition(transform.forward * m_RigidbodyForce, hit.point, m_ForceType);
 
-            Weapons.DoBulletDecal(m_RaycastHit);
+            Weapons.DoBulletDecal(hit);
         }
 
         protected virtual void DoPrefabProjectile()
@@ -236,7 +261,6 @@ namespace Hertzole.GoldPlayer.Weapons
             Quaternion rotation = Quaternion.identity;
             GoldPlayerProjectile projectile = null;
 
-            int bulletPointIndex = 0;
             for (int i = 0; i < m_BulletsPerShot; i++)
             {
                 switch (m_SpreadType)
@@ -245,14 +269,17 @@ namespace Hertzole.GoldPlayer.Weapons
                         rotation = m_ShootOrigin.rotation;
                         break;
                     case BulletSpreadTypeEnum.RandomSpread:
-                        rotation = Quaternion.Euler(m_ShootOrigin.eulerAngles.x + Random.Range(-m_BulletSpread, m_BulletSpread), m_ShootOrigin.eulerAngles.y + Random.Range(-m_BulletSpread, m_BulletSpread), m_ShootOrigin.eulerAngles.z);
+                        rotation = Quaternion.Euler(
+                            m_ShootOrigin.eulerAngles.x + Random.Range(-m_BulletSpread, m_BulletSpread),
+                            m_ShootOrigin.eulerAngles.y + Random.Range(-m_BulletSpread, m_BulletSpread),
+                            m_ShootOrigin.eulerAngles.z);
                         break;
                     case BulletSpreadTypeEnum.FixedSpread:
                         {
-                            if (bulletPointIndex >= m_BulletPoints.Length)
-                                bulletPointIndex = 0;
-                            rotation = m_BulletPoints[bulletPointIndex].rotation;
-                            bulletPointIndex++;
+                            if (m_BulletPointIndex >= m_BulletPoints.Length)
+                                m_BulletPointIndex = 0;
+                            rotation = m_BulletPoints[m_BulletPointIndex].rotation;
+                            m_BulletPointIndex++;
                         }
                         break;
                     default:
@@ -260,7 +287,15 @@ namespace Hertzole.GoldPlayer.Weapons
                 }
                 projectile = GetProjectile(m_ShootOrigin.position, rotation);
                 projectile.Initialize(m_ProjectileMoveSpeed, m_ProjectileLifeTime, HitLayer, damage, this);
+                projectile.OnProjectileHit += OnPrefabProjectileHit;
             }
+        }
+
+        protected virtual void OnPrefabProjectileHit(GoldPlayerProjectile projectile, RaycastHit hit)
+        {
+            projectile.OnProjectileHit -= OnPrefabProjectileHit;
+            if (!projectile.HandleHitsMyself)
+                OnRaycastHit(hit, projectile.Damage);
         }
 
         protected virtual GoldPlayerProjectile GetProjectile(Vector3 position, Quaternion rotation, Transform parent = null)

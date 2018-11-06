@@ -132,10 +132,7 @@ namespace Hertzole.GoldPlayer.Core
 
             // If active is true, lerp the target camera field of view to the new FOV.
             // Else lerp it to the original FOV.
-            if (activate)
-                m_TargetCamera.fieldOfView = Mathf.Lerp(m_TargetCamera.fieldOfView, m_NewFOV, m_LerpTimeTo * Time.deltaTime);
-            else
-                m_TargetCamera.fieldOfView = Mathf.Lerp(m_TargetCamera.fieldOfView, m_OriginalFOV, m_LerpTimeFrom * Time.deltaTime);
+            m_TargetCamera.fieldOfView = Mathf.Lerp(m_TargetCamera.fieldOfView, activate ? m_NewFOV : m_OriginalFOV, (activate ? m_LerpTimeTo : m_LerpTimeFrom) * Time.deltaTime);
         }
 
 #if UNITY_EDITOR
