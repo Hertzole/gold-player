@@ -60,6 +60,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_ReloadAudioSource;
 
         private SerializedProperty m_AnimationType;
+        private SerializedProperty m_AnimatorTarget;
         private SerializedProperty m_AnimationTarget;
         private SerializedProperty m_IdleAnimation;
         private SerializedProperty m_ShootAnimation;
@@ -72,8 +73,12 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_MuzzleFlashParticlesEmitAmount;
         private SerializedProperty m_LineEffect;
         private SerializedProperty m_LineFlashTime;
-
-        //private SerializedProperty m_BulletDecals;
+        private SerializedProperty m_ShellEjectParticles;
+        private SerializedProperty m_ShellEjectAmount;
+        private SerializedProperty m_ShellEjectPoint;
+        private SerializedProperty m_RigidbodyShell;
+        private SerializedProperty m_MaxRigidbodyShells;
+        private SerializedProperty m_ShellForce;
 
         private readonly Color r_HeaderBackgroundDark = new Color(0.1f, 0.1f, 0.1f, 0.2f);
         private readonly Color r_HeaderBackgroundLight = new Color(0.35f, 0.35f, 0.35f, 0.2f);
@@ -142,6 +147,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_ReloadAudioSource = serializedObject.FindProperty("m_ReloadAudioSource");
 
             m_AnimationType = serializedObject.FindProperty("m_AnimationType");
+            m_AnimatorTarget = serializedObject.FindProperty("m_AnimatorTarget");
             m_AnimationTarget = serializedObject.FindProperty("m_AnimationTarget");
             m_IdleAnimation = serializedObject.FindProperty("m_IdleAnimation");
             m_ShootAnimation = serializedObject.FindProperty("m_ShootAnimation");
@@ -154,6 +160,12 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_MuzzleFlashParticlesEmitAmount = serializedObject.FindProperty("m_ParticleEmitAmount");
             m_LineEffect = serializedObject.FindProperty("m_LineEffect");
             m_LineFlashTime = serializedObject.FindProperty("m_LineFlashTime");
+            m_ShellEjectParticles = serializedObject.FindProperty("m_ShellEjectParticle");
+            m_ShellEjectAmount = serializedObject.FindProperty("m_ShellEjectAmount");
+            m_ShellEjectPoint = serializedObject.FindProperty("m_ShellEjectPoint");
+            m_RigidbodyShell = serializedObject.FindProperty("m_RigidbodyShell");
+            m_MaxRigidbodyShells = serializedObject.FindProperty("m_MaxRigidbodyShells");
+            m_ShellForce = serializedObject.FindProperty("m_ShellForce");
         }
 
         // Draw all the GUI in the inspector.
@@ -337,8 +349,15 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             EditorGUILayout.PropertyField(m_AnimationType, true);
             if (m_AnimationType.enumValueIndex != 0) // None
             {
-                if (m_AnimationType.enumValueIndex == 2) // Animator.
-                    EditorGUILayout.PropertyField(m_AnimationTarget, true);
+                switch (m_AnimationType.enumValueIndex)
+                {
+                    case 1: // Code driven.
+                        EditorGUILayout.PropertyField(m_AnimationTarget, true);
+                        break;
+                    case 2: // Animator.
+                        EditorGUILayout.PropertyField(m_AnimatorTarget, true);
+                        break;
+                }
 
                 DrawAnimationInfo(m_IdleAnimation);
                 DrawAnimationInfo(m_ShootAnimation);
@@ -362,6 +381,18 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
                 EditorGUILayout.PropertyField(m_LineEffect, true);
                 if (m_LineEffect.objectReferenceValue != null)
                     EditorGUILayout.PropertyField(m_LineFlashTime, true);
+            }
+
+            EditorGUILayout.PropertyField(m_ShellEjectParticles);
+            if (m_ShellEjectParticles.objectReferenceValue != null)
+                EditorGUILayout.PropertyField(m_ShellEjectAmount);
+
+            EditorGUILayout.PropertyField(m_ShellEjectPoint, true);
+            EditorGUILayout.PropertyField(m_RigidbodyShell, true);
+            if (m_RigidbodyShell.objectReferenceValue != null)
+            {
+                EditorGUILayout.PropertyField(m_MaxRigidbodyShells, true);
+                EditorGUILayout.PropertyField(m_ShellForce, true);
             }
         }
 
