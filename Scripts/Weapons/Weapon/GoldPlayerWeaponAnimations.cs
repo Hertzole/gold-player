@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Weapons
 {
-
     public partial class GoldPlayerWeapon
     {
         public enum AnimationTypeEnum { None = 0, CodeDriven = 1, Animator = 2 }
@@ -12,8 +11,11 @@ namespace Hertzole.GoldPlayer.Weapons
         private AnimationTypeEnum m_AnimationType = AnimationTypeEnum.CodeDriven;
         public AnimationTypeEnum AnimationType { get { return m_AnimationType; } set { m_AnimationType = value; } }
         [SerializeField]
-        private Animator m_AnimationTarget = null;
-        public Animator AnimationTarget { get { return m_AnimationTarget; } set { m_AnimationTarget = value; } }
+        private Animator m_AnimatorTarget = null;
+        public Animator AnimatorTarget { get { return m_AnimatorTarget; } set { m_AnimatorTarget = value; } }
+        [SerializeField]
+        private Transform m_AnimationTarget = null;
+        public Transform AnimationTarget { get { return m_AnimationTarget; } set { m_AnimationTarget = value; } }
         [SerializeField]
         private WeaponAnimationInfo m_IdleAnimation = new WeaponAnimationInfo(AnimatorParamaterType.None, "Idle");
         public WeaponAnimationInfo IdleAnimation { get { return m_IdleAnimation; } set { m_IdleAnimation = value; } }
@@ -38,10 +40,21 @@ namespace Hertzole.GoldPlayer.Weapons
 
         private void InitializeAnimations()
         {
-            m_OriginalPosition = transform.localPosition;
+            if (m_AnimationType == AnimationTypeEnum.CodeDriven && m_AnimationTarget == null)
+                throw new System.NullReferenceException("There's no Animation Target assigned on '" + gameObject.name + "!");
 
-            if (m_AnimationType == AnimationTypeEnum.Animator && !m_AnimationTarget)
+            if (m_AnimationType == AnimationTypeEnum.Animator && m_AnimatorTarget == null)
                 throw new System.NullReferenceException("There's no Animator Target assigned on '" + gameObject.name + "'!");
+
+            switch (m_AnimationType)
+            {
+                case AnimationTypeEnum.CodeDriven:
+                    m_OriginalPosition = m_AnimationTarget.localPosition;
+                    break;
+                case AnimationTypeEnum.Animator:
+                    m_OriginalPosition = m_AnimatorTarget.transform.localPosition;
+                    break;
+            }
         }
 
         protected void OnEquipAnimation()
@@ -65,7 +78,7 @@ namespace Hertzole.GoldPlayer.Weapons
             if (m_AnimationType == AnimationTypeEnum.CodeDriven && m_EquipAnimation.Enabled)
             {
                 Vector3 startPosition = m_OriginalPosition - new Vector3(0, 1, 0);
-                transform.localPosition = startPosition;
+                m_AnimationTarget.localPosition = startPosition;
 
                 float currentEquipTime = 0;
                 while (currentEquipTime < m_EquipTime)
@@ -75,7 +88,7 @@ namespace Hertzole.GoldPlayer.Weapons
                         currentEquipTime = m_EquipTime;
 
                     float perc = currentEquipTime / m_EquipTime;
-                    transform.localPosition = Vector3.Lerp(startPosition, m_OriginalPosition, m_EquipAnimation.Curve.Evaluate(perc));
+                    m_AnimationTarget.localPosition = Vector3.Lerp(startPosition, m_OriginalPosition, m_EquipAnimation.Curve.Evaluate(perc));
                     yield return null;
                 }
             }
@@ -120,7 +133,7 @@ namespace Hertzole.GoldPlayer.Weapons
             {
                 float reloadSpeed = 1f / m_ReloadTime;
                 float reloadPercent = 0;
-                Vector3 initialRot = transform.localEulerAngles;
+                Vector3 initialRot = m_AnimationTarget.localEulerAngles;
 
                 while (reloadPercent < 1)
                 {
@@ -128,7 +141,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
                     float interpolation = (-Mathf.Pow(reloadPercent, 2) + reloadPercent) * 4;
                     float reloadAngle = Mathf.Lerp(0, 30, m_ReloadAnimation.Curve.Evaluate(interpolation));
-                    transform.localEulerAngles = initialRot + Vector3.left * reloadAngle;
+                    m_AnimationTarget.localEulerAngles = initialRot + Vector3.left * reloadAngle;
                     yield return null;
                 }
             }
@@ -188,24 +201,24 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected void SetTriggerOnTarget(WeaponAnimationInfo info, float floatValue, int intValue, bool boolValue, bool shouldTrigger)
         {
-            if (m_AnimationTarget && info.Enabled)
+            if (m_AnimatorTarget && info.Enabled)
             {
                 switch (info.ParameterType)
                 {
                     case AnimatorParamaterType.None:
                         break;
                     case AnimatorParamaterType.Float:
-                        m_AnimationTarget.SetFloat(info.ParamaterName, floatValue);
+                        m_AnimatorTarget.SetFloat(info.ParamaterName, floatValue);
                         break;
                     case AnimatorParamaterType.Int:
-                        m_AnimationTarget.SetInteger(info.ParamaterName, intValue);
+                        m_AnimatorTarget.SetInteger(info.ParamaterName, intValue);
                         break;
                     case AnimatorParamaterType.Bool:
-                        m_AnimationTarget.SetBool(info.ParamaterName, boolValue);
+                        m_AnimatorTarget.SetBool(info.ParamaterName, boolValue);
                         break;
                     case AnimatorParamaterType.Trigger:
                         if (shouldTrigger)
-                            m_AnimationTarget.SetTrigger(info.ParamaterName);
+                            m_AnimatorTarget.SetTrigger(info.ParamaterName);
                         break;
                     default:
                         throw new System.NotImplementedException("No support for parameter type '" + info.ParameterType + "'!");

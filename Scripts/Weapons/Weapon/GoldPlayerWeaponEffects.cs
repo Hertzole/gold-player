@@ -1,10 +1,14 @@
 using Hertzole.HertzLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Weapons
 {
     public partial class GoldPlayerWeapon
     {
+#if UNITY_EDITOR
+        [Header("Muzzle Flash")]
+#endif
         [SerializeField]
         private GameObject m_MuzzleFlashObject = null;
         public GameObject MuzzleFlashObject { get { return m_MuzzleFlashObject; } set { m_MuzzleFlashObject = value; } }
@@ -24,10 +28,53 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_LineFlashTime = 0.05f;
         public float LineFlashTime { get { return m_LineFlashTime; } set { m_LineFlashTime = value; } }
 
+#if UNITY_EDITOR
+        [Header("Shell Ejection")]
+#endif
+        [SerializeField]
+        private ParticleSystem m_ShellEjectParticle = null;
+        public ParticleSystem ShellEjectParticle { get { return m_ShellEjectParticle; } set { m_ShellEjectParticle = value; } }
+        [SerializeField]
+        private RandomInt m_ShellEjectAmount = new RandomInt(1, 1);
+        public RandomInt ShellEjectAmount { get { return m_ShellEjectAmount; } set { m_ShellEjectAmount = value; } }
+
+#if UNITY_EDITOR
+        [Space]
+#endif
+
+        [SerializeField]
+        private Transform m_ShellEjectPoint = null;
+        public Transform ShellEjectPoint { get { return m_ShellEjectPoint; } set { m_ShellEjectPoint = value; } }
+        [SerializeField]
+        private Rigidbody m_RigidbodyShell = null;
+        public Rigidbody RigidbodyShell { get { return m_RigidbodyShell; } set { m_RigidbodyShell = value; } }
+        [SerializeField]
+        private int m_MaxRigidbodyShells = 10;
+        public int MaxRigidbodyShells { get { return m_MaxRigidbodyShells; } set { m_MaxRigidbodyShells = value; } }
+        [SerializeField]
+        private RandomFloat m_ShellForce = new RandomFloat(5f, 10f);
+        public RandomFloat ShellForce { get { return m_ShellForce; } set { m_ShellForce = value; } }
+
         protected float m_ObjectFlashEndTime = 0;
         protected float m_LineFlashEndTime = 0;
 
+        protected int m_RigidbodyShellIndex = 0;
+
         public event System.Action OnMuzzleFlash;
+
+        protected List<Rigidbody> m_RigidbodyShellsPool = new List<Rigidbody>();
+
+        private static Transform s_ShellPool;
+        public static Transform ShellPool
+        {
+            get
+            {
+                if (s_ShellPool == null)
+                    s_ShellPool = new GameObject("Gun Shell Pool").transform;
+
+                return s_ShellPool;
+            }
+        }
 
         private void InitializeEffects()
         {
@@ -38,6 +85,24 @@ namespace Hertzole.GoldPlayer.Weapons
             {
                 m_LineEffect.useWorldSpace = true;
                 m_LineEffect.enabled = false;
+            }
+
+            if (m_RigidbodyShell != null && m_ShellEjectPoint == null)
+                throw new System.NullReferenceException("There's no Shell Ejection Point attached on '" + gameObject.name + "'!");
+
+            CreateShellsPool();
+        }
+
+        protected void CreateShellsPool()
+        {
+            if (m_RigidbodyShell != null)
+            {
+                for (int i = 0; i < m_MaxRigidbodyShells; i++)
+                {
+                    Rigidbody shell = Instantiate(m_RigidbodyShell, ShellPool);
+                    shell.gameObject.SetActive(false);
+                    m_RigidbodyShellsPool.Add(shell);
+                }
             }
         }
 
@@ -59,6 +124,12 @@ namespace Hertzole.GoldPlayer.Weapons
                 OnMuzzleFlash.Invoke();
 #endif
 
+            DoMuzzleFlash();
+            DoShellEjection();
+        }
+
+        protected virtual void DoMuzzleFlash()
+        {
             if (m_MuzzleFlashObject != null)
             {
                 m_MuzzleFlashObject.gameObject.SetActive(true);
@@ -80,6 +151,28 @@ namespace Hertzole.GoldPlayer.Weapons
 
                 m_LineEffect.enabled = true;
                 m_LineFlashEndTime = Time.time + m_LineFlashTime;
+            }
+        }
+
+        protected virtual void DoShellEjection()
+        {
+            if (m_ShellEjectParticle != null)
+            {
+                m_ShellEjectParticle.Emit(m_ShellEjectAmount);
+            }
+
+            if (m_RigidbodyShell != null)
+            {
+                if (m_RigidbodyShellIndex > m_RigidbodyShellsPool.Count - 1)
+                    m_RigidbodyShellIndex = 0;
+
+                Rigidbody shell = m_RigidbodyShellsPool[m_RigidbodyShellIndex];
+                shell.transform.position = m_ShellEjectPoint.position;
+                shell.transform.eulerAngles = m_ShellEjectPoint.eulerAngles;
+                shell.gameObject.SetActive(true);
+                shell.AddForce(m_ShellEjectPoint.forward * m_ShellForce.Value, ForceMode.Impulse);
+                shell.AddTorque(Random.insideUnitSphere * m_ShellForce.Value);
+                m_RigidbodyShellIndex++;
             }
         }
     }
