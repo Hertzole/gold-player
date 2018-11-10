@@ -372,10 +372,15 @@ namespace Hertzole.GoldPlayer.UI
         {
             if (previousWeapon)
                 previousWeapon.OnAmmoChanged -= OnAmmoChanged;
+
             if (newWeapon != null)
             {
                 newWeapon.OnAmmoChanged += OnAmmoChanged;
                 OnAmmoChanged(newWeapon.CurrentClip, newWeapon.CurrentAmmo);
+            }
+            else
+            {
+                OnAmmoChanged(0, 0);
             }
 
             if (m_WeaponNameText != null)
@@ -384,9 +389,9 @@ namespace Hertzole.GoldPlayer.UI
 
         protected virtual void OnAmmoChanged(int clip, int ammo)
         {
-            if (m_AmmoText)
+            if (m_AmmoText && m_PlayerWeapons != null)
             {
-                if (m_PlayerWeapons != null && m_PlayerWeapons.CurrentWeapon != null)
+                if (m_PlayerWeapons.CurrentWeapon != null)
                 {
                     if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
                         m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
@@ -394,6 +399,10 @@ namespace Hertzole.GoldPlayer.UI
                         m_AmmoText.text = string.Format("<size={0}>{1}</size>/<size={2}>{3}</size>", m_ClipTextSize, clip, m_AmmoTextSize,
                             (m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString()));
 
+                }
+                else
+                {
+                    m_AmmoText.text = "---";
                 }
             }
         }

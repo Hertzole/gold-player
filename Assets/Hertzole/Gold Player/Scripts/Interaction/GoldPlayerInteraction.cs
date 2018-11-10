@@ -27,7 +27,7 @@ namespace Hertzole.GoldPlayer.Interaction
         private float m_InteractionRange = 2f;
         [SerializeField]
         [Tooltip("Sets the layers that the player can interact with.")]
-        private LayerMask m_InteractionLayer = 0;
+        private LayerMask m_InteractionLayer = 1;
         [SerializeField]
         [Tooltip("Determines if colliders marked as triggers should be detected.")]
         private bool m_IgnoreTriggers = true;

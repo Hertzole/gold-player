@@ -7,18 +7,21 @@ using Hertzole.HertzLib;
 
 namespace Hertzole.GoldPlayer.Weapons
 {
-    //[AddComponentMenu("Gold Player/Weapons/Gold Player Weapon Manager")]
 #if HERTZLIB_UPDATE_MANAGER
     public class GoldPlayerWeapons : PlayerBehaviour, IUpdate
 #else
     [DisallowMultipleComponent]
+    [AddComponentMenu("Gold Player/Weapons/Gold Player Weapon Manager")]
     public class GoldPlayerWeapons : PlayerBehaviour
 #endif
     {
+#if UNITY_EDITOR
+        [Header("Weapon Settings")]
+#endif
         [SerializeField]
         private GoldPlayerWeapon[] m_AvailableWeapons = new GoldPlayerWeapon[0];
         [SerializeField]
-        private List<int> m_MyWeapons = new List<int>();
+        private List<int> m_MyWeaponIndexes = new List<int>();
 
 #if UNITY_EDITOR
         [Space]
@@ -48,7 +51,7 @@ namespace Hertzole.GoldPlayer.Weapons
         private bool m_CanChangeWhenReloading = true;
 
 #if UNITY_EDITOR
-        [Header("Cosmetic Changes")]
+        [Header("Cosmetic Settings")]
 #endif
         [SerializeField]
         private ParticleSystem m_BulletDecals = null;
@@ -68,7 +71,8 @@ namespace Hertzole.GoldPlayer.Weapons
         private ParticleSystem.Particle[] m_DecalParticles;
 
         public GoldPlayerWeapon[] AvailableWeapons { get { return m_AvailableWeapons; } set { m_AvailableWeapons = value; } }
-        public List<int> MyWeapons { get { return m_MyWeapons; } set { m_MyWeapons = value; } }
+        public List<int> MyWeaponIndexes { get { return m_MyWeaponIndexes; } set { m_MyWeaponIndexes = value; } }
+        public List<GoldPlayerWeapon> MyWeapons { get; set; }
 
         public LayerMask HitLayer { get { return m_HitLayer; } set { m_HitLayer = value; } }
 
@@ -87,10 +91,10 @@ namespace Hertzole.GoldPlayer.Weapons
         {
             get
             {
-                if (m_MyWeapons == null || m_MyWeapons.Count == 0)
+                if (m_MyWeaponIndexes == null || m_MyWeaponIndexes.Count == 0)
                     return null;
 
-                return m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > m_MyWeapons.Count - 1 ? null : m_AvailableWeapons[m_MyWeapons[m_CurrentWeaponIndex]];
+                return m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > m_MyWeaponIndexes.Count - 1 ? null : m_AvailableWeapons[m_MyWeaponIndexes[m_CurrentWeaponIndex]];
             }
         }
 
@@ -124,7 +128,7 @@ namespace Hertzole.GoldPlayer.Weapons
             SetupWeapons();
             SetupBulletDecals();
 
-            if (m_MyWeapons.Count > 0)
+            if (m_MyWeaponIndexes.Count > 0)
                 ChangeWeapon(0);
 
             OnStart();
@@ -134,10 +138,15 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected virtual void SetupWeapons()
         {
+            MyWeapons = new List<GoldPlayerWeapon>();
+
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
             {
                 m_AvailableWeapons[i].gameObject.SetActive(false);
                 m_AvailableWeapons[i].Initialize(this, m_HitLayer);
+
+                if (m_MyWeaponIndexes.Contains(i))
+                    MyWeapons.Add(m_AvailableWeapons[i]);
             }
         }
 
@@ -253,40 +262,16 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public void ReloadCurrentWeapon()
         {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.Reload();
+#else
             if (CurrentWeapon != null)
                 CurrentWeapon.Reload();
+#endif
         }
 
-        public void GoUpWeaponList()
-        {
-            if (m_MyWeapons == null || m_MyWeapons.Count == 0)
-                return;
 
-            m_NewWeaponIndex = m_CurrentWeaponIndex - 1;
-            if (m_NewWeaponIndex < 0)
-            {
-                if (m_LoopScroll)
-                    m_NewWeaponIndex = m_MyWeapons.Count - 1;
-            }
-
-            ChangeWeapon(m_NewWeaponIndex);
-        }
-
-        public void GoDownWeaponList()
-        {
-            if (m_MyWeapons == null || m_MyWeapons.Count == 0)
-                return;
-
-            m_NewWeaponIndex = m_CurrentWeaponIndex + 1;
-            if (m_NewWeaponIndex > m_MyWeapons.Count - 1)
-            {
-                if (m_LoopScroll)
-                    m_NewWeaponIndex = 0;
-            }
-
-            ChangeWeapon(m_NewWeaponIndex);
-        }
-
+        #region Adding and Removing Weapons
         public void AddWeapon(GoldPlayerWeapon weapon)
         {
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
@@ -303,7 +288,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public void AddWeapon(int weaponIndex)
         {
-            if (m_MyWeapons.Contains(weaponIndex))
+            if (m_MyWeaponIndexes.Contains(weaponIndex))
             {
                 Debug.LogWarning("Weapon with index " + weaponIndex + " already exists in the player weapon inventory!");
                 return;
@@ -313,7 +298,8 @@ namespace Hertzole.GoldPlayer.Weapons
             {
                 if (i == weaponIndex)
                 {
-                    m_MyWeapons.Add(weaponIndex);
+                    m_MyWeaponIndexes.Add(weaponIndex);
+                    MyWeapons.Add(m_AvailableWeapons[i]);
                     return;
                 }
             }
@@ -343,18 +329,81 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public void RemoveWeapon(int weaponIndex)
         {
-            if (!m_MyWeapons.Contains(weaponIndex))
+            if (!m_MyWeaponIndexes.Contains(weaponIndex))
             {
                 Debug.LogWarning("No weapon with the index " + weaponIndex + " exists in the player weapon inventory!");
                 return;
             }
+
+            if (m_CurrentWeaponIndex == weaponIndex)
+            {
+                if (CurrentWeapon != null)
+                {
+                    CurrentWeapon.gameObject.SetActive(false);
+                    CurrentWeapon.Unequip();
+                }
+
+                m_MyWeaponIndexes.Remove(weaponIndex);
+                m_CurrentWeaponIndex = -2;
+
+                if (m_MyWeaponIndexes.Count > 0)
+                {
+                    if (m_CurrentWeaponIndex - 1 < 0)
+                        ChangeWeapon(0);
+                    else
+                        ChangeWeapon(m_CurrentWeaponIndex - 1);
+                }
+                else
+                {
+                    ChangeWeapon(-1);
+                }
+            }
+            else
+            {
+                m_MyWeaponIndexes.Remove(weaponIndex);
+            }
+
+            MyWeapons.Remove(m_AvailableWeapons[weaponIndex]);
+        }
+        #endregion
+
+        #region Changing Weapons
+        public void GoUpWeaponList()
+        {
+            if (m_MyWeaponIndexes == null || m_MyWeaponIndexes.Count == 0)
+                return;
+
+            m_NewWeaponIndex = m_CurrentWeaponIndex - 1;
+            if (m_NewWeaponIndex < 0)
+            {
+                if (m_LoopScroll)
+                    m_NewWeaponIndex = m_MyWeaponIndexes.Count - 1;
+            }
+
+            ChangeWeapon(m_NewWeaponIndex);
+        }
+
+        public void GoDownWeaponList()
+        {
+            if (m_MyWeaponIndexes == null || m_MyWeaponIndexes.Count == 0)
+                return;
+
+            m_NewWeaponIndex = m_CurrentWeaponIndex + 1;
+            if (m_NewWeaponIndex > m_MyWeaponIndexes.Count - 1)
+            {
+                if (m_LoopScroll)
+                    m_NewWeaponIndex = 0;
+            }
+
+            ChangeWeapon(m_NewWeaponIndex);
         }
 
         public virtual void ChangeWeapon(int index)
         {
-            index = Mathf.Clamp(index, 0, m_MyWeapons.Count - 1);
+            if (index != -1)
+                index = Mathf.Clamp(index, 0, m_MyWeaponIndexes.Count - 1);
 
-            if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_MyWeapons.Count == 0 || m_CurrentWeaponIndex == index)
+            if (m_AvailableWeapons == null || m_AvailableWeapons.Length == 0 || m_CurrentWeaponIndex == index)
                 return;
 
             if (!m_CanChangeWhenReloading && CurrentWeapon != null && CurrentWeapon.IsReloading)
@@ -367,6 +416,17 @@ namespace Hertzole.GoldPlayer.Weapons
             }
 
             m_PreviousWeapon = CurrentWeapon;
+
+            if (m_MyWeaponIndexes.Count == 0)
+            {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+                OnWeaponChanged?.Invoke(m_PreviousWeapon, null);
+#else
+            if (OnWeaponChanged != null)
+                OnWeaponChanged.Invoke(m_PreviousWeapon, null);
+#endif
+                return;
+            }
 
             m_CurrentWeaponIndex = index;
             if (CurrentWeapon != null)
@@ -382,7 +442,203 @@ namespace Hertzole.GoldPlayer.Weapons
                 OnWeaponChanged.Invoke(m_PreviousWeapon, CurrentWeapon);
 #endif
         }
+        #endregion
 
+        #region Ammo related
+        public void SetAmmoOnAllWeapons(int amount)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].SetAmmo(amount);
+        }
+
+        public void SetAmmoOnAllWeapons(float percent)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].SetAmmo(percent);
+        }
+
+        public void SetAmmoOnCurrentWeapon(int amount)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.SetAmmo(amount);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.SetAmmo(amount);
+#endif
+        }
+
+        public void SetAmmoOnCurrentWeapon(float percent)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.SetAmmo(percent);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.SetAmmo(percent);
+#endif
+        }
+
+        public void SetClipOnAllWeapons(int amount)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].SetClip(amount);
+        }
+
+        public void SetClipOnAllWeapons(float percent)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].SetClip(percent);
+        }
+
+        public void SetClipOnCurrentWeapon(int amount)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.SetClip(amount);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.SetClip(amount);
+#endif
+        }
+
+        public void SetClipOnCurrentWeapon(float percent)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.SetClip(percent);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.SetClip(percent);
+#endif
+        }
+
+        public void AddAmmoOnAllWeapons(int amount)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].AddAmmo(amount);
+        }
+
+        public void AddAmmoOnAllWeapons(float percent)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].AddAmmo(percent);
+        }
+
+        public void AddAmmoOnCurrentWeapon(int amount)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.AddAmmo(amount);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.AddAmmo(amount);
+#endif
+        }
+
+        public void AddAmmoOnCurrentWeapon(float percent)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.AddAmmo(percent);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.AddAmmo(percent);
+#endif
+        }
+
+        public void AddClipOnAllWeapons(int amount)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].AddClip(amount);
+        }
+
+        public void AddClipOnAllWeapons(float percent)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].AddClip(percent);
+        }
+
+        public void AddClipOnCurrentWeapon(int amount)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.AddClip(amount);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.AddClip(amount);
+#endif
+        }
+
+        public void AddClipOnCurrentWeapon(float percent)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.AddClip(percent);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.AddClip(percent);
+#endif
+        }
+
+        public void RemoveAmmoOnAllWeapons(int amount)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].RemoveAmmo(amount);
+        }
+
+        public void RemoveAmmoOnAllWeapons(float percent)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].RemoveAmmo(percent);
+        }
+
+        public void RemoveAmmoOnCurrentWeapon(int amount)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.RemoveAmmo(amount);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.RemoveAmmo(amount);
+#endif
+        }
+
+        public void RemoveAmmoOnCurrentWeapon(float percent)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.RemoveAmmo(percent);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.RemoveAmmo(percent);
+#endif
+        }
+
+        public void RemoveClipOnAllWeapons(int amount)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].RemoveClip(amount);
+        }
+
+        public void RemoveClipOnAllWeapons(float percent)
+        {
+            for (int i = 0; i < MyWeapons.Count; i++)
+                MyWeapons[i].RemoveClip(percent);
+        }
+
+        public void RemoveClipOnCurrentWeapon(int amount)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.RemoveClip(amount);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.RemoveClip(amount);
+#endif
+        }
+
+        public void RemoveClipOnCurrentWeapon(float percent)
+        {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+            CurrentWeapon?.RemoveClip(percent);
+#else
+            if (CurrentWeapon != null)
+                CurrentWeapon.RemoveClip(percent);
+#endif
+        }
+        #endregion
+
+        #region Bullet decals
         public virtual void DoBulletDecal(RaycastHit hit)
         {
             if (m_BulletDecals)
@@ -428,5 +684,6 @@ namespace Hertzole.GoldPlayer.Weapons
         {
             return new Color(Random.Range(minColor.r, maxColor.r), Random.Range(minColor.g, maxColor.g), Random.Range(minColor.b, maxColor.b), Random.Range(minColor.a, maxColor.a));
         }
+        #endregion
     }
 }
