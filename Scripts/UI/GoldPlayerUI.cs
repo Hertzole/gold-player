@@ -370,13 +370,27 @@ namespace Hertzole.GoldPlayer.UI
 #if GOLD_PLAYER_WEAPONS
         protected virtual void OnWeaponChanged(GoldPlayerWeapon previousWeapon, GoldPlayerWeapon newWeapon)
         {
-            if (previousWeapon)
-                previousWeapon.OnAmmoChanged -= OnAmmoChanged;
+            if (previousWeapon != null)
+            {
+                if (previousWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.Charge)
+                    previousWeapon.OnChargeChanged -= OnChargeChanged;
+                else
+                    previousWeapon.OnAmmoChanged -= OnAmmoChanged;
+
+            }
 
             if (newWeapon != null)
             {
-                newWeapon.OnAmmoChanged += OnAmmoChanged;
-                OnAmmoChanged(newWeapon.CurrentClip, newWeapon.CurrentAmmo);
+                if (newWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.Charge)
+                {
+                    newWeapon.OnChargeChanged += OnChargeChanged;
+                    OnChargeChanged(newWeapon.CurrentCharge);
+                }
+                else
+                {
+                    newWeapon.OnAmmoChanged += OnAmmoChanged;
+                    OnAmmoChanged(newWeapon.CurrentClip, newWeapon.CurrentAmmo);
+                }
             }
             else
             {
@@ -387,9 +401,17 @@ namespace Hertzole.GoldPlayer.UI
                 m_WeaponNameText.text = newWeapon != null ? newWeapon.WeaponName : m_NoWeaponText;
         }
 
+        private void OnChargeChanged(float currentCharge)
+        {
+            if (m_AmmoText != null && m_PlayerWeapons != null && m_PlayerWeapons.CurrentWeapon != null)
+            {
+                m_AmmoText.text = GetLabel(LabelDisplayType.Percentage, currentCharge, m_PlayerWeapons.CurrentWeapon.MaxCharge);
+            }
+        }
+
         protected virtual void OnAmmoChanged(int clip, int ammo)
         {
-            if (m_AmmoText && m_PlayerWeapons != null)
+            if (m_AmmoText != null && m_PlayerWeapons != null)
             {
                 if (m_PlayerWeapons.CurrentWeapon != null)
                 {

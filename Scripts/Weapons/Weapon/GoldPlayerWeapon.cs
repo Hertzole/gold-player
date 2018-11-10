@@ -71,6 +71,7 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
         {
             ReloadUpdate();
+            ChargeUpdate();
             RecoilUpdate();
             EffectsUpdate();
 
