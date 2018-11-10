@@ -30,7 +30,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_ChargeDecreaseRate;
         private SerializedProperty m_AutoRecharge;
         private SerializedProperty m_ChargeRegenerateRate;
-        private SerializedProperty m_ChargeWaitTime;
+        private SerializedProperty m_RechargeWaitTime;
         private SerializedProperty m_CanOverheat;
         private SerializedProperty m_OverheatTime;
 
@@ -125,7 +125,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_ChargeDecreaseRate = serializedObject.FindProperty("m_ChargeDecreaseRate");
             m_AutoRecharge = serializedObject.FindProperty("m_AutoRecharge");
             m_ChargeRegenerateRate = serializedObject.FindProperty("m_ChargeRegenerateRate");
-            m_ChargeWaitTime = serializedObject.FindProperty("m_ChargeWaitTime");
+            m_RechargeWaitTime = serializedObject.FindProperty("m_RechargeWaitTime");
             m_CanOverheat = serializedObject.FindProperty("m_CanOverheat");
             m_OverheatTime = serializedObject.FindProperty("m_OverheatTime");
 
@@ -301,7 +301,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
                 EditorGUILayout.PropertyField(m_AutoRecharge, true);
                 GUI.enabled = m_AutoRecharge.boolValue;
                 EditorGUILayout.PropertyField(m_ChargeRegenerateRate, true);
-                EditorGUILayout.PropertyField(m_ChargeWaitTime, true);
+                EditorGUILayout.PropertyField(m_RechargeWaitTime, true);
                 EditorGUILayout.PropertyField(m_CanOverheat, true);
                 GUI.enabled = m_CanOverheat.boolValue && m_AutoRecharge.boolValue;
                 EditorGUILayout.PropertyField(m_OverheatTime, true);

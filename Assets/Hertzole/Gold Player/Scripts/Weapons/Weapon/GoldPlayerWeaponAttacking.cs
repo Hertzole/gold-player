@@ -124,6 +124,29 @@ namespace Hertzole.GoldPlayer.Weapons
             if (IsReloading)
                 return;
 
+            if (m_AmmoType == AmmoTypeEnum.Charge && CurrentCharge > 0 && !m_PlayingEquipAnimation)
+            {
+                CurrentCharge -= m_ChargeDecreaseRate * Time.deltaTime;
+                if (m_AutoRecharge)
+                    m_RechargeStartTime = Time.time + m_RechargeWaitTime;
+
+                if (m_CurrentCharge <= 0)
+                {
+                    CurrentCharge = 0;
+                    if (m_CanOverheat)
+                    {
+                        IsOverheated = true;
+                        m_OverheatTimer = Time.time + m_OverheatTime;
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+                        OnChargeOverheated?.Invoke();
+#else
+                        if (OnChargeOverheated != null)
+                            OnChargeOverheated.Invoke();
+#endif
+                    }
+                }
+            }
+
             if (Time.time >= m_NextFire && !m_PlayingEquipAnimation)
             {
                 m_NextFire = Time.time + m_FireDelay;
@@ -131,7 +154,7 @@ namespace Hertzole.GoldPlayer.Weapons
                 {
                     DoPrimaryAttack();
                 }
-                else if (!m_InfiniteClip && m_CurrentClip == 0 && !IsReloading)
+                else if (m_AmmoType != AmmoTypeEnum.Charge && !m_InfiniteClip && m_CurrentClip == 0 && !IsReloading)
                 {
                     if (m_AutoReloadEmptyClip)
                     {
@@ -153,8 +176,11 @@ namespace Hertzole.GoldPlayer.Weapons
             DoShootAnimation();
             DoShootEffects();
 
-            if (!m_InfiniteClip && m_CurrentClip > 0)
-                CurrentClip--;
+            if (m_AmmoType != AmmoTypeEnum.Charge)
+            {
+                if (!m_InfiniteClip && m_CurrentClip > 0)
+                    CurrentClip--;
+            }
         }
 
         protected void DoProjectile()

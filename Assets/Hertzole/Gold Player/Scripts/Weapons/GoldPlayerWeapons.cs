@@ -91,10 +91,10 @@ namespace Hertzole.GoldPlayer.Weapons
         {
             get
             {
-                if (m_MyWeaponIndexes == null || m_MyWeaponIndexes.Count == 0)
+                if (MyWeapons == null || MyWeapons.Count == 0)
                     return null;
 
-                return m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > m_MyWeaponIndexes.Count - 1 ? null : m_AvailableWeapons[m_MyWeaponIndexes[m_CurrentWeaponIndex]];
+                return m_CurrentWeaponIndex < 0 || m_CurrentWeaponIndex > MyWeapons.Count - 1 ? null : MyWeapons[m_CurrentWeaponIndex];
             }
         }
 
@@ -143,10 +143,11 @@ namespace Hertzole.GoldPlayer.Weapons
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
             {
                 m_AvailableWeapons[i].gameObject.SetActive(false);
-                m_AvailableWeapons[i].Initialize(this, m_HitLayer);
 
                 if (m_MyWeaponIndexes.Contains(i))
-                    MyWeapons.Add(m_AvailableWeapons[i]);
+                {
+                    MyWeapons.Add(CreateWeapon(m_AvailableWeapons[i]));
+                }
             }
         }
 
@@ -272,6 +273,15 @@ namespace Hertzole.GoldPlayer.Weapons
 
 
         #region Adding and Removing Weapons
+        protected GoldPlayerWeapon CreateWeapon(GoldPlayerWeapon weapon)
+        {
+            GoldPlayerWeapon newWeapon = Instantiate(weapon, weapon.transform.position, weapon.transform.rotation, weapon.transform.parent);
+            newWeapon.gameObject.SetActive(false);
+            newWeapon.Initialize(this, m_HitLayer);
+
+            return newWeapon;
+        }
+
         public void AddWeapon(GoldPlayerWeapon weapon)
         {
             for (int i = 0; i < m_AvailableWeapons.Length; i++)
@@ -299,7 +309,7 @@ namespace Hertzole.GoldPlayer.Weapons
                 if (i == weaponIndex)
                 {
                     m_MyWeaponIndexes.Add(weaponIndex);
-                    MyWeapons.Add(m_AvailableWeapons[i]);
+                    MyWeapons.Add(CreateWeapon(m_AvailableWeapons[i]));
                     return;
                 }
             }
@@ -335,6 +345,9 @@ namespace Hertzole.GoldPlayer.Weapons
                 return;
             }
 
+            Destroy(MyWeapons[weaponIndex].gameObject);
+            MyWeapons.RemoveAt(weaponIndex);
+
             if (m_CurrentWeaponIndex == weaponIndex)
             {
                 if (CurrentWeapon != null)
@@ -343,15 +356,17 @@ namespace Hertzole.GoldPlayer.Weapons
                     CurrentWeapon.Unequip();
                 }
 
+                int currentWeaponIndex = m_CurrentWeaponIndex;
+
                 m_MyWeaponIndexes.Remove(weaponIndex);
                 m_CurrentWeaponIndex = -2;
 
                 if (m_MyWeaponIndexes.Count > 0)
                 {
-                    if (m_CurrentWeaponIndex - 1 < 0)
+                    if (currentWeaponIndex - 1 < 0)
                         ChangeWeapon(0);
                     else
-                        ChangeWeapon(m_CurrentWeaponIndex - 1);
+                        ChangeWeapon(currentWeaponIndex - 1);
                 }
                 else
                 {
@@ -361,9 +376,9 @@ namespace Hertzole.GoldPlayer.Weapons
             else
             {
                 m_MyWeaponIndexes.Remove(weaponIndex);
+                if (weaponIndex < m_CurrentWeaponIndex)
+                    m_CurrentWeaponIndex--;
             }
-
-            MyWeapons.Remove(m_AvailableWeapons[weaponIndex]);
         }
         #endregion
 
@@ -400,6 +415,8 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public virtual void ChangeWeapon(int index)
         {
+            Debug.Log("Change weapon to index " + index + " (" + m_CurrentWeaponIndex + ")");
+
             if (index != -1)
                 index = Mathf.Clamp(index, 0, m_MyWeaponIndexes.Count - 1);
 
@@ -417,18 +434,19 @@ namespace Hertzole.GoldPlayer.Weapons
 
             m_PreviousWeapon = CurrentWeapon;
 
-            if (m_MyWeaponIndexes.Count == 0)
+            if (MyWeapons.Count == 0)
             {
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                 OnWeaponChanged?.Invoke(m_PreviousWeapon, null);
 #else
-            if (OnWeaponChanged != null)
-                OnWeaponChanged.Invoke(m_PreviousWeapon, null);
+                if (OnWeaponChanged != null)
+                    OnWeaponChanged.Invoke(m_PreviousWeapon, null);
 #endif
                 return;
             }
 
             m_CurrentWeaponIndex = index;
+            Debug.Log(CurrentWeapon);
             if (CurrentWeapon != null)
             {
                 CurrentWeapon.gameObject.SetActive(true);

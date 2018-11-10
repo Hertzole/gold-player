@@ -5,7 +5,7 @@ namespace Hertzole.GoldPlayer.Weapons
     //TODO: Implement Ammo Type.
     public partial class GoldPlayerWeapon
     {
-        public enum ReloadTypeEnum { ReloadEntireMagazine = 0, ReloadEachBullet = 1 }
+        public enum ReloadTypeEnum { ReloadEntireClip = 0, ReloadEachBullet = 1 }
         public enum AmmoTypeEnum { AmmoAndClip = 0, OneClip = 1, Charge = 2 }
 
         [SerializeField]
@@ -33,7 +33,7 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_ReloadTime = 0.8f;
         public float ReloadTime { get { return m_ReloadTime; } set { m_ReloadTime = value; } }
         [SerializeField]
-        private ReloadTypeEnum m_ReloadType = ReloadTypeEnum.ReloadEntireMagazine;
+        private ReloadTypeEnum m_ReloadType = ReloadTypeEnum.ReloadEntireClip;
         public ReloadTypeEnum ReloadType { get { return m_ReloadType; } set { m_ReloadType = value; } }
         [SerializeField]
         private float m_MaxCharge = 100;
@@ -48,8 +48,8 @@ namespace Hertzole.GoldPlayer.Weapons
         private float m_ChargeRegenerateRate = 4.5f;
         public float ChargeRegenerateRate { get { return m_ChargeRegenerateRate; } set { m_ChargeRegenerateRate = value; } }
         [SerializeField]
-        private float m_ChargeWaitTime = 1f;
-        public float ChargeWaitTime { get { return m_ChargeWaitTime; } set { m_ChargeWaitTime = value; } }
+        private float m_RechargeWaitTime = 1f;
+        public float RechargeWaitTime { get { return m_RechargeWaitTime; } set { m_RechargeWaitTime = value; } }
         [SerializeField]
         private bool m_CanOverheat = true;
         public bool CanOverheat { get { return m_CanOverheat; } set { m_CanOverheat = value; } }
@@ -91,12 +91,45 @@ namespace Hertzole.GoldPlayer.Weapons
         }
 
         protected float m_FinishReloadTime = 0;
+        protected float m_CurrentCharge = 0;
+        protected float m_RechargeStartTime = 0;
+        protected float m_OverheatTimer = 0;
 
-        public bool HasEnoughClip { get { return m_InfiniteClip ? true : m_CurrentClip > 0; } }
+        public float CurrentCharge
+        {
+            get { return m_CurrentCharge; }
+            set
+            {
+                m_CurrentCharge = value;
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+                OnChargeChanged?.Invoke(m_CurrentCharge);
+#else
+                if (OnChargeChanged != null)
+                    OnChargeChanged.Invoke(m_CurrentCharge);
+#endif
+            }
+        }
+
+        public bool HasEnoughClip
+        {
+            get
+            {
+                if (m_AmmoType == AmmoTypeEnum.Charge)
+                    return m_CurrentCharge > 0;
+                else
+                    return m_InfiniteClip ? true : m_CurrentClip > 0;
+            }
+        }
+
         public bool IsReloading { get; protected set; }
+        public bool IsOverheated { get; protected set; }
 
         public delegate void AmmoEvent(int clip, int ammo);
+        public delegate void ChargeEvent(float currentCharge);
         public event AmmoEvent OnAmmoChanged;
+        public event ChargeEvent OnChargeChanged;
+        public event System.Action OnChargeOverheated;
+        public event System.Action OnChargeStopOverheat;
         public event System.Action OnStartReloading;
         public event System.Action OnFinishReload;
 
@@ -104,31 +137,38 @@ namespace Hertzole.GoldPlayer.Weapons
         {
             m_CurrentClip = m_MaxClip;
             m_CurrentAmmo = m_MaxAmmo;
+            m_CurrentCharge = m_MaxCharge;
         }
 
         private void OnEnableAmmo()
         {
-            if (IsReloading && m_CanReloadInBackground && Time.time >= m_FinishReloadTime)
+            if (m_AmmoType == AmmoTypeEnum.AmmoAndClip)
             {
-                FinishReloading();
-            }
-            else if (IsReloading && !m_CanReloadInBackground)
-            {
-                m_FinishReloadTime = Time.time + m_ReloadTime + m_EquipTime;
-                DoReload();
+                if (IsReloading && m_CanReloadInBackground && Time.time >= m_FinishReloadTime)
+                {
+                    FinishReloading();
+                }
+                else if (IsReloading && !m_CanReloadInBackground)
+                {
+                    m_FinishReloadTime = Time.time + m_ReloadTime + m_EquipTime;
+                    DoReload();
+                }
             }
         }
 
         private void ReloadUpdate()
         {
             //TODO: Implement reload type.
-            if (IsReloading && Time.time >= m_FinishReloadTime)
-                FinishReloading();
+            if (m_AmmoType == AmmoTypeEnum.AmmoAndClip)
+            {
+                if (IsReloading && Time.time >= m_FinishReloadTime)
+                    FinishReloading();
+            }
         }
 
         public virtual void Reload()
         {
-            if (IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0)
+            if (m_AmmoType != AmmoTypeEnum.AmmoAndClip && IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0)
                 return;
 
             IsReloading = true;
@@ -139,6 +179,9 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected void DoReload()
         {
+            if (m_AmmoType != AmmoTypeEnum.AmmoAndClip)
+                return;
+
             PlayReloadSound();
             DoReloadAnimation();
 
@@ -152,6 +195,9 @@ namespace Hertzole.GoldPlayer.Weapons
 
         protected virtual void FinishReloading()
         {
+            if (m_AmmoType != AmmoTypeEnum.AmmoAndClip)
+                return;
+
             IsReloading = false;
 
             if (m_CurrentAmmo == -1)
@@ -189,6 +235,36 @@ namespace Hertzole.GoldPlayer.Weapons
             if (OnFinishReload != null)
                 OnFinishReload.Invoke();
 #endif
+        }
+
+        protected virtual void ChargeUpdate()
+        {
+            if (m_AmmoType == AmmoTypeEnum.Charge)
+            {
+                if (IsOverheated)
+                {
+                    if (Time.time >= m_OverheatTimer)
+                    {
+                        IsOverheated = false;
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
+                        OnChargeStopOverheat?.Invoke();
+#else
+                        if (OnChargeStopOverheat != null)
+                            OnChargeStopOverheat.Invoke();
+#endif
+                    }
+                }
+                else
+                {
+                    if (m_AutoRecharge && Time.time >= m_RechargeStartTime && m_CurrentCharge < m_MaxCharge)
+                    {
+                        if (m_CurrentCharge > m_MaxCharge)
+                            CurrentCharge = m_MaxCharge;
+                        else
+                            CurrentCharge += m_ChargeRegenerateRate * Time.deltaTime;
+                    }
+                }
+            }
         }
 
         public virtual void SetAmmo(int amount)
