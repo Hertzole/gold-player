@@ -11,6 +11,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_AvailableWeapons;
         private SerializedProperty m_MyWeaponIndexes;
         private SerializedProperty m_HitLayer;
+
         private SerializedProperty m_CanChangeWeapon;
         private SerializedProperty m_CanScrollThrough;
         private SerializedProperty m_LoopScroll;
@@ -19,7 +20,10 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_ScrollDelay;
         private SerializedProperty m_CanUseNumberKeys;
         private SerializedProperty m_CanChangeWhenReloading;
+
         private SerializedProperty m_BulletDecals;
+        private SerializedProperty m_DecalHitLayers;
+        private SerializedProperty m_IgnoreRigidbodies;
 
         private GoldPlayerWeapons m_Weapons;
 
@@ -42,6 +46,8 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_CanUseNumberKeys = serializedObject.FindProperty("m_CanUseNumberKeys");
             m_CanChangeWhenReloading = serializedObject.FindProperty("m_CanChangeWhenReloading");
             m_BulletDecals = serializedObject.FindProperty("m_BulletDecals");
+            m_DecalHitLayers = serializedObject.FindProperty("m_DecalHitLayers");
+            m_IgnoreRigidbodies = serializedObject.FindProperty("m_IgnoreRigidbodies");
 
             m_MyWeaponsList = new ReorderableList(serializedObject, m_MyWeaponIndexes, true, true, true, true)
             {
@@ -108,6 +114,8 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             EditorGUILayout.PropertyField(m_CanUseNumberKeys, true);
             EditorGUILayout.PropertyField(m_CanChangeWhenReloading, true);
             EditorGUILayout.PropertyField(m_BulletDecals, true);
+            EditorGUILayout.PropertyField(m_DecalHitLayers, true);
+            EditorGUILayout.PropertyField(m_IgnoreRigidbodies, true);
 
             serializedObject.ApplyModifiedProperties();
         }

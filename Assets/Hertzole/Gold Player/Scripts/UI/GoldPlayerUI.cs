@@ -415,11 +415,22 @@ namespace Hertzole.GoldPlayer.UI
             {
                 if (m_PlayerWeapons.CurrentWeapon != null)
                 {
-                    if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
-                        m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
-                    else
-                        m_AmmoText.text = string.Format("<size={0}>{1}</size>/<size={2}>{3}</size>", m_ClipTextSize, clip, m_AmmoTextSize,
-                            (m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString()));
+                    if (m_PlayerWeapons.CurrentWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.OneClip)
+                    {
+                        if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
+                            m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
+                        else
+                            m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, clip);
+                    }
+                    else if (m_PlayerWeapons.CurrentWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.AmmoAndClip)
+                    {
+                        if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
+                            m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
+                        else
+                            m_AmmoText.text = string.Format("<size={0}>{1}</size>/<size={2}>{3}</size>", m_ClipTextSize, clip, m_AmmoTextSize,
+                                m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString());
+                    }
+
 
                 }
                 else

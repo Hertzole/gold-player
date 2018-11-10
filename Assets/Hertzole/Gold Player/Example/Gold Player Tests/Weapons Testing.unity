@@ -5805,6 +5805,11 @@ PrefabInstance:
       propertyPath: m_OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5796631730503294663, guid: e55e8153ec083e744bcbdc71b67a3e91,
+        type: 3}
+      propertyPath: m_OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e55e8153ec083e744bcbdc71b67a3e91, type: 3}
 --- !u!1 &319584414 stripped
@@ -5843,6 +5848,10 @@ MonoBehaviour:
   m_CanUseNumberKeys: 1
   m_CanChangeWhenReloading: 1
   m_BulletDecals: {fileID: 1420038839}
+  m_DecalHitLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IgnoreRigidbodies: 1
 --- !u!114 &319584420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6626,9 +6635,9 @@ MonoBehaviour:
     m_Max: 30
   m_IsMelee: 0
   m_EquipTime: 0.4
-  m_AmmoType: 0
-  m_InfiniteClip: 1
-  m_MaxClip: 6
+  m_AmmoType: 1
+  m_InfiniteClip: 0
+  m_MaxClip: 16
   m_InfiniteAmmo: 0
   m_MaxAmmo: 32
   m_AutoReloadEmptyClip: 1
@@ -15626,21 +15635,6 @@ PrefabInstance:
     - target: {fileID: 4745972171593554, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
-        type: 3}
-      propertyPath: m_Inputs.Array.data[20].m_ButtonName
-      value: Change Weapon 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
-        type: 3}
-      propertyPath: m_Inputs.Array.data[20].m_InputName
-      value: Change Weapon 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114877617392366170, guid: b39e894a00b89e445b34cd77b22140b4,
-        type: 3}
-      propertyPath: m_Inputs.Array.data[20].m_Key
-      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 143172321462429172, guid: b39e894a00b89e445b34cd77b22140b4,
         type: 3}

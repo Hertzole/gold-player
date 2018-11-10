@@ -135,9 +135,12 @@ namespace Hertzole.GoldPlayer.Weapons
 
         private void InitializeAmmo()
         {
-            m_CurrentClip = m_MaxClip;
-            m_CurrentAmmo = m_MaxAmmo;
-            m_CurrentCharge = m_MaxCharge;
+            if (m_AmmoType != AmmoTypeEnum.Charge)
+                m_CurrentClip = m_MaxClip;
+            if (m_AmmoType == AmmoTypeEnum.AmmoAndClip)
+                m_CurrentAmmo = m_MaxAmmo;
+            if (m_AmmoType == AmmoTypeEnum.Charge)
+                m_CurrentCharge = m_MaxCharge;
         }
 
         private void OnEnableAmmo()
@@ -168,7 +171,7 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public virtual void Reload()
         {
-            if (m_AmmoType != AmmoTypeEnum.AmmoAndClip && IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0)
+            if (m_AmmoType != AmmoTypeEnum.AmmoAndClip || IsReloading || m_CurrentClip == m_MaxClip || m_CurrentAmmo == 0)
                 return;
 
             IsReloading = true;

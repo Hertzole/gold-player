@@ -55,6 +55,10 @@ namespace Hertzole.GoldPlayer.Weapons
 #endif
         [SerializeField]
         private ParticleSystem m_BulletDecals = null;
+        [SerializeField]
+        private LayerMask m_DecalHitLayers = -1;
+        [SerializeField]
+        private bool m_IgnoreRigidbodies = true;
 
         protected int m_NewWeaponIndex = -1;
         protected int m_CurrentWeaponIndex = -1;
@@ -86,6 +90,8 @@ namespace Hertzole.GoldPlayer.Weapons
         public bool CanChangeWhenReloading { get { return m_CanChangeWhenReloading; } set { m_CanChangeWhenReloading = value; } }
 
         public ParticleSystem BulletDecals { get { return m_BulletDecals; } set { m_BulletDecals = value; } }
+        public LayerMask DecalHitLayers { get { return m_DecalHitLayers; } set { m_DecalHitLayers = value; } }
+        public bool IgnoreRigidbodies { get { return m_IgnoreRigidbodies; } set { m_IgnoreRigidbodies = value; } }
 
         public GoldPlayerWeapon CurrentWeapon
         {
@@ -415,8 +421,6 @@ namespace Hertzole.GoldPlayer.Weapons
 
         public virtual void ChangeWeapon(int index)
         {
-            Debug.Log("Change weapon to index " + index + " (" + m_CurrentWeaponIndex + ")");
-
             if (index != -1)
                 index = Mathf.Clamp(index, 0, m_MyWeaponIndexes.Count - 1);
 
@@ -446,7 +450,6 @@ namespace Hertzole.GoldPlayer.Weapons
             }
 
             m_CurrentWeaponIndex = index;
-            Debug.Log(CurrentWeapon);
             if (CurrentWeapon != null)
             {
                 CurrentWeapon.gameObject.SetActive(true);
@@ -659,8 +662,11 @@ namespace Hertzole.GoldPlayer.Weapons
         #region Bullet decals
         public virtual void DoBulletDecal(RaycastHit hit)
         {
-            if (m_BulletDecals)
+            if (m_BulletDecals && hit.transform != null && m_DecalHitLayers == (m_DecalHitLayers | (1 << hit.transform.gameObject.layer)))
             {
+                if (m_IgnoreRigidbodies && hit.transform.GetComponent<Rigidbody>())
+                    return;
+
                 if (m_DecalParticleDataIndex >= m_BulletDecals.main.maxParticles)
                     m_DecalParticleDataIndex = 0;
 
