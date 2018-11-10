@@ -416,7 +416,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             if (m_MuzzleFlashParticles.objectReferenceValue != null)
                 EditorGUILayout.PropertyField(m_MuzzleFlashParticlesEmitAmount, true);
 
-            if (m_ProjectileType.enumValueIndex == 0) // Raycast.
+            if (m_ProjectileType.enumValueIndex == 0 && m_SpreadType.enumValueIndex != 2) // Raycast.
             {
                 EditorGUILayout.PropertyField(m_LineEffect, true);
                 if (m_LineEffect.objectReferenceValue != null)

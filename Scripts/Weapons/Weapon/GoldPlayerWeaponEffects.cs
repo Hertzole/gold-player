@@ -141,7 +141,7 @@ namespace Hertzole.GoldPlayer.Weapons
                 m_MuzzleFlashParticles.Emit(m_ParticleEmitAmount);
             }
 
-            if (m_LineEffect != null && m_ProjectileType == ProjectileTypeEnum.Raycast)
+            if (m_LineEffect != null && m_ProjectileType == ProjectileTypeEnum.Raycast && m_SpreadType != BulletSpreadTypeEnum.FixedSpread)
             {
                 m_LineEffect.SetPosition(0, m_LineEffect.transform.position);
                 if (m_RaycastHit.transform != null)
