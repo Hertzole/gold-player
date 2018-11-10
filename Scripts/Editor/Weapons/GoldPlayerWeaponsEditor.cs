@@ -9,7 +9,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
     public class GoldPlayerWeaponsEditor : UnityEditor.Editor
     {
         private SerializedProperty m_AvailableWeapons;
-        private SerializedProperty m_MyWeapons;
+        private SerializedProperty m_MyWeaponIndexes;
         private SerializedProperty m_HitLayer;
         private SerializedProperty m_CanChangeWeapon;
         private SerializedProperty m_CanScrollThrough;
@@ -31,7 +31,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_Weapons = (GoldPlayerWeapons)target;
 
             m_AvailableWeapons = serializedObject.FindProperty("m_AvailableWeapons");
-            m_MyWeapons = serializedObject.FindProperty("m_MyWeapons");
+            m_MyWeaponIndexes = serializedObject.FindProperty("m_MyWeaponIndexes");
             m_HitLayer = serializedObject.FindProperty("m_HitLayer");
             m_CanChangeWeapon = serializedObject.FindProperty("m_CanChangeWeapon");
             m_CanScrollThrough = serializedObject.FindProperty("m_CanScrollThrough");
@@ -43,7 +43,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_CanChangeWhenReloading = serializedObject.FindProperty("m_CanChangeWhenReloading");
             m_BulletDecals = serializedObject.FindProperty("m_BulletDecals");
 
-            m_MyWeaponsList = new ReorderableList(serializedObject, m_MyWeapons, true, true, true, true)
+            m_MyWeaponsList = new ReorderableList(serializedObject, m_MyWeaponIndexes, true, true, true, true)
             {
                 drawHeaderCallback = (Rect rect) =>
                 {
@@ -52,7 +52,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
                 drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
                 {
                     if (m_AvailableWeapons.GetArrayElementAtIndex(index).objectReferenceValue != null)
-                        EditorGUI.LabelField(rect, m_AvailableWeapons.GetArrayElementAtIndex(m_MyWeapons.GetArrayElementAtIndex(index).intValue).objectReferenceValue.name);
+                        EditorGUI.LabelField(rect, m_AvailableWeapons.GetArrayElementAtIndex(m_MyWeaponIndexes.GetArrayElementAtIndex(index).intValue).objectReferenceValue.name);
                     else
                         EditorGUI.LabelField(rect, "-Removed- REMOVE ME!");
                 },
@@ -65,7 +65,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
                         for (int i = 0; i < m_AvailableWeapons.arraySize; i++)
                         {
                             index = i;
-                            if (!m_Weapons.MyWeapons.Contains(i) && m_AvailableWeapons.GetArrayElementAtIndex(i).objectReferenceValue != null)
+                            if (!m_Weapons.MyWeaponIndexes.Contains(i) && m_AvailableWeapons.GetArrayElementAtIndex(i).objectReferenceValue != null)
                             {
                                 menu.AddItem(new GUIContent(m_AvailableWeapons.GetArrayElementAtIndex(i).objectReferenceValue.name), false,
                                     OnClickAddMyWeapon, index);

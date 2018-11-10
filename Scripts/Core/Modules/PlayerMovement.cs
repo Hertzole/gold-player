@@ -721,6 +721,12 @@ namespace Hertzole.GoldPlayer.Core
             m_MoveDirection = m_ForceImpact;
         }
 
+        //TODO: Document this.
+        public virtual void AddExplosionForce(float explosionForce, Vector3 explosionPosition)
+        {
+            AddForce(PlayerTransform.position - explosionPosition, Mathf.Clamp(explosionForce / 3, 0, 15));
+        }
+
 #if UNITY_EDITOR
         public override void OnValidate()
         {

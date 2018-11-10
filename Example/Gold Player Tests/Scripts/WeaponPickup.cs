@@ -20,7 +20,7 @@ public class WeaponPickup : MonoBehaviour
             if (weapons != null)
             {
                 weapons.AddWeapon(m_WeaponIndex);
-                weapons.ChangeWeapon(weapons.MyWeapons.Count - 1);
+                weapons.ChangeWeapon(weapons.MyWeaponIndexes.Count - 1);
                 gameObject.SetActive(false);
             }
         }

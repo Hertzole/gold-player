@@ -2,10 +2,15 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Weapons
 {
+    //TODO: Implement Ammo Type.
     public partial class GoldPlayerWeapon
     {
         public enum ReloadTypeEnum { ReloadEntireMagazine = 0, ReloadEachBullet = 1 }
+        public enum AmmoTypeEnum { AmmoAndClip = 0, OneClip = 1, Charge = 2 }
 
+        [SerializeField]
+        private AmmoTypeEnum m_AmmoType = AmmoTypeEnum.AmmoAndClip;
+        public AmmoTypeEnum AmmoType { get { return m_AmmoType; } set { m_AmmoType = value; } }
         [SerializeField]
         private bool m_InfiniteClip = false;
         public bool InfiniteClip { get { return m_InfiniteClip; } set { m_InfiniteClip = value; } }
@@ -30,6 +35,27 @@ namespace Hertzole.GoldPlayer.Weapons
         [SerializeField]
         private ReloadTypeEnum m_ReloadType = ReloadTypeEnum.ReloadEntireMagazine;
         public ReloadTypeEnum ReloadType { get { return m_ReloadType; } set { m_ReloadType = value; } }
+        [SerializeField]
+        private float m_MaxCharge = 100;
+        public float MaxCharge { get { return m_MaxCharge; } set { m_MaxCharge = value; } }
+        [SerializeField]
+        private float m_ChargeDecreaseRate = 5f;
+        public float ChargeDecreaseRate { get { return m_ChargeDecreaseRate; } set { m_ChargeDecreaseRate = value; } }
+        [SerializeField]
+        private bool m_AutoRecharge = true;
+        public bool AutoRecharge { get { return m_AutoRecharge; } set { m_AutoRecharge = value; } }
+        [SerializeField]
+        private float m_ChargeRegenerateRate = 4.5f;
+        public float ChargeRegenerateRate { get { return m_ChargeRegenerateRate; } set { m_ChargeRegenerateRate = value; } }
+        [SerializeField]
+        private float m_ChargeWaitTime = 1f;
+        public float ChargeWaitTime { get { return m_ChargeWaitTime; } set { m_ChargeWaitTime = value; } }
+        [SerializeField]
+        private bool m_CanOverheat = true;
+        public bool CanOverheat { get { return m_CanOverheat; } set { m_CanOverheat = value; } }
+        [SerializeField]
+        private float m_OverheatTime = 3f;
+        public float OverheatTime { get { return m_OverheatTime; } set { m_OverheatTime = value; } }
 
         protected int m_CurrentClip = 0;
         protected int m_CurrentAmmo = 0;
@@ -163,6 +189,90 @@ namespace Hertzole.GoldPlayer.Weapons
             if (OnFinishReload != null)
                 OnFinishReload.Invoke();
 #endif
+        }
+
+        public virtual void SetAmmo(int amount)
+        {
+            amount = Mathf.Clamp(amount, 0, m_MaxAmmo);
+            CurrentAmmo = amount;
+        }
+
+        public virtual void SetAmmo(float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+            SetAmmo(Mathf.RoundToInt(m_MaxAmmo * percent));
+        }
+
+        public virtual void SetClip(int amount)
+        {
+            amount = Mathf.Clamp(amount, 0, m_MaxClip);
+            CurrentClip = amount;
+        }
+
+        public virtual void SetClip(float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+            SetClip(Mathf.RoundToInt(m_MaxClip * percent));
+        }
+
+        public virtual void AddAmmo(int amount)
+        {
+            amount = Mathf.Clamp(amount, 0, m_MaxAmmo);
+            if (m_CurrentAmmo + amount > m_MaxAmmo)
+                CurrentAmmo = amount;
+            else
+                CurrentAmmo += amount;
+        }
+
+        public virtual void AddAmmo(float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+            AddAmmo(Mathf.RoundToInt(m_MaxAmmo * percent));
+        }
+
+        public virtual void AddClip(int amount)
+        {
+            amount = Mathf.Clamp(amount, 0, m_MaxClip);
+            if (m_CurrentClip + amount > m_MaxClip)
+                CurrentClip = amount;
+            else
+                CurrentClip += amount;
+        }
+
+        public virtual void AddClip(float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+            AddClip(Mathf.RoundToInt(m_MaxClip * percent));
+        }
+
+        public virtual void RemoveAmmo(int amount)
+        {
+            amount = Mathf.Clamp(amount, 0, m_MaxAmmo);
+            if (m_CurrentAmmo - amount < 0)
+                CurrentAmmo = 0;
+            else
+                CurrentAmmo -= amount;
+        }
+
+        public virtual void RemoveAmmo(float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+            RemoveAmmo(Mathf.RoundToInt(m_MaxAmmo * percent));
+        }
+
+        public virtual void RemoveClip(int amount)
+        {
+            amount = Mathf.Clamp(amount, 0, m_MaxClip);
+            if (m_CurrentClip - amount < 0)
+                CurrentClip = 0;
+            else
+                CurrentClip -= amount;
+        }
+
+        public virtual void RemoveClip(float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+            RemoveAmmo(Mathf.RoundToInt(m_MaxClip * percent));
         }
     }
 }

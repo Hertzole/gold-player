@@ -16,6 +16,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_PrimaryAttackTrigger;
         //private SerializedProperty m_SecondaryTriggerType;
 
+        private SerializedProperty m_AmmoType;
         private SerializedProperty m_InfiniteClip;
         private SerializedProperty m_MaxClip;
         private SerializedProperty m_InfiniteAmmo;
@@ -25,6 +26,13 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
         private SerializedProperty m_CanReloadInBackground;
         private SerializedProperty m_ReloadTime;
         private SerializedProperty m_ReloadType;
+        private SerializedProperty m_MaxCharge;
+        private SerializedProperty m_ChargeDecreaseRate;
+        private SerializedProperty m_AutoRecharge;
+        private SerializedProperty m_ChargeRegenerateRate;
+        private SerializedProperty m_ChargeWaitTime;
+        private SerializedProperty m_CanOverheat;
+        private SerializedProperty m_OverheatTime;
 
         private SerializedProperty m_ProjectileType;
         private SerializedProperty m_ProjectileLength;
@@ -103,6 +111,7 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_PrimaryAttackTrigger = serializedObject.FindProperty("m_PrimaryAttackTrigger");
             //m_SecondaryTriggerType = serializedObject.FindProperty("m_SecondaryTriggerType");
 
+            m_AmmoType = serializedObject.FindProperty("m_AmmoType");
             m_InfiniteClip = serializedObject.FindProperty("m_InfiniteClip");
             m_MaxClip = serializedObject.FindProperty("m_MaxClip");
             m_InfiniteAmmo = serializedObject.FindProperty("m_InfiniteAmmo");
@@ -112,6 +121,13 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
             m_CanReloadInBackground = serializedObject.FindProperty("m_CanReloadInBackground");
             m_ReloadTime = serializedObject.FindProperty("m_ReloadTime");
             m_ReloadType = serializedObject.FindProperty("m_ReloadType");
+            m_MaxCharge = serializedObject.FindProperty("m_MaxCharge");
+            m_ChargeDecreaseRate = serializedObject.FindProperty("m_ChargeDecreaseRate");
+            m_AutoRecharge = serializedObject.FindProperty("m_AutoRecharge");
+            m_ChargeRegenerateRate = serializedObject.FindProperty("m_ChargeRegenerateRate");
+            m_ChargeWaitTime = serializedObject.FindProperty("m_ChargeWaitTime");
+            m_CanOverheat = serializedObject.FindProperty("m_CanOverheat");
+            m_OverheatTime = serializedObject.FindProperty("m_OverheatTime");
 
             m_ProjectileType = serializedObject.FindProperty("m_ProjectileType");
             m_ProjectileLength = serializedObject.FindProperty("m_ProjectileLength");
@@ -255,18 +271,42 @@ namespace Hertzole.GoldPlayer.Weapons.Editor
 
         protected virtual void DrawAmmoSettings()
         {
-            EditorGUILayout.PropertyField(m_InfiniteClip, true);
-            GUI.enabled = !m_InfiniteClip.boolValue;
-            EditorGUILayout.PropertyField(m_MaxClip, true);
-            GUI.enabled = true;
-            EditorGUILayout.PropertyField(m_InfiniteAmmo, true);
-            GUI.enabled = !m_InfiniteAmmo.boolValue;
-            EditorGUILayout.PropertyField(m_MaxAmmo, true);
-            GUI.enabled = true;
-            EditorGUILayout.PropertyField(m_AutoReloadEmptyClip, true);
-            EditorGUILayout.PropertyField(m_CanReloadInBackground, true);
-            EditorGUILayout.PropertyField(m_ReloadTime, true);
-            EditorGUILayout.PropertyField(m_ReloadType, true);
+            EditorGUILayout.PropertyField(m_AmmoType, true);
+            if (m_AmmoType.enumValueIndex == 0) // Ammo and Clip
+            {
+                EditorGUILayout.PropertyField(m_InfiniteClip, true);
+                GUI.enabled = !m_InfiniteClip.boolValue;
+                EditorGUILayout.PropertyField(m_MaxClip, true);
+                GUI.enabled = true;
+                EditorGUILayout.PropertyField(m_InfiniteAmmo, true);
+                GUI.enabled = !m_InfiniteAmmo.boolValue;
+                EditorGUILayout.PropertyField(m_MaxAmmo, true);
+                GUI.enabled = true;
+                EditorGUILayout.PropertyField(m_AutoReloadEmptyClip, true);
+                EditorGUILayout.PropertyField(m_CanReloadInBackground, true);
+                EditorGUILayout.PropertyField(m_ReloadTime, true);
+                EditorGUILayout.PropertyField(m_ReloadType, true);
+            }
+            else if (m_AmmoType.enumValueIndex == 1) // One Clip
+            {
+                EditorGUILayout.PropertyField(m_InfiniteClip, true);
+                GUI.enabled = !m_InfiniteClip.boolValue;
+                EditorGUILayout.PropertyField(m_MaxClip, true);
+                GUI.enabled = true;
+            }
+            else if (m_AmmoType.enumValueIndex == 2) // Charge
+            {
+                EditorGUILayout.PropertyField(m_MaxCharge, true);
+                EditorGUILayout.PropertyField(m_ChargeDecreaseRate, true);
+                EditorGUILayout.PropertyField(m_AutoRecharge, true);
+                GUI.enabled = m_AutoRecharge.boolValue;
+                EditorGUILayout.PropertyField(m_ChargeRegenerateRate, true);
+                EditorGUILayout.PropertyField(m_ChargeWaitTime, true);
+                EditorGUILayout.PropertyField(m_CanOverheat, true);
+                GUI.enabled = m_CanOverheat.boolValue && m_AutoRecharge.boolValue;
+                EditorGUILayout.PropertyField(m_OverheatTime, true);
+                GUI.enabled = true;
+            }
         }
 
         protected virtual void DrawProjectileSettings()
