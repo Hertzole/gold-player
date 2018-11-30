@@ -23,12 +23,17 @@ namespace Hertzole.HertzLib
             m_Max = max;
         }
 
-        public static bool operator ==(int x, RandomFloat y)
+        public static implicit operator float(RandomFloat x)
+        {
+            return x.Value;
+        }
+
+        public static bool operator ==(float x, RandomFloat y)
         {
             return x == y.Value;
         }
 
-        public static bool operator ==(RandomFloat x, int y)
+        public static bool operator ==(RandomFloat x, float y)
         {
             return x.Value == y;
         }
@@ -38,12 +43,12 @@ namespace Hertzole.HertzLib
             return x.Value == y.Value;
         }
 
-        public static bool operator !=(int x, RandomFloat y)
+        public static bool operator !=(float x, RandomFloat y)
         {
             return x != y.Value;
         }
 
-        public static bool operator !=(RandomFloat x, int y)
+        public static bool operator !=(RandomFloat x, float y)
         {
             return x.Value != y;
         }
@@ -113,6 +118,36 @@ namespace Hertzole.HertzLib
             return x.Value * y.Value;
         }
 
+        public static Vector2 operator *(RandomFloat x, Vector2 y)
+        {
+            return x.Value * y;
+        }
+
+        public static Vector2 operator *(Vector2 x, RandomFloat y)
+        {
+            return x * y.Value;
+        }
+
+        public static Vector3 operator *(RandomFloat x, Vector3 y)
+        {
+            return x.Value * y;
+        }
+
+        public static Vector3 operator *(Vector3 x, RandomFloat y)
+        {
+            return x * y.Value;
+        }
+
+        public static Vector4 operator *(RandomFloat x, Vector4 y)
+        {
+            return x.Value * y;
+        }
+
+        public static Vector4 operator *(Vector4 x, RandomFloat y)
+        {
+            return x * y.Value;
+        }
+
         public static float operator %(float x, RandomFloat y)
         {
             return x % y.Value;
@@ -126,16 +161,6 @@ namespace Hertzole.HertzLib
         public static float operator %(RandomFloat x, RandomFloat y)
         {
             return x.Value % y.Value;
-        }
-
-        public static float operator *(Vector3 v, RandomFloat y)
-        {
-            return v * y;
-        }
-
-        public static float operator *(RandomFloat x, Vector3 v)
-        {
-            return x * v;
         }
 
         public override bool Equals(object obj)

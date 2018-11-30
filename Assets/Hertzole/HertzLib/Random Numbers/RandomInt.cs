@@ -118,6 +118,16 @@ namespace Hertzole.HertzLib
             return x.Value * y.Value;
         }
 
+        public static Vector2Int operator *(Vector2Int x, RandomInt y)
+        {
+            return x * y.Value;
+        }
+
+        public static Vector3Int operator *(Vector3Int x, RandomInt y)
+        {
+            return x * y.Value;
+        }
+
         public static int operator %(int x, RandomInt y)
         {
             return x % y.Value;
