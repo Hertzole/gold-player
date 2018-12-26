@@ -44,6 +44,12 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("How long the player can be in the air and still jump.")]
         private float m_AirJumpTime = 0.1f;
+        [SerializeField]
+        [Tooltip("How many times the player can jump while in the air.")]
+        private int m_AirJumpsAmount = 0;
+        [SerializeField]
+        [Tooltip("If true, the player can change direction when air jumping.")]
+        private bool m_AllowAirJumpDirectionChange = true;
 
         //////// CROUCHING
         [Header("Crouching")]
@@ -106,6 +112,9 @@ namespace Hertzole.GoldPlayer.Core
         protected float m_SidewaysSpeedVelocity = 0;
         // The current air time of the player.
         protected float m_CurrentAirTime = 0;
+
+        // The current amount of times an air jump has been performed.
+        protected int m_CurrentAirJumps = 0;
 
         // Is the player grounded?
         protected bool m_IsGrounded = false;
@@ -170,6 +179,10 @@ namespace Hertzole.GoldPlayer.Core
         public bool AirJump { get { return m_AirJump; } set { m_AirJump = value; } }
         /// <summary> How long the player can be in the air and still jump. </summary>
         public float AirJumpTime { get { return m_AirJumpTime; } set { m_AirJumpTime = value; } }
+        /// <summary> How many times the player can jump while in the air. </summary>
+        public int AirJumpsAmount { get { return m_AirJumpsAmount; } set { m_AirJumpsAmount = value; } }
+        /// <summary> If true, the player can change direction when air jumping. </summary>
+        public bool AllowAirJumpDirectionChange { get { return m_AllowAirJumpDirectionChange; } set { m_AllowAirJumpDirectionChange = value; } }
 
         /// <summary> Determines if the player can crouch. </summary>
         public bool CanCrouch { get { return m_CanCrouch; } set { m_CanCrouch = value; } }
@@ -388,6 +401,9 @@ namespace Hertzole.GoldPlayer.Core
                     // Calculate the fall height.
                     float fallHeight = m_JumpPosition.y - PlayerTransform.position.y;
 
+                    // Reset the air jumps.
+                    m_CurrentAirJumps = -1;
+
                     // Invoke the OnPlayerLand event.
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                     OnLand?.Invoke(fallHeight);
@@ -414,20 +430,20 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // If air jump is enabled, set should jump to true and set the current air time to the max air time.
                 // Else only set 'shouldJump' to true if the player is grounded.
-                if (m_AirJump && (m_IsFalling && m_CurrentAirTime > 0) || m_IsJumping)
+                if (m_CurrentAirJumps < m_AirJumpsAmount || (m_AirJump && (m_IsFalling && m_CurrentAirTime > 0) || m_IsJumping))
                 {
                     m_ShouldJump = true;
                     if (!m_IsFalling)
                         m_CurrentAirTime = m_AirJumpTime;
                 }
-                else if (m_IsGrounded)
+                else if (m_CurrentAirJumps < m_AirJumpsAmount || m_IsGrounded)
                 {
                     m_ShouldJump = true;
                 }
             }
 
             // If the player is either grounded or falling, should jump, and isn't already jumping, jump.
-            if ((m_IsGrounded || m_IsFalling) && m_ShouldJump && !m_IsJumping)
+            if ((m_CurrentAirJumps < m_AirJumpsAmount || m_IsGrounded || m_IsFalling) && m_ShouldJump && (m_CurrentAirJumps < m_AirJumpsAmount || !m_IsJumping))
             {
                 Jump();
             }
@@ -515,6 +531,26 @@ namespace Hertzole.GoldPlayer.Core
             else
             {
                 m_MoveDirection.y = m_RealJumpHeight;
+            }
+
+            // Increment the air jumps.
+            m_CurrentAirJumps++;
+            if (m_CurrentAirJumps > 0 && m_AllowAirJumpDirectionChange)
+            {
+                // Get the move direction from the movement input X and Y (on the Z axis).
+                m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);
+                // If movement input Y is above 0, we're moving forward, so apply forward move speed.
+                // Else if below 0, we're moving backwards, so apply backwards move speed.
+                if (m_MovementInput.y > 0)
+                    m_MoveDirection.z *= m_MoveSpeed.ForwardSpeed;
+                else
+                    m_MoveDirection.z *= m_MoveSpeed.BackwardsSpeed;
+
+                // Apply the sideways movement speed to the X movement.
+                m_MoveDirection.x *= m_MoveSpeed.SidewaysSpeed;
+
+                // Update the grounded velocity to the current move direction.
+                m_GroundVelocity = m_MoveDirection;
             }
 
             // Invoke the OnPlayerJump event.
