@@ -7,9 +7,6 @@
 #if GOLD_PLAYER_INTERACTION
 using Hertzole.GoldPlayer.Interaction;
 #endif
-#if GOLD_PLAYER_WEAPONS
-using Hertzole.GoldPlayer.Weapons;
-#endif
 #if USE_TMP
 using TMPro;
 #endif
@@ -86,36 +83,6 @@ namespace Hertzole.GoldPlayer.UI
 #endif
 #endif
 
-#if GOLD_PLAYER_WEAPONS
-#if UNITY_EDITOR
-        [Header("Weapons")]
-#endif
-        [SerializeField]
-        private bool m_AutoFindWeapons = true;
-        [SerializeField]
-        private GoldPlayerWeapons m_PlayerWeapons;
-        [SerializeField]
-#if USE_TMP
-        private TextMeshProUGUI m_WeaponNameText;
-#else
-        private Text m_WeaponNameText;
-#endif
-        [SerializeField]
-        private string m_NoWeaponText = "Nothing Equipped";
-        [SerializeField]
-        private string m_InfiniteText = "∞";
-        [SerializeField]
-#if USE_TMP
-        private TextMeshProUGUI m_AmmoText;
-#else
-        private Text m_AmmoText;
-#endif
-        [SerializeField]
-        private float m_ClipTextSize = 30f;
-        [SerializeField]
-        private float m_AmmoTextSize = 20f;
-#endif
-
         /// <summary> The type of progress bar that will be used. </summary>
         public ProgressBarType SprintingBarType { get { return m_SprintingBarType; } set { m_SprintingBarType = value; AdaptSprintingUI(); } }
         /// <summary> The progress bar as an image. </summary>
@@ -140,23 +107,6 @@ namespace Hertzole.GoldPlayer.UI
 #else
         public Text InteractionLabel { get { return m_InteractionLabel; } set { m_InteractionLabel = value; } }
 #endif
-
-#if GOLD_PLAYER_WEAPONS
-#if USE_TMP
-        public TextMeshProUGUI WeaponNameText { get { return m_WeaponNameText; } set { m_WeaponNameText = value; } }
-#else
-        public Text WeaponNameText { get { return m_WeaponNameText; } set { m_WeaponNameText = value; } }
-#endif
-#if USE_TMP
-        public string NoWeaponEquippedLabel { get { return m_NoWeaponText; } set { m_NoWeaponText = value; } }
-        public string InfiniteSymbol { get { return m_InfiniteText; } set { m_InfiniteText = value; } }
-        public TextMeshProUGUI AmmoText { get { return m_AmmoText; } set { m_AmmoText = value; } }
-#else
-        public Text AmmoText { get { return m_AmmoText; } set { m_AmmoText = value; } }
-#endif
-        public float ClipTextSize { get { return m_ClipTextSize; } set { m_ClipTextSize = value; } }
-        public float AmmoTextSize { get { return m_AmmoTextSize; } set { m_AmmoTextSize = value; } }
-#endif
 #endif
 
         /// <summary> If true, the component will always attempt to find the player. If false, you will have to manually set the player. </summary>
@@ -180,27 +130,6 @@ namespace Hertzole.GoldPlayer.UI
         }
 #endif
 
-#if GOLD_PLAYER_WEAPONS
-        public bool AutoFindWeapons { get { return m_AutoFindWeapons; } set { m_AutoFindWeapons = value; } }
-        public GoldPlayerWeapons PlayerWeapons
-        {
-            // If the player weapons is null, and auto find is on, find the player weapons.
-            get { if (!m_PlayerWeapons && m_AutoFindWeapons) m_PlayerWeapons = FindObjectOfType<GoldPlayerWeapons>(); return m_PlayerWeapons; }
-            set
-            {
-                if (m_PlayerWeapons != null)
-                {
-                    m_PlayerWeapons.OnWeaponChanged -= OnWeaponChanged;
-                    if (m_PlayerWeapons.CurrentWeapon != null)
-                        m_PlayerWeapons.CurrentWeapon.OnAmmoChanged -= OnAmmoChanged;
-                }
-                m_PlayerWeapons = value;
-                if (m_PlayerWeapons != null)
-                    m_PlayerWeapons.OnWeaponChanged += OnWeaponChanged;
-            }
-        }
-#endif
-
         private void Awake()
         {
             // Call all the Player Sprinting awake stuff.
@@ -208,10 +137,6 @@ namespace Hertzole.GoldPlayer.UI
 #if GOLD_PLAYER_INTERACTION
             // Call all Player Interaction awake stuff.
             AwakePlayerInteraction();
-#endif
-#if GOLD_PLAYER_WEAPONS
-            // Call all the Player Weapons awake stuff.
-            AwakePlayerWeapons();
 #endif
 
             OnAwake();
@@ -295,17 +220,6 @@ namespace Hertzole.GoldPlayer.UI
         }
 #endif
 
-#if GOLD_PLAYER_WEAPONS
-        protected virtual void AwakePlayerWeapons()
-        {
-            // Get the player weapons.
-            if (m_Player)
-                PlayerWeapons = m_Player.GetComponent<GoldPlayerWeapons>();
-            else if (m_AutoFindPlayer)
-                PlayerWeapons = FindObjectOfType<GoldPlayerWeapons>();
-        }
-#endif
-
 #if HERTZLIB_UPDATE_MANAGER
         public void OnUpdate()
 #else
@@ -367,80 +281,6 @@ namespace Hertzole.GoldPlayer.UI
         }
 #endif
 
-#if GOLD_PLAYER_WEAPONS
-        protected virtual void OnWeaponChanged(GoldPlayerWeapon previousWeapon, GoldPlayerWeapon newWeapon)
-        {
-            if (previousWeapon != null)
-            {
-                if (previousWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.Charge)
-                    previousWeapon.OnChargeChanged -= OnChargeChanged;
-                else
-                    previousWeapon.OnAmmoChanged -= OnAmmoChanged;
-
-            }
-
-            if (newWeapon != null)
-            {
-                if (newWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.Charge)
-                {
-                    newWeapon.OnChargeChanged += OnChargeChanged;
-                    OnChargeChanged(newWeapon.CurrentCharge);
-                }
-                else
-                {
-                    newWeapon.OnAmmoChanged += OnAmmoChanged;
-                    OnAmmoChanged(newWeapon.CurrentClip, newWeapon.CurrentAmmo);
-                }
-            }
-            else
-            {
-                OnAmmoChanged(0, 0);
-            }
-
-            if (m_WeaponNameText != null)
-                m_WeaponNameText.text = newWeapon != null ? newWeapon.WeaponName : m_NoWeaponText;
-        }
-
-        private void OnChargeChanged(float currentCharge)
-        {
-            if (m_AmmoText != null && m_PlayerWeapons != null && m_PlayerWeapons.CurrentWeapon != null)
-            {
-                m_AmmoText.text = GetLabel(LabelDisplayType.Percentage, currentCharge, m_PlayerWeapons.CurrentWeapon.MaxCharge);
-            }
-        }
-
-        protected virtual void OnAmmoChanged(int clip, int ammo)
-        {
-            if (m_AmmoText != null && m_PlayerWeapons != null)
-            {
-                if (m_PlayerWeapons.CurrentWeapon != null)
-                {
-                    if (m_PlayerWeapons.CurrentWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.OneClip)
-                    {
-                        if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
-                            m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
-                        else
-                            m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, clip);
-                    }
-                    else if (m_PlayerWeapons.CurrentWeapon.AmmoType == GoldPlayerWeapon.AmmoTypeEnum.AmmoAndClip)
-                    {
-                        if (m_PlayerWeapons.CurrentWeapon.InfiniteClip)
-                            m_AmmoText.text = string.Format("<size={0}>{1}</size>", m_ClipTextSize, m_InfiniteText);
-                        else
-                            m_AmmoText.text = string.Format("<size={0}>{1}</size>/<size={2}>{3}</size>", m_ClipTextSize, clip, m_AmmoTextSize,
-                                m_PlayerWeapons.CurrentWeapon.InfiniteAmmo ? m_InfiniteText : ammo.ToString());
-                    }
-
-
-                }
-                else
-                {
-                    m_AmmoText.text = "---";
-                }
-            }
-        }
-#endif
-
         /// <summary>
         /// Sets the player and finds all required components.
         /// </summary>
@@ -451,13 +291,6 @@ namespace Hertzole.GoldPlayer.UI
             if (player != null && m_Player != player)
                 m_PlayerInteraction = player.GetComponent<GoldPlayerInteraction>();
 #endif
-
-#if GOLD_PLAYER_WEAPONS
-            // Only get the weapons if the previous set player isn't the new player.
-            if (player != null && m_Player != player)
-                PlayerWeapons = player.GetComponent<GoldPlayerWeapons>();
-#endif
-
             // Set the player.
             m_Player = player;
         }
