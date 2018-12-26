@@ -19,12 +19,17 @@
             {
                 "type": "UnityEngine.ProBuilder.SemVer, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "about.identifier",
-                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":0,\"m_Patch\":0,\"m_Build\":27,\"m_Type\":\"preview\",\"m_Metadata\":\"\",\"m_Date\":\"2018/10/09\"}}"
+                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":0,\"m_Patch\":0,\"m_Build\":33,\"m_Type\":\"preview\",\"m_Metadata\":\"\",\"m_Date\":\"2018/11/26\"}}"
             },
             {
                 "type": "UnityEngine.ProBuilder.SemVer, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "preferences.version",
-                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":0,\"m_Patch\":0,\"m_Build\":27,\"m_Type\":\"preview\",\"m_Metadata\":\"\",\"m_Date\":\"2018/10/09\"}}"
+                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":0,\"m_Patch\":0,\"m_Build\":33,\"m_Type\":\"preview\",\"m_Metadata\":\"\",\"m_Date\":\"2018/11/26\"}}"
+            },
+            {
+                "type": "UnityEngine.ProBuilder.PivotPoint, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+                "key": "debug.pivotModePivotEquivalent",
+                "value": "{\"m_Value\":1}"
             }
         ]
     }

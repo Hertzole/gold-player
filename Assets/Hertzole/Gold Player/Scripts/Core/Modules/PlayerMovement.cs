@@ -721,9 +721,15 @@ namespace Hertzole.GoldPlayer.Core
             m_MoveDirection = m_ForceImpact;
         }
 
-        //TODO: Document this.
-        public virtual void AddExplosionForce(float explosionForce, Vector3 explosionPosition)
+        /// <summary>
+        /// Applies an explosion like force to the player.
+        /// </summary>
+        /// <param name="explosionForce">The force amount.</param>
+        /// <param name="explosionPosition">Where the explosion originated.</param>
+        [System.Obsolete("Doesn't work properly.", true)]
+        private void AddExplosionForce(float explosionForce, Vector3 explosionPosition)
         {
+            // Calculate the direction and the force amount.
             AddForce(PlayerTransform.position - explosionPosition, Mathf.Clamp(explosionForce / 3, 0, 15));
         }
 

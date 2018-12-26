@@ -1,6 +1,6 @@
 #if UNITY_2018_3_OR_NEWER
 using Hertzole.GoldPlayer.Core;
-using Hertzole.GoldPlayer.Weapons;
+//using Hertzole.GoldPlayer.Weapons;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -27,18 +27,18 @@ namespace Hertzole.GoldPlayer.Tests
             }, Is.Not.AllocatingGCMemory());
         }
 
-        [UnityTest]
-        public IEnumerator WeaponsShootsGeneratesGarbage()
-        {
-            // Use the Assert class to test conditions
-            GoldPlayerController player = SetupPlayer();
-            yield return null;
+        //[UnityTest]
+        //public IEnumerator WeaponsShootsGeneratesGarbage()
+        //{
+        //    // Use the Assert class to test conditions
+        //    GoldPlayerController player = SetupPlayer();
+        //    yield return null;
 
-            Assert.That(() =>
-            {
-                player.GetComponent<GoldPlayerWeapons>().CurrentWeapon.PrimaryAttack();
-            }, Is.Not.AllocatingGCMemory());
-        }
+        //    Assert.That(() =>
+        //    {
+        //        player.GetComponent<GoldPlayerWeapons>().CurrentWeapon.PrimaryAttack();
+        //    }, Is.Not.AllocatingGCMemory());
+        //}
 
         [UnityTest]
         public IEnumerator PlayerFollowsMovingPlatform()
@@ -129,14 +129,14 @@ namespace Hertzole.GoldPlayer.Tests
             playerController.Movement.MovingPlatforms.PlatformTags = new string[] { "Respawn" };
             playerController.Movement.MovingPlatforms.Initialize(playerController);
 
-            GameObject raycastWeaponGO = new GameObject("[Test] Raycast Weapon");
-            GoldPlayerWeapon raycastWeapon = raycastWeaponGO.AddComponent<GoldPlayerWeapon>();
-            raycastWeapon.ProjectileType = GoldPlayerWeapon.ProjectileTypeEnum.Raycast;
-            raycastWeapon.ShootOrigin = playerCameraHead.transform;
+            //GameObject raycastWeaponGO = new GameObject("[Test] Raycast Weapon");
+            //GoldPlayerWeapon raycastWeapon = raycastWeaponGO.AddComponent<GoldPlayerWeapon>();
+            //raycastWeapon.ProjectileType = GoldPlayerWeapon.ProjectileTypeEnum.Raycast;
+            //raycastWeapon.ShootOrigin = playerCameraHead.transform;
 
-            GoldPlayerWeapons weapons = playerGO.AddComponent<GoldPlayerWeapons>();
-            weapons.AvailableWeapons = new GoldPlayerWeapon[] { raycastWeapon };
-            weapons.AddWeapon(raycastWeapon);
+            //GoldPlayerWeapons weapons = playerGO.AddComponent<GoldPlayerWeapons>();
+            //weapons.AvailableWeapons = new GoldPlayerWeapon[] { raycastWeapon };
+            //weapons.AddWeapon(raycastWeapon);
 
             return playerController;
         }
