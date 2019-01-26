@@ -8653,6 +8653,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
+      propertyPath: m_Movement.m_WalkingSpeeds.m_SidewaysSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114880877538668738, guid: b39e894a00b89e445b34cd77b22140b4,
+        type: 3}
+      propertyPath: m_Movement.m_WalkingSpeeds.m_BackwardsSpeed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b39e894a00b89e445b34cd77b22140b4, type: 3}
 --- !u!1 &1624051826

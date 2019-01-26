@@ -568,7 +568,7 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void Running()
         {
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
-            m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max() + 0.5f;
+            m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max + 0.5f;
 
             // Only run if we're not crouching, can run, and the run button is being held down.
             if (!m_IsCrouching && m_CanRun && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
@@ -779,6 +779,10 @@ namespace Hertzole.GoldPlayer.Core
                 RunSpeeds = m_RunSpeeds;
                 CrouchSpeeds = m_CrouchSpeeds;
                 JumpHeight = m_JumpHeight;
+
+                m_WalkingSpeeds.OnValidate();
+                m_RunSpeeds.OnValidate();
+                m_CrouchSpeeds.OnValidate();
             }
 
             // Make sure gravity is always positive.
