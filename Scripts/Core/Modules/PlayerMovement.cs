@@ -114,7 +114,7 @@ namespace Hertzole.GoldPlayer.Core
         protected float m_CurrentAirTime = 0;
 
         // The current amount of times an air jump has been performed.
-        protected int m_CurrentAirJumps = 0;
+        protected int m_CurrentJumps = 0;
 
         // Is the player grounded?
         protected bool m_IsGrounded = false;
@@ -367,6 +367,9 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     // Set the jump position to the current player transform.
                     m_JumpPosition = PlayerTransform.position;
+                    // 
+                    if (!m_IsJumping)
+                        m_CurrentJumps++;
                 }
 
                 // If the player's head is touching the ceiling, move the player down so they don't
@@ -402,7 +405,7 @@ namespace Hertzole.GoldPlayer.Core
                     float fallHeight = m_JumpPosition.y - PlayerTransform.position.y;
 
                     // Reset the air jumps.
-                    m_CurrentAirJumps = -1;
+                    m_CurrentJumps = -1;
 
                     // Invoke the OnPlayerLand event.
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
@@ -428,25 +431,29 @@ namespace Hertzole.GoldPlayer.Core
             // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
             if (GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY) && m_CanJump && m_CanMoveAround)
             {
-                // If air jump is enabled, set should jump to true and set the current air time to the max air time.
-                // Else only set 'shouldJump' to true if the player is grounded.
-                if (m_CurrentAirJumps < m_AirJumpsAmount || (m_AirJump && (m_IsFalling && m_CurrentAirTime > 0) || m_IsJumping))
-                {
-                    m_ShouldJump = true;
-                    if (!m_IsFalling)
-                        m_CurrentAirTime = m_AirJumpTime;
-                }
-                else if (m_CurrentAirJumps < m_AirJumpsAmount || m_IsGrounded)
-                {
-                    m_ShouldJump = true;
-                }
+                // Check if the player should jump.
+                m_ShouldJump = ShouldJump();
             }
 
-            // If the player is either grounded or falling, should jump, and isn't already jumping, jump.
-            if ((m_CurrentAirJumps < m_AirJumpsAmount || m_IsGrounded || m_IsFalling) && m_ShouldJump && (m_CurrentAirJumps < m_AirJumpsAmount || !m_IsJumping))
-            {
+            // If the player should jump, jump!
+            if (m_ShouldJump)
                 Jump();
-            }
+        }
+
+        /// <summary>
+        /// Determines if the player should jump.
+        /// </summary>
+        /// <returns>True if the player should jump.</returns>
+        protected virtual bool ShouldJump()
+        {
+            if (m_IsGrounded && !m_IsJumping)
+                return true;
+            else if (m_AirJumpsAmount > 0 && m_CurrentJumps < m_AirJumpsAmount)
+                return true;
+            else if (m_AirJump && m_IsFalling && m_CurrentAirTime > 0)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -534,8 +541,8 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Increment the air jumps.
-            m_CurrentAirJumps++;
-            if (m_CurrentAirJumps > 0 && m_AllowAirJumpDirectionChange)
+            m_CurrentJumps++;
+            if (m_CurrentJumps > 0 && m_AllowAirJumpDirectionChange)
             {
                 // Get the move direction from the movement input X and Y (on the Z axis).
                 m_MoveDirection = new Vector3(m_MovementInput.x, m_MoveDirection.y, m_MovementInput.y);

@@ -49,7 +49,7 @@ namespace Hertzole.GoldPlayer.Example
             if (Time.time >= m_NextMoveTime)
                 transform.position = Vector3.MoveTowards(transform.position, m_Waypoints[m_CurrentWaypoint].Position, m_MoveSpeed * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, m_Waypoints[m_CurrentWaypoint].Position) <= 0.1f)
+            if (Vector3.Distance(transform.position, m_Waypoints[m_CurrentWaypoint].Position) == 0f)
             {
                 NextWaypoint();
             }
