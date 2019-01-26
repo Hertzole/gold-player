@@ -17,34 +17,48 @@ namespace Hertzole.GoldPlayer.Core
         private float m_BackwardsSpeed;
 
         /// <summary> The speed when moving forward. </summary>
-        public float ForwardSpeed { get { return m_ForwardSpeed; } }
+        public float ForwardSpeed { get { return m_ForwardSpeed; } set { m_ForwardSpeed = value; Max = CalculateMax(); } }
         /// <summary> The speed when moving sideways. </summary>
-        public float SidewaysSpeed { get { return m_SidewaysSpeed; } }
+        public float SidewaysSpeed { get { return m_SidewaysSpeed; } set { m_SidewaysSpeed = value; Max = CalculateMax(); } }
         /// <summary> The speed when moving backwards. </summary>
-        public float BackwardsSpeed { get { return m_BackwardsSpeed; } }
+        public float BackwardsSpeed { get { return m_BackwardsSpeed; } set { m_BackwardsSpeed = value; Max = CalculateMax(); } }
+        /// <summary> The max speed out of all values. </summary>
+        public float Max { get; private set; }
 
         public MovementSpeeds(float forwardSpeed, float sidewaysSpeed, float backwardsSpeed)
         {
             m_ForwardSpeed = forwardSpeed;
             m_SidewaysSpeed = sidewaysSpeed;
             m_BackwardsSpeed = backwardsSpeed;
+
+            // It doesn't allow you to use functions unless you set the value first.
+            Max = 0;
+            Max = CalculateMax();
         }
 
         /// <summary>
-        /// Returns the max value out of all the speeds.
+        /// Calculates the max value out of all the speeds.
         /// </summary>
-        /// <returns></returns>
-        public float Max()
+        /// <returns>The max value.</returns>
+        private float CalculateMax()
         {
-            if (m_ForwardSpeed > m_SidewaysSpeed && m_ForwardSpeed > m_BackwardsSpeed)
-                return m_ForwardSpeed;
-            else if (m_SidewaysSpeed > m_ForwardSpeed && m_SidewaysSpeed > m_BackwardsSpeed)
-                return m_SidewaysSpeed;
-            else if (m_BackwardsSpeed > m_ForwardSpeed && m_BackwardsSpeed > m_SidewaysSpeed)
-                return m_BackwardsSpeed;
+            float previousMax = m_ForwardSpeed;
+            if (m_SidewaysSpeed > previousMax)
+                previousMax = m_SidewaysSpeed;
+            if (m_BackwardsSpeed > previousMax)
+                previousMax = m_BackwardsSpeed;
 
-            Debug.LogWarning("Unknown max");
-            return 0;
+            return previousMax;
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Only to be called in the Unity editor!
+        /// </summary>
+        public void OnValidate()
+        {
+            Max = CalculateMax();
+        }
+#endif
     }
 }
