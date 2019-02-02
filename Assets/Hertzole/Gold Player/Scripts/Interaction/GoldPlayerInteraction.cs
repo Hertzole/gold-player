@@ -52,8 +52,8 @@ namespace Hertzole.GoldPlayer.Interaction
         // How it should behave with triggers.
         private QueryTriggerInteraction m_TriggerInteraction = QueryTriggerInteraction.Ignore;
 
-        // The current hit transform.
-        private Transform m_CurrentHit;
+        // The current hit collider.
+        private Collider m_CurrentHit;
 
         // The current hit interactable.
         public GoldPlayerInteractable CurrentHitInteractable { get; private set; }
@@ -111,17 +111,23 @@ namespace Hertzole.GoldPlayer.Interaction
 #endif
         {
             // Do the raycast.
-            if (Physics.Raycast(m_CameraHead.position, m_CameraHead.forward, out m_InteractableHit, m_InteractionRange, m_InteractionLayer, m_TriggerInteraction))
+            if (Physics.Raycast(
+                m_CameraHead.position,
+                m_CameraHead.forward,
+                out m_InteractableHit,
+                m_InteractionRange,
+                m_InteractionLayer,
+                m_TriggerInteraction))
             {
                 // If there's no hit transform, stop here.
-                if (m_InteractableHit.transform == null)
+                if (m_InteractableHit.collider == null)
                     return;
 
                 // If there's no current hit or the hits doesn't match, update it and
                 // the player need to check for a interactable again.
-                if (m_CurrentHit == null || m_CurrentHit != m_InteractableHit.transform)
+                if (m_CurrentHit == null || m_CurrentHit != m_InteractableHit.collider)
                 {
-                    m_CurrentHit = m_InteractableHit.transform;
+                    m_CurrentHit = m_InteractableHit.collider;
                     m_HaveCheckedInteractable = false;
                 }
 
@@ -129,7 +135,11 @@ namespace Hertzole.GoldPlayer.Interaction
                 // We don't want to call GetComponent every frame, you know!
                 if (!m_HaveCheckedInteractable)
                 {
-                    CurrentHitInteractable = m_InteractableHit.transform.GetComponent<GoldPlayerInteractable>();
+                    // Prefer interactables on the collider itself, but if the collider doesn't
+                    // have one, then look on the rigidbody.
+                    CurrentHitInteractable =
+                        m_InteractableHit.collider.GetComponent<GoldPlayerInteractable>() ??
+                        m_InteractableHit.rigidbody.GetComponent<GoldPlayerInteractable>();
                     m_HaveCheckedInteractable = true;
                 }
 
