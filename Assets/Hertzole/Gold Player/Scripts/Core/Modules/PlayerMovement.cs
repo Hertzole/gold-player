@@ -599,32 +599,32 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max + 0.5f;
 
+            var runButtonPressed = GetButtonDown(
+                GoldPlayerConstants.RUN_BUTTON_NAME,
+                GoldPlayerConstants.RUN_DEFAULT_KEY);
+            var runButtonDown = GetButton(
+                GoldPlayerConstants.RUN_BUTTON_NAME,
+                GoldPlayerConstants.RUN_DEFAULT_KEY);
+
             switch (m_RunToggleMode)
             {
                 case RunToggleMode.Off:
                 {
-                    m_ShouldRun = GetButton(
-                        GoldPlayerConstants.RUN_BUTTON_NAME,
-                        GoldPlayerConstants.RUN_DEFAULT_KEY);
+                    m_ShouldRun = runButtonDown;
                     break;
                 }
                 case RunToggleMode.Permanent:
                 {
-                    var runButtonPressed = GetButtonDown(
-                        GoldPlayerConstants.RUN_BUTTON_NAME,
-                        GoldPlayerConstants.RUN_DEFAULT_KEY);
                     if (runButtonPressed)
                         m_ShouldRun = !m_ShouldRun;
                     break;
                 }
                 case RunToggleMode.UntilNoInput:
                 {
-                    var runButtonPressed = GetButtonDown(
-                        GoldPlayerConstants.RUN_BUTTON_NAME,
-                        GoldPlayerConstants.RUN_DEFAULT_KEY);
-
                     if (!m_HasUserInput)
                         m_ShouldRun = false;
+                    else if (runButtonDown)
+                        m_ShouldRun = true;
                     else if (runButtonPressed)
                         m_ShouldRun = !m_ShouldRun;
                     break;
