@@ -24,6 +24,9 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("Determines if the player can run.")]
         private bool m_CanRun = true;
         [SerializeField]
+        [Tooltip("Configuration of running as a toggle.")]
+        private RunToggleMode m_RunToggleMode = RunToggleMode.Off;
+        [SerializeField]
         [Tooltip("The movement speeds when running.")]
         private MovementSpeeds m_RunSpeeds = new MovementSpeeds(7f, 5.5f, 5f);
         [SerializeField]
@@ -56,6 +59,9 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("Determines if the player can crouch.")]
         private bool m_CanCrouch = true;
+        [SerializeField]
+        [Tooltip("Configuration of crouching as a toggle.")]
+        private CrouchToggleMode m_CrouchToggleMode = CrouchToggleMode.Off;
         [SerializeField]
         [Tooltip("The movement speeds when crouching.")]
         private MovementSpeeds m_CrouchSpeeds = new MovementSpeeds(2f, 1.5f, 1f);
@@ -120,12 +126,18 @@ namespace Hertzole.GoldPlayer.Core
         protected bool m_IsGrounded = false;
         // Is the player moving at all?
         protected bool m_IsMoving = false;
+        // Does the player want to be running?
+        protected bool m_ShouldRun = false;
         // Is the player running?
         protected bool m_IsRunning = false;
+        // Did the player run at all since their last break in move input?
+        private bool m_DidRunSinceLastBreakInMovement;
         // Is the player jumping?
         protected bool m_IsJumping = false;
         // Is the player falling?
         protected bool m_IsFalling = false;
+        // Does the player want to be crouching?
+        protected bool m_ShouldCrouch = false;
         // Is the player crouching?
         protected bool m_IsCrouching = false;
         // Can the player stand up while crouching?
@@ -139,8 +151,11 @@ namespace Hertzole.GoldPlayer.Core
         // Determines if the player should jump.
         protected bool m_ShouldJump = false;
 
-        // Input values for movement on the X and Z axis.
+        // Input values for movement on the X and Z axis, automatically dampened for smoothing.
         protected Vector2 m_MovementInput = Vector2.zero;
+        // Whether or not the player registered movement input this frame. This can be false while
+        // m_MovementInput is non-zero due to the smoothing applied to m_MovementInput.
+        protected bool m_HasUserInput = false;
 
         // The original character controller center.
         protected Vector3 m_OriginalControllerCenter = Vector3.zero;
@@ -166,6 +181,8 @@ namespace Hertzole.GoldPlayer.Core
 
         /// <summary> Determines if the player can run. </summary>
         public bool CanRun { get { return m_CanRun; } set { m_CanRun = value; } }
+        /// <summary> Configuration of running as a toggle. </summary>
+        public RunToggleMode RunToggleMode { get { return m_RunToggleMode; } set { m_RunToggleMode = value; } }
         /// <summary> The speeds when running. </summary>
         public MovementSpeeds RunSpeeds { get { return m_RunSpeeds; } set { m_RunSpeeds = value; if (m_IsRunning) m_MoveSpeed = value; } }
         /// <summary> Everything related to stamina (limited running). </summary>
@@ -186,6 +203,8 @@ namespace Hertzole.GoldPlayer.Core
 
         /// <summary> Determines if the player can crouch. </summary>
         public bool CanCrouch { get { return m_CanCrouch; } set { m_CanCrouch = value; } }
+        /// <summary> Configuration of crouching as a toggle. </summary>
+        public CrouchToggleMode CrouchToggleMode { get { return m_CrouchToggleMode; } set { m_CrouchToggleMode = value; } }
         /// <summary> The movement speeds when crouching. </summary>
         public MovementSpeeds CrouchSpeeds { get { return m_CrouchSpeeds; } set { m_CrouchSpeeds = value; } }
         /// <summary> Determines if the player can jump while crouched. </summary>
@@ -299,10 +318,18 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
+            var horizontal = GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS);
+            var vertical = GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS);
+
+            m_HasUserInput = horizontal != 0 || vertical != 0;
+
+            if (!m_HasUserInput)
+                m_DidRunSinceLastBreakInMovement = false;
+
             // Take the X input and smooth it.
-            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS), ref m_ForwardSpeedVelocity, m_Acceleration);
+            m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, horizontal, ref m_ForwardSpeedVelocity, m_Acceleration);
             // Take the Y input and smooth it.
-            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS), ref m_SidewaysSpeedVelocity, m_Acceleration);
+            m_MovementInput.y = Mathf.SmoothDamp(m_MovementInput.y, vertical, ref m_SidewaysSpeedVelocity, m_Acceleration);
 
             // Normalize the input so the player doesn't run faster when running diagonally.
             if (m_MovementInput.sqrMagnitude > 1)
@@ -367,7 +394,7 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     // Set the jump position to the current player transform.
                     m_JumpPosition = PlayerTransform.position;
-                    // 
+                    //
                     if (!m_IsJumping)
                         m_CurrentJumps++;
                 }
@@ -577,8 +604,40 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max + 0.5f;
 
-            // Only run if we're not crouching, can run, and the run button is being held down.
-            if (!m_IsCrouching && m_CanRun && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
+            var runButtonPressed = GetButtonDown(
+                GoldPlayerConstants.RUN_BUTTON_NAME,
+                GoldPlayerConstants.RUN_DEFAULT_KEY);
+            var runButtonDown = GetButton(
+                GoldPlayerConstants.RUN_BUTTON_NAME,
+                GoldPlayerConstants.RUN_DEFAULT_KEY);
+
+            switch (m_RunToggleMode)
+            {
+                case RunToggleMode.Off:
+                {
+                    m_ShouldRun = runButtonDown;
+                    break;
+                }
+                case RunToggleMode.Permanent:
+                {
+                    if (runButtonPressed)
+                        m_ShouldRun = !m_ShouldRun;
+                    break;
+                }
+                case RunToggleMode.UntilNoInput:
+                {
+                    if (!m_HasUserInput)
+                        m_ShouldRun = false;
+                    else if (!m_IsRunning && !m_DidRunSinceLastBreakInMovement && runButtonDown)
+                        m_ShouldRun = true;
+                    else if (runButtonPressed)
+                        m_ShouldRun = !m_ShouldRun;
+                    break;
+                }
+            }
+
+            // Only run if we're not crouching, can run, and the player wants to be running.
+            if (!m_IsCrouching && m_CanRun && m_ShouldRun)
             {
                 // If stamina is enabled, only set move speed when stamina is above 0.
                 // Else if stamina is not enabled, simply set move speed to run speeds.
@@ -590,7 +649,7 @@ namespace Hertzole.GoldPlayer.Core
                 else if (m_Stamina.CurrentStamina <= 0)
                     m_MoveSpeed = m_WalkingSpeeds;
             }
-            else if (!m_IsCrouching && !GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
+            else if (!m_IsCrouching && !m_ShouldRun)
             {
                 // If we're not crouching and not holding down the run button, walk.
                 m_MoveSpeed = m_WalkingSpeeds;
@@ -599,6 +658,8 @@ namespace Hertzole.GoldPlayer.Core
             // Only run if m_isRunning is true.
             if (m_IsRunning)
             {
+                m_DidRunSinceLastBreakInMovement = true;
+
                 // If the player wasn't previously running, they just started. Fire the OnBeginRun event.
                 if (!m_PreviouslyRunning)
                 {
@@ -639,13 +700,33 @@ namespace Hertzole.GoldPlayer.Core
             // Only run the code if we can crouch. If we can't, always set 'isCrouching' to false.
             if (m_CanCrouch)
             {
-                // If the crouch button is being held down, set is crouching to true.
+                switch (m_CrouchToggleMode)
+                {
+                    case CrouchToggleMode.Off:
+                    {
+                        m_ShouldCrouch = GetButton(
+                            GoldPlayerConstants.CROUCH_BUTTON_NAME,
+                            GoldPlayerConstants.CROUCH_DEFAULT_KEY);
+                        break;
+                    }
+                    case CrouchToggleMode.Permanent:
+                    {
+                        var crouchButtonPressed = GetButtonDown(
+                            GoldPlayerConstants.CROUCH_BUTTON_NAME,
+                            GoldPlayerConstants.CROUCH_DEFAULT_KEY);
+                        if (crouchButtonPressed)
+                            m_ShouldCrouch = !m_ShouldCrouch;
+                        break;
+                    }
+                }
+
+                // If the player wants to be crouching, set is crouching to true.
                 // Else if we can stand up and we are crouching, stop crouching.
-                if (GetButton(GoldPlayerConstants.CROUCH_BUTTON_NAME, GoldPlayerConstants.CROUCH_DEFAULT_KEY))
+                if (m_ShouldCrouch)
                 {
                     m_IsCrouching = true;
                 }
-                else if (m_CanStandUp && m_IsCrouching)
+                else if (m_CanStandUp && m_IsCrouching && !m_ShouldCrouch)
                 {
                     // If the player was previously crouched, fire the OnEndCrouch event, as the player is longer crouching.
                     if (m_PreviouslyCrouched)
