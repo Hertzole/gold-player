@@ -130,6 +130,8 @@ namespace Hertzole.GoldPlayer.Core
         protected bool m_ShouldRun = false;
         // Is the player running?
         protected bool m_IsRunning = false;
+        // Did the player run at all since their last break in move input?
+        private bool m_DidRunSinceLastBreakInMovement;
         // Is the player jumping?
         protected bool m_IsJumping = false;
         // Is the player falling?
@@ -320,6 +322,9 @@ namespace Hertzole.GoldPlayer.Core
             var vertical = GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS);
 
             m_HasUserInput = horizontal != 0 || vertical != 0;
+
+            if (!m_HasUserInput)
+                m_DidRunSinceLastBreakInMovement = false;
 
             // Take the X input and smooth it.
             m_MovementInput.x = Mathf.SmoothDamp(m_MovementInput.x, horizontal, ref m_ForwardSpeedVelocity, m_Acceleration);
@@ -623,7 +628,7 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     if (!m_HasUserInput)
                         m_ShouldRun = false;
-                    else if (runButtonDown)
+                    else if (!m_IsRunning && !m_DidRunSinceLastBreakInMovement && runButtonDown)
                         m_ShouldRun = true;
                     else if (runButtonPressed)
                         m_ShouldRun = !m_ShouldRun;
@@ -653,6 +658,8 @@ namespace Hertzole.GoldPlayer.Core
             // Only run if m_isRunning is true.
             if (m_IsRunning)
             {
+                m_DidRunSinceLastBreakInMovement = true;
+
                 // If the player wasn't previously running, they just started. Fire the OnBeginRun event.
                 if (!m_PreviouslyRunning)
                 {
