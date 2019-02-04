@@ -318,8 +318,8 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
-            var horizontal = GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS);
-            var vertical = GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS);
+            float horizontal = GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS);
+            float vertical = GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS);
 
             m_HasUserInput = horizontal != 0 || vertical != 0;
 
@@ -604,36 +604,36 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max + 0.5f;
 
-            var runButtonPressed = GetButtonDown(
+            bool runButtonPressed = GetButtonDown(
                 GoldPlayerConstants.RUN_BUTTON_NAME,
                 GoldPlayerConstants.RUN_DEFAULT_KEY);
-            var runButtonDown = GetButton(
+            bool runButtonDown = GetButton(
                 GoldPlayerConstants.RUN_BUTTON_NAME,
                 GoldPlayerConstants.RUN_DEFAULT_KEY);
 
             switch (m_RunToggleMode)
             {
                 case RunToggleMode.Off:
-                {
-                    m_ShouldRun = runButtonDown;
-                    break;
-                }
+                    {
+                        m_ShouldRun = runButtonDown;
+                        break;
+                    }
                 case RunToggleMode.Permanent:
-                {
-                    if (runButtonPressed)
-                        m_ShouldRun = !m_ShouldRun;
-                    break;
-                }
+                    {
+                        if (runButtonPressed)
+                            m_ShouldRun = !m_ShouldRun;
+                        break;
+                    }
                 case RunToggleMode.UntilNoInput:
-                {
-                    if (!m_HasUserInput)
-                        m_ShouldRun = false;
-                    else if (!m_IsRunning && !m_DidRunSinceLastBreakInMovement && runButtonDown)
-                        m_ShouldRun = true;
-                    else if (runButtonPressed)
-                        m_ShouldRun = !m_ShouldRun;
-                    break;
-                }
+                    {
+                        if (!m_HasUserInput)
+                            m_ShouldRun = false;
+                        else if (!m_IsRunning && !m_DidRunSinceLastBreakInMovement && runButtonDown)
+                            m_ShouldRun = true;
+                        else if (runButtonPressed)
+                            m_ShouldRun = !m_ShouldRun;
+                        break;
+                    }
             }
 
             // Only run if we're not crouching, can run, and the player wants to be running.
@@ -703,21 +703,21 @@ namespace Hertzole.GoldPlayer.Core
                 switch (m_CrouchToggleMode)
                 {
                     case CrouchToggleMode.Off:
-                    {
-                        m_ShouldCrouch = GetButton(
-                            GoldPlayerConstants.CROUCH_BUTTON_NAME,
-                            GoldPlayerConstants.CROUCH_DEFAULT_KEY);
-                        break;
-                    }
+                        {
+                            m_ShouldCrouch = GetButton(
+                                GoldPlayerConstants.CROUCH_BUTTON_NAME,
+                                GoldPlayerConstants.CROUCH_DEFAULT_KEY);
+                            break;
+                        }
                     case CrouchToggleMode.Permanent:
-                    {
-                        var crouchButtonPressed = GetButtonDown(
+                        {
+                            bool crouchButtonPressed = GetButtonDown(
                             GoldPlayerConstants.CROUCH_BUTTON_NAME,
                             GoldPlayerConstants.CROUCH_DEFAULT_KEY);
-                        if (crouchButtonPressed)
-                            m_ShouldCrouch = !m_ShouldCrouch;
-                        break;
-                    }
+                            if (crouchButtonPressed)
+                                m_ShouldCrouch = !m_ShouldCrouch;
+                            break;
+                        }
                 }
 
                 // If the player wants to be crouching, set is crouching to true.

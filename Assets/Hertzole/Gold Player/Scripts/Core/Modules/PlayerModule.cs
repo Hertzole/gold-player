@@ -16,6 +16,9 @@ namespace Hertzole.GoldPlayer
         private GoldInput m_PlayerInput;
         protected GoldInput PlayerInput { get { return m_PlayerInput; } }
 
+        /// <summary> True if the module has been initialized. </summary>
+        public bool HasBeenInitialized { get; private set; }
+
         /// <summary>
         /// Initialize the module.
         /// </summary>
@@ -23,11 +26,17 @@ namespace Hertzole.GoldPlayer
         /// <param name="input">Input, if available.</param>
         public void Initialize(GoldPlayerController player, GoldInput input = null)
         {
+            // If the module has already been initialized, stop here.
+            if (HasBeenInitialized)
+                return;
+
             m_PlayerController = player;
             if (input != null)
                 m_PlayerInput = input;
 
             OnInitialize();
+
+            HasBeenInitialized = true;
         }
 
         [System.Obsolete("Use 'Initialize' instead! This will be removed in a future version.")]
@@ -140,7 +149,7 @@ namespace Hertzole.GoldPlayer
 #if UNITY_EDITOR
         /// <summary>
         /// Called when something changes in the inspector.
-        /// THIS IS EDITOR ONLY! SHOULD NOT BE USED OUTSIDE 'if UNITY_EDITOR' define!
+        /// THIS IS EDITOR ONLY! SHOULD NOT BE USED OUTSIDE 'if UNITY_EDITOR' DEFINE!
         /// </summary>
         public virtual void OnValidate() { }
 #endif

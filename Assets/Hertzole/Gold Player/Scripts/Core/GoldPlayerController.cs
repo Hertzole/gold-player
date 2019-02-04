@@ -31,7 +31,14 @@ namespace Hertzole.GoldPlayer
         private CharacterController m_Controller;
 
         /// <summary> Has all the scripts be initialized? </summary>
-        public bool HasBeenInitialized { get { return m_HasBeenInitialized; } }
+        [System.Obsolete("Use HasBeenFullyInitialized instead.")]
+        public bool HasBeenInitialized { get { return HasBeenFullyInitialized; } }
+
+        /// <summary> True if all the modules have been initialized. </summary>
+        public bool HasBeenFullyInitialized
+        {
+            get { return m_Camera.HasBeenInitialized && m_Movement.HasBeenInitialized && m_HeadBob.HasBeenInitialized && m_Audio.HasBeenInitialized; }
+        }
         /// <summary> If false, 'Initialize()' will not be called on Start and will only be called once another script calls it. </summary>
         public bool InitOnStart { get { return m_InitOnStart; } set { m_InitOnStart = value; } }
 
@@ -77,13 +84,14 @@ namespace Hertzole.GoldPlayer
         public void Update()
 #endif
         {
-            if (HasBeenInitialized)
-            {
-                Movement.OnUpdate();
-                Camera.OnUpdate();
-                HeadBob.OnUpdate();
-                Audio.OnUpdate();
-            }
+            if (m_Movement.HasBeenInitialized)
+                m_Movement.OnUpdate();
+            if (m_Camera.HasBeenInitialized)
+                m_Camera.OnUpdate();
+            if (m_HeadBob.HasBeenInitialized)
+                m_HeadBob.OnUpdate();
+            if (m_Audio.HasBeenInitialized)
+                m_Audio.OnUpdate();
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -92,13 +100,14 @@ namespace Hertzole.GoldPlayer
         public void FixedUpdate()
 #endif
         {
-            if (HasBeenInitialized)
-            {
-                Movement.OnFixedUpdate();
-                Camera.OnFixedUpdate();
-                HeadBob.OnFixedUpdate();
-                Audio.OnFixedUpdate();
-            }
+            if (m_Movement.HasBeenInitialized)
+                m_Movement.OnFixedUpdate();
+            if (m_Camera.HasBeenInitialized)
+                m_Camera.OnFixedUpdate();
+            if (m_HeadBob.HasBeenInitialized)
+                m_HeadBob.OnFixedUpdate();
+            if (m_Audio.HasBeenInitialized)
+                m_Audio.OnFixedUpdate();
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -107,13 +116,14 @@ namespace Hertzole.GoldPlayer
         public void LateUpdate()
 #endif
         {
-            if (HasBeenInitialized)
-            {
-                Movement.OnLateUpdate();
-                Camera.OnLateUpdate();
-                HeadBob.OnLateUpdate();
-                Audio.OnLateUpdate();
-            }
+            if (m_Movement.HasBeenInitialized)
+                m_Movement.OnLateUpdate();
+            if (m_Camera.HasBeenInitialized)
+                m_Camera.OnLateUpdate();
+            if (m_HeadBob.HasBeenInitialized)
+                m_HeadBob.OnLateUpdate();
+            if (m_Audio.HasBeenInitialized)
+                m_Audio.OnLateUpdate();
         }
 
         /// <summary>
@@ -124,14 +134,12 @@ namespace Hertzole.GoldPlayer
             GetReferences();
 
             InitializeModules();
-
-            m_HasBeenInitialized = true;
         }
 
         /// <summary>
         /// Gets all the references the player needs.
         /// </summary>
-        protected virtual void GetReferences()
+        public virtual void GetReferences()
         {
             m_PlayerInput = gameObject.GetComponent<GoldInput>();
             m_Controller = gameObject.GetComponent<CharacterController>();
@@ -142,19 +150,51 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         protected virtual void InitializeModules()
         {
-            Movement.Initialize(this, PlayerInput);
-            Camera.Initialize(this, PlayerInput);
-            HeadBob.Initialize(this, PlayerInput);
-            Audio.Initialize(this, PlayerInput);
+            InitializeMovement();
+            InitializeCamera();
+            InitializeHeadBob();
+            InitializeAudio();
+        }
+
+        /// <summary>
+        /// Initializes the movement module.
+        /// </summary>
+        public virtual void InitializeMovement()
+        {
+            m_Movement.Initialize(this, PlayerInput);
+        }
+
+        /// <summary>
+        /// Initializes the camera module.
+        /// </summary>
+        public virtual void InitializeCamera()
+        {
+            m_Camera.Initialize(this, PlayerInput);
+        }
+
+        /// <summary>
+        /// Initializes the head bob module.
+        /// </summary>
+        public virtual void InitializeHeadBob()
+        {
+            m_HeadBob.Initialize(this, PlayerInput);
+        }
+
+        /// <summary>
+        /// Initializes the audio module.
+        /// </summary>
+        public virtual void InitializeAudio()
+        {
+            m_Audio.Initialize(this, PlayerInput);
         }
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            Movement.OnValidate();
-            Camera.OnValidate();
-            HeadBob.OnValidate();
-            Audio.OnValidate();
+            m_Movement.OnValidate();
+            m_Camera.OnValidate();
+            m_HeadBob.OnValidate();
+            m_Audio.OnValidate();
         }
 #endif
     }
