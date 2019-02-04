@@ -31,7 +31,7 @@ namespace Hertzole.GoldPlayer.Core
         private float m_MouseSensitivity = 10f;
         [SerializeField]
         [Tooltip("Sets how smooth the movement should be.")]
-        private float m_MouseDamping = 0.05f;
+        private float m_MouseDamping = 0f;
         [SerializeField]
         [Tooltip("Sets how far down the player can look.")]
         private float m_MinimumX = -90f;

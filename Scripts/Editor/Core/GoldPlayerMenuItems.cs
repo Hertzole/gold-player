@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Editor
@@ -9,10 +8,13 @@ namespace Hertzole.GoldPlayer.Editor
         [MenuItem("GameObject/3D Object/Gold Player Controller")]
         public static void CreateGoldPlayer(MenuCommand menuCommand)
         {
+            GameObject parent = menuCommand.context as GameObject;
+            string uniqueName = GameObjectUtility.GetUniqueNameForSibling(parent != null ? parent.transform : null, "Gold Player Controller");
+
             // Create the root object.
-            GameObject root = new GameObject("Gold Player Controller") { tag = "Player", layer = LayerMask.NameToLayer("TransparentFX") };
+            GameObject root = new GameObject(uniqueName) { tag = "Player", layer = LayerMask.NameToLayer("TransparentFX") };
             // Place the root in the scene.
-            PlaceInScene(root, menuCommand.context as GameObject);
+            PlaceInScene(root, parent);
 
             // Create the graphics holder.
             GameObject graphicsHolder = CreateChild("Graphics", root);
@@ -102,10 +104,10 @@ namespace Hertzole.GoldPlayer.Editor
             else
             {
                 PlaceGameObjectInFrontOfSceneView(go);
+#if UNITY_2018_3_OR_LATER
                 StageUtility.PlaceGameObjectInCurrentStage(go);
+#endif
             }
-
-            GameObjectUtility.EnsureUniqueNameForSibling(go);
 
             Selection.activeGameObject = go;
         }
