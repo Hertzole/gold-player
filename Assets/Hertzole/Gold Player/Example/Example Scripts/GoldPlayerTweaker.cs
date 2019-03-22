@@ -84,6 +84,8 @@ namespace Hertzole.GoldPlayer.Example
             CreateTweaker("Jump Height", m_TargetPlayer.Movement.GetType().GetProperty("JumpHeight"), m_TargetPlayer.Movement);
             CreateTweaker("Air Jump", m_TargetPlayer.Movement.GetType().GetProperty("AirJump"), m_TargetPlayer.Movement);
             CreateTweaker("Air Jump Time", m_TargetPlayer.Movement.GetType().GetProperty("AirJumpTime"), m_TargetPlayer.Movement);
+            CreateTweaker("Air Jumps Amount", m_TargetPlayer.Movement.GetType().GetProperty("AirJumpsAmount"), m_TargetPlayer.Movement);
+            CreateTweaker("Allow Air Jump Direction Change", m_TargetPlayer.Movement.GetType().GetProperty("AllowAirJumpDirectionChange"), m_TargetPlayer.Movement);
             CreateSubHeader("Crouching");
             CreateTweaker("Can Crouch", m_TargetPlayer.Movement.GetType().GetProperty("CanCrouch"), m_TargetPlayer.Movement);
             CreateTweaker("Crouch Jumping", m_TargetPlayer.Movement.GetType().GetProperty("CrouchJumping"), m_TargetPlayer.Movement);

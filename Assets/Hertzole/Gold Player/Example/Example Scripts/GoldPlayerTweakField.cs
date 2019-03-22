@@ -37,9 +37,19 @@ namespace Hertzole.GoldPlayer.Example
                 m_ToggleField.onValueChanged.AddListener(delegate { info.SetValue(caller, m_ToggleField.isOn, null); });
             }
 
-            if (info.PropertyType == typeof(float))
+            if (info.PropertyType == typeof(float) || info.PropertyType == typeof(int))
             {
-                float value = (float)info.GetValue(caller, null);
+                bool isInt = info.PropertyType == typeof(int);
+
+                //float floatValue = (float)info.GetValue(caller, null);
+                float floatValue = 0;
+                int intValue = 0;
+
+                if (isInt)
+                    intValue = (int)info.GetValue(caller, null);
+                else
+                    floatValue = (float)info.GetValue(caller, null);
+
                 if (slider)
                 {
                     m_TextField.gameObject.SetActive(false);
@@ -47,19 +57,30 @@ namespace Hertzole.GoldPlayer.Example
 
                     m_SliderField.minValue = minSliderNum;
                     m_SliderField.maxValue = maxSliderNum;
-                    m_SliderField.value = value;
+                    m_SliderField.value = isInt ? intValue : floatValue;
+                    m_SliderField.wholeNumbers = isInt;
                     m_Label.text = label + ": " + m_SliderField.value.ToString("F3");
-                    m_SliderField.onValueChanged.AddListener(delegate { info.SetValue(caller, m_SliderField.value, null); m_Label.text = label + ": " + m_SliderField.value.ToString("F3"); });
+                    m_SliderField.onValueChanged.AddListener(delegate
+                    {
+                        info.SetValue(caller, isInt ? Mathf.RoundToInt(m_SliderField.value) : m_SliderField.value, null);
+                        m_Label.text = label + ": " + m_SliderField.value.ToString("F3");
+                    });
                 }
                 else
                 {
                     m_TextField.gameObject.SetActive(true);
                     m_SliderField.gameObject.SetActive(false);
 
-                    m_TextField.contentType = InputField.ContentType.DecimalNumber;
-                    m_TextField.text = value.ToString();
+                    m_TextField.contentType = isInt ? InputField.ContentType.IntegerNumber : InputField.ContentType.DecimalNumber;
+                    m_TextField.text = (isInt ? intValue : floatValue).ToString();
 
-                    m_TextField.onValueChanged.AddListener(delegate { info.SetValue(caller, float.Parse(m_TextField.text), null); });
+                    m_TextField.onValueChanged.AddListener(delegate
+                    {
+                        if (isInt)
+                            info.SetValue(caller, int.Parse(m_TextField.text), null);
+                        else
+                            info.SetValue(caller, float.Parse(m_TextField.text), null);
+                    });
                 }
             }
         }
