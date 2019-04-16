@@ -262,6 +262,11 @@ namespace Hertzole.GoldPlayer.Core
 
         protected override void OnInitialize()
         {
+            // Calculate max on all the speeds to make sure it's correct when spawning the player.
+            m_WalkingSpeeds.CalculateMax();
+            m_RunSpeeds.CalculateMax();
+            m_CrouchSpeeds.CalculateMax();
+
             // Initialize the stamina module.
             m_Stamina.Initialize(PlayerController, PlayerInput);
             // Initialize the moving platforms module.
@@ -309,7 +314,7 @@ namespace Hertzole.GoldPlayer.Core
         public bool CheckGrounded()
         {
             // Check using a sphere at the player's feet.
-            return Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore); ;
+            return Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, m_GroundLayer, QueryTriggerInteraction.Ignore);
         }
 
         /// <summary>
@@ -456,7 +461,7 @@ namespace Hertzole.GoldPlayer.Core
             // Make sure the player is moving in the right direction.
             HandleMovementDirection();
             // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
-            if (GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY) && m_CanJump && m_CanMoveAround)
+            if (m_CanJump && m_CanMoveAround && GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY))
             {
                 // Check if the player should jump.
                 m_ShouldJump = ShouldJump();
@@ -601,6 +606,10 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void Running()
         {
+            // If the player can't run, just stop here.
+            if (!m_CanRun)
+                return;
+
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             m_IsRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > m_WalkingSpeeds.Max + 0.5f;
 
