@@ -1,13 +1,19 @@
 #if UNITY_EDITOR
 using Hertzole.GoldPlayer.Core;
 using UnityEditor;
+#if UNITY_2019_2_OR_NEWER
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+#else
 using UnityEngine;
+#endif
 
 namespace Hertzole.GoldPlayer.Editor
 {
     [CustomPropertyDrawer(typeof(AudioItem))]
     internal class AudioItemEditor : PropertyDrawer
     {
+#if !UNITY_2019_2_OR_NEWER
         // The full complete rect.
         private Rect m_FullRect;
         // The rect for the current field.
@@ -19,7 +25,21 @@ namespace Hertzole.GoldPlayer.Editor
 
         // Check to see if the property height should be from the GUI.
         private bool m_DoGUI = false;
+#else
+        private VisualElement elements;
+        private VisualElement randomPitchElements;
 
+        private VisualElement enabled;
+        private VisualElement randomPitch;
+        private VisualElement pitch;
+        private VisualElement minPitch;
+        private VisualElement maxPitch;
+        private VisualElement changeVolume;
+        private VisualElement volume;
+        private VisualElement audioClips;
+#endif
+
+#if !UNITY_2019_2_OR_NEWER
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             // Set 'doGUI' to true as we want to bae it of the GUI.
@@ -153,6 +173,76 @@ namespace Hertzole.GoldPlayer.Editor
             }
             return rect;
         }
+#else
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            VisualElement root = new VisualElement();
+
+            Foldout foldout = new Foldout { text = property.displayName, value = property.isExpanded, };
+            //TODO: Fix isExpanded being set when any bool is changed.
+            foldout.RegisterValueChangedCallback((evt) => { property.isExpanded = evt.newValue; });
+
+            elements = new VisualElement();
+            foldout.contentContainer.Add(elements);
+
+            enabled = new PropertyField(property.FindPropertyRelative("m_Enabled"));
+            randomPitch = new PropertyField(property.FindPropertyRelative("m_RandomPitch"));
+            pitch = new PropertyField(property.FindPropertyRelative("m_Pitch"));
+            minPitch = new PropertyField(property.FindPropertyRelative("m_MinPitch"));
+            maxPitch = new PropertyField(property.FindPropertyRelative("m_MaxPitch"));
+
+            //TODO: Make one liner.
+            randomPitchElements = new VisualElement();
+            randomPitchElements.Add(minPitch);
+            randomPitchElements.Add(maxPitch);
+
+            changeVolume = new PropertyField(property.FindPropertyRelative("m_ChangeVolume"));
+            volume = new PropertyField(property.FindPropertyRelative("m_Volume"));
+            audioClips = new PropertyField(property.FindPropertyRelative("m_AudioClips"));
+
+            elements.Add(enabled);
+            elements.Add(randomPitch);
+            elements.Add(pitch);
+            elements.Add(randomPitchElements);
+            elements.Add(changeVolume);
+            elements.Add(volume);
+            elements.Add(audioClips);
+
+            enabled.RegisterCallback<ChangeEvent<bool>>(x => ToggleEnabled(x.newValue));
+            randomPitch.RegisterCallback<ChangeEvent<bool>>(x => ToggleRandomPitch(x.newValue));
+            changeVolume.RegisterCallback<ChangeEvent<bool>>(x => ToggleVolume(x.newValue));
+
+            ToggleEnabled(property.FindPropertyRelative("m_Enabled").boolValue);
+            ToggleRandomPitch(property.FindPropertyRelative("m_RandomPitch").boolValue);
+            ToggleVolume(property.FindPropertyRelative("m_ChangeVolume").boolValue);
+
+            root.Add(foldout);
+
+            return root;
+        }
+
+        private void ToggleEnabled(bool toggle)
+        {
+            randomPitch.SetEnabled(toggle);
+            pitch.SetEnabled(toggle);
+            minPitch.SetEnabled(toggle);
+            maxPitch.SetEnabled(toggle);
+            changeVolume.SetEnabled(toggle);
+            volume.SetEnabled(toggle);
+            audioClips.SetEnabled(toggle);
+        }
+
+        private void ToggleRandomPitch(bool randomPitch)
+        {
+            randomPitchElements.style.display = randomPitch ? DisplayStyle.Flex : DisplayStyle.None;
+            pitch.style.display = randomPitch ? DisplayStyle.None : DisplayStyle.Flex;
+        }
+
+        private void ToggleVolume(bool changeVolume)
+        {
+            volume.style.display = changeVolume ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+#endif
     }
 }
 #endif
