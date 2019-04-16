@@ -17,11 +17,11 @@ namespace Hertzole.GoldPlayer.Core
         private float m_BackwardsSpeed;
 
         /// <summary> The speed when moving forward. </summary>
-        public float ForwardSpeed { get { return m_ForwardSpeed; } set { m_ForwardSpeed = value; Max = CalculateMax(); } }
+        public float ForwardSpeed { get { return m_ForwardSpeed; } set { m_ForwardSpeed = value; CalculateMax(); } }
         /// <summary> The speed when moving sideways. </summary>
-        public float SidewaysSpeed { get { return m_SidewaysSpeed; } set { m_SidewaysSpeed = value; Max = CalculateMax(); } }
+        public float SidewaysSpeed { get { return m_SidewaysSpeed; } set { m_SidewaysSpeed = value; CalculateMax(); } }
         /// <summary> The speed when moving backwards. </summary>
-        public float BackwardsSpeed { get { return m_BackwardsSpeed; } set { m_BackwardsSpeed = value; Max = CalculateMax(); } }
+        public float BackwardsSpeed { get { return m_BackwardsSpeed; } set { m_BackwardsSpeed = value; CalculateMax(); } }
         /// <summary> The max speed out of all values. </summary>
         public float Max { get; private set; }
 
@@ -33,14 +33,14 @@ namespace Hertzole.GoldPlayer.Core
 
             // It doesn't allow you to use functions unless you set the value first.
             Max = 0;
-            Max = CalculateMax();
+            CalculateMax();
         }
 
         /// <summary>
         /// Calculates the max value out of all the speeds.
         /// </summary>
         /// <returns>The max value.</returns>
-        private float CalculateMax()
+        public void CalculateMax()
         {
             float previousMax = m_ForwardSpeed;
             if (m_SidewaysSpeed > previousMax)
@@ -48,7 +48,7 @@ namespace Hertzole.GoldPlayer.Core
             if (m_BackwardsSpeed > previousMax)
                 previousMax = m_BackwardsSpeed;
 
-            return previousMax;
+            Max = previousMax;
         }
 
 #if UNITY_EDITOR
@@ -57,7 +57,7 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public void OnValidate()
         {
-            Max = CalculateMax();
+            CalculateMax();
         }
 #endif
     }
