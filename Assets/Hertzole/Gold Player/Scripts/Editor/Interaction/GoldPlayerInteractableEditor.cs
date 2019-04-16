@@ -74,7 +74,7 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
 
             return root;
         }
-    }
 #endif
+    }
 }
 #endif
