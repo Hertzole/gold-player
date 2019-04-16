@@ -52,3 +52,7 @@ A: Yes! No restrictions! You can do whatever you want with it. The only thing yo
 The available editors.
 ![Editor](https://raw.githubusercontent.com/Hertzole/gold-player/gh-pages/docs/screenshots/editor.png)
 You can also try out a web version of the player controller [here](http://hertzole.github.io/gold-player/docs/play). You can tweak almost all the settings at runtime.
+
+##
+
+<a href='https://ko-fi.com/I2I4IHAK' target='_blank'><img height='40' style='border:0px;height:40px;' src='https://help.ko-fi.com/hc/article_attachments/360016971454/Ko-fi_Red.png' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> 
