@@ -11,62 +11,71 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("Determines if the player can look around.")]
-        private bool m_CanLookAround = true;
+        [FormerlySerializedAs("m_CanLookAround")]
+        private bool canLookAround = true;
         [SerializeField]
         [Tooltip("Determines if the cursor should be locked.")]
-        private bool m_ShouldLockCursor = true;
+        [FormerlySerializedAs("m_ShouldLockCursor")]
+        private bool shouldLockCursor = true;
 
         [Space]
         [SerializeField]
         [Tooltip("Determines if the X axis should be inverted.")]
-        private bool m_InvertXAxis = false;
+        [FormerlySerializedAs("m_InvertXAxis")]
+        private bool invertXAxis = false;
         [SerializeField]
         [Tooltip("Determines if the Y axis should be inverted.")]
-        private bool m_InvertYAxis = false;
+        [FormerlySerializedAs("m_InvertYAxis")]
+        private bool invertYAxis = false;
 
         [Space]
 
         [SerializeField]
         [Tooltip("How fast the camera head should move when looking around.")]
-        private float m_MouseSensitivity = 10f;
+        [FormerlySerializedAs("m_MouseSensitivity")]
+        private float mouseSensitivity = 10f;
         [SerializeField]
         [Tooltip("Sets how smooth the movement should be.")]
-        private float m_MouseDamping = 0f;
+        [FormerlySerializedAs("m_MouseDamping")]
+        private float mouseDamping = 0f;
         [SerializeField]
         [Tooltip("Sets how far down the player can look.")]
-        private float m_MinimumX = -90f;
+        [FormerlySerializedAs("m_MinimumX")]
+        private float minimumX = -90f;
         [SerializeField]
         [Tooltip("Sets how far up the player can look.")]
-        [FormerlySerializedAs("m_MaxiumumX")]
-        private float m_MaximumX = 90f;
+        [FormerlySerializedAs("m_MaximumX")]
+        private float maximumX = 90f;
 
         [Space]
 
         [SerializeField]
         [Tooltip("Settings related to field of view kick.")]
-        private FOVKickClass m_FOVKick = new FOVKickClass();
+        [FormerlySerializedAs("m_FOVKick")]
+        private FOVKickClass fieldOfViewKick = new FOVKickClass();
 
         [Space]
 
         [SerializeField]
         [Tooltip("The camera head that should be moved around.")]
-        private Transform m_CameraHead = null;
+        [FormerlySerializedAs("m_CameraHead")]
+        private Transform cameraHead = null;
 
         // Determines if a camera shake should be preformed.
-        private bool m_DoShake = false;
+        private bool doShake = false;
         // Was the camera previously shaking?
-        private bool m_PreviouslyShaking = false;
+        private bool previouslyShaking = false;
 
         // Sets how strong the camera shake is.
-        private float m_ShakeFrequency = 0;
+        private float shakeFrequency = 0;
         // Also sets how strong the camera shake.
-        private float m_ShakeMagnitude = 0;
+        private float shakeMagnitude = 0;
         // The original magnitude of the camera shake.
-        private float m_ShakeMagnitudeFull = 0;
+        private float shakeMagnitudeFull = 0;
         // How last the camera shake lasts.
-        private float m_ShakeDuration = 0;
+        private float shakeDuration = 0;
         // The timer used to reach the duration.
-        private float m_ShakeTimer = 0;
+        private float shakeTimer = 0;
         // The amount of current recoil.
         private float recoil = 0;
         // The amount of the time the recoil should take.
@@ -77,60 +86,60 @@ namespace Hertzole.GoldPlayer.Core
         private float currentRecoilTime = 0;
 
         // The current input from the mouse.
-        private Vector2 m_MouseInput = Vector2.zero;
+        private Vector2 mouseInput = Vector2.zero;
 
         // Where the head should be looking.
-        private Vector3 m_TargetHeadAngles = Vector3.zero;
+        private Vector3 targetHeadAngles = Vector3.zero;
         // Where the body should be looking.
-        private Vector3 m_TargetBodyAngles = Vector3.zero;
+        private Vector3 targetBodyAngles = Vector3.zero;
         // Where the head should be looking, smoothed.
-        private Vector3 m_FollowHeadAngles = Vector3.zero;
+        private Vector3 followHeadAngles = Vector3.zero;
         // Where the body should be looking, smoothed.
-        private Vector3 m_FollowBodyAngles = Vector3.zero;
+        private Vector3 followBodyAngles = Vector3.zero;
         // The head smooth velocity.
-        private Vector3 m_FollowHeadVelocity = Vector3.zero;
+        private Vector3 followHeadVelocity = Vector3.zero;
         // The body smooth velocity.
-        private Vector3 m_FollowBodyVelocity = Vector3.zero;
+        private Vector3 followBodyVelocity = Vector3.zero;
 
         // The original head rotation.
-        private Quaternion m_OriginalHeadRotation = Quaternion.identity;
+        private Quaternion originalHeadRotation = Quaternion.identity;
         // The rotation the head should be facing.
-        private Quaternion m_TargetHeadRotation = Quaternion.identity;
+        private Quaternion targetHeadRotation = Quaternion.identity;
 
         /// <summary> Determines if the player can look around. </summary>
-        public bool CanLookAround { get { return m_CanLookAround; } set { m_CanLookAround = value; } }
+        public bool CanLookAround { get { return canLookAround; } set { canLookAround = value; } }
         /// <summary> Determines if the cursor should be locked. </summary>
-        public bool ShouldLockCursor { get { return m_ShouldLockCursor; } set { m_ShouldLockCursor = value; } }
+        public bool ShouldLockCursor { get { return shouldLockCursor; } set { shouldLockCursor = value; } }
         /// <summary> Determines if the X axis should be inverted. </summary>
-        public bool InvertXAxis { get { return m_InvertXAxis; } set { m_InvertXAxis = value; } }
+        public bool InvertXAxis { get { return invertXAxis; } set { invertXAxis = value; } }
         /// <summary> Determines if the Y axis should be inverted. </summary>
-        public bool InvertYAxis { get { return m_InvertYAxis; } set { m_InvertYAxis = value; } }
+        public bool InvertYAxis { get { return invertYAxis; } set { invertYAxis = value; } }
         /// <summary> How fast the camera head should move when looking around. </summary>
-        public float MouseSensitivity { get { return m_MouseSensitivity; } set { m_MouseSensitivity = value; } }
+        public float MouseSensitivity { get { return mouseSensitivity; } set { mouseSensitivity = value; } }
         /// <summary> Sets how smooth the movement should be. </summary>
-        public float MouseDamping { get { return m_MouseDamping; } set { m_MouseDamping = value; } }
+        public float MouseDamping { get { return mouseDamping; } set { mouseDamping = value; } }
         /// <summary> Sets how far down the player can look. </summary>
-        public float MinimumX { get { return m_MinimumX; } set { m_MinimumX = value; } }
+        public float MinimumX { get { return minimumX; } set { minimumX = value; } }
         /// <summary> Sets how far up the player can look. </summary>
-        public float MaximumX { get { return m_MaximumX; } set { m_MaximumX = value; } }
-        [System.Obsolete("Typo property. Use 'MaximumX' instead.")]
-        public float MaxiumumX { get { return m_MaximumX; } set { m_MaximumX = value; } }
+        public float MaximumX { get { return maximumX; } set { maximumX = value; } }
         /// <summary> Settings related to field of view kick. </summary>
-        public FOVKickClass FOVKick { get { return m_FOVKick; } set { m_FOVKick = value; } }
+        public FOVKickClass FieldOfViewKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
+        [System.Obsolete("Use 'FieldOfViewKick' instead.")]
+        public FOVKickClass FOVKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
         /// <summary> The camera head that should be moved around. </summary>
-        public Transform CameraHead { get { return m_CameraHead; } set { m_CameraHead = value; } }
+        public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
 
         /// <summary> Where the head should be looking. </summary>
-        public Vector3 TargetHeadAngles { get { return m_TargetHeadAngles; } }
+        public Vector3 TargetHeadAngles { get { return targetHeadAngles; } }
         /// <summary> Where the body should be looking. </summary>
-        public Vector3 TargetBodyAngles { get { return m_TargetBodyAngles; } }
+        public Vector3 TargetBodyAngles { get { return targetBodyAngles; } }
         /// <summary> Where the head should be looking, smoothed. </summary>
-        public Vector3 FollowHeadAngles { get { return m_FollowHeadAngles; } }
+        public Vector3 FollowHeadAngles { get { return followHeadAngles; } }
         /// <summary> Where the body should be looking, smoothed. </summary>
-        public Vector3 FollowBodyAngles { get { return m_FollowBodyAngles; } }
+        public Vector3 FollowBodyAngles { get { return followBodyAngles; } }
 
         /// <summary> Is the camera currently shaking from a camera shake? </summary>
-        public bool IsCameraShaking { get { return m_DoShake; } }
+        public bool IsCameraShaking { get { return doShake; } }
 
         /// <summary> Fires when the camera shake begins. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnBeginCameraShake;
@@ -140,20 +149,20 @@ namespace Hertzole.GoldPlayer.Core
         protected override void OnInitialize()
         {
             // If the camera head is null, complain.
-            if (m_CameraHead == null)
+            if (cameraHead == null)
             {
                 Debug.LogError("'" + PlayerController.gameObject.name + "' needs to have Camera Head assigned in the Camera settings!");
                 return;
             }
 
             // Lock the cursor, if it should.
-            LockCursor(m_ShouldLockCursor);
+            LockCursor(shouldLockCursor);
 
             // Set the original head rotation to the one on the camera head.
-            m_OriginalHeadRotation = m_CameraHead.localRotation;
+            originalHeadRotation = cameraHead.localRotation;
 
             // Initialize the FOV kick module.
-            FOVKick.Initialize(PlayerController, PlayerInput);
+            fieldOfViewKick.Initialize(PlayerController, PlayerInput);
         }
 
         /// <summary>
@@ -171,11 +180,11 @@ namespace Hertzole.GoldPlayer.Core
         public override void OnUpdate()
         {
             MouseHandler();
-            FOVKick.OnUpdate();
+            fieldOfViewKick.OnUpdate();
             ShakeHandler();
 
             // Update the camera head rotation.
-            m_CameraHead.localRotation = m_TargetHeadRotation;
+            cameraHead.localRotation = targetHeadRotation;
         }
 
         /// <summary>
@@ -184,40 +193,40 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void MouseHandler()
         {
             // If the camera head field is null, stop here.
-            if (m_CameraHead == null)
+            if (cameraHead == null)
                 return;
 
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.
-            if (Input.GetMouseButtonDown(0) && m_ShouldLockCursor)
+            if (Input.GetMouseButtonDown(0) && shouldLockCursor)
                 LockCursor(true);
 
             // If the player can look around, get the input. 
             // Else just set the input to zero.
-            if (m_CanLookAround)
+            if (canLookAround)
             {
                 // Set the input.
-                m_MouseInput = new Vector2(m_InvertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), m_InvertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * m_MouseSensitivity;
+                mouseInput = new Vector2(invertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), invertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * mouseSensitivity;
             }
             else
             {
                 // Can't look around, just set input to zero.
-                m_MouseInput = Vector2.zero;
+                mouseInput = Vector2.zero;
             }
 
             // Apply the input and mouse sensitivity.
-            m_TargetHeadAngles.x += m_MouseInput.y * m_MouseSensitivity * Time.unscaledDeltaTime;
-            m_TargetBodyAngles.y += m_MouseInput.x * m_MouseSensitivity * Time.unscaledDeltaTime;
+            targetHeadAngles.x += mouseInput.y * mouseSensitivity * Time.unscaledDeltaTime;
+            targetBodyAngles.y += mouseInput.x * mouseSensitivity * Time.unscaledDeltaTime;
 
             // Clamp the head angle.
-            m_TargetHeadAngles.x = Mathf.Clamp(m_TargetHeadAngles.x, m_MinimumX, m_MaximumX);
+            targetHeadAngles.x = Mathf.Clamp(targetHeadAngles.x, minimumX, maximumX);
 
             // Smooth the movement.
-            m_FollowHeadAngles = Vector3.SmoothDamp(m_FollowHeadAngles, m_TargetHeadAngles, ref m_FollowHeadVelocity, m_MouseDamping);
-            m_FollowBodyAngles = Vector3.SmoothDamp(m_FollowBodyAngles, m_TargetBodyAngles, ref m_FollowBodyVelocity, m_MouseDamping);
+            followHeadAngles = Vector3.SmoothDamp(followHeadAngles, targetHeadAngles, ref followHeadVelocity, mouseDamping);
+            followBodyAngles = Vector3.SmoothDamp(followBodyAngles, targetBodyAngles, ref followBodyVelocity, mouseDamping);
 
             // Set the rotation on the camera head and player.
-            m_TargetHeadRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x + (-recoil), m_CameraHead.rotation.y, m_CameraHead.rotation.z);
-            PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-m_FollowBodyAngles.x, m_FollowBodyAngles.y, 0);
+            targetHeadRotation = originalHeadRotation * Quaternion.Euler(-followHeadAngles.x + (-recoil), cameraHead.rotation.y, cameraHead.rotation.z);
+            PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-followBodyAngles.x, followBodyAngles.y, 0);
 
             // If recoil is above 0, decrease it. If not, just set it to 0.
             if (recoil > 0f)
@@ -238,7 +247,7 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Reset the target body angles so we can set the transform rotation from other places.
-            m_TargetBodyAngles = Vector3.zero;
+            targetBodyAngles = Vector3.zero;
         }
 
         /// <summary>
@@ -247,29 +256,29 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void ShakeHandler()
         {
             // Only run the code if doShake is true.
-            if (m_DoShake)
+            if (doShake)
             {
                 // Apply the shake effect to the target head rotation.
-                m_TargetHeadRotation *= Quaternion.Euler(PerlinShake(m_ShakeFrequency, m_ShakeMagnitude));
+                targetHeadRotation *= Quaternion.Euler(PerlinShake(shakeFrequency, shakeMagnitude));
 
                 // Increase the shake timer.
-                m_ShakeTimer += Time.deltaTime;
+                shakeTimer += Time.deltaTime;
                 // Stop shaking whenever the shake timer is above the shake duration.
-                if (m_ShakeTimer >= m_ShakeDuration)
-                    m_DoShake = false;
+                if (shakeTimer >= shakeDuration)
+                    doShake = false;
 
                 // Calculate the percentage of the lerp.
-                float shakePercentage = m_ShakeTimer / m_ShakeDuration;
+                float shakePercentage = shakeTimer / shakeDuration;
                 // Decrease the magnitude over time.
-                m_ShakeMagnitude = Mathf.Lerp(m_ShakeMagnitudeFull, 0f, shakePercentage);
+                shakeMagnitude = Mathf.Lerp(shakeMagnitudeFull, 0f, shakePercentage);
 
                 // The camera was previously shaking.
-                m_PreviouslyShaking = true;
+                previouslyShaking = true;
             }
             else
             {
                 // If the camera is no longer shaking, but it just were, fire the OnEndCameraShake event.
-                if (m_PreviouslyShaking)
+                if (previouslyShaking)
                 {
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                     OnEndCameraShake?.Invoke();
@@ -280,7 +289,7 @@ namespace Hertzole.GoldPlayer.Core
                 }
 
                 // The player was previously not shaking.
-                m_PreviouslyShaking = false;
+                previouslyShaking = false;
             }
         }
 
@@ -292,12 +301,12 @@ namespace Hertzole.GoldPlayer.Core
         /// <param name="duration">The duration of the camera shake.</param>
         public virtual void CameraShake(float frequency, float magnitude, float duration)
         {
-            m_DoShake = true;
-            m_ShakeFrequency = frequency;
-            m_ShakeMagnitude = magnitude;
-            m_ShakeMagnitudeFull = magnitude;
-            m_ShakeDuration = duration;
-            m_ShakeTimer = 0;
+            doShake = true;
+            shakeFrequency = frequency;
+            shakeMagnitude = magnitude;
+            shakeMagnitudeFull = magnitude;
+            shakeDuration = duration;
+            shakeTimer = 0;
 
             // Fire the OnBeginCameraShake event.
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
@@ -313,7 +322,7 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public virtual void StopCameraShake()
         {
-            m_DoShake = false;
+            doShake = false;
         }
 
         /// <summary>
@@ -346,7 +355,7 @@ namespace Hertzole.GoldPlayer.Core
             result.y = Mathf.Clamp01(Mathf.PerlinNoise(seed, seed)) - 0.5f;
             result.z = Mathf.Clamp01(Mathf.PerlinNoise(0f, seed)) - 0.5f;
             // Multiple result with magnitude.
-            result = result * magnitude;
+            result *= magnitude;
             // Return the result.
             return result;
         }
@@ -354,7 +363,7 @@ namespace Hertzole.GoldPlayer.Core
 #if UNITY_EDITOR
         public override void OnValidate()
         {
-            m_FOVKick.OnValidate();
+            fieldOfViewKick.OnValidate();
         }
 #endif
     }

@@ -9,19 +9,13 @@ namespace Hertzole.GoldPlayer.Core
     [AddComponentMenu("")]
     public abstract class PlayerBehaviour : MonoBehaviour
     {
-        private GoldInput m_PlayerInput;
-        private GoldPlayerController m_PlayerController;
+        private GoldInput playerInput;
+        private GoldPlayerController playerController;
 
         /// <summary> Player input shortcut. It is not certain that this actually exists on the player! </summary>
-        protected GoldInput PlayerInput { get { if (!m_PlayerInput) m_PlayerInput = GetComponent<GoldInput>(); return m_PlayerInput; } }
+        protected GoldInput PlayerInput { get { if (!playerInput) playerInput = GetComponent<GoldInput>(); return playerInput; } }
         /// <summary> Player controller shortcut. It is not certain that this actually exists on the player! </summary>
-        public GoldPlayerController PlayerController { get { if (!m_PlayerController) m_PlayerController = GetComponent<GoldPlayerController>(); return m_PlayerController; } }
-
-        /// <summary>
-        /// Called in Awake.
-        /// </summary>
-        [System.Obsolete("No longer used. You can use Awake normally now.")]
-        protected virtual void OnAwake() { }
+        public GoldPlayerController PlayerController { get { if (!playerController) playerController = GetComponent<GoldPlayerController>(); return playerController; } }
 
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.
@@ -31,10 +25,7 @@ namespace Hertzole.GoldPlayer.Core
         protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None)
         {
             // If player input isn't null, get the key using that. Else use the default key.
-            if (PlayerInput != null)
-                return PlayerInput.GetButton(buttonName);
-            else
-                return Input.GetKey(defaultKey);
+            return PlayerInput != null ? PlayerInput.GetButton(buttonName) : Input.GetKey(defaultKey);
         }
 
         /// <summary>
@@ -45,10 +36,7 @@ namespace Hertzole.GoldPlayer.Core
         protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None)
         {
             // If player input isn't null, get the key using that. Else use the default key.
-            if (PlayerInput != null)
-                return PlayerInput.GetButtonDown(buttonName);
-            else
-                return Input.GetKeyDown(defaultKey);
+            return PlayerInput != null ? PlayerInput.GetButtonDown(buttonName) : Input.GetKeyDown(defaultKey);
         }
 
         /// <summary>
@@ -59,10 +47,7 @@ namespace Hertzole.GoldPlayer.Core
         protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None)
         {
             // If player input isn't null, get the key using that. Else use the default key.
-            if (PlayerInput != null)
-                return PlayerInput.GetButtonUp(buttonName);
-            else
-                return Input.GetKeyUp(defaultKey);
+            return PlayerInput != null ? PlayerInput.GetButtonUp(buttonName) : Input.GetKeyUp(defaultKey);
         }
 
         /// <summary>
@@ -77,10 +62,7 @@ namespace Hertzole.GoldPlayer.Core
                 defaultAxisName = axisName;
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
-            if (PlayerInput != null)
-                return PlayerInput.GetAxis(axisName);
-            else
-                return Input.GetAxis(defaultAxisName);
+            return PlayerInput != null ? PlayerInput.GetAxis(axisName) : Input.GetAxis(defaultAxisName);
         }
 
         /// <summary>
@@ -95,10 +77,7 @@ namespace Hertzole.GoldPlayer.Core
                 defaultAxisName = axisName;
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
-            if (PlayerInput != null)
-                return PlayerInput.GetAxisRaw(axisName);
-            else
-                return Input.GetAxisRaw(defaultAxisName);
+            return PlayerInput != null ? PlayerInput.GetAxisRaw(axisName) : Input.GetAxisRaw(defaultAxisName);
         }
     }
 }

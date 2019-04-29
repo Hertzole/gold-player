@@ -1,5 +1,6 @@
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer.Example
@@ -8,40 +9,43 @@ namespace Hertzole.GoldPlayer.Example
     public class GoldPlayerTweakField : MonoBehaviour
     {
         [SerializeField]
-        private Text m_Label;
-        public Text Label { get { return m_Label; } set { m_Label = value; } }
+        [FormerlySerializedAs("m_Label")]
+        private Text label;
+        public Text Label { get { return label; } set { label = value; } }
         [SerializeField]
-        private InputField m_TextField;
-        public InputField TextField { get { return m_TextField; } set { m_TextField = value; } }
+        [FormerlySerializedAs("m_TextField")]
+        private InputField textField;
+        public InputField TextField { get { return textField; } set { textField = value; } }
         [SerializeField]
-        private Toggle m_ToggleField;
-        public Toggle ToggleField { get { return m_ToggleField; } set { m_ToggleField = value; } }
+        [FormerlySerializedAs("m_ToggleField")]
+        private Toggle toggleField;
+        public Toggle ToggleField { get { return toggleField; } set { toggleField = value; } }
         [SerializeField]
-        private Slider m_SliderField;
-        public Slider SliderField { get { return m_SliderField; } set { m_SliderField = value; } }
+        [FormerlySerializedAs("m_SliderField")]
+        private Slider sliderField;
+        public Slider SliderField { get { return sliderField; } set { sliderField = value; } }
 
         public void SetupField(string label, PropertyInfo info, object caller, bool slider = false, float minSliderNum = 0, float maxSliderNum = 1)
         {
-            //m_Label.text = ;
-            m_TextField.gameObject.SetActive(false);
-            m_ToggleField.gameObject.SetActive(false);
-            m_SliderField.gameObject.SetActive(false);
-            m_Label.text = label;
+            textField.gameObject.SetActive(false);
+            toggleField.gameObject.SetActive(false);
+            sliderField.gameObject.SetActive(false);
+            this.label.text = label;
             gameObject.SetActive(true);
 
             if (info.PropertyType == typeof(bool))
             {
-                m_ToggleField.gameObject.SetActive(true);
-                m_ToggleField.isOn = (bool)info.GetValue(caller, null);
+                toggleField.gameObject.SetActive(true);
+                toggleField.isOn = (bool)info.GetValue(caller, null);
 
-                m_ToggleField.onValueChanged.AddListener(delegate { info.SetValue(caller, m_ToggleField.isOn, null); });
+                toggleField.onValueChanged.AddListener(delegate
+                { info.SetValue(caller, toggleField.isOn, null); });
             }
 
             if (info.PropertyType == typeof(float) || info.PropertyType == typeof(int))
             {
                 bool isInt = info.PropertyType == typeof(int);
 
-                //float floatValue = (float)info.GetValue(caller, null);
                 float floatValue = 0;
                 int intValue = 0;
 
@@ -52,34 +56,34 @@ namespace Hertzole.GoldPlayer.Example
 
                 if (slider)
                 {
-                    m_TextField.gameObject.SetActive(false);
-                    m_SliderField.gameObject.SetActive(true);
+                    textField.gameObject.SetActive(false);
+                    sliderField.gameObject.SetActive(true);
 
-                    m_SliderField.minValue = minSliderNum;
-                    m_SliderField.maxValue = maxSliderNum;
-                    m_SliderField.value = isInt ? intValue : floatValue;
-                    m_SliderField.wholeNumbers = isInt;
-                    m_Label.text = label + ": " + m_SliderField.value.ToString("F3");
-                    m_SliderField.onValueChanged.AddListener(delegate
+                    sliderField.minValue = minSliderNum;
+                    sliderField.maxValue = maxSliderNum;
+                    sliderField.value = isInt ? intValue : floatValue;
+                    sliderField.wholeNumbers = isInt;
+                    this.label.text = label + ": " + sliderField.value.ToString("F3");
+                    sliderField.onValueChanged.AddListener(delegate
                     {
-                        info.SetValue(caller, isInt ? Mathf.RoundToInt(m_SliderField.value) : m_SliderField.value, null);
-                        m_Label.text = label + ": " + m_SliderField.value.ToString("F3");
+                        info.SetValue(caller, isInt ? Mathf.RoundToInt(sliderField.value) : sliderField.value, null);
+                        this.label.text = label + ": " + sliderField.value.ToString("F3");
                     });
                 }
                 else
                 {
-                    m_TextField.gameObject.SetActive(true);
-                    m_SliderField.gameObject.SetActive(false);
+                    textField.gameObject.SetActive(true);
+                    sliderField.gameObject.SetActive(false);
 
-                    m_TextField.contentType = isInt ? InputField.ContentType.IntegerNumber : InputField.ContentType.DecimalNumber;
-                    m_TextField.text = (isInt ? intValue : floatValue).ToString();
+                    textField.contentType = isInt ? InputField.ContentType.IntegerNumber : InputField.ContentType.DecimalNumber;
+                    textField.text = (isInt ? intValue : floatValue).ToString();
 
-                    m_TextField.onValueChanged.AddListener(delegate
+                    textField.onValueChanged.AddListener(delegate
                     {
                         if (isInt)
-                            info.SetValue(caller, int.Parse(m_TextField.text), null);
+                            info.SetValue(caller, int.Parse(textField.text), null);
                         else
-                            info.SetValue(caller, float.Parse(m_TextField.text), null);
+                            info.SetValue(caller, float.Parse(textField.text), null);
                     });
                 }
             }

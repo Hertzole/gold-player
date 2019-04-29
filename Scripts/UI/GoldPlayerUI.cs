@@ -11,6 +11,7 @@ using Hertzole.GoldPlayer.Interaction;
 using TMPro;
 #endif
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 #if HERTZLIB_UPDATE_MANAGER
 using Hertzole.HertzLib;
@@ -34,33 +35,40 @@ namespace Hertzole.GoldPlayer.UI
 
         [SerializeField]
         [Tooltip("If true, the component will always attempt to find the player.\nIf false, you will have to manually set the player.")]
-        private bool m_AutoFindPlayer;
+        [FormerlySerializedAs("m_AutoFindPlayer")]
+        private bool autoFindPlayer = false;
         [SerializeField]
         [Tooltip("The target player.")]
-        private GoldPlayerController m_Player;
+        [FormerlySerializedAs("m_Player")]
+        private GoldPlayerController player = null;
 
 #if UNITY_EDITOR
         [Header("Sprinting")]
 #endif
         [SerializeField]
         [Tooltip("The type of progress bar that will be used.")]
-        private ProgressBarType m_SprintingBarType = ProgressBarType.Image;
+        [FormerlySerializedAs("m_SprintingBarType")]
+        private ProgressBarType sprintingBarType = ProgressBarType.Image;
         [SerializeField]
         [Tooltip("The progress bar as an image.")]
-        private Image m_SprintingBarImage;
+        [FormerlySerializedAs("m_SprintingBarImage")]
+        private Image sprintingBarImage;
         [SerializeField]
         [Tooltip("The progress bar as a slider.")]
-        private Slider m_SprintingBarSlider;
+        [FormerlySerializedAs("m_SprintingBarSlider")]
+        private Slider sprintingBarSlider;
         [SerializeField]
         [Tooltip("The label for showing player stamina.")]
+        [FormerlySerializedAs("m_SprintingLabel")]
 #if USE_TMP
-        private TextMeshProUGUI m_SprintingLabel;
+        private TextMeshProUGUI sprintingLabel;
 #else
-        private Text m_SprintingLabel;
+        private Text sprintingLabel;
 #endif
         [SerializeField]
         [Tooltip("The type of display if there's a label.")]
-        private LabelDisplayType m_SprintingLabelDisplay = LabelDisplayType.Percentage;
+        [FormerlySerializedAs("m_SprintingLabelDisplay")]
+        private LabelDisplayType sprintingLabelDisplay = LabelDisplayType.Percentage;
 
         // Only show if GoldPlayer interaction is enabled.
 #if GOLD_PLAYER_INTERACTION
@@ -68,65 +76,69 @@ namespace Hertzole.GoldPlayer.UI
         [Header("Interaction")]
 #endif
         [SerializeField]
-        private bool m_AutoFindInteraction = true;
+        [FormerlySerializedAs("m_AutoFindInteraction")]
+        private bool autoFindInteraction = true;
         [SerializeField]
-        private GoldPlayerInteraction m_PlayerInteraction;
+        [FormerlySerializedAs("m_PlayerInteraction")]
+        private GoldPlayerInteraction playerInteraction;
         [SerializeField]
         [Tooltip("The box/label that should be toggled when the player can interact.")]
-        private GameObject m_InteractionBox;
+        [FormerlySerializedAs("m_InteractionBox")]
+        private GameObject interactionBox;
         [SerializeField]
         [Tooltip("The label for the interaction message.")]
+        [FormerlySerializedAs("m_InteractionLabel")]
 #if USE_TMP
-        private TextMeshProUGUI m_InteractionLabel;
+        private TextMeshProUGUI interactionLabel;
 #else
-        private Text m_InteractionLabel;
+        private Text interactionLabel;
 #endif
 #endif
 
         /// <summary> The type of progress bar that will be used. </summary>
-        public ProgressBarType SprintingBarType { get { return m_SprintingBarType; } set { m_SprintingBarType = value; AdaptSprintingUI(); } }
+        public ProgressBarType SprintingBarType { get { return sprintingBarType; } set { sprintingBarType = value; AdaptSprintingUI(); } }
         /// <summary> The progress bar as an image. </summary>
-        public Image SprintingBarImage { get { return m_SprintingBarImage; } set { m_SprintingBarImage = value; } }
+        public Image SprintingBarImage { get { return sprintingBarImage; } set { sprintingBarImage = value; } }
         /// <summary> The progress bar as a slider. </summary>
-        public Slider SprintingBarSlider { get { return m_SprintingBarSlider; } set { m_SprintingBarSlider = value; } }
+        public Slider SprintingBarSlider { get { return sprintingBarSlider; } set { sprintingBarSlider = value; } }
         /// <summary> The label for showing player stamina. </summary>
 #if USE_TMP
-        public TextMeshProUGUI SprintingLabel { get { return m_SprintingLabel; } set { m_SprintingLabel = value; } }
+        public TextMeshProUGUI SprintingLabel { get { return sprintingLabel; } set { sprintingLabel = value; } }
 #else
         public Text SprintingLabel { get { return m_SprintingLabel; } set { m_SprintingLabel = value; } }
 #endif
         /// <summary> The type of display if there's a label. </summary>
-        public LabelDisplayType SprintingLabelDisplay { get { return m_SprintingLabelDisplay; } set { m_SprintingLabelDisplay = value; } }
+        public LabelDisplayType SprintingLabelDisplay { get { return sprintingLabelDisplay; } set { sprintingLabelDisplay = value; } }
 
 #if GOLD_PLAYER_INTERACTION
         /// <summary> The box/label that should be toggled when the player can interact. </summary>
-        public GameObject InteractionBox { get { return m_InteractionBox; } set { m_InteractionBox = value; } }
+        public GameObject InteractionBox { get { return interactionBox; } set { interactionBox = value; } }
         /// <summary> The label for the interaction message. </summary>
 #if USE_TMP
-        public TextMeshProUGUI InteractionLabel { get { return m_InteractionLabel; } set { m_InteractionLabel = value; } }
+        public TextMeshProUGUI InteractionLabel { get { return interactionLabel; } set { interactionLabel = value; } }
 #else
         public Text InteractionLabel { get { return m_InteractionLabel; } set { m_InteractionLabel = value; } }
 #endif
 #endif
 
         /// <summary> If true, the component will always attempt to find the player. If false, you will have to manually set the player. </summary>
-        public bool AutoFindPlayer { get { return m_AutoFindPlayer; } set { m_AutoFindPlayer = value; } }
+        public bool AutoFindPlayer { get { return autoFindPlayer; } set { autoFindPlayer = value; } }
         /// <summary> The target player. </summary>
         public GoldPlayerController Player
         {
             // If the player is null, and auto find is on, find the player.
-            get { if (!m_Player && m_AutoFindPlayer) m_Player = FindObjectOfType<GoldPlayerController>(); return m_Player; }
+            get { if (!player && autoFindPlayer) player = FindObjectOfType<GoldPlayerController>(); return player; }
             set { SetPlayer(value); }
         }
 
 #if GOLD_PLAYER_INTERACTION
-        public bool AutoFindInteraction { get { return m_AutoFindInteraction; } set { m_AutoFindInteraction = value; } }
+        public bool AutoFindInteraction { get { return autoFindInteraction; } set { autoFindInteraction = value; } }
         // Player interaction reference.
         protected GoldPlayerInteraction PlayerInteraction
         {
             // If the player interaction is null, and auto find is on, find the player interaction.
-            get { if (!m_PlayerInteraction && m_AutoFindInteraction) m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>(); return m_PlayerInteraction; }
-            set { m_PlayerInteraction = value; }
+            get { if (!playerInteraction && autoFindInteraction) playerInteraction = FindObjectOfType<GoldPlayerInteraction>(); return playerInteraction; }
+            set { playerInteraction = value; }
         }
 #endif
 
@@ -172,39 +184,39 @@ namespace Hertzole.GoldPlayer.UI
                 // If the player can't run or no stamina enabled, disable all elements.
                 if (!Player.Movement.CanRun || !Player.Movement.Stamina.EnableStamina)
                 {
-                    if (m_SprintingBarImage != null)
-                        m_SprintingBarImage.gameObject.SetActive(false);
-                    if (m_SprintingBarSlider != null)
-                        m_SprintingBarSlider.gameObject.SetActive(false);
-                    if (m_SprintingLabel != null)
-                        m_SprintingLabel.gameObject.SetActive(false);
+                    if (sprintingBarImage != null)
+                        sprintingBarImage.gameObject.SetActive(false);
+                    if (sprintingBarSlider != null)
+                        sprintingBarSlider.gameObject.SetActive(false);
+                    if (sprintingLabel != null)
+                        sprintingLabel.gameObject.SetActive(false);
 
                     return;
                 }
 
-                switch (m_SprintingBarType)
+                switch (sprintingBarType)
                 {
                     case ProgressBarType.Slider:
-                        if (m_SprintingBarImage != null)
+                        if (sprintingBarImage != null)
                         {
-                            m_SprintingBarImage.gameObject.SetActive(false);
+                            sprintingBarImage.gameObject.SetActive(false);
                         }
 
-                        if (m_SprintingBarSlider != null)
+                        if (sprintingBarSlider != null)
                         {
-                            m_SprintingBarSlider.gameObject.SetActive(true);
-                            m_SprintingBarSlider.minValue = 0;
-                            m_SprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
+                            sprintingBarSlider.gameObject.SetActive(true);
+                            sprintingBarSlider.minValue = 0;
+                            sprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
                         }
                         break;
                     case ProgressBarType.Image:
-                        if (m_SprintingBarImage != null)
-                            m_SprintingBarImage.gameObject.SetActive(true);
-                        if (m_SprintingBarSlider != null)
-                            m_SprintingBarSlider.gameObject.SetActive(false);
+                        if (sprintingBarImage != null)
+                            sprintingBarImage.gameObject.SetActive(true);
+                        if (sprintingBarSlider != null)
+                            sprintingBarSlider.gameObject.SetActive(false);
                         break;
                     default:
-                        throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+                        throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
                 }
             }
         }
@@ -213,17 +225,17 @@ namespace Hertzole.GoldPlayer.UI
         protected virtual void AwakePlayerInteraction()
         {
             // Get the player interaction.
-            if (m_Player)
-                m_PlayerInteraction = m_Player.GetComponent<GoldPlayerInteraction>();
-            else if (m_AutoFindPlayer)
-                m_PlayerInteraction = FindObjectOfType<GoldPlayerInteraction>();
+            if (player)
+                playerInteraction = player.GetComponent<GoldPlayerInteraction>();
+            else if (autoFindPlayer)
+                playerInteraction = FindObjectOfType<GoldPlayerInteraction>();
         }
 #endif
 
 #if HERTZLIB_UPDATE_MANAGER
         public void OnUpdate()
 #else
-        private void Update()
+        public void Update()
 #endif
         {
             SprintingUpdate();
@@ -236,22 +248,22 @@ namespace Hertzole.GoldPlayer.UI
         {
             if (Player && Player.Movement.CanRun && Player.Movement.Stamina.EnableStamina)
             {
-                switch (m_SprintingBarType)
+                switch (sprintingBarType)
                 {
                     case ProgressBarType.Slider:
-                        if (m_SprintingBarSlider != null)
-                            m_SprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina;
+                        if (sprintingBarSlider != null)
+                            sprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina;
                         break;
                     case ProgressBarType.Image:
-                        if (m_SprintingBarImage != null)
-                            m_SprintingBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
+                        if (sprintingBarImage != null)
+                            sprintingBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
                         break;
                     default:
-                        throw new System.NotImplementedException("There's no support for progress bar type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+                        throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
                 }
 
-                if (m_SprintingLabel != null)
-                    m_SprintingLabel.text = GetLabel(m_SprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+                if (sprintingLabel != null)
+                    sprintingLabel.text = GetLabel(sprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
             }
         }
 
@@ -262,21 +274,21 @@ namespace Hertzole.GoldPlayer.UI
             if (PlayerInteraction && PlayerInteraction.CurrentHitInteractable != null)
             {
                 // Toggle the interaction box based on if it can be seen.
-                if (m_InteractionBox != null)
-                    m_InteractionBox.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
+                if (interactionBox != null)
+                    interactionBox.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
 
                 // If the player can interact the the interactable isn't hidden,
                 // set the message to either a custom message or the one in Player Interaction.
-                if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden && m_InteractionLabel != null)
+                if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden && interactionLabel != null)
                 {
-                    m_InteractionLabel.text = PlayerInteraction.CurrentHitInteractable.UseCustomMessage ?
+                    interactionLabel.text = PlayerInteraction.CurrentHitInteractable.UseCustomMessage ?
                         PlayerInteraction.CurrentHitInteractable.CustomMessage : PlayerInteraction.InteractMessage;
                 }
             }
             else
             {
-                if (m_InteractionBox != null)
-                    m_InteractionBox.SetActive(false);
+                if (interactionBox != null)
+                    interactionBox.SetActive(false);
             }
         }
 #endif
@@ -288,11 +300,11 @@ namespace Hertzole.GoldPlayer.UI
         {
 #if GOLD_PLAYER_INTERACTION
             // Only get the interaction if the previous set player isn't the new player.
-            if (player != null && m_Player != player)
-                m_PlayerInteraction = player.GetComponent<GoldPlayerInteraction>();
+            if (player != null && this.player != player)
+                playerInteraction = player.GetComponent<GoldPlayerInteraction>();
 #endif
             // Set the player.
-            m_Player = player;
+            this.player = player;
         }
 
         /// <summary>
@@ -307,7 +319,7 @@ namespace Hertzole.GoldPlayer.UI
                 case LabelDisplayType.Percentage:
                     return string.Format("{0}%", ((current / max) * 100).ToString("F0"));
                 default:
-                    throw new System.NotImplementedException("There's no support for label display type '" + m_SprintingBarType + "' in GoldPlayerUI!");
+                    throw new System.NotImplementedException("There's no support for label display type '" + sprintingBarType + "' in GoldPlayerUI!");
             }
         }
 

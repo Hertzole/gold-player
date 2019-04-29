@@ -5,16 +5,16 @@ namespace Hertzole.GoldPlayer
 {
     public class PlayerModule
     {
-        private GoldPlayerController m_PlayerController;
-        protected GoldPlayerController PlayerController { get { return m_PlayerController; } }
+        private GoldPlayerController playerController;
+        protected GoldPlayerController PlayerController { get { return playerController; } }
 
-        protected CharacterController CharacterController { get { return m_PlayerController.Controller; } }
+        protected CharacterController CharacterController { get { return playerController.Controller; } }
 
-        private Transform m_PlayerTransform;
-        protected Transform PlayerTransform { get { if (m_PlayerTransform == null) m_PlayerTransform = m_PlayerController.transform; return m_PlayerTransform; } }
+        private Transform playerTransform;
+        protected Transform PlayerTransform { get { if (playerTransform == null) playerTransform = playerController.transform; return playerTransform; } }
 
-        private GoldInput m_PlayerInput;
-        protected GoldInput PlayerInput { get { return m_PlayerInput; } }
+        private GoldInput playerInput;
+        protected GoldInput PlayerInput { get { return playerInput; } }
 
         /// <summary> True if the module has been initialized. </summary>
         public bool HasBeenInitialized { get; private set; }
@@ -30,28 +30,19 @@ namespace Hertzole.GoldPlayer
             if (HasBeenInitialized)
                 return;
 
-            m_PlayerController = player;
+            playerController = player;
             if (input != null)
-                m_PlayerInput = input;
+                playerInput = input;
 
             OnInitialize();
 
             HasBeenInitialized = true;
         }
 
-        [System.Obsolete("Use 'Initialize' instead! This will be removed in a future version.")]
-        public void Init(GoldPlayerController player, GoldInput input = null)
-        {
-            Initialize(player, input);
-        }
-
         /// <summary>
         /// Called when the module is initialized.
         /// </summary>
         protected virtual void OnInitialize() { }
-
-        [System.Obsolete("Use 'OnInitialize' instead! This will be removed in a future version.")]
-        protected virtual void OnInit() { }
 
         /// <summary>
         /// Called in Update.
@@ -76,10 +67,7 @@ namespace Hertzole.GoldPlayer
         protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None)
         {
             // If player input isn't null, get the key using that. Else use the default key.
-            if (PlayerInput != null)
-                return PlayerInput.GetButton(buttonName);
-            else
-                return Input.GetKey(defaultKey);
+            return PlayerInput != null ? PlayerInput.GetButton(buttonName) : Input.GetKey(defaultKey);
         }
 
         /// <summary>
@@ -90,10 +78,7 @@ namespace Hertzole.GoldPlayer
         protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None)
         {
             // If player input isn't null, get the key using that. Else use the default key.
-            if (PlayerInput != null)
-                return PlayerInput.GetButtonDown(buttonName);
-            else
-                return Input.GetKeyDown(defaultKey);
+            return PlayerInput != null ? PlayerInput.GetButtonDown(buttonName) : Input.GetKeyDown(defaultKey);
         }
 
         /// <summary>
@@ -104,10 +89,7 @@ namespace Hertzole.GoldPlayer
         protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None)
         {
             // If player input isn't null, get the key using that. Else use the default key.
-            if (PlayerInput != null)
-                return PlayerInput.GetButtonUp(buttonName);
-            else
-                return Input.GetKeyUp(defaultKey);
+            return PlayerInput != null ? PlayerInput.GetButtonUp(buttonName) : Input.GetKeyUp(defaultKey);
         }
 
         /// <summary>
@@ -122,10 +104,7 @@ namespace Hertzole.GoldPlayer
                 defaultAxisName = axisName;
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
-            if (PlayerInput != null)
-                return PlayerInput.GetAxis(axisName);
-            else
-                return Input.GetAxis(defaultAxisName);
+            return PlayerInput != null ? PlayerInput.GetAxis(axisName) : Input.GetAxis(defaultAxisName);
         }
 
         /// <summary>
@@ -140,10 +119,7 @@ namespace Hertzole.GoldPlayer
                 defaultAxisName = axisName;
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
-            if (PlayerInput != null)
-                return PlayerInput.GetAxisRaw(axisName);
-            else
-                return Input.GetAxisRaw(defaultAxisName);
+            return PlayerInput != null ? PlayerInput.GetAxisRaw(axisName) : Input.GetAxisRaw(defaultAxisName);
         }
 
 #if UNITY_EDITOR

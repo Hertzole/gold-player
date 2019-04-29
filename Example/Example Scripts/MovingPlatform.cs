@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditorInternal;
 #endif
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Example
 {
@@ -13,43 +14,44 @@ namespace Hertzole.GoldPlayer.Example
         [System.Serializable]
         public struct Waypoint
         {
-            [SerializeField]
-            private Vector3 m_Position;
-            [SerializeField]
-            private float m_WaitTime;
-
-            public Vector3 Position { get { return m_Position; } set { m_Position = value; } }
-            public float WaitTime { get { return m_WaitTime; } set { m_WaitTime = value; } }
+            [FormerlySerializedAs("m_Position")]
+            public Vector3 position;
+            [FormerlySerializedAs("m_WaitTime")]
+            public float waitTime;
         }
 
         [SerializeField]
-        private List<Waypoint> m_Waypoints = new List<Waypoint>();
+        [FormerlySerializedAs("m_Waypoints")]
+        private List<Waypoint> waypoints = new List<Waypoint>();
         [SerializeField]
-        private int m_StartingWaypoint = 0;
+        [FormerlySerializedAs("m_StartingWaypoint")]
+        private int startingWaypoint = 0;
         [SerializeField]
-        private float m_MoveSpeed = 5.0f;
+        [FormerlySerializedAs("m_MoveSpeed")]
+        private float moveSpeed = 5.0f;
 #if UNITY_EDITOR
         [SerializeField]
-        private Color m_GizmosColor = Color.red;
+        [FormerlySerializedAs("m_GizmosColor")]
+        private Color gizmosColor = Color.red;
 #endif
-        private int m_CurrentWaypoint = 0;
-        private float m_NextMoveTime = 0;
+        private int currentWaypoint = 0;
+        private float nextMoveTime = 0;
 
         // Use this for initialization
         void Start()
         {
-            m_CurrentWaypoint = m_StartingWaypoint;
-            m_NextMoveTime = Time.time + m_Waypoints[m_CurrentWaypoint].WaitTime;
-            transform.position = m_Waypoints[m_CurrentWaypoint].Position;
+            currentWaypoint = startingWaypoint;
+            nextMoveTime = Time.time + waypoints[currentWaypoint].waitTime;
+            transform.position = waypoints[currentWaypoint].position;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Time.time >= m_NextMoveTime)
-                transform.position = Vector3.MoveTowards(transform.position, m_Waypoints[m_CurrentWaypoint].Position, m_MoveSpeed * Time.deltaTime);
+            if (Time.time >= nextMoveTime)
+                transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypoint].position, moveSpeed * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, m_Waypoints[m_CurrentWaypoint].Position) == 0f)
+            if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) == 0f)
             {
                 NextWaypoint();
             }
@@ -57,37 +59,37 @@ namespace Hertzole.GoldPlayer.Example
 
         void NextWaypoint()
         {
-            m_NextMoveTime = Time.time + m_Waypoints[m_CurrentWaypoint].WaitTime;
+            nextMoveTime = Time.time + waypoints[currentWaypoint].waitTime;
 
-            m_CurrentWaypoint++;
+            currentWaypoint++;
 
-            if (m_CurrentWaypoint == m_Waypoints.Count)
-                m_CurrentWaypoint = 0;
+            if (currentWaypoint == waypoints.Count)
+                currentWaypoint = 0;
         }
 
 #if UNITY_EDITOR
         void OnDrawGizmosSelected()
         {
-            Gizmos.color = m_GizmosColor;
+            Gizmos.color = gizmosColor;
 
-            if (m_Waypoints != null)
+            if (waypoints != null)
             {
-                if (m_Waypoints.Count > 0)
+                if (waypoints.Count > 0)
                 {
-                    foreach (Waypoint pos in m_Waypoints)
+                    foreach (Waypoint pos in waypoints)
                     {
-                        Gizmos.DrawCube(pos.Position, new Vector3(0.5f, 0.5f, 0.5f));
+                        Gizmos.DrawCube(pos.position, new Vector3(0.5f, 0.5f, 0.5f));
                     }
 
-                    for (int i = 0; i < m_Waypoints.Count; i++)
+                    for (int i = 0; i < waypoints.Count; i++)
                     {
-                        if (i == m_Waypoints.Count - 1)
+                        if (i == waypoints.Count - 1)
                         {
-                            Gizmos.DrawLine(m_Waypoints[i].Position, m_Waypoints[0].Position);
+                            Gizmos.DrawLine(waypoints[i].position, waypoints[0].position);
                         }
                         else
                         {
-                            Gizmos.DrawLine(m_Waypoints[i].Position, m_Waypoints[i + 1].Position);
+                            Gizmos.DrawLine(waypoints[i].position, waypoints[i + 1].position);
                         }
                     }
                 }

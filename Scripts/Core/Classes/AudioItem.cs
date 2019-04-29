@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Core
 {
@@ -10,125 +11,133 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("Determines if this audio should be enabled.")]
-        private bool m_Enabled = true;
+        [FormerlySerializedAs("m_Enabled")]
+        private bool enabled = true;
         [SerializeField]
         [Tooltip("Determines if the pitch should be randomized.")]
-        private bool m_RandomPitch = true;
+        [FormerlySerializedAs("m_RandomPitch")]
+        private bool randomPitch = true;
         [SerializeField]
         [Tooltip("The pitch that the audio should play at.")]
-        private float m_Pitch = 1f;
+        [FormerlySerializedAs("m_Pitch")]
+        private float pitch = 1f;
         [SerializeField]
         [Tooltip("The minimum pitch the audio can play at.")]
-        private float m_MinPitch = 0.9f;
+        [FormerlySerializedAs("m_MinPitch")]
+        private float minPitch = 0.9f;
         [SerializeField]
         [Tooltip("The maximum pitch the audio can play at.")]
-        private float m_MaxPitch = 1.1f;
+        [FormerlySerializedAs("m_MaxPitch")]
+        private float maxPitch = 1.1f;
         [SerializeField]
         [Tooltip("Determines if the volume should be changed when playing.")]
-        private bool m_ChangeVolume = false;
+        [FormerlySerializedAs("m_ChangeVolume")]
+        private bool changeVolume = false;
         [SerializeField]
         [Range(0f, 1f)]
         [Tooltip("The volume that should be set when playing.")]
-        private float m_Volume = 1f;
+        [FormerlySerializedAs("m_Volume")]
+        private float volume = 1f;
         [SerializeField]
         [Tooltip("All the audio clips.")]
-        private AudioClip[] m_AudioClips = new AudioClip[0];
+        [FormerlySerializedAs("m_AudioClips")]
+        private AudioClip[] audioClips = new AudioClip[0];
 
         /// <summary> Determines if this audio should be enabled. </summary>
-        public bool Enabled { get { return m_Enabled; } set { m_Enabled = value; } }
+        public bool Enabled { get { return enabled; } set { enabled = value; } }
         /// <summary> Determines if the pitch should be randomized. </summary>
-        public bool RandomPitch { get { return m_RandomPitch; } set { m_RandomPitch = value; } }
+        public bool RandomPitch { get { return randomPitch; } set { randomPitch = value; } }
         /// <summary> The pitch that the audio should play at. </summary>
-        public float Pitch { get { return m_Pitch; } set { m_Pitch = value; } }
+        public float Pitch { get { return pitch; } set { pitch = value; } }
         /// <summary> The minimum pitch the audio can play at. </summary>
-        public float MinPitch { get { return m_MinPitch; } set { m_MinPitch = value; } }
+        public float MinPitch { get { return minPitch; } set { minPitch = value; } }
         /// <summary> The maximum pitch the audio can play at. </summary>
-        public float MaxPitch { get { return m_MaxPitch; } set { m_MaxPitch = value; } }
+        public float MaxPitch { get { return maxPitch; } set { maxPitch = value; } }
         /// <summary> Determines if the volume should be changed when playing. </summary>
-        public bool ChangeVolume { get { return m_ChangeVolume; } set { m_ChangeVolume = value; } }
+        public bool ChangeVolume { get { return changeVolume; } set { changeVolume = value; } }
         /// <summary> The volume that should be set when playing. </summary>
-        public float Volume { get { return m_Volume; } set { m_Volume = value; } }
+        public float Volume { get { return volume; } set { volume = value; } }
         /// <summary> All the audio clips. </summary>
-        public AudioClip[] AudioClips { get { return m_AudioClips; } set { m_AudioClips = value; } }
+        public AudioClip[] AudioClips { get { return audioClips; } set { audioClips = value; } }
 
         public AudioItem() { }
 
         public AudioItem(bool enabled)
         {
             // Set enabled to the provided enabled parameter.
-            m_Enabled = enabled;
+            this.enabled = enabled;
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch)
         {
             // Set enabled to the provided enabled parameter.
-            m_Enabled = enabled;
+            this.enabled = enabled;
             // Set random pitch to the provided random pitch parameter.
-            m_RandomPitch = randomPitch;
+            this.randomPitch = randomPitch;
             // Set pitch to the provided pitch parameter.
-            m_Pitch = pitch;
+            this.pitch = pitch;
             // Set the minimum pitch to the provided minimum pitch parameter.
-            m_MinPitch = minPitch;
+            this.minPitch = minPitch;
             // Set the maximum pitch to the provided maximum pitch parameter.
-            m_MaxPitch = maxPitch;
+            this.maxPitch = maxPitch;
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume)
         {
             // Set enabled to the provided enabled parameter.
-            m_Enabled = enabled;
+            this.enabled = enabled;
             // Set random pitch to the provided random pitch parameter.
-            m_RandomPitch = randomPitch;
+            this.randomPitch = randomPitch;
             // Set pitch to the provided pitch parameter.
-            m_Pitch = pitch;
+            this.pitch = pitch;
             // Set the minimum pitch to the provided minimum pitch parameter.
-            m_MinPitch = minPitch;
+            this.minPitch = minPitch;
             // Set the maximum pitch to the provided maximum pitch parameter.
-            m_MaxPitch = maxPitch;
+            this.maxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
-            m_ChangeVolume = changeVolume;
+            this.changeVolume = changeVolume;
             // Set the volume to the provided volume parameter.
-            m_Volume = volume;
+            this.volume = volume;
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip audioClip)
         {
             // Set enabled to the provided enabled parameter.
-            m_Enabled = enabled;
+            this.enabled = enabled;
             // Set random pitch to the provided random pitch parameter.
-            m_RandomPitch = randomPitch;
+            this.randomPitch = randomPitch;
             // Set pitch to the provided pitch parameter.
-            m_Pitch = pitch;
+            this.pitch = pitch;
             // Set the minimum pitch to the provided minimum pitch parameter.
-            m_MinPitch = minPitch;
+            this.minPitch = minPitch;
             // Set the maximum pitch to the provided maximum pitch parameter.
-            m_MaxPitch = maxPitch;
+            this.maxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
-            m_ChangeVolume = changeVolume;
+            this.changeVolume = changeVolume;
             // Set the volume to the provided volume parameter.
-            m_Volume = volume;
+            this.volume = volume;
             // Set audio clips to an array with only one clip that was provided.
-            m_AudioClips = new AudioClip[1] { audioClip };
+            audioClips = new AudioClip[1] { audioClip };
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip[] audioClips)
         {
             // Set enabled to the provided enabled parameter.
-            m_Enabled = enabled;
+            this.enabled = enabled;
             // Set random pitch to the provided random pitch parameter.
-            m_RandomPitch = randomPitch;
+            this.randomPitch = randomPitch;
             // Set pitch to the provided pitch parameter.
-            m_Pitch = pitch;
+            this.pitch = pitch;
             // Set the minimum pitch to the provided minimum pitch parameter.
-            m_MinPitch = minPitch;
+            this.minPitch = minPitch;
             // Set the maximum pitch to the provided maximum pitch parameter.
-            m_MaxPitch = maxPitch;
+            this.maxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
-            m_ChangeVolume = changeVolume;
+            this.changeVolume = changeVolume;
             // Set the volume to the provided volume parameter.
-            m_Volume = volume;
+            this.volume = volume;
             // Set audio clips to the array of clips provided.
-            m_AudioClips = audioClips;
+            this.audioClips = audioClips;
         }
 
         /// <summary>
@@ -138,41 +147,38 @@ namespace Hertzole.GoldPlayer.Core
         public void Play(AudioSource audioSource)
         {
             // Only play if the audio item is enabled.
-            if (m_Enabled && audioSource != null)
+            if (enabled && audioSource != null)
             {
                 // Only play if there are any audio clips.
-                if (m_AudioClips.Length > 0)
+                if (audioClips.Length > 0)
                 {
                     // If random pitch is enabled, set the pitch to something random between min and max pitch.
                     // Else just set it to the pitch set when random pitch is disabled.
-                    if (m_RandomPitch)
-                        audioSource.pitch = Random.Range(m_MinPitch, m_MaxPitch);
-                    else
-                        audioSource.pitch = m_Pitch;
+                    audioSource.pitch = randomPitch ? Random.Range(minPitch, maxPitch) : pitch;
 
                     // If change volume is enabled, set the volume.
-                    if (m_ChangeVolume)
-                        audioSource.volume = m_Volume;
+                    if (changeVolume)
+                        audioSource.volume = volume;
 
                     // If there are more than one audio clip, shuffle the clips.
                     // Else just play the one clip available.
                     // This also makes it so no clip will play right after itself. It's always a new clip.
-                    if (m_AudioClips.Length > 1)
+                    if (audioClips.Length > 1)
                     {
                         // Get a random index between 1 and the length of the audio clips array.
-                        int n = Random.Range(1, m_AudioClips.Length);
+                        int n = Random.Range(1, audioClips.Length);
                         // Set the clip on the audio source to the index.
-                        audioSource.clip = m_AudioClips[n];
+                        audioSource.clip = audioClips[n];
 
                         // Move the clip at the random index to index 0.
-                        m_AudioClips[n] = m_AudioClips[0];
+                        audioClips[n] = audioClips[0];
                         // Set the audio clip at index 0 to the one in the audio source.
-                        m_AudioClips[0] = audioSource.clip;
+                        audioClips[0] = audioSource.clip;
                     }
                     else
                     {
                         // Set the clip on the audio source to the one audio clip available.
-                        audioSource.clip = m_AudioClips[0];
+                        audioSource.clip = audioClips[0];
                     }
 
                     // Play the audio source.

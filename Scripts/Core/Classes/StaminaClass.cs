@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Core
 {
@@ -10,52 +11,58 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("Determines if stamina should be enabled.")]
-        private bool m_EnableStamina = false;
+        [FormerlySerializedAs("m_EnableStamina")]
+        private bool enableStamina = false;
         [SerializeField]
         [Tooltip("Sets when the stamina should be drained.")]
-        private RunAction m_DrainStaminaWhen = RunAction.FasterThanRunSpeedAndPressingRun;
+        [FormerlySerializedAs("m_DrainStaminaWhen")]
+        private RunAction drainStaminaWhen = RunAction.FasterThanRunSpeedAndPressingRun;
         [SerializeField]
         [Tooltip("The maximum amount of stamina.")]
-        private float m_MaxStamina = 10f;
+        [FormerlySerializedAs("m_MaxStamina")]
+        private float maxStamina = 10f;
         [SerializeField]
         [Tooltip("How much stamina will be drained per second.")]
-        private float m_DrainRate = 1f;
+        [FormerlySerializedAs("m_DrainRate")]
+        private float drainRate = 1f;
         [SerializeField]
         [Tooltip("How much stamina will regenerate per second.")]
-        private float m_RegenRate = 0.8f;
+        [FormerlySerializedAs("m_RegenRate")]
+        private float regenRate = 0.8f;
         [SerializeField]
         [Tooltip("How long it will wait before starting to regenerate stamina.")]
-        private float m_RegenWait = 1f;
+        [FormerlySerializedAs("m_RegenWait")]
+        private float regenWait = 1f;
 
         // The amount current stamina.
-        private float m_CurrentStamina;
+        private float currentStamina;
         // The current regen wait time.
-        private float m_CurrentRegenWait;
+        private float currentRegenWait;
 
         /// <summary> Determines if stamina should be enabled. </summary>
-        public bool EnableStamina { get { return m_EnableStamina; } set { m_EnableStamina = value; } }
+        public bool EnableStamina { get { return enableStamina; } set { enableStamina = value; } }
         /// <summary> Sets when the stamina should be drained. </summary>
-        public RunAction DrainStaminaWhen { get { return m_DrainStaminaWhen; } set { m_DrainStaminaWhen = value; } }
+        public RunAction DrainStaminaWhen { get { return drainStaminaWhen; } set { drainStaminaWhen = value; } }
         /// <summary> The maximum amount of stamina. </summary>
-        public float MaxStamina { get { return m_MaxStamina; } set { m_MaxStamina = value; } }
+        public float MaxStamina { get { return maxStamina; } set { maxStamina = value; } }
         /// <summary> How much stamina will be drained per second. </summary>
-        public float DrainRate { get { return m_DrainRate; } set { m_DrainRate = value; } }
+        public float DrainRate { get { return drainRate; } set { drainRate = value; } }
         /// <summary> "How much stamina will regenerate per second. </summary>
-        public float RegenRate { get { return m_RegenRate; } set { m_RegenRate = value; } }
+        public float RegenRate { get { return regenRate; } set { regenRate = value; } }
         /// <summary>How long it will wait before starting to regenerate stamina. </summary>
-        public float RegenWait { get { return m_RegenWait; } set { m_RegenWait = value; } }
+        public float RegenWait { get { return regenWait; } set { regenWait = value; } }
 
         /// <summary> The current amount of stamina. </summary>
-        public float CurrentStamina { get { return m_CurrentStamina; } set { m_CurrentStamina = value; } }
+        public float CurrentStamina { get { return currentStamina; } set { currentStamina = value; } }
         /// <summary> The current regen wait time. </summary>
-        public float CurrentRegenWait { get { return m_CurrentRegenWait; } set { m_CurrentRegenWait = value; } }
+        public float CurrentRegenWait { get { return currentRegenWait; } set { currentRegenWait = value; } }
 
         protected override void OnInitialize()
         {
             // Set the current stamina to the max stamina. This way we always start with a full stamina bar.
-            m_CurrentStamina = m_MaxStamina;
+            currentStamina = maxStamina;
             // Set the current regen wait to the regen wait. This way we will always start at a full regen time.
-            m_CurrentRegenWait = m_RegenWait;
+            currentRegenWait = regenWait;
         }
 
         public override void OnUpdate()
@@ -74,12 +81,12 @@ namespace Hertzole.GoldPlayer.Core
                 return;
 
             // Stop here if stamina is disabled.
-            if (!m_EnableStamina)
+            if (!enableStamina)
                 return;
 
             // If we should drain stamina when move speed is above walk speed, drain stamina when 'isRunning' is true.
             // Else drain it when 'isRunning' is true and the run button is being held down.
-            if (m_DrainStaminaWhen == RunAction.FasterThanRunSpeed)
+            if (drainStaminaWhen == RunAction.FasterThanRunSpeed)
             {
                 // If 'isRunning' is true, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
@@ -88,7 +95,7 @@ namespace Hertzole.GoldPlayer.Core
                 else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
                     RegenStamina();
             }
-            else if (m_DrainStaminaWhen == RunAction.FasterThanRunSpeedAndPressingRun)
+            else if (drainStaminaWhen == RunAction.FasterThanRunSpeedAndPressingRun)
             {
                 // If 'isRunning' is true and the run button is being held down, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
@@ -108,11 +115,11 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void DrainStamina()
         {
             // Only drain the stamina is the current stamina is above 0.
-            if (m_CurrentStamina > 0)
-                m_CurrentStamina -= m_DrainRate * Time.deltaTime;
+            if (currentStamina > 0)
+                currentStamina -= drainRate * Time.deltaTime;
 
             // Set the current regen wait to 0.
-            m_CurrentRegenWait = 0;
+            currentRegenWait = 0;
         }
 
         /// <summary>
@@ -121,13 +128,13 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void RegenStamina()
         {
             // If the current regen wait is less than the regen wait, increase the current regen wait.
-            if (m_CurrentRegenWait < m_RegenWait)
-                m_CurrentRegenWait += Time.deltaTime;
+            if (currentRegenWait < regenWait)
+                currentRegenWait += Time.deltaTime;
 
             // If the current regen wait is the same as regen wait and current stamina is less than max stamina,
             // increase the current stamina with regen rate.
-            if (m_CurrentRegenWait >= m_RegenWait && m_CurrentStamina < m_MaxStamina)
-                m_CurrentStamina += m_RegenRate * Time.deltaTime;
+            if (currentRegenWait >= regenWait && currentStamina < maxStamina)
+                currentStamina += regenRate * Time.deltaTime;
         }
 
         /// <summary>
@@ -136,20 +143,20 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void ClampValues()
         {
             // Make sure current stamina doesn't go below 0.
-            if (m_CurrentStamina < 0)
-                m_CurrentStamina = 0;
+            if (currentStamina < 0)
+                currentStamina = 0;
 
             // Make sure current stamina doesn't go above max stamina.
-            if (m_CurrentStamina > m_MaxStamina)
-                m_CurrentStamina = m_MaxStamina;
+            if (currentStamina > maxStamina)
+                currentStamina = maxStamina;
 
             // Make sure current regen wait doesn't go above regen wait.
-            if (m_CurrentRegenWait > m_RegenWait)
-                m_CurrentRegenWait = m_RegenWait;
+            if (currentRegenWait > regenWait)
+                currentRegenWait = regenWait;
 
             // Make sure current regen wait doesn't go below 0.
-            if (m_CurrentRegenWait < 0)
-                m_CurrentRegenWait = 0;
+            if (currentRegenWait < 0)
+                currentRegenWait = 0;
         }
     }
 }

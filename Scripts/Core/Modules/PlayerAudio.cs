@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Core
 {
@@ -10,107 +11,119 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("Determines if any audio should be played.")]
-        private bool m_EnableAudio = true;
+        [FormerlySerializedAs("m_EnableAudio")]
+        private bool enableAudio = true;
         [SerializeField]
         [Tooltip("Sets how the audio will work.\nCustom will require a PlayerAudioBehaviour attached to the player.")]
-        private AudioTypes m_AudioType = AudioTypes.Standard;
+        [FormerlySerializedAs("m_AudioType")]
+        private AudioTypes audioType = AudioTypes.Standard;
 
         [Space]
 
         [SerializeField]
         [Tooltip("Determines if the audio should be based on head bob.")]
-        private bool m_BasedOnHeadBob = true;
+        [FormerlySerializedAs("m_BasedOnHeadBob")]
+        private bool basedOnHeadBob = true;
         [SerializeField]
         [Tooltip("Sets how frequent the footsteps are.")]
-        private float m_StepTime = 1.5f;
+        [FormerlySerializedAs("m_StepTime")]
+        private float stepTime = 1.5f;
 
         [Space]
 
         [SerializeField]
         [Tooltip("All the audio settings that plays when walking.")]
-        private AudioItem m_WalkFootsteps = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
+        [FormerlySerializedAs("m_WalkFootsteps")]
+        private AudioItem walkFootsteps = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
         [SerializeField]
         [Tooltip("All the audio settings that plays when running.")]
-        private AudioItem m_RunFootsteps = new AudioItem(true, true, 1.4f, 1.4f, 1.6f, true, 1f);
+        [FormerlySerializedAs("m_RunFootsteps")]
+        private AudioItem runFootsteps = new AudioItem(true, true, 1.4f, 1.4f, 1.6f, true, 1f);
         [SerializeField]
         [Tooltip("All the audio settings that plays when crouching.")]
-        private AudioItem m_CrouchFootsteps = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 0.4f);
+        [FormerlySerializedAs("m_CrouchFootsteps")]
+        private AudioItem crouchFootsteps = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 0.4f);
         [SerializeField]
         [Tooltip("All the audio settings that plays when jumping.")]
-        private AudioItem m_Jumping = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
+        [FormerlySerializedAs("m_Jumping")]
+        private AudioItem jumping = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
         [SerializeField]
         [Tooltip("All the audio settings that plays when landing.")]
-        private AudioItem m_Landing = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
+        [FormerlySerializedAs("m_Landing")]
+        private AudioItem landing = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
 
         [Space]
 
         [SerializeField]
         [Tooltip("The audio source where all the footsteps sounds will be played.")]
-        private AudioSource m_FootstepsSource = null;
+        [FormerlySerializedAs("m_FootstepsSource")]
+        private AudioSource footstepsSource = null;
         [SerializeField]
         [Tooltip("The audio source where all the jump sounds will be played.")]
-        private AudioSource m_JumpSource = null;
+        [FormerlySerializedAs("m_JumpSource")]
+        private AudioSource jumpSource = null;
         [SerializeField]
         [Tooltip("The audio source where all the land sounds will be played.")]
-        private AudioSource m_LandSource = null;
+        [FormerlySerializedAs("m_LandSource")]
+        private AudioSource landSource = null;
 
         // When the next step sound should occur.
-        protected float m_NextStepTime = 0;
+        protected float nextStepTime = 0;
         // Where in the cycle the steps are.
-        protected float m_StepCycle = 0;
+        protected float stepCycle = 0;
 
         // Check if the player was previously grounded.
-        protected bool m_PreviouslyGrounded = true;
+        protected bool previouslyGrounded = true;
 
         // A custom audio behaviour, if the type is set to Custom.
-        private PlayerAudioBehaviour m_CustomBehaviour;
+        private PlayerAudioBehaviour customBehaviour;
 
         /// <summary> Determines if any audio should be played. </summary>
-        public bool EnableAudio { get { return m_EnableAudio; } set { m_EnableAudio = value; } }
+        public bool EnableAudio { get { return enableAudio; } set { enableAudio = value; } }
         /// <summary> Sets how the audio will work. Custom will require a PlayerAudioBehaviour attached to the player. </summary>
-        public AudioTypes AudioType { get { return m_AudioType; } set { m_AudioType = value; } }
+        public AudioTypes AudioType { get { return audioType; } set { audioType = value; } }
         /// <summary> Determines if the audio should be based on head bob. </summary>
-        public bool BasedOnHeadBob { get { return m_BasedOnHeadBob; } set { m_BasedOnHeadBob = value; } }
+        public bool BasedOnHeadBob { get { return basedOnHeadBob; } set { basedOnHeadBob = value; } }
         /// <summary> Sets how frequent the footsteps are. </summary>
-        public float StepTime { get { return m_StepTime; } set { m_StepTime = value; } }
+        public float StepTime { get { return stepTime; } set { stepTime = value; } }
 
         /// <summary> All the audio settings that plays when walking. </summary>
-        public AudioItem WalkFootsteps { get { return m_WalkFootsteps; } set { m_WalkFootsteps = value; } }
+        public AudioItem WalkFootsteps { get { return walkFootsteps; } set { walkFootsteps = value; } }
         /// <summary> All the audio settings that plays when running. </summary>
-        public AudioItem RunFootsteps { get { return m_RunFootsteps; } set { m_RunFootsteps = value; } }
+        public AudioItem RunFootsteps { get { return runFootsteps; } set { runFootsteps = value; } }
         /// <summary> All the audio settings that plays when crouching. </summary>
-        public AudioItem CrouchFootsteps { get { return m_CrouchFootsteps; } set { m_CrouchFootsteps = value; } }
+        public AudioItem CrouchFootsteps { get { return crouchFootsteps; } set { crouchFootsteps = value; } }
         /// <summary> All the audio settings that plays when jumping. </summary>
-        public AudioItem Jumping { get { return m_Jumping; } set { m_Jumping = value; } }
+        public AudioItem Jumping { get { return jumping; } set { jumping = value; } }
         /// <summary> All the audio settings that plays when landing. </summary>
-        public AudioItem Landing { get { return m_Landing; } set { m_Landing = value; } }
+        public AudioItem Landing { get { return landing; } set { landing = value; } }
 
         /// <summary> The audio source where all the footsteps sounds will be played. </summary>
-        public AudioSource FootstepsSource { get { return m_FootstepsSource; } set { m_FootstepsSource = value; } }
+        public AudioSource FootstepsSource { get { return footstepsSource; } set { footstepsSource = value; } }
         /// <summary> The audio source where all the jump sounds will be played. </summary>
-        public AudioSource JumpSource { get { return m_JumpSource; } set { m_JumpSource = value; } }
+        public AudioSource JumpSource { get { return jumpSource; } set { jumpSource = value; } }
         /// <summary> The audio source where all the land sounds will be played. </summary>
-        public AudioSource LandSource { get { return m_LandSource; } set { m_LandSource = value; } }
+        public AudioSource LandSource { get { return landSource; } set { landSource = value; } }
 
         protected override void OnInitialize()
         {
             // If based on head bob is true but head bob is not enabled, complain.
-            if (m_BasedOnHeadBob && !PlayerController.HeadBob.EnableBob)
+            if (basedOnHeadBob && !PlayerController.HeadBob.EnableBob)
             {
                 Debug.LogWarning("Audio on '" + PlayerController.gameObject.name + "' is set to be based on head bob, but head bob isn't actually enabled!", PlayerController);
             }
 
-            if (m_AudioType == AudioTypes.Custom)
+            if (audioType == AudioTypes.Custom)
             {
-                m_CustomBehaviour = PlayerController.GetComponent<PlayerAudioBehaviour>();
+                customBehaviour = PlayerController.GetComponent<PlayerAudioBehaviour>();
 
-                if (m_CustomBehaviour == null)
+                if (customBehaviour == null)
                 {
                     Debug.LogError("Audio type on " + PlayerController.gameObject.name + " is set to Custom but no PlayerAudioBehaviour is attached!");
                     return;
                 }
 
-                m_CustomBehaviour.Initialize(PlayerController, PlayerInput, m_FootstepsSource, m_JumpSource, m_LandSource);
+                customBehaviour.Initialize(PlayerController, PlayerInput, footstepsSource, jumpSource, landSource);
             }
         }
 
@@ -119,20 +132,20 @@ namespace Hertzole.GoldPlayer.Core
             DoStepCycle();
             AudioHandler();
 
-            if (m_AudioType == AudioTypes.Custom && m_CustomBehaviour != null)
-                m_CustomBehaviour.OnUpdate();
+            if (audioType == AudioTypes.Custom && customBehaviour != null)
+                customBehaviour.OnUpdate();
         }
 
         public override void OnFixedUpdate()
         {
-            if (m_AudioType == AudioTypes.Custom && m_CustomBehaviour != null)
-                m_CustomBehaviour.OnFixedUpdate();
+            if (audioType == AudioTypes.Custom && customBehaviour != null)
+                customBehaviour.OnFixedUpdate();
         }
 
         public override void OnLateUpdate()
         {
-            if (m_AudioType == AudioTypes.Custom && m_CustomBehaviour != null)
-                m_CustomBehaviour.OnLateUpdate();
+            if (audioType == AudioTypes.Custom && customBehaviour != null)
+                customBehaviour.OnLateUpdate();
         }
 
         /// <summary>
@@ -142,14 +155,14 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the step cycle should be based on head bob, get it from there.
             // Else do it by itself.
-            if (m_BasedOnHeadBob)
+            if (basedOnHeadBob)
             {
                 // If head bob is enabled, set the step cycle to the bob cycle.
                 // Else do it by itself.
                 if (PlayerController.HeadBob.EnableBob)
                 {
                     // Head bob was enabled. Set the step cycle to the bob cycle.
-                    m_StepCycle = PlayerController.HeadBob.BobCycle;
+                    stepCycle = PlayerController.HeadBob.BobCycle;
                 }
                 else
                 {
@@ -173,7 +186,7 @@ namespace Hertzole.GoldPlayer.Core
             float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude;
             // Calculate some stride thing. (Not 100% what everything here does)
             float strideLengthen = 1 + (flatVelocity * 0.3f);
-            m_StepCycle += (flatVelocity / strideLengthen) * (Time.deltaTime / m_StepTime);
+            stepCycle += (flatVelocity / strideLengthen) * (Time.deltaTime / stepTime);
         }
 
         /// <summary>
@@ -182,7 +195,7 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void AudioHandler()
         {
             // Only run if the audio feature is enabled.
-            if (m_EnableAudio)
+            if (enableAudio)
             {
                 // If the player is grounded, play the footsteps and land sound.
                 // Else play the jump sound.
@@ -190,7 +203,7 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     // If the player wasn't previously grounded, play the land sound.
                     // Else play the footsteps sounds.
-                    if (!m_PreviouslyGrounded)
+                    if (!previouslyGrounded)
                     {
                         // Play the land sound.
                         PlayLandSound();
@@ -198,25 +211,25 @@ namespace Hertzole.GoldPlayer.Core
                     else
                     {
                         // If the step cycle is above the next step time, play a footstep sound.
-                        if (m_StepCycle > m_NextStepTime)
+                        if (stepCycle > nextStepTime)
                         {
                             // Play a footstep sound.
                             PlayFootstepSound();
                         }
                     }
                     // Set previous grounded to true, as the player was previously grounded.
-                    m_PreviouslyGrounded = true;
+                    previouslyGrounded = true;
                 }
                 else
                 {
                     // If the player was just grounded, play the jump sound.
-                    if (m_PreviouslyGrounded)
+                    if (previouslyGrounded)
                     {
                         // Play the jump sound.
                         PlayJumpSound();
                     }
                     // The player is no longer grounded, so set previously grounded to false.
-                    m_PreviouslyGrounded = false;
+                    previouslyGrounded = false;
                 }
             }
         }
@@ -227,27 +240,27 @@ namespace Hertzole.GoldPlayer.Core
         public virtual void PlayFootstepSound()
         {
             // Only run if the audio feature is enabled.
-            if (m_EnableAudio)
+            if (enableAudio)
             {
-                if (m_AudioType == AudioTypes.Standard)
+                if (audioType == AudioTypes.Standard)
                 {
                     // If the player is running, play the running footsteps.
                     // Else if the player is crouching, play the crouching footsteps.
                     // Else just play the walking footsteps.
                     if (PlayerController.Movement.IsRunning)
-                        m_RunFootsteps.Play(m_FootstepsSource);
+                        runFootsteps.Play(footstepsSource);
                     else if (PlayerController.Movement.IsCrouching)
-                        m_CrouchFootsteps.Play(m_FootstepsSource);
+                        crouchFootsteps.Play(footstepsSource);
                     else
-                        m_WalkFootsteps.Play(m_FootstepsSource);
+                        walkFootsteps.Play(footstepsSource);
                 }
-                else if (m_AudioType == AudioTypes.Custom && m_CustomBehaviour != null)
+                else if (audioType == AudioTypes.Custom && customBehaviour != null)
                 {
-                    m_CustomBehaviour.PlayFoostepSound();
+                    customBehaviour.PlayFoostepSound();
                 }
 
                 // Add some time to the next step time.
-                m_NextStepTime = m_StepCycle + 0.5f;
+                nextStepTime = stepCycle + 0.5f;
             }
         }
 
@@ -257,15 +270,15 @@ namespace Hertzole.GoldPlayer.Core
         public virtual void PlayJumpSound()
         {
             // Only play if the audio feature is enabled and the jump sound is enabled.
-            if (m_EnableAudio && m_Jumping.Enabled)
+            if (enableAudio && jumping.Enabled)
             {
-                if (m_AudioType == AudioTypes.Standard)
+                if (audioType == AudioTypes.Standard)
                 {
-                    m_Jumping.Play(m_JumpSource);
+                    jumping.Play(jumpSource);
                 }
-                else if (m_AudioType == AudioTypes.Custom)
+                else if (audioType == AudioTypes.Custom)
                 {
-                    m_CustomBehaviour.PlayJumpSound();
+                    customBehaviour.PlayJumpSound();
                 }
             }
         }
@@ -276,19 +289,19 @@ namespace Hertzole.GoldPlayer.Core
         public virtual void PlayLandSound()
         {
             // Only play if the audio feature is enabled and the landing sound is enabled.
-            if (m_EnableAudio && m_Landing.Enabled)
+            if (enableAudio && landing.Enabled)
             {
-                if (m_AudioType == AudioTypes.Standard)
+                if (audioType == AudioTypes.Standard)
                 {
-                    m_Landing.Play(m_LandSource);
+                    landing.Play(landSource);
                 }
-                else if (m_AudioType == AudioTypes.Custom)
+                else if (audioType == AudioTypes.Custom)
                 {
-                    m_CustomBehaviour.PlayLandSound();
+                    customBehaviour.PlayLandSound();
                 }
 
                 // Add some time to the next step time.
-                m_NextStepTime = m_StepCycle + 0.5f;
+                nextStepTime = stepCycle + 0.5f;
             }
         }
 
@@ -297,8 +310,8 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public void StopFootstepSound()
         {
-            m_FootstepsSource.Stop();
-            m_FootstepsSource.clip = null;
+            footstepsSource.Stop();
+            footstepsSource.clip = null;
         }
 
         /// <summary>
@@ -306,8 +319,8 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public void StopJumpSound()
         {
-            m_JumpSource.Stop();
-            m_JumpSource.clip = null;
+            jumpSource.Stop();
+            jumpSource.clip = null;
         }
 
         /// <summary>
@@ -315,8 +328,8 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         public void StopLandSound()
         {
-            m_LandSource.Stop();
-            m_LandSource.clip = null;
+            landSource.Stop();
+            landSource.clip = null;
         }
 
         /// <summary>

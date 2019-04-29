@@ -13,16 +13,16 @@ namespace Hertzole.GoldPlayer.Editor
     {
         private int currentTab = 0;
 
-        private readonly string[] m_Tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
+        private readonly string[] tabs = new string[] { "Camera", "Movement", "Head Bob", "Audio" };
         private const string SELECTED_TAB_PREFS = "HERTZ_GOLD_PLAYER_SELECTED_TAB";
 
-        private GoldPlayerController m_GoldPlayer;
-        private CharacterController m_CharacterController;
+        private GoldPlayerController goldPlayer;
+        private CharacterController characterController;
 
-        private SerializedProperty m_Camera;
-        private SerializedProperty m_Movement;
-        private SerializedProperty m_HeadBob;
-        private SerializedProperty m_Audio;
+        private SerializedProperty camera;
+        private SerializedProperty movement;
+        private SerializedProperty headBob;
+        private SerializedProperty audio;
 
 #if UNITY_2019_2_OR_NEWER
         private VisualElement root;
@@ -48,23 +48,23 @@ namespace Hertzole.GoldPlayer.Editor
             if (currentTab > 3)
                 currentTab = 3;
 
-            m_Camera = serializedObject.FindProperty("m_Camera");
-            m_Movement = serializedObject.FindProperty("m_Movement");
-            m_HeadBob = serializedObject.FindProperty("m_HeadBob");
-            m_Audio = serializedObject.FindProperty("m_Audio");
+            camera = serializedObject.FindProperty("camera");
+            movement = serializedObject.FindProperty("movement");
+            headBob = serializedObject.FindProperty("headBob");
+            audio = serializedObject.FindProperty("audio");
 
-            m_GoldPlayer = (GoldPlayerController)target;
-            m_CharacterController = m_GoldPlayer.GetComponent<CharacterController>();
+            goldPlayer = (GoldPlayerController)target;
+            characterController = goldPlayer.GetComponent<CharacterController>();
         }
 
 #if !UNITY_2019_2_OR_NEWER
         public override void OnInspectorGUI()
         {
-            if (m_CharacterController.center.y != m_CharacterController.height / 2)
-                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + m_CharacterController.height / 2 + "!", MessageType.Warning);
+            if (characterController.center.y != characterController.height / 2)
+                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
 
             serializedObject.Update();
-            int newTab = GUILayout.Toolbar(currentTab, m_Tabs);
+            int newTab = GUILayout.Toolbar(currentTab, tabs);
             if (newTab != currentTab)
             {
                 currentTab = newTab;
@@ -92,25 +92,25 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void DoCameraGUI()
         {
-            SerializedProperty it = m_Camera.Copy();
+            SerializedProperty it = camera.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_Camera.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(camera.name) && it.depth < 2)
                     EditorGUILayout.PropertyField(it, true);
             }
         }
 
         private void DoMovementGUI()
         {
-            SerializedProperty it = m_Movement.Copy();
+            SerializedProperty it = movement.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_Movement.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(movement.name) && it.depth < 2)
                 {
                     EditorGUILayout.PropertyField(it, true);
-                    if (it.name.Equals("m_CrouchHeight") && it.floatValue < 0.8f)
+                    if (it.name.Equals("crouchHeight") && it.floatValue < 0.8f)
                         EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
-                    if (it.name.Equals("m_GroundLayer") && it.intValue == (it.intValue | (1 << m_GoldPlayer.gameObject.layer)))
+                    if (it.name.Equals("groundLayer") && it.intValue == (it.intValue | (1 << goldPlayer.gameObject.layer)))
                         EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
                 }
             }
@@ -118,27 +118,27 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void DoHeadBobGUI()
         {
-            SerializedProperty it = m_HeadBob.Copy();
+            SerializedProperty it = headBob.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_HeadBob.name) && !it.propertyPath.StartsWith(m_HeadBob.name + ".m_BobClass") && it.depth < 2)
+                if (it.propertyPath.StartsWith(headBob.name) && !it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth < 2)
                     EditorGUILayout.PropertyField(it, true);
 
-                if (it.propertyPath.StartsWith(m_HeadBob.name + ".m_BobClass") && it.depth >= 2)
+                if (it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth >= 2)
                     EditorGUILayout.PropertyField(it, true);
             }
         }
 
         private void DoAudioGUI()
         {
-            SerializedProperty it = m_Audio.Copy();
+            SerializedProperty it = audio.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_Audio.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(audio.name) && it.depth < 2)
                     EditorGUILayout.PropertyField(it, true);
             }
         }
-#else
+#else 
         public override VisualElement CreateInspectorGUI()
         {
             //TODO: Somehow show warning about incorrect character controller settings.
@@ -147,7 +147,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             IMGUIContainer toolbarContainer = new IMGUIContainer(() =>
             {
-                int newTab = GUILayout.Toolbar(currentTab, m_Tabs);
+                int newTab = GUILayout.Toolbar(currentTab, tabs);
                 if (newTab != currentTab)
                 {
                     currentTab = newTab;
@@ -185,21 +185,21 @@ namespace Hertzole.GoldPlayer.Editor
         private void CreateCameraGUI()
         {
             cameraElements = new VisualElement();
-            SerializedProperty it = m_Camera.Copy();
+            SerializedProperty it = camera.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_Camera.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(camera.name) && it.depth < 2)
                 {
-                    if (it.name.Equals("m_InvertXAxis"))
+                    if (it.name.Equals("invertXAxis"))
                         cameraElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_MouseSensitivity"))
+                    if (it.name.Equals("mouseSensitivity"))
                         cameraElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_FOVKick"))
+                    if (it.name.Equals("fieldOfViewKick"))
                         cameraElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_CameraHead"))
+                    if (it.name.Equals("cameraHead"))
                         cameraElements.Add(GoldPlayerUIHelper.GetSpace());
 
                     cameraElements.Add(new PropertyField(it));
@@ -211,38 +211,38 @@ namespace Hertzole.GoldPlayer.Editor
         {
             movementElements = new VisualElement();
 
-            m_Movement = serializedObject.FindProperty("m_Movement");
-            SerializedProperty it = m_Movement.Copy();
+            movement = serializedObject.FindProperty("movement");
+            SerializedProperty it = movement.Copy();
             int index = 0;
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_Movement.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(movement.name) && it.depth < 2)
                 {
-                    if (it.name.Equals("m_WalkingSpeeds"))
+                    if (it.name.Equals("walkingSpeeds"))
                     {
                         movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Walking"));
                         index++;
                     }
 
-                    if (it.name.Equals("m_CanRun"))
+                    if (it.name.Equals("canRun"))
                     {
                         movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Running"));
                         index++;
                     }
 
-                    if (it.name.Equals("m_CanJump"))
+                    if (it.name.Equals("canJump"))
                     {
                         movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Jumping"));
                         index++;
                     }
 
-                    if (it.name.Equals("m_CanCrouch"))
+                    if (it.name.Equals("canCrouch"))
                     {
                         movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Crouching"));
                         index++;
                     }
 
-                    if (it.name.Equals("m_GroundLayer"))
+                    if (it.name.Equals("groundLayer"))
                     {
                         movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Other"));
                         index++;
@@ -250,7 +250,7 @@ namespace Hertzole.GoldPlayer.Editor
 
                     PropertyField field = new PropertyField(it);
                     movementElements.Add(field);
-                    if (it.name.Equals("m_CrouchHeight"))
+                    if (it.name.Equals("crouchHeight"))
                     {
                         crouchHeightIndex = index;
                         field.RegisterCallback<ChangeEvent<float>>((evt) => { ValidateCrouchHeight(movementElements, evt.newValue); });
@@ -258,7 +258,7 @@ namespace Hertzole.GoldPlayer.Editor
                         ValidateCrouchHeight(movementElements, it.floatValue);
                     }
 
-                    if (it.name.Equals("m_GroundLayer"))
+                    if (it.name.Equals("groundLayer"))
                     {
                         groundLayerIndex = index;
                         field.RegisterCallback<ChangeEvent<int>>((evt) => { ValidateGroundLayer(movementElements, evt.newValue); });
@@ -294,7 +294,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void ValidateGroundLayer(VisualElement parent, int layer)
         {
-            if (layer == (layer | (1 << m_GoldPlayer.gameObject.layer)))
+            if (layer == (layer | (1 << goldPlayer.gameObject.layer)))
             {
                 if (!parent.Contains(groundLayerWarning))
                 {
@@ -318,19 +318,19 @@ namespace Hertzole.GoldPlayer.Editor
         {
             headBobElements = new VisualElement();
 
-            SerializedProperty it = m_HeadBob.Copy();
+            SerializedProperty it = headBob.Copy();
             while (it.NextVisible(true))
             {
-                if ((it.propertyPath.StartsWith(m_HeadBob.name) && !it.propertyPath.StartsWith(m_HeadBob.name + ".m_BobClass") && it.depth < 2) ||
-                    it.propertyPath.StartsWith(m_HeadBob.name + ".m_BobClass") && it.depth >= 2)
+                if ((it.propertyPath.StartsWith(headBob.name) && !it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth < 2) ||
+                    it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth >= 2)
                 {
-                    if (it.name.Equals("m_BobFrequency"))
+                    if (it.name.Equals("bobFrequency"))
                         headBobElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_LandMove"))
+                    if (it.name.Equals("landMove"))
                         headBobElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_BobTarget"))
+                    if (it.name.Equals("bobTarget"))
                         headBobElements.Add(GoldPlayerUIHelper.GetSpace());
 
                     headBobElements.Add(new PropertyField(it));
@@ -344,18 +344,18 @@ namespace Hertzole.GoldPlayer.Editor
         {
             audioElements = new VisualElement();
 
-            SerializedProperty it = m_Audio.Copy();
+            SerializedProperty it = audio.Copy();
             while (it.NextVisible(true))
             {
-                if (it.propertyPath.StartsWith(m_Audio.name) && it.depth < 2)
+                if (it.propertyPath.StartsWith(audio.name) && it.depth < 2)
                 {
-                    if (it.name.Equals("m_BasedOnHeadBob"))
+                    if (it.name.Equals("basedOnHeadBob"))
                         audioElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_WalkFootsteps"))
+                    if (it.name.Equals("walkFootsteps"))
                         audioElements.Add(GoldPlayerUIHelper.GetSpace());
 
-                    if (it.name.Equals("m_FootstepsSource"))
+                    if (it.name.Equals("footstepsSource"))
                         audioElements.Add(GoldPlayerUIHelper.GetSpace());
 
                     audioElements.Add(new PropertyField(it));
