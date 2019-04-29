@@ -11,12 +11,12 @@ First of all, I want to thank you so much for considering contributing! It helps
 If you take a look at Gold Player, you may notice a special coding style. I want to have these in place to make it all consistent.
 
 #### Fields 
-Fields should always be either private or protected and have the `m_` prefix. (unless they are in a struct that only holds data). If the field should be accessible from other files, it should be accompanied by a property. If they should be accessed inside Unity, they need the `[SerializeField]` attribute and should have a default value, even if it's just null, along with a `[Tooltip()]` attribute describing the function and a public property. The tooltip should match corresponding property's XML documentation.  
-Example: `private string m_StringField;`
+Fields should always be either private or protected and be lower camel case (`exampleName`) .If the field should be accessible from other files, it should be accompanied by a property. If they should be accessed inside Unity, they need the `[SerializeField]` attribute and should have a default value, even if it's just null, along with a `[Tooltip()]` attribute describing the function and a public property. The tooltip should match corresponding property's XML documentation.  
+Example: `private string stringField;`
 
 #### Properties
 Properties should be in [Pascal Case](http://wiki.c2.com/?PascalCase) and are often used to give access to private/protected fields. There should be enough spacing like seen in the example. If the property is only used to access a field, it should be on one line. If there's more logic to it, it can be spread out over multiple lines.  
-Example: `public string StringProperty { get { return m_StringField; } set { m_StringField = value; } }`
+Example: `public string StringProperty { get { return stringField; } set { stringField = value; } }`
 
 #### Consts and Enums
 A constant should always be uppercase with underscores as "spaces", except when it's in an enum, where they should be [Pascal Cased](http://wiki.c2.com/?PascalCase). Enums should also always include a number associated with each value.  
@@ -120,12 +120,12 @@ Example:
     [Header("Header")]
 #endif
     [SerializeField]
-    private string m_Greeting = "Hello";
+    private string greeting = "Hello";
     
 #if UNITY_EDITOR
     [Space]
 #endif
 
     [SerializeField]
-    private string m_Target = "World";
+    private string target = "World";
 ```

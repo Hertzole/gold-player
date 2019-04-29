@@ -8523,14 +8523,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c0ed2103be6dbc4e991a1584cdf02e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TargetPlayer: {fileID: 847471339}
-  m_TweakText: {fileID: 842506848}
-  m_Panel: {fileID: 1601291127}
-  m_Viewport: {fileID: 1175845338}
-  m_HeaderLabel: {fileID: 1155328336}
-  m_TweakField: {fileID: 1624051829}
-  m_ToggleKey: 282
-  m_ResetSceneKey: 283
+  targetPlayer: {fileID: 847471339}
+  tweakText: {fileID: 842506848}
+  panel: {fileID: 1601291127}
+  viewport: {fileID: 1175845338}
+  headerLabel: {fileID: 1155328336}
+  tweakField: {fileID: 1624051829}
+  toggleKey: 282
+  resetSceneKey: 283
 --- !u!1001 &1611738055
 Prefab:
   m_ObjectHideFlags: 0
@@ -8656,10 +8656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177fa97a2dff2374ba42cc46ba687bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Label: {fileID: 382381190}
-  m_TextField: {fileID: 1375703688}
-  m_ToggleField: {fileID: 1269741387}
-  m_SliderField: {fileID: 1184500132}
+  label: {fileID: 382381190}
+  textField: {fileID: 1375703688}
+  toggleField: {fileID: 1269741387}
+  sliderField: {fileID: 1184500132}
 --- !u!1001 &1650839420
 Prefab:
   m_ObjectHideFlags: 0

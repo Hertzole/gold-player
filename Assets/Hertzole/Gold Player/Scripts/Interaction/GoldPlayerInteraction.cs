@@ -3,6 +3,7 @@ using Hertzole.HertzLib;
 #endif
 using Hertzole.GoldPlayer.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Interaction
 {
@@ -16,7 +17,8 @@ namespace Hertzole.GoldPlayer.Interaction
     {
         [SerializeField]
         [Tooltip("The player camera head.")]
-        private Transform m_CameraHead;
+        [FormerlySerializedAs("m_CameraHead")]
+        private Transform cameraHead;
 
 #if UNITY_EDITOR
         [Space]
@@ -24,58 +26,62 @@ namespace Hertzole.GoldPlayer.Interaction
 
         [SerializeField]
         [Tooltip("Sets how far the interaction reach is.")]
-        private float m_InteractionRange = 2f;
+        [FormerlySerializedAs("m_InteractionRange")]
+        private float interactionRange = 2f;
         [SerializeField]
         [Tooltip("Sets the layers that the player can interact with.")]
-        private LayerMask m_InteractionLayer = 1;
+        [FormerlySerializedAs("m_InteractionLayer")]
+        private LayerMask interactionLayer = 1;
         [SerializeField]
         [Tooltip("Determines if colliders marked as triggers should be detected.")]
-        private bool m_IgnoreTriggers = true;
+        [FormerlySerializedAs("m_IgnoreTriggers")]
+        private bool ignoreTriggers = true;
 
 #if UNITY_EDITOR
         [Header("UI")]
 #endif
         [SerializeField]
         [Tooltip("A default message for UI elements to show when the player can interact.")]
-        private string m_InteractMessage = "Press E to interact";
+        [FormerlySerializedAs("m_InteractMessage")]
+        private string interactMessage = "Press E to interact";
 
 #if UNITY_EDITOR
         [Header("Input")]
 #endif
         [SerializeField]
         [Tooltip("The input name for interaction to use.")]
-        private string m_InteractInput = "Interact";
+        [FormerlySerializedAs("m_InteractInput")]
+        private string interactInput = "Interact";
 
         // Flag to determine if we have checked for a interactable.
-        private bool m_HaveCheckedInteractable = false;
+        private bool haveCheckedInteractable = false;
 
         // How it should behave with triggers.
-        private QueryTriggerInteraction m_TriggerInteraction = QueryTriggerInteraction.Ignore;
+        private QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.Ignore;
 
         // The current hit collider.
-        private Collider m_CurrentHit;
-
-        // The current hit interactable.
-        public GoldPlayerInteractable CurrentHitInteractable { get; private set; }
+        private Collider currentHit;
 
         // The raycast hit.
-        private RaycastHit m_InteractableHit;
+        private RaycastHit interactableHit;
 
         /// <summary> True if the player can currently interact. </summary>
         public bool CanInteract { get; private set; }
 
         /// <summary> The player camera head. </summary>
-        public Transform CameraHead { get { return m_CameraHead; } set { m_CameraHead = value; } }
+        public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
         /// <summary> Sets how far the interaction reach is. </summary>
-        public float InteractionRange { get { return m_InteractionRange; } set { m_InteractionRange = value; } }
+        public float InteractionRange { get { return interactionRange; } set { interactionRange = value; } }
         /// <summary> Sets the layers that the player can interact with. </summary>
-        public LayerMask InteractionLayer { get { return m_InteractionLayer; } set { m_InteractionLayer = value; } }
+        public LayerMask InteractionLayer { get { return interactionLayer; } set { interactionLayer = value; } }
         /// <summary> Determines if colliders marked as triggers should be detected. </summary>
-        public bool IgnoreTriggers { get { return m_IgnoreTriggers; } set { m_IgnoreTriggers = value; SetTriggerInteraction(); } }
+        public bool IgnoreTriggers { get { return ignoreTriggers; } set { ignoreTriggers = value; SetTriggerInteraction(); } }
         /// <summary> A default message for UI elements to show when the player can interact. </summary>
-        public string InteractMessage { get { return m_InteractMessage; } set { m_InteractMessage = value; } }
+        public string InteractMessage { get { return interactMessage; } set { interactMessage = value; } }
         /// <summary> The input name for interaction to use. </summary>
-        public string InteractInput { get { return m_InteractInput; } set { m_InteractInput = value; } }
+        public string InteractInput { get { return interactInput; } set { interactInput = value; } }
+        /// <summary> The current hit interactable. </summary>
+        public GoldPlayerInteractable CurrentHitInteractable { get; private set; }
 
         protected virtual void Awake()
         {
@@ -100,47 +106,47 @@ namespace Hertzole.GoldPlayer.Interaction
         /// </summary>
         private void SetTriggerInteraction()
         {
-            m_TriggerInteraction = m_IgnoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide;
+            triggerInteraction = ignoreTriggers ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide;
         }
 
         // Update is called once per frame
 #if HERTZLIB_UPDATE_MANAGER
         public virtual void OnUpdate()
 #else
-        protected virtual void Update()
+        public virtual void Update()
 #endif
         {
             // Do the raycast.
             if (Physics.Raycast(
-                m_CameraHead.position,
-                m_CameraHead.forward,
-                out m_InteractableHit,
-                m_InteractionRange,
-                m_InteractionLayer,
-                m_TriggerInteraction))
+                cameraHead.position,
+                cameraHead.forward,
+                out interactableHit,
+                interactionRange,
+                interactionLayer,
+                triggerInteraction))
             {
                 // If there's no hit transform, stop here.
-                if (m_InteractableHit.collider == null)
+                if (interactableHit.collider == null)
                     return;
 
                 // If there's no current hit or the hits doesn't match, update it and
                 // the player need to check for a interactable again.
-                if (m_CurrentHit == null || m_CurrentHit != m_InteractableHit.collider)
+                if (currentHit == null || currentHit != interactableHit.collider)
                 {
-                    m_CurrentHit = m_InteractableHit.collider;
-                    m_HaveCheckedInteractable = false;
+                    currentHit = interactableHit.collider;
+                    haveCheckedInteractable = false;
                 }
 
                 // If the player hasn't checked for an interactable, do so ONCE.
                 // We don't want to call GetComponent every frame, you know!
-                if (!m_HaveCheckedInteractable)
+                if (!haveCheckedInteractable)
                 {
                     // Prefer interactables on the collider itself, but if the collider doesn't
                     // have one, then look on the rigidbody.
                     CurrentHitInteractable =
-                        m_InteractableHit.collider.GetComponent<GoldPlayerInteractable>() ??
-                        m_InteractableHit.rigidbody.GetComponent<GoldPlayerInteractable>();
-                    m_HaveCheckedInteractable = true;
+                        interactableHit.collider.GetComponent<GoldPlayerInteractable>() ??
+                        interactableHit.rigidbody.GetComponent<GoldPlayerInteractable>();
+                    haveCheckedInteractable = true;
                 }
 
                 // Set Can Interact depending on if the player has a interactable object
@@ -148,7 +154,7 @@ namespace Hertzole.GoldPlayer.Interaction
                 CanInteract = CurrentHitInteractable != null && CurrentHitInteractable.CanInteract;
 
                 // If the player presses the interact key and it can react, call interact.
-                if (GetButtonDown(m_InteractInput, KeyCode.E) && CanInteract)
+                if (GetButtonDown(interactInput, KeyCode.E) && CanInteract)
                 {
                     CurrentHitInteractable.Interact();
                 }
@@ -158,7 +164,7 @@ namespace Hertzole.GoldPlayer.Interaction
                 // There's nothing to interact with.
                 CanInteract = false;
                 CurrentHitInteractable = null;
-                m_CurrentHit = null;
+                currentHit = null;
             }
         }
 

@@ -13,11 +13,11 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
     [CustomEditor(typeof(GoldPlayerInteractable))]
     internal class GoldPlayerInteractableEditor : UnityEditor.Editor
     {
-        private SerializedProperty m_CanInteract;
-        private SerializedProperty m_IsHidden;
-        private SerializedProperty m_UseCustomMessage;
-        private SerializedProperty m_CustomMessage;
-        private SerializedProperty m_OnInteract;
+        private SerializedProperty canInteract;
+        private SerializedProperty isHidden;
+        private SerializedProperty useCustomMessage;
+        private SerializedProperty customMessage;
+        private SerializedProperty onInteract;
 
 #if UNITY_2019_2_OR_NEWER
         private VisualElement useCustomMessageElement;
@@ -26,11 +26,11 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
 
         private void OnEnable()
         {
-            m_CanInteract = serializedObject.FindProperty("m_CanInteract");
-            m_IsHidden = serializedObject.FindProperty("m_IsHidden");
-            m_UseCustomMessage = serializedObject.FindProperty("m_UseCustomMessage");
-            m_CustomMessage = serializedObject.FindProperty("m_CustomMessage");
-            m_OnInteract = serializedObject.FindProperty("m_OnInteract");
+            canInteract = serializedObject.FindProperty("canInteract");
+            isHidden = serializedObject.FindProperty("isHidden");
+            useCustomMessage = serializedObject.FindProperty("useCustomMessage");
+            customMessage = serializedObject.FindProperty("customMessage");
+            onInteract = serializedObject.FindProperty("onInteract");
         }
 
 #if !UNITY_2019_2_OR_NEWER
@@ -38,15 +38,15 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(m_CanInteract);
-            EditorGUILayout.PropertyField(m_IsHidden);
+            EditorGUILayout.PropertyField(canInteract);
+            EditorGUILayout.PropertyField(isHidden);
 
-            EditorGUILayout.PropertyField(m_UseCustomMessage);
-            GUI.enabled = m_UseCustomMessage.boolValue;
-            EditorGUILayout.PropertyField(m_CustomMessage);
+            EditorGUILayout.PropertyField(useCustomMessage);
+            GUI.enabled = useCustomMessage.boolValue;
+            EditorGUILayout.PropertyField(customMessage);
             GUI.enabled = true;
 
-            EditorGUILayout.PropertyField(m_OnInteract);
+            EditorGUILayout.PropertyField(onInteract);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -55,22 +55,22 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
         {
             VisualElement root = new VisualElement();
 
-            root.Add(new PropertyField(m_CanInteract));
-            root.Add(new PropertyField(m_IsHidden));
+            root.Add(new PropertyField(canInteract));
+            root.Add(new PropertyField(isHidden));
 
             root.Add(GoldPlayerUIHelper.GetSpace());
 
-            useCustomMessageElement = new PropertyField(m_UseCustomMessage);
-            customMessageElement = new PropertyField(m_CustomMessage);
+            useCustomMessageElement = new PropertyField(useCustomMessage);
+            customMessageElement = new PropertyField(customMessage);
 
             useCustomMessageElement.RegisterCallback<ChangeEvent<bool>>((evt) => { customMessageElement.SetEnabled(evt.newValue); });
 
-            customMessageElement.SetEnabled(m_UseCustomMessage.boolValue);
+            customMessageElement.SetEnabled(useCustomMessage.boolValue);
 
             root.Add(useCustomMessageElement);
             root.Add(customMessageElement);
 
-            root.Add(new PropertyField(m_OnInteract));
+            root.Add(new PropertyField(onInteract));
 
             return root;
         }

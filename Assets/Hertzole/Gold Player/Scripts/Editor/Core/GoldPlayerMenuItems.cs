@@ -66,7 +66,7 @@ namespace Hertzole.GoldPlayer.Editor
             GoldPlayerController goldController = root.AddComponent<GoldPlayerController>();
 
             goldController.Camera.CameraHead = cameraHead.transform;
-            goldController.Camera.FOVKick.TargetCamera = playerCamera;
+            goldController.Camera.FieldOfViewKick.TargetCamera = playerCamera;
 
             goldController.Movement.GroundLayer = 1;
 

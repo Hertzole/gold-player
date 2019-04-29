@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Core
 {
@@ -6,42 +7,43 @@ namespace Hertzole.GoldPlayer.Core
     public class PlayerBob : PlayerModule
     {
         [SerializeField]
-        private BobClass m_BobClass = new BobClass();
+        [FormerlySerializedAs("m_BobClass")]
+        private BobClass bobClass = new BobClass();
 
         /// <summary> Determines if the bob effect should be enabled. </summary>
-        public bool EnableBob { get { return m_BobClass.EnableBob; } set { m_BobClass.EnableBob = value; } }
+        public bool EnableBob { get { return bobClass.EnableBob; } set { bobClass.EnableBob = value; } }
         /// <summary> Sets how frequent the bob happens. </summary>
-        public float BobFrequency { get { return m_BobClass.BobFrequency; } set { m_BobClass.BobFrequency = value; } }
+        public float BobFrequency { get { return bobClass.BobFrequency; } set { bobClass.BobFrequency = value; } }
         /// <summary> The height of the bob. </summary>
-        public float BobHeight { get { return m_BobClass.BobHeight; } set { m_BobClass.BobHeight = value; } }
+        public float BobHeight { get { return bobClass.BobHeight; } set { bobClass.BobHeight = value; } }
         /// <summary> How much the target will sway from side to side. </summary>
-        public float SwayAngle { get { return m_BobClass.SwayAngle; } set { m_BobClass.SwayAngle = value; } }
+        public float SwayAngle { get { return bobClass.SwayAngle; } set { bobClass.SwayAngle = value; } }
         /// <summary> How much the target will move to the sides. </summary>
-        public float SideMovement { get { return m_BobClass.SideMovement; } set { m_BobClass.SideMovement = value; } }
+        public float SideMovement { get { return bobClass.SideMovement; } set { bobClass.SideMovement = value; } }
         /// <summary> Adds extra movement to the bob height. </summary>
-        public float HeightMultiplier { get { return m_BobClass.HeightMultiplier; } set { m_BobClass.HeightMultiplier = value; } }
+        public float HeightMultiplier { get { return bobClass.HeightMultiplier; } set { bobClass.HeightMultiplier = value; } }
         /// <summary> Multiplies the bob frequency speed. </summary>
-        public float StrideMultiplier { get { return m_BobClass.StrideMultiplier; } set { m_BobClass.StrideMultiplier = value; } }
+        public float StrideMultiplier { get { return bobClass.StrideMultiplier; } set { bobClass.StrideMultiplier = value; } }
         /// <summary> How much the target will move when landing. </summary>
-        public float LandMove { get { return m_BobClass.LandMove; } set { m_BobClass.LandMove = value; } }
+        public float LandMove { get { return bobClass.LandMove; } set { bobClass.LandMove = value; } }
         /// <summary> How much the target will tilt when landing. </summary>
-        public float LandTilt { get { return m_BobClass.LandTilt; } set { m_BobClass.LandTilt = value; } }
+        public float LandTilt { get { return bobClass.LandTilt; } set { bobClass.LandTilt = value; } }
         /// <summary> How much the target will tilt when strafing. </summary>
-        public float StrafeTilt { get { return m_BobClass.StrafeTilt; } set { m_BobClass.StrafeTilt = value; } }
+        public float StrafeTilt { get { return bobClass.StrafeTilt; } set { bobClass.StrafeTilt = value; } }
         /// <summary> The object to bob. </summary>
-        public Transform BobTarget { get { return m_BobClass.BobTarget; } set { m_BobClass.BobTarget = value; } }
+        public Transform BobTarget { get { return bobClass.BobTarget; } set { bobClass.BobTarget = value; } }
 
-        public float BobCycle { get { return m_BobClass.BobCycle; } }
+        public float BobCycle { get { return bobClass.BobCycle; } }
 
         protected override void OnInitialize()
         {
-            if (m_BobClass.BobTarget == null && m_BobClass.EnableBob)
+            if (bobClass.BobTarget == null && bobClass.EnableBob)
             {
                 Debug.LogError("No Bob Target set on '" + PlayerController.gameObject.name + "'!");
                 return;
             }
 
-            m_BobClass.Initialize();
+            bobClass.Initialize();
         }
 
         public override void OnUpdate()
@@ -51,7 +53,7 @@ namespace Hertzole.GoldPlayer.Core
 
         protected virtual void BobHandler()
         {
-            m_BobClass.DoBob(CharacterController.velocity, GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS));
+            bobClass.DoBob(CharacterController.velocity, GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS));
         }
     }
 }

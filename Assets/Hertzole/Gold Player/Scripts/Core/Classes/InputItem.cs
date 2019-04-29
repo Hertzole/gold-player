@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Core
 {
@@ -11,26 +12,29 @@ namespace Hertzole.GoldPlayer.Core
     {
         [SerializeField]
         [Tooltip("The name code will reference the item with.")]
-        private string m_ButtonName;
+        [FormerlySerializedAs("m_ButtonName")]
+        private string buttonName;
         [SerializeField]
         [Tooltip("The name in the Input Manager.")]
-        private string m_InputName;
+        [FormerlySerializedAs("m_InputName")]
+        private string inputName;
         [SerializeField]
         [Tooltip("The key code for the item.")]
-        private KeyCode m_Key;
+        [FormerlySerializedAs("m_Key")]
+        private KeyCode key;
 
         /// <summary> The name code will reference the item with. </summary>
-        public string ButtonName { get { return m_ButtonName; } set { m_ButtonName = value; } }
+        public string ButtonName { get { return buttonName; } set { buttonName = value; } }
         /// <summary> The name in the Input Manager. </summary>
-        public string InputName { get { return m_InputName; } set { m_InputName = value; } }
+        public string InputName { get { return inputName; } set { inputName = value; } }
         /// <summary> The key code for the item. </summary>
-        public KeyCode Key { get { return m_Key; } set { m_Key = value; } }
+        public KeyCode Key { get { return key; } set { key = value; } }
 
         public InputItem(string buttonName, string inputName, KeyCode key)
         {
-            m_ButtonName = buttonName;
-            m_InputName = inputName;
-            m_Key = key;
+            this.buttonName = buttonName;
+            this.inputName = inputName;
+            this.key = key;
         }
     }
 }

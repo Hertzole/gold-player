@@ -29,6 +29,9 @@ namespace Hertzole.GoldPlayer.Core
         /// <param name="landSource"></param>
         public void Initialize(GoldPlayerController playerController, GoldInput input, AudioSource footstepsSource, AudioSource jumpSource, AudioSource landSource)
         {
+            PlayerController = playerController;
+            PlayerInput = input;
+
             FootstepsSource = footstepsSource;
             JumpSource = jumpSource;
             LandSource = landSource;

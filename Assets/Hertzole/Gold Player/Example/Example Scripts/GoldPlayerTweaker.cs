@@ -1,6 +1,7 @@
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer.Example
@@ -9,53 +10,61 @@ namespace Hertzole.GoldPlayer.Example
     public class GoldPlayerTweaker : MonoBehaviour
     {
         [SerializeField]
-        private GoldPlayerController m_TargetPlayer;
-        public GoldPlayerController TargetPlayer { get { return m_TargetPlayer; } set { m_TargetPlayer = value; } }
+        [FormerlySerializedAs("m_TargetPlayer")]
+        private GoldPlayerController targetPlayer;
+        public GoldPlayerController TargetPlayer { get { return targetPlayer; } set { targetPlayer = value; } }
         [SerializeField]
-        private Text m_TweakText;
-        public Text TweakText { get { return m_TweakText; } set { m_TweakText = value; } }
+        [FormerlySerializedAs("m_TweakText")]
+        private Text tweakText;
+        public Text TweakText { get { return tweakText; } set { tweakText = value; } }
         [SerializeField]
-        private GameObject m_Panel;
-        public GameObject Panel { get { return m_Panel; } set { m_Panel = value; } }
+        [FormerlySerializedAs("m_Panel")]
+        private GameObject panel;
+        public GameObject Panel { get { return panel; } set { panel = value; } }
         [SerializeField]
-        private RectTransform m_Viewport;
-        public RectTransform Viewport { get { return m_Viewport; } set { m_Viewport = value; } }
+        [FormerlySerializedAs("m_Viewport")]
+        private RectTransform viewport;
+        public RectTransform Viewport { get { return viewport; } set { viewport = value; } }
         [SerializeField]
-        private Text m_HeaderLabel;
-        public Text HeaderLabel { get { return m_HeaderLabel; } set { m_HeaderLabel = value; } }
+        [FormerlySerializedAs("m_HeaderLabel")]
+        private Text headerLabel;
+        public Text HeaderLabel { get { return headerLabel; } set { headerLabel = value; } }
         [SerializeField]
-        private GoldPlayerTweakField m_TweakField;
-        public GoldPlayerTweakField TweakField { get { return m_TweakField; } set { m_TweakField = value; } }
+        [FormerlySerializedAs("m_TweakField")]
+        private GoldPlayerTweakField tweakField;
+        public GoldPlayerTweakField TweakField { get { return tweakField; } set { tweakField = value; } }
         [Space]
         [SerializeField]
-        private KeyCode m_ToggleKey = KeyCode.F1;
-        public KeyCode ToggleKey { get { return m_ToggleKey; } set { m_ToggleKey = value; } }
+        [FormerlySerializedAs("m_ToggleKey")]
+        private KeyCode toggleKey = KeyCode.F1;
+        public KeyCode ToggleKey { get { return toggleKey; } set { toggleKey = value; } }
         [SerializeField]
-        private KeyCode m_ResetSceneKey = KeyCode.F2;
-        public KeyCode ResetSceneKey { get { return m_ResetSceneKey; } set { m_ResetSceneKey = value; } }
+        [FormerlySerializedAs("m_ResetSceneKey")]
+        private KeyCode resetSceneKey = KeyCode.F2;
+        public KeyCode ResetSceneKey { get { return resetSceneKey; } set { resetSceneKey = value; } }
 
-        private bool m_Showing = false;
-        private bool m_PreviousCanLook = false;
-        private bool m_PreviousCanMove = false;
-        private bool m_PreviousLockCursor = false;
+        private bool showing = false;
+        private bool previousCanLook = false;
+        private bool previousCanMove = false;
+        private bool previousLockCursor = false;
 
         // Use this for initialization
         void Start()
         {
             Panel.gameObject.SetActive(false);
-            m_HeaderLabel.gameObject.SetActive(false);
-            m_TweakField.gameObject.SetActive(false);
-            m_TweakText.gameObject.SetActive(m_TargetPlayer != null);
+            headerLabel.gameObject.SetActive(false);
+            tweakField.gameObject.SetActive(false);
+            tweakText.gameObject.SetActive(targetPlayer != null);
 
-            if (m_TargetPlayer)
+            if (targetPlayer)
             {
-                m_PreviousCanLook = TargetPlayer.Camera.CanLookAround;
-                m_PreviousCanMove = TargetPlayer.Movement.CanMoveAround;
-                m_PreviousLockCursor = TargetPlayer.Camera.ShouldLockCursor;
-                m_TweakText.text = "Press " + ToggleKey + " to tweak settings";
-                m_Viewport.anchorMin = new Vector2(0, 0);
-                m_Viewport.anchorMax = new Vector2(1, 1);
-                m_Viewport.sizeDelta = new Vector2(0, 0);
+                previousCanLook = TargetPlayer.Camera.CanLookAround;
+                previousCanMove = TargetPlayer.Movement.CanMoveAround;
+                previousLockCursor = TargetPlayer.Camera.ShouldLockCursor;
+                tweakText.text = "Press " + ToggleKey + " to tweak settings";
+                viewport.anchorMin = new Vector2(0, 0);
+                viewport.anchorMax = new Vector2(1, 1);
+                viewport.sizeDelta = new Vector2(0, 0);
 
                 SetupUI();
             }
@@ -64,63 +73,63 @@ namespace Hertzole.GoldPlayer.Example
         private void SetupUI()
         {
             CreateHeader("Camera");
-            CreateTweaker("Invert X Axis", m_TargetPlayer.Camera.GetType().GetProperty("InvertXAxis"), m_TargetPlayer.Camera);
-            CreateTweaker("Invert Y Axis", m_TargetPlayer.Camera.GetType().GetProperty("InvertYAxis"), m_TargetPlayer.Camera);
-            CreateTweaker("Mouse Sensitivity", m_TargetPlayer.Camera.GetType().GetProperty("MouseSensitivity"), m_TargetPlayer.Camera);
-            CreateTweaker("Mouse Damping", m_TargetPlayer.Camera.GetType().GetProperty("MouseDamping"), m_TargetPlayer.Camera);
-            CreateTweaker("Minimum X", m_TargetPlayer.Camera.GetType().GetProperty("MinimumX"), m_TargetPlayer.Camera);
-            CreateTweaker("Maximum X", m_TargetPlayer.Camera.GetType().GetProperty("MaximumX"), m_TargetPlayer.Camera);
+            CreateTweaker("Invert X Axis", targetPlayer.Camera.GetType().GetProperty("InvertXAxis"), targetPlayer.Camera);
+            CreateTweaker("Invert Y Axis", targetPlayer.Camera.GetType().GetProperty("InvertYAxis"), targetPlayer.Camera);
+            CreateTweaker("Mouse Sensitivity", targetPlayer.Camera.GetType().GetProperty("MouseSensitivity"), targetPlayer.Camera);
+            CreateTweaker("Mouse Damping", targetPlayer.Camera.GetType().GetProperty("MouseDamping"), targetPlayer.Camera);
+            CreateTweaker("Minimum X", targetPlayer.Camera.GetType().GetProperty("MinimumX"), targetPlayer.Camera);
+            CreateTweaker("Maximum X", targetPlayer.Camera.GetType().GetProperty("MaximumX"), targetPlayer.Camera);
             CreateSubHeader("FOV Kick");
-            CreateTweaker("Enable FOV Kick", m_TargetPlayer.Camera.FOVKick.GetType().GetProperty("EnableFOVKick"), m_TargetPlayer.Camera.FOVKick);
-            CreateTweaker("Kick Amount", m_TargetPlayer.Camera.FOVKick.GetType().GetProperty("KickAmount"), m_TargetPlayer.Camera.FOVKick);
-            CreateTweaker("Lerp Time To", m_TargetPlayer.Camera.FOVKick.GetType().GetProperty("LerpTimeTo"), m_TargetPlayer.Camera.FOVKick);
-            CreateTweaker("Lerp Time From", m_TargetPlayer.Camera.FOVKick.GetType().GetProperty("LerpTimeFrom"), m_TargetPlayer.Camera.FOVKick);
+            CreateTweaker("Enable FOV Kick", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("EnableFOVKick"), targetPlayer.Camera.FieldOfViewKick);
+            CreateTweaker("Kick Amount", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("KickAmount"), targetPlayer.Camera.FieldOfViewKick);
+            CreateTweaker("Lerp Time To", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("LerpTimeTo"), targetPlayer.Camera.FieldOfViewKick);
+            CreateTweaker("Lerp Time From", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("LerpTimeFrom"), targetPlayer.Camera.FieldOfViewKick);
 
             CreateHeader("Movement");
             CreateSubHeader("Running");
-            CreateTweaker("Can Run", m_TargetPlayer.Movement.GetType().GetProperty("CanRun"), m_TargetPlayer.Movement);
+            CreateTweaker("Can Run", targetPlayer.Movement.GetType().GetProperty("CanRun"), targetPlayer.Movement);
             CreateSubHeader("Jumping");
-            CreateTweaker("Can Jump", m_TargetPlayer.Movement.GetType().GetProperty("CanJump"), m_TargetPlayer.Movement);
-            CreateTweaker("Jump Height", m_TargetPlayer.Movement.GetType().GetProperty("JumpHeight"), m_TargetPlayer.Movement);
-            CreateTweaker("Air Jump", m_TargetPlayer.Movement.GetType().GetProperty("AirJump"), m_TargetPlayer.Movement);
-            CreateTweaker("Air Jump Time", m_TargetPlayer.Movement.GetType().GetProperty("AirJumpTime"), m_TargetPlayer.Movement);
-            CreateTweaker("Air Jumps Amount", m_TargetPlayer.Movement.GetType().GetProperty("AirJumpsAmount"), m_TargetPlayer.Movement);
-            CreateTweaker("Allow Air Jump Direction Change", m_TargetPlayer.Movement.GetType().GetProperty("AllowAirJumpDirectionChange"), m_TargetPlayer.Movement);
+            CreateTweaker("Can Jump", targetPlayer.Movement.GetType().GetProperty("CanJump"), targetPlayer.Movement);
+            CreateTweaker("Jump Height", targetPlayer.Movement.GetType().GetProperty("JumpHeight"), targetPlayer.Movement);
+            CreateTweaker("Air Jump", targetPlayer.Movement.GetType().GetProperty("AirJump"), targetPlayer.Movement);
+            CreateTweaker("Air Jump Time", targetPlayer.Movement.GetType().GetProperty("AirJumpTime"), targetPlayer.Movement);
+            CreateTweaker("Air Jumps Amount", targetPlayer.Movement.GetType().GetProperty("AirJumpsAmount"), targetPlayer.Movement);
+            CreateTweaker("Allow Air Jump Direction Change", targetPlayer.Movement.GetType().GetProperty("AllowAirJumpDirectionChange"), targetPlayer.Movement);
             CreateSubHeader("Crouching");
-            CreateTweaker("Can Crouch", m_TargetPlayer.Movement.GetType().GetProperty("CanCrouch"), m_TargetPlayer.Movement);
-            CreateTweaker("Crouch Jumping", m_TargetPlayer.Movement.GetType().GetProperty("CrouchJumping"), m_TargetPlayer.Movement);
-            CreateTweaker("Crouch Height", m_TargetPlayer.Movement.GetType().GetProperty("CrouchHeight"), m_TargetPlayer.Movement);
-            CreateTweaker("Crouch Head Lerp", m_TargetPlayer.Movement.GetType().GetProperty("CrouchHeadLerp"), m_TargetPlayer.Movement);
+            CreateTweaker("Can Crouch", targetPlayer.Movement.GetType().GetProperty("CanCrouch"), targetPlayer.Movement);
+            CreateTweaker("Crouch Jumping", targetPlayer.Movement.GetType().GetProperty("CrouchJumping"), targetPlayer.Movement);
+            CreateTweaker("Crouch Height", targetPlayer.Movement.GetType().GetProperty("CrouchHeight"), targetPlayer.Movement);
+            CreateTweaker("Crouch Head Lerp", targetPlayer.Movement.GetType().GetProperty("CrouchHeadLerp"), targetPlayer.Movement);
             CreateSubHeader("Other");
-            CreateTweaker("Acceleration", m_TargetPlayer.Movement.GetType().GetProperty("Acceleration"), m_TargetPlayer.Movement);
-            CreateTweaker("Gravity", m_TargetPlayer.Movement.GetType().GetProperty("Gravity"), m_TargetPlayer.Movement);
-            CreateTweaker("Air Control", m_TargetPlayer.Movement.GetType().GetProperty("AirControl"), m_TargetPlayer.Movement, true, 0, 1);
-            CreateTweaker("Enable Ground Stick", m_TargetPlayer.Movement.GetType().GetProperty("EnableGroundStick"), m_TargetPlayer.Movement);
-            CreateTweaker("GroundStick", m_TargetPlayer.Movement.GetType().GetProperty("GroundStick"), m_TargetPlayer.Movement);
+            CreateTweaker("Acceleration", targetPlayer.Movement.GetType().GetProperty("Acceleration"), targetPlayer.Movement);
+            CreateTweaker("Gravity", targetPlayer.Movement.GetType().GetProperty("Gravity"), targetPlayer.Movement);
+            CreateTweaker("Air Control", targetPlayer.Movement.GetType().GetProperty("AirControl"), targetPlayer.Movement, true, 0, 1);
+            CreateTweaker("Enable Ground Stick", targetPlayer.Movement.GetType().GetProperty("EnableGroundStick"), targetPlayer.Movement);
+            CreateTweaker("GroundStick", targetPlayer.Movement.GetType().GetProperty("GroundStick"), targetPlayer.Movement);
 
             CreateHeader("Head bob");
-            CreateTweaker("Enable Bob", m_TargetPlayer.HeadBob.GetType().GetProperty("EnableBob"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Bob Frequency", m_TargetPlayer.HeadBob.GetType().GetProperty("BobFrequency"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Bob Height", m_TargetPlayer.HeadBob.GetType().GetProperty("BobHeight"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Sway Angle", m_TargetPlayer.HeadBob.GetType().GetProperty("SwayAngle"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Side Movement", m_TargetPlayer.HeadBob.GetType().GetProperty("SideMovement"), m_TargetPlayer.HeadBob);
-            CreateTweaker("height Multiplier", m_TargetPlayer.HeadBob.GetType().GetProperty("HeightMultiplier"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Stride Multiplier", m_TargetPlayer.HeadBob.GetType().GetProperty("StrideMultiplier"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Land Move", m_TargetPlayer.HeadBob.GetType().GetProperty("LandMove"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Land Tilt", m_TargetPlayer.HeadBob.GetType().GetProperty("LandTilt"), m_TargetPlayer.HeadBob);
-            CreateTweaker("Strafe Tilt", m_TargetPlayer.HeadBob.GetType().GetProperty("StrafeTilt"), m_TargetPlayer.HeadBob);
+            CreateTweaker("Enable Bob", targetPlayer.HeadBob.GetType().GetProperty("EnableBob"), targetPlayer.HeadBob);
+            CreateTweaker("Bob Frequency", targetPlayer.HeadBob.GetType().GetProperty("BobFrequency"), targetPlayer.HeadBob);
+            CreateTweaker("Bob Height", targetPlayer.HeadBob.GetType().GetProperty("BobHeight"), targetPlayer.HeadBob);
+            CreateTweaker("Sway Angle", targetPlayer.HeadBob.GetType().GetProperty("SwayAngle"), targetPlayer.HeadBob);
+            CreateTweaker("Side Movement", targetPlayer.HeadBob.GetType().GetProperty("SideMovement"), targetPlayer.HeadBob);
+            CreateTweaker("height Multiplier", targetPlayer.HeadBob.GetType().GetProperty("HeightMultiplier"), targetPlayer.HeadBob);
+            CreateTweaker("Stride Multiplier", targetPlayer.HeadBob.GetType().GetProperty("StrideMultiplier"), targetPlayer.HeadBob);
+            CreateTweaker("Land Move", targetPlayer.HeadBob.GetType().GetProperty("LandMove"), targetPlayer.HeadBob);
+            CreateTweaker("Land Tilt", targetPlayer.HeadBob.GetType().GetProperty("LandTilt"), targetPlayer.HeadBob);
+            CreateTweaker("Strafe Tilt", targetPlayer.HeadBob.GetType().GetProperty("StrafeTilt"), targetPlayer.HeadBob);
         }
 
         public void CreateHeader(string text)
         {
-            Text newText = Instantiate(m_HeaderLabel, m_HeaderLabel.transform.parent);
+            Text newText = Instantiate(headerLabel, headerLabel.transform.parent);
             newText.text = text;
             newText.gameObject.SetActive(true);
         }
 
         public void CreateSubHeader(string text)
         {
-            Text newText = Instantiate(m_HeaderLabel, m_HeaderLabel.transform.parent);
+            Text newText = Instantiate(headerLabel, headerLabel.transform.parent);
             newText.text = text;
             newText.fontStyle = FontStyle.Normal;
             newText.gameObject.SetActive(true);
@@ -134,22 +143,22 @@ namespace Hertzole.GoldPlayer.Example
                 return;
             }
 
-            GoldPlayerTweakField newField = Instantiate(m_TweakField, m_TweakField.transform.parent);
+            GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
             newField.SetupField(label, info, caller, slider, minSliderNum, maxSliderNum);
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (!m_TargetPlayer)
+            if (!targetPlayer)
                 return;
 
-            if (Input.GetKeyDown(m_ToggleKey))
+            if (Input.GetKeyDown(toggleKey))
             {
-                SetShowing(!m_Showing);
+                SetShowing(!showing);
             }
 
-            if (Input.GetKeyDown(m_ResetSceneKey))
+            if (Input.GetKeyDown(resetSceneKey))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
@@ -159,18 +168,18 @@ namespace Hertzole.GoldPlayer.Example
         {
             if (toggle)
             {
-                m_PreviousCanLook = TargetPlayer.Camera.CanLookAround;
-                m_PreviousCanMove = TargetPlayer.Movement.CanMoveAround;
-                m_PreviousLockCursor = TargetPlayer.Camera.ShouldLockCursor;
+                previousCanLook = TargetPlayer.Camera.CanLookAround;
+                previousCanMove = TargetPlayer.Movement.CanMoveAround;
+                previousLockCursor = TargetPlayer.Camera.ShouldLockCursor;
             }
 
-            m_Showing = toggle;
-            TargetPlayer.Camera.CanLookAround = toggle ? false : m_PreviousCanLook;
-            TargetPlayer.Movement.CanMoveAround = toggle ? false : m_PreviousCanMove;
-            TargetPlayer.Camera.ShouldLockCursor = toggle ? false : m_PreviousLockCursor;
+            showing = toggle;
+            TargetPlayer.Camera.CanLookAround = toggle ? false : previousCanLook;
+            TargetPlayer.Movement.CanMoveAround = toggle ? false : previousCanMove;
+            TargetPlayer.Camera.ShouldLockCursor = toggle ? false : previousLockCursor;
             TargetPlayer.Camera.LockCursor(!toggle);
-            m_TweakText.gameObject.SetActive(!toggle);
-            Panel.SetActive(m_Showing);
+            tweakText.gameObject.SetActive(!toggle);
+            Panel.SetActive(showing);
         }
     }
 }
