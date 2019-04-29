@@ -67,6 +67,14 @@ namespace Hertzole.GoldPlayer.Core
         private float m_ShakeDuration = 0;
         // The timer used to reach the duration.
         private float m_ShakeTimer = 0;
+        // The amount of current recoil.
+        private float recoil = 0;
+        // The amount of the time the recoil should take.
+        private float recoilTime = 0;
+        // The start recoil amount.
+        private float startRecoil;
+        // The current recoil time.
+        private float currentRecoilTime = 0;
 
         // The current input from the mouse.
         private Vector2 m_MouseInput = Vector2.zero;
@@ -208,8 +216,26 @@ namespace Hertzole.GoldPlayer.Core
             m_FollowBodyAngles = Vector3.SmoothDamp(m_FollowBodyAngles, m_TargetBodyAngles, ref m_FollowBodyVelocity, m_MouseDamping);
 
             // Set the rotation on the camera head and player.
-            m_TargetHeadRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x, m_CameraHead.rotation.y, m_CameraHead.rotation.z);
+            m_TargetHeadRotation = m_OriginalHeadRotation * Quaternion.Euler(-m_FollowHeadAngles.x + (-recoil), m_CameraHead.rotation.y, m_CameraHead.rotation.z);
             PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-m_FollowBodyAngles.x, m_FollowBodyAngles.y, 0);
+
+            // If recoil is above 0, decrease it. If not, just set it to 0.
+            if (recoil > 0f)
+            {
+                // Increase the recoil time.
+                currentRecoilTime += Time.deltaTime;
+                // Cap the current recoil time at the max recoil time.
+                if (currentRecoilTime > recoilTime)
+                    currentRecoilTime = recoilTime;
+
+                // Calculate the percentage and lerp with it.
+                float recoilPercentage = currentRecoilTime / recoilTime;
+                recoil = Mathf.Lerp(startRecoil, 0, recoilPercentage);
+            }
+            else
+            {
+                recoil = 0;
+            }
 
             // Reset the target body angles so we can set the transform rotation from other places.
             m_TargetBodyAngles = Vector3.zero;
@@ -288,6 +314,19 @@ namespace Hertzole.GoldPlayer.Core
         public virtual void StopCameraShake()
         {
             m_DoShake = false;
+        }
+
+        /// <summary>
+        /// Applies a upward recoil to the camera and slowly moves it down.
+        /// </summary>
+        /// <param name="recoilAmount">The amount of recoil.</param>
+        /// <param name="recoilTime">The amount of time to "fade out" takes.</param>
+        public virtual void ApplyRecoil(float recoilAmount, float recoilTime)
+        {
+            this.recoilTime = recoilTime;
+            recoil = recoilAmount;
+            startRecoil = recoil;
+            currentRecoilTime = 0;
         }
 
         /// <summary>
