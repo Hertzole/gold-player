@@ -32,11 +32,9 @@ namespace Hertzole.GoldPlayer.Editor
         private VisualElement headBobElements;
         private VisualElement audioElements;
 
+        private VisualElement controllerWarning;
         private VisualElement crouchHeightWarning;
         private VisualElement groundLayerWarning;
-
-        private int crouchHeightIndex;
-        private int groundLayerIndex;
 #endif
 
         private void OnEnable()
@@ -141,9 +139,24 @@ namespace Hertzole.GoldPlayer.Editor
 #else 
         public override VisualElement CreateInspectorGUI()
         {
-            //TODO: Somehow show warning about incorrect character controller settings.
-
             root = new VisualElement();
+
+            controllerWarning = new IMGUIContainer(() =>
+            {
+                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
+            });
+
+            if (characterController != null)
+                controllerWarning.style.display = characterController.center.y != characterController.height / 2 ? DisplayStyle.Flex : DisplayStyle.None;
+
+            root.Add(controllerWarning);
+
+            IVisualElementScheduledItem controllerCheck = root.schedule.Execute(() =>
+            {
+                if (characterController != null)
+                    controllerWarning.style.display = characterController.center.y != characterController.height / 2 ? DisplayStyle.Flex : DisplayStyle.None;
+            });
+            controllerCheck.Every(100);
 
             IMGUIContainer toolbarContainer = new IMGUIContainer(() =>
             {
@@ -252,18 +265,30 @@ namespace Hertzole.GoldPlayer.Editor
                     movementElements.Add(field);
                     if (it.name.Equals("crouchHeight"))
                     {
-                        crouchHeightIndex = index;
-                        field.RegisterCallback<ChangeEvent<float>>((evt) => { ValidateCrouchHeight(movementElements, evt.newValue); });
+                        //HACK: Maybe find a neat replacement for help boxes.
+                        crouchHeightWarning = new IMGUIContainer(() =>
+                        {
+                            EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
+                        });
 
-                        ValidateCrouchHeight(movementElements, it.floatValue);
+                        movementElements.Add(crouchHeightWarning);
+
+                        field.RegisterCallback<ChangeEvent<float>>((evt) => { ValidateCrouchHeight(evt.newValue); });
+
+                        ValidateCrouchHeight(it.floatValue);
                     }
 
                     if (it.name.Equals("groundLayer"))
                     {
-                        groundLayerIndex = index;
-                        field.RegisterCallback<ChangeEvent<int>>((evt) => { ValidateGroundLayer(movementElements, evt.newValue); });
+                        //HACK: Maybe find a neat replacement for help boxes.
+                        groundLayerWarning = new IMGUIContainer(() =>
+                        {
+                            EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
+                        });
 
-                        ValidateGroundLayer(movementElements, it.intValue);
+                        field.RegisterCallback<ChangeEvent<int>>((evt) => { ValidateGroundLayer(evt.newValue); });
+
+                        ValidateGroundLayer(it.intValue);
                     }
 
                     index++;
@@ -271,47 +296,15 @@ namespace Hertzole.GoldPlayer.Editor
             }
         }
 
-        private void ValidateCrouchHeight(VisualElement parent, float height)
+        private void ValidateCrouchHeight(float height)
         {
-            if (height < 0.8f)
-            {
-                if (!parent.Contains(crouchHeightWarning))
-                {
-                    //HACK: Maybe find a neat replacement for help boxes.
-                    crouchHeightWarning = new IMGUIContainer(() =>
-                    {
-                        EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
-                    });
-                    parent.Insert(crouchHeightIndex + 1, crouchHeightWarning);
-                }
-            }
-            else
-            {
-                if (parent.Contains(crouchHeightWarning))
-                    parent.Remove(crouchHeightWarning);
-            }
+            crouchHeightWarning.style.display = height < 0.8f ? (StyleEnum<DisplayStyle>)DisplayStyle.Flex : (StyleEnum<DisplayStyle>)DisplayStyle.None;
         }
 
-        private void ValidateGroundLayer(VisualElement parent, int layer)
+        private void ValidateGroundLayer(int layer)
         {
-            if (layer == (layer | (1 << goldPlayer.gameObject.layer)))
-            {
-                if (!parent.Contains(groundLayerWarning))
-                {
-                    //HACK: Maybe find a neat replacement for help boxes.
-                    groundLayerWarning = new IMGUIContainer(() =>
-                    {
-                        EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
-                    });
-
-                    parent.Insert(groundLayerIndex + (parent.Contains(crouchHeightWarning) ? 2 : 1), groundLayerWarning);
-                }
-            }
-            else
-            {
-                if (parent.Contains(groundLayerWarning))
-                    parent.Remove(groundLayerWarning);
-            }
+            groundLayerWarning.style.display = layer == (layer | (1 << goldPlayer.gameObject.layer)) ?
+                (StyleEnum<DisplayStyle>)DisplayStyle.Flex : (StyleEnum<DisplayStyle>)DisplayStyle.None;
         }
 
         private void CreateHeadBobGUI()
