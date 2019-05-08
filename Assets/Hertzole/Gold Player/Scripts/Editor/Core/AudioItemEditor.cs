@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using Hertzole.GoldPlayer.Core;
 using UnityEditor;
-#if UNITY_2019_2_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 #else
@@ -13,7 +13,7 @@ namespace Hertzole.GoldPlayer.Editor
     [CustomPropertyDrawer(typeof(AudioItem))]
     internal class AudioItemEditor : PropertyDrawer
     {
-#if !UNITY_2019_2_OR_NEWER
+#if !UNITY_2019_1_OR_NEWER
         // The full complete rect.
         private Rect fullRect;
         // The rect for the current field.
@@ -39,7 +39,7 @@ namespace Hertzole.GoldPlayer.Editor
         private VisualElement audioClips;
 #endif
 
-#if !UNITY_2019_2_OR_NEWER
+#if !UNITY_2019_1_OR_NEWER
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             // Set 'doGUI' to true as we want to bae it of the GUI.

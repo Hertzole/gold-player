@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-#if UNITY_2019_2_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 #endif
@@ -24,7 +24,7 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty headBob;
         private SerializedProperty audio;
 
-#if UNITY_2019_2_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
         private VisualElement root;
 
         private VisualElement cameraElements;
@@ -57,7 +57,7 @@ namespace Hertzole.GoldPlayer.Editor
             characterController = goldPlayer.GetComponent<CharacterController>();
         }
 
-#if !UNITY_2019_2_OR_NEWER
+#if !UNITY_2019_1_OR_NEWER
         public override void OnInspectorGUI()
         {
             if (characterController.center.y != characterController.height / 2)

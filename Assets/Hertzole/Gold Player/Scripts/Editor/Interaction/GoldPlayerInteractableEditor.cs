@@ -1,6 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
-#if UNITY_2019_2_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 using Hertzole.GoldPlayer.Editor;
@@ -19,7 +19,7 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
         private SerializedProperty customMessage;
         private SerializedProperty onInteract;
 
-#if UNITY_2019_2_OR_NEWER
+#if UNITY_2019_1_OR_NEWER
         private VisualElement useCustomMessageElement;
         private VisualElement customMessageElement;
 #endif
@@ -33,7 +33,7 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
             onInteract = serializedObject.FindProperty("onInteract");
         }
 
-#if !UNITY_2019_2_OR_NEWER
+#if !UNITY_2019_1_OR_NEWER
         public override void OnInspectorGUI()
         {
             serializedObject.Update();

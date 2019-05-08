@@ -122,7 +122,7 @@ namespace Hertzole.GoldPlayer.Tests
             Camera camera = playerCameraHead.AddComponent<Camera>();
             playerController.GetComponent<CharacterController>().center = new Vector3(0, 1, 0);
             playerController.Camera.CameraHead = playerCameraHead.transform;
-            playerController.Camera.FOVKick.EnableFOVKick = false;
+            playerController.Camera.FieldOfViewKick.EnableFOVKick = false;
             playerController.HeadBob.BobTarget = playerCameraHead.transform;
 
             playerController.Movement.MovingPlatforms.Enabled = true;
