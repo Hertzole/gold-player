@@ -1,8 +1,14 @@
+#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+#define USE_GUI
+#endif
+
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+#if USE_GUI
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+#endif
 
 namespace Hertzole.GoldPlayer.Example
 {
@@ -13,14 +19,17 @@ namespace Hertzole.GoldPlayer.Example
         [FormerlySerializedAs("m_TargetPlayer")]
         private GoldPlayerController targetPlayer;
         public GoldPlayerController TargetPlayer { get { return targetPlayer; } set { targetPlayer = value; } }
+#if USE_GUI
         [SerializeField]
         [FormerlySerializedAs("m_TweakText")]
         private Text tweakText;
         public Text TweakText { get { return tweakText; } set { tweakText = value; } }
+#endif
         [SerializeField]
         [FormerlySerializedAs("m_Panel")]
         private GameObject panel;
         public GameObject Panel { get { return panel; } set { panel = value; } }
+#if USE_GUI
         [SerializeField]
         [FormerlySerializedAs("m_Viewport")]
         private RectTransform viewport;
@@ -29,6 +38,7 @@ namespace Hertzole.GoldPlayer.Example
         [FormerlySerializedAs("m_HeaderLabel")]
         private Text headerLabel;
         public Text HeaderLabel { get { return headerLabel; } set { headerLabel = value; } }
+#endif
         [SerializeField]
         [FormerlySerializedAs("m_TweakField")]
         private GoldPlayerTweakField tweakField;
@@ -43,14 +53,17 @@ namespace Hertzole.GoldPlayer.Example
         private KeyCode resetSceneKey = KeyCode.F2;
         public KeyCode ResetSceneKey { get { return resetSceneKey; } set { resetSceneKey = value; } }
 
+#if USE_GUI
         private bool showing = false;
         private bool previousCanLook = false;
         private bool previousCanMove = false;
         private bool previousLockCursor = false;
+#endif
 
         // Use this for initialization
         void Start()
         {
+#if USE_GUI
             Panel.gameObject.SetActive(false);
             headerLabel.gameObject.SetActive(false);
             tweakField.gameObject.SetActive(false);
@@ -68,6 +81,9 @@ namespace Hertzole.GoldPlayer.Example
 
                 SetupUI();
             }
+#else
+            Debug.LogWarning("GoldPlayerTweaker can't be used without UGUI!");
+#endif
         }
 
         private void SetupUI()
@@ -122,17 +138,21 @@ namespace Hertzole.GoldPlayer.Example
 
         public void CreateHeader(string text)
         {
+#if USE_GUI
             Text newText = Instantiate(headerLabel, headerLabel.transform.parent);
             newText.text = text;
             newText.gameObject.SetActive(true);
+#endif
         }
 
         public void CreateSubHeader(string text)
         {
+#if USE_GUI
             Text newText = Instantiate(headerLabel, headerLabel.transform.parent);
             newText.text = text;
             newText.fontStyle = FontStyle.Normal;
             newText.gameObject.SetActive(true);
+#endif
         }
 
         public void CreateTweaker(string label, PropertyInfo info, object caller, bool slider = false, float minSliderNum = 0, float maxSliderNum = 1)
@@ -147,6 +167,7 @@ namespace Hertzole.GoldPlayer.Example
             newField.SetupField(label, info, caller, slider, minSliderNum, maxSliderNum);
         }
 
+#if USE_GUI
         // Update is called once per frame
         void Update()
         {
@@ -163,9 +184,11 @@ namespace Hertzole.GoldPlayer.Example
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
+#endif
 
         public void SetShowing(bool toggle)
         {
+#if USE_GUI
             if (toggle)
             {
                 previousCanLook = TargetPlayer.Camera.CanLookAround;
@@ -180,6 +203,7 @@ namespace Hertzole.GoldPlayer.Example
             TargetPlayer.Camera.LockCursor(!toggle);
             tweakText.gameObject.SetActive(!toggle);
             Panel.SetActive(showing);
+#endif
         }
     }
 }

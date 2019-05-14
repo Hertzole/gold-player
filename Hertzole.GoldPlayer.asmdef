@@ -1,10 +1,26 @@
 {
     "name": "Hertzole.GoldPlayer",
     "references": [
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Unity.ugui"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.ugui",
+            "expression": "",
+            "define": "USE_UGUI"
+        },
+        {
+            "name": "com.unity.textmeshpro",
+            "expression": "",
+            "define": "USE_TMP"
+        }
+    ]
 }

@@ -1,7 +1,11 @@
 // If Unity 2018 or newer is running, use TextMeshPro instead,
 // as it's the recommended text solution.
-#if UNITY_2018_1_OR_NEWER
+#if UNITY_2018_1_OR_NEWER && !UNITY_2019_2_OR_NEWER
 #define USE_TMP
+#endif
+
+#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+#define USE_GUI
 #endif
 
 #if GOLD_PLAYER_INTERACTION
@@ -12,7 +16,9 @@ using TMPro;
 #endif
 using UnityEngine;
 using UnityEngine.Serialization;
+#if USE_GUI
 using UnityEngine.UI;
+#endif
 #if HERTZLIB_UPDATE_MANAGER
 using Hertzole.HertzLib;
 #endif
@@ -49,6 +55,7 @@ namespace Hertzole.GoldPlayer.UI
         [Tooltip("The type of progress bar that will be used.")]
         [FormerlySerializedAs("m_SprintingBarType")]
         private ProgressBarType sprintingBarType = ProgressBarType.Image;
+#if USE_GUI
         [SerializeField]
         [Tooltip("The progress bar as an image.")]
         [FormerlySerializedAs("m_SprintingBarImage")]
@@ -64,6 +71,7 @@ namespace Hertzole.GoldPlayer.UI
         private TextMeshProUGUI sprintingLabel;
 #else
         private Text sprintingLabel;
+#endif
 #endif
         [SerializeField]
         [Tooltip("The type of display if there's a label.")]
@@ -85,6 +93,7 @@ namespace Hertzole.GoldPlayer.UI
         [Tooltip("The box/label that should be toggled when the player can interact.")]
         [FormerlySerializedAs("m_InteractionBox")]
         private GameObject interactionBox;
+#if USE_GUI
         [SerializeField]
         [Tooltip("The label for the interaction message.")]
         [FormerlySerializedAs("m_InteractionLabel")]
@@ -94,9 +103,11 @@ namespace Hertzole.GoldPlayer.UI
         private Text interactionLabel;
 #endif
 #endif
+#endif
 
         /// <summary> The type of progress bar that will be used. </summary>
         public ProgressBarType SprintingBarType { get { return sprintingBarType; } set { sprintingBarType = value; AdaptSprintingUI(); } }
+#if USE_GUI
         /// <summary> The progress bar as an image. </summary>
         public Image SprintingBarImage { get { return sprintingBarImage; } set { sprintingBarImage = value; } }
         /// <summary> The progress bar as a slider. </summary>
@@ -105,7 +116,8 @@ namespace Hertzole.GoldPlayer.UI
 #if USE_TMP
         public TextMeshProUGUI SprintingLabel { get { return sprintingLabel; } set { sprintingLabel = value; } }
 #else
-        public Text SprintingLabel { get { return m_SprintingLabel; } set { m_SprintingLabel = value; } }
+        public Text SprintingLabel { get { return sprintingLabel; } set { sprintingLabel = value; } }
+#endif
 #endif
         /// <summary> The type of display if there's a label. </summary>
         public LabelDisplayType SprintingLabelDisplay { get { return sprintingLabelDisplay; } set { sprintingLabelDisplay = value; } }
@@ -113,11 +125,13 @@ namespace Hertzole.GoldPlayer.UI
 #if GOLD_PLAYER_INTERACTION
         /// <summary> The box/label that should be toggled when the player can interact. </summary>
         public GameObject InteractionBox { get { return interactionBox; } set { interactionBox = value; } }
+#if USE_GUI
         /// <summary> The label for the interaction message. </summary>
 #if USE_TMP
         public TextMeshProUGUI InteractionLabel { get { return interactionLabel; } set { interactionLabel = value; } }
 #else
-        public Text InteractionLabel { get { return m_InteractionLabel; } set { m_InteractionLabel = value; } }
+        public Text InteractionLabel { get { return interactionLabel; } set { interactionLabel = value; } }
+#endif
 #endif
 #endif
 
@@ -179,6 +193,7 @@ namespace Hertzole.GoldPlayer.UI
         /// </summary>
         public virtual void AdaptSprintingUI()
         {
+#if USE_GUI
             if (Player != null)
             {
                 // If the player can't run or no stamina enabled, disable all elements.
@@ -219,6 +234,9 @@ namespace Hertzole.GoldPlayer.UI
                         throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
                 }
             }
+#else
+            Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");
+#endif
         }
 
 #if GOLD_PLAYER_INTERACTION
@@ -246,6 +264,7 @@ namespace Hertzole.GoldPlayer.UI
 
         protected virtual void SprintingUpdate()
         {
+#if USE_GUI
             if (Player && Player.Movement.CanRun && Player.Movement.Stamina.EnableStamina)
             {
                 switch (sprintingBarType)
@@ -265,11 +284,15 @@ namespace Hertzole.GoldPlayer.UI
                 if (sprintingLabel != null)
                     sprintingLabel.text = GetLabel(sprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
             }
+#else
+            Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");
+#endif
         }
 
 #if GOLD_PLAYER_INTERACTION
         protected virtual void InteractionUpdate()
         {
+#if USE_GUI
             // Only call if player interaction is added to the player.
             if (PlayerInteraction && PlayerInteraction.CurrentHitInteractable != null)
             {
@@ -290,6 +313,9 @@ namespace Hertzole.GoldPlayer.UI
                 if (interactionBox != null)
                     interactionBox.SetActive(false);
             }
+#else
+            Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");
+#endif
         }
 #endif
 
