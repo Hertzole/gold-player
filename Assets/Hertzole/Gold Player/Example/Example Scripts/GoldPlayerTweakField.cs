@@ -1,13 +1,20 @@
+#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+#define USE_GUI
+#endif
+
 using System.Reflection;
 using UnityEngine;
+#if USE_GUI
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+#endif
 
 namespace Hertzole.GoldPlayer.Example
 {
     [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker Field", 22)]
     public class GoldPlayerTweakField : MonoBehaviour
     {
+#if USE_GUI
         [SerializeField]
         [FormerlySerializedAs("m_Label")]
         private Text label;
@@ -24,9 +31,11 @@ namespace Hertzole.GoldPlayer.Example
         [FormerlySerializedAs("m_SliderField")]
         private Slider sliderField;
         public Slider SliderField { get { return sliderField; } set { sliderField = value; } }
+#endif
 
         public void SetupField(string label, PropertyInfo info, object caller, bool slider = false, float minSliderNum = 0, float maxSliderNum = 1)
         {
+#if USE_GUI
             textField.gameObject.SetActive(false);
             toggleField.gameObject.SetActive(false);
             sliderField.gameObject.SetActive(false);
@@ -87,6 +96,7 @@ namespace Hertzole.GoldPlayer.Example
                     });
                 }
             }
+#endif
         }
     }
 }
