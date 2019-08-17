@@ -252,9 +252,6 @@ namespace Hertzole.GoldPlayer.Core
         public bool EnableGroundStick { get { return enableGroundStick; } set { enableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
         public float GroundStick { get { return groundStick; } set { float v = value; if (v < 0) v = -v; groundStick = v; } }
-        /// <summary> The type of ground check method. </summary>
-        [System.Obsolete("No longer used.")]
-        public GroundCheckType GroundCheckType { get { return GroundCheckType.Sphere; } set { } }
         /// <summary> Everything related to moving platforms. </summary>
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
@@ -373,12 +370,12 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Called every frame.
         /// </summary>
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
             // Call update on the stamina module.
-            stamina.OnUpdate();
+            stamina.OnUpdate(deltaTime);
             // Call update on the moving platforms module.
-            movingPlatforms.OnUpdate();
+            movingPlatforms.OnUpdate(deltaTime);
 
             // Check the grounded state.
             isGrounded = CheckGrounded();
@@ -386,29 +383,29 @@ namespace Hertzole.GoldPlayer.Core
             GetInput();
 
             // Do movement.
-            BasicMovement();
+            BasicMovement(deltaTime);
             // Do crouching.
-            Crouching();
+            Crouching(deltaTime);
             // Do running.
             Running();
             // Do force update.
-            ForceUpdate();
+            ForceUpdate(deltaTime);
 
             // Move the player using the character controller.
-            CharacterController.Move(moveDirection * Time.deltaTime);
+            CharacterController.Move(moveDirection * deltaTime);
         }
 
         /// <summary>
         /// Handles the basic movement, like walking and jumping.
         /// </summary>
-        protected virtual void BasicMovement()
+        protected virtual void BasicMovement(float deltaTime)
         {
             // Only run if air jump is enabled.
             if (airJump)
             {
                 // If the current air time is above 0, decrease it.
                 if (currentAirTime > 0)
-                    currentAirTime -= Time.deltaTime;
+                    currentAirTime -= deltaTime;
 
                 // If current air time is less than or equal to 0, the player should no longer jump.
                 if (currentAirTime <= 0)
@@ -452,7 +449,7 @@ namespace Hertzole.GoldPlayer.Core
                 }
 
                 // Apply gravity to the Y axis.
-                moveDirection.y -= gravity * Time.deltaTime;
+                moveDirection.y -= gravity * deltaTime;
             }
             else
             {
@@ -730,7 +727,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Handles crouching.
         /// </summary>
-        protected virtual void Crouching()
+        protected virtual void Crouching(float deltaTime)
         {
             // Only run the code if we can crouch. If we can't, always set 'isCrouching' to false.
             if (canCrouch)
@@ -817,7 +814,7 @@ namespace Hertzole.GoldPlayer.Core
                 }
 
                 // Lerp the current crouch camera position to either the crouch camera position or the original camera position.
-                currentCrouchCameraPosition = Mathf.Lerp(currentCrouchCameraPosition, isCrouching ? crouchCameraPosition : originalCameraPosition, crouchHeadLerp * Time.deltaTime);
+                currentCrouchCameraPosition = Mathf.Lerp(currentCrouchCameraPosition, isCrouching ? crouchCameraPosition : originalCameraPosition, crouchHeadLerp * deltaTime);
                 // Set the camera head position to the current crouch camera position.
                 PlayerController.Camera.CameraHead.localPosition = new Vector3(PlayerController.Camera.CameraHead.localPosition.x, currentCrouchCameraPosition, PlayerController.Camera.CameraHead.localPosition.z);
             }
@@ -841,14 +838,14 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Do updates related to force.
         /// </summary>
-        protected virtual void ForceUpdate()
+        protected virtual void ForceUpdate(float deltaTime)
         {
             // If the force impact is over 0.2, apply the force impact to the move direction.
             if (forceImpact.magnitude > 0.2f)
                 moveDirection = new Vector3(forceImpact.x, moveDirection.y, forceImpact.z);
 
             // Lerp the force impact to zero over time.
-            forceImpact = Vector3.Lerp(forceImpact, Vector3.zero, 5 * Time.deltaTime);
+            forceImpact = Vector3.Lerp(forceImpact, Vector3.zero, 5 * deltaTime);
         }
 
         /// <summary>

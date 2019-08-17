@@ -92,15 +92,15 @@ namespace Hertzole.GoldPlayer.Core
             newFOV = targetCamera.fieldOfView + kickAmount;
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
-            HandleFOV();
+            HandleFOV(deltaTime);
         }
 
         /// <summary>
         /// Runs the logic that applies the FOV kick in the right situations.
         /// </summary>
-        protected virtual void HandleFOV()
+        protected virtual void HandleFOV(float deltaTime)
         {
             // If FOV kick is disabled, stop here.
             if (!enableFOVKick)
@@ -118,12 +118,12 @@ namespace Hertzole.GoldPlayer.Core
             if (kickWhen == RunAction.FasterThanRunSpeed)
             {
                 // Do FOV kick if 'isRunning' is true.
-                DoFOV(PlayerController.Movement.IsRunning);
+                DoFOV(PlayerController.Movement.IsRunning, deltaTime);
             }
             else if (kickWhen == RunAction.FasterThanRunSpeedAndPressingRun)
             {
                 // Do FOV kick if 'isRunning' is true and the run button is being held down.
-                DoFOV(GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY) && PlayerController.Movement.IsRunning);
+                DoFOV(GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY) && PlayerController.Movement.IsRunning, deltaTime);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Hertzole.GoldPlayer.Core
         /// DOes the FOV kick.
         /// </summary>
         /// <param name="activate">Determines if the kick is active or not.</param>
-        protected virtual void DoFOV(bool activate)
+        protected virtual void DoFOV(bool activate, float deltaTime)
         {
             // If FOV kick is disabled, stop here.
             if (!enableFOVKick)
@@ -139,7 +139,7 @@ namespace Hertzole.GoldPlayer.Core
 
             // If active is true, lerp the target camera field of view to the new FOV.
             // Else lerp it to the original FOV.
-            targetCamera.fieldOfView = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * Time.deltaTime);
+            targetCamera.fieldOfView = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
         }
 
 #if UNITY_EDITOR

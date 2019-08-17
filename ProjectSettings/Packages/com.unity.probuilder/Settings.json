@@ -1,4 +1,6 @@
 {
+    "m_Name": "Settings",
+    "m_Path": "ProjectSettings/Packages/com.unity.probuilder/Settings.json",
     "m_Dictionary": {
         "m_DictionaryValues": [
             {
@@ -19,17 +21,22 @@
             {
                 "type": "UnityEngine.ProBuilder.SemVer, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "about.identifier",
-                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":0,\"m_Patch\":0,\"m_Build\":33,\"m_Type\":\"preview\",\"m_Metadata\":\"\",\"m_Date\":\"2018/11/26\"}}"
+                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":1,\"m_Patch\":0,\"m_Build\":-1,\"m_Type\":\"\",\"m_Metadata\":\"\",\"m_Date\":\"2019/07/03\"}}"
             },
             {
                 "type": "UnityEngine.ProBuilder.SemVer, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "preferences.version",
-                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":0,\"m_Patch\":0,\"m_Build\":33,\"m_Type\":\"preview\",\"m_Metadata\":\"\",\"m_Date\":\"2018/11/26\"}}"
+                "value": "{\"m_Value\":{\"m_Major\":4,\"m_Minor\":1,\"m_Patch\":0,\"m_Build\":-1,\"m_Type\":\"\",\"m_Metadata\":\"\",\"m_Date\":\"2019/07/03\"}}"
             },
             {
                 "type": "UnityEngine.ProBuilder.PivotPoint, Unity.ProBuilder, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
                 "key": "debug.pivotModePivotEquivalent",
                 "value": "{\"m_Value\":1}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "experimental.meshesAreAssets",
+                "value": "{\"m_Value\":false}"
             }
         ]
     }

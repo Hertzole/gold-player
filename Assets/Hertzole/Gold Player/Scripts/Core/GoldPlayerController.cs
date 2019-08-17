@@ -89,14 +89,16 @@ namespace Hertzole.GoldPlayer
         public void Update()
 #endif
         {
+            float deltaTime = Time.deltaTime;
+
             if (movement.HasBeenInitialized)
-                movement.OnUpdate();
+                movement.OnUpdate(deltaTime);
             if (camera.HasBeenInitialized)
-                camera.OnUpdate();
+                camera.OnUpdate(deltaTime);
             if (headBob.HasBeenInitialized)
-                headBob.OnUpdate();
+                headBob.OnUpdate(deltaTime);
             if (audio.HasBeenInitialized)
-                audio.OnUpdate();
+                audio.OnUpdate(deltaTime);
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -105,14 +107,16 @@ namespace Hertzole.GoldPlayer
         public void FixedUpdate()
 #endif
         {
+            float fixedDeltaTime = Time.fixedDeltaTime;
+
             if (movement.HasBeenInitialized)
-                movement.OnFixedUpdate();
+                movement.OnFixedUpdate(fixedDeltaTime);
             if (camera.HasBeenInitialized)
-                camera.OnFixedUpdate();
+                camera.OnFixedUpdate(fixedDeltaTime);
             if (headBob.HasBeenInitialized)
-                headBob.OnFixedUpdate();
+                headBob.OnFixedUpdate(fixedDeltaTime);
             if (audio.HasBeenInitialized)
-                audio.OnFixedUpdate();
+                audio.OnFixedUpdate(fixedDeltaTime);
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -121,14 +125,16 @@ namespace Hertzole.GoldPlayer
         public void LateUpdate()
 #endif
         {
+            float deltaTime = Time.deltaTime;
+
             if (movement.HasBeenInitialized)
-                movement.OnLateUpdate();
+                movement.OnLateUpdate(deltaTime);
             if (camera.HasBeenInitialized)
-                camera.OnLateUpdate();
+                camera.OnLateUpdate(deltaTime);
             if (headBob.HasBeenInitialized)
-                headBob.OnLateUpdate();
+                headBob.OnLateUpdate(deltaTime);
             if (audio.HasBeenInitialized)
-                audio.OnLateUpdate();
+                audio.OnLateUpdate(deltaTime);
         }
 
         /// <summary>

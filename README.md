@@ -13,7 +13,7 @@ I feel like the standard controllers provided by Unity is REALLY bad, like serio
 Starting with Unity 2018.3, you can use git as packages in the package manager! Go [here](https://github.com/Hertzole/gold-player/tree/package#how-do-i-get-started) for installation instructions. If you don't want to use that, you can go the normal route...
 
 Go to [Releases](https://github.com/Hertzole/gold-player/releases) and get the latest release in the form of a Unity package. This will make sure you get a version that should work just fine without any problems. The player is *supported* from Unity 2018.1 and up but it should work fine to at least Unity 2017.1. You may just need to do some manual work on import (like taking care of assembly definitions) (Notice! If you want to use the provided UI component you NEED to use TextMesh Pro in 2018.1 and up and normal text in 2017.3 and down)  
-However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it. **NOTICE THAT THE PROJECT REQUIRES AT LEAST UNITY VERSION 2018.1!**
+However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it. **NOTICE THAT THE PROJECT REQUIRES AT LEAST UNITY VERSION 2019.3!**
 #### If you want to contribute:
 Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files. **NOTICE THAT THE PROJECT REQUIRES UNITY VERSION 2018.1!**
 

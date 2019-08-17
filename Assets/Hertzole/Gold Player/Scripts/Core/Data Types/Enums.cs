@@ -6,12 +6,6 @@ namespace Hertzole.GoldPlayer.Core
         FasterThanRunSpeedAndPressingRun = 1
     }
 
-    public enum GroundCheckType
-    {
-        Sphere,
-        Box
-    }
-
     public enum AudioTypes
     {
         Standard = 0,

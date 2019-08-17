@@ -23,7 +23,7 @@ namespace Hertzole.GoldPlayer.Tests
 
             Assert.That(() =>
             {
-                player.Movement.MovingPlatforms.OnUpdate();
+                player.Movement.MovingPlatforms.OnUpdate(Time.deltaTime);
             }, Is.Not.AllocatingGCMemory());
         }
 

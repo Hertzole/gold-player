@@ -177,11 +177,11 @@ namespace Hertzole.GoldPlayer.Core
             Cursor.visible = !lockCursor;
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
-            MouseHandler();
-            fieldOfViewKick.OnUpdate();
-            ShakeHandler();
+            MouseHandler(deltaTime);
+            fieldOfViewKick.OnUpdate(deltaTime);
+            ShakeHandler(deltaTime);
 
             // Update the camera head rotation.
             cameraHead.localRotation = targetHeadRotation;
@@ -190,7 +190,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Does all the mouse work for looking around.
         /// </summary>
-        protected virtual void MouseHandler()
+        protected virtual void MouseHandler(float deltaTime)
         {
             // If the camera head field is null, stop here.
             if (cameraHead == null)
@@ -232,7 +232,7 @@ namespace Hertzole.GoldPlayer.Core
             if (recoil > 0f)
             {
                 // Increase the recoil time.
-                currentRecoilTime += Time.deltaTime;
+                currentRecoilTime += deltaTime;
                 // Cap the current recoil time at the max recoil time.
                 if (currentRecoilTime > recoilTime)
                     currentRecoilTime = recoilTime;
@@ -253,7 +253,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Handles all the camera shake code.
         /// </summary>
-        protected virtual void ShakeHandler()
+        protected virtual void ShakeHandler(float deltaTime)
         {
             // Only run the code if doShake is true.
             if (doShake)
@@ -262,7 +262,7 @@ namespace Hertzole.GoldPlayer.Core
                 targetHeadRotation *= Quaternion.Euler(PerlinShake(shakeFrequency, shakeMagnitude));
 
                 // Increase the shake timer.
-                shakeTimer += Time.deltaTime;
+                shakeTimer += deltaTime;
                 // Stop shaking whenever the shake timer is above the shake duration.
                 if (shakeTimer >= shakeDuration)
                     doShake = false;
