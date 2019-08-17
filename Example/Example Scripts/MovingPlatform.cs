@@ -41,19 +41,25 @@ namespace Hertzole.GoldPlayer.Example
         void Start()
         {
             currentWaypoint = startingWaypoint;
-            nextMoveTime = Time.time + waypoints[currentWaypoint].waitTime;
-            transform.position = waypoints[currentWaypoint].position;
+            if (waypoints.Count > 0)
+            {
+                nextMoveTime = Time.time + waypoints[currentWaypoint].waitTime;
+                transform.position = waypoints[currentWaypoint].position;
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Time.time >= nextMoveTime)
-                transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypoint].position, moveSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) == 0f)
+            if (waypoints.Count > 0)
             {
-                NextWaypoint();
+                if (Time.time >= nextMoveTime)
+                    transform.position = Vector3.MoveTowards(transform.position, waypoints[currentWaypoint].position, moveSpeed * Time.deltaTime);
+
+                if (Vector3.Distance(transform.position, waypoints[currentWaypoint].position) == 0f)
+                {
+                    NextWaypoint();
+                }
             }
         }
 
@@ -109,14 +115,14 @@ namespace Hertzole.GoldPlayer.Example.Editor
 
         void OnEnable()
         {
-            waypointsList = new ReorderableList(serializedObject, serializedObject.FindProperty("m_Waypoints"), true, true, true, true);
+            waypointsList = new ReorderableList(serializedObject, serializedObject.FindProperty("waypoints"), true, true, true, true);
             waypointsList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
                 SerializedProperty element = waypointsList.serializedProperty.GetArrayElementAtIndex(index);
 
-                EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 70, EditorGUIUtility.singleLineHeight), element.FindPropertyRelative("m_Position"), GUIContent.none);
+                EditorGUI.PropertyField(new Rect(rect.x, rect.y, rect.width - 70, EditorGUIUtility.singleLineHeight), element.FindPropertyRelative("position"), GUIContent.none);
                 EditorGUI.LabelField(new Rect(rect.x + rect.width - 65, rect.y, rect.width - 65, EditorGUIUtility.singleLineHeight), "T");
-                EditorGUI.PropertyField(new Rect(rect.x + rect.width - 50, rect.y, 50, EditorGUIUtility.singleLineHeight), element.FindPropertyRelative("m_WaitTime"), GUIContent.none);
+                EditorGUI.PropertyField(new Rect(rect.x + rect.width - 50, rect.y, 50, EditorGUIUtility.singleLineHeight), element.FindPropertyRelative("waitTime"), GUIContent.none);
             };
 
             waypointsList.drawHeaderCallback = (Rect rect) =>
@@ -128,9 +134,9 @@ namespace Hertzole.GoldPlayer.Example.Editor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_StartingWaypoint"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_MoveSpeed"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_GizmosColor"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("startingWaypoint"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("moveSpeed"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("gizmosColor"));
             EditorGUILayout.Space();
             waypointsList.DoLayoutList();
             serializedObject.ApplyModifiedProperties();

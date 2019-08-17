@@ -45,17 +45,17 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Called every frame.
         /// </summary>
-        public virtual void OnUpdate() { }
+        public virtual void OnUpdate(float deltaTime) { }
 
         /// <summary>
         /// Called at every fixed framerate frame.
         /// </summary>
-        public virtual void OnFixedUpdate() { }
+        public virtual void OnFixedUpdate(float fixedDeltaTime) { }
 
         /// <summary>
         /// Called every frame, after OnUpdate.
         /// </summary>
-        public virtual void OnLateUpdate() { }
+        public virtual void OnLateUpdate(float deltaTime) { }
 
         /// <summary>
         /// Called when a footstep should be played.

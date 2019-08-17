@@ -47,17 +47,17 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Called in Update.
         /// </summary>
-        public virtual void OnUpdate() { }
+        public virtual void OnUpdate(float deltaTime) { }
 
         /// <summary>
         /// Called in FixedUpdate.
         /// </summary>
-        public virtual void OnFixedUpdate() { }
+        public virtual void OnFixedUpdate(float fixedDeltaTime) { }
 
         /// <summary>
         /// Called in LateUpdate.
         /// </summary>
-        public virtual void OnLateUpdate() { }
+        public virtual void OnLateUpdate(float deltaTime) { }
 
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.

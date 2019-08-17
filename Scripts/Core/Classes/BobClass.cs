@@ -128,18 +128,23 @@ namespace Hertzole.GoldPlayer.Core
             }
         }
 
-        public void DoBob(Vector3 velocity)
+        public void DoBob(Vector3 velocity, float deltaTime)
         {
-            DoBob(velocity, 0);
+            DoBob(velocity, deltaTime, 0);
         }
 
-        public void DoBob(Vector3 velocity, float zTiltAxis)
+        public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis)
         {
             if (!enableBob || bobTarget == null)
                 return;
 
             Vector3 velocityChange = velocity - previousVelocity;
             previousVelocity = velocity;
+
+            // Cache unscaled delta time to minimize calls to native engine code.
+            float unscaledDeltaTime = 0;
+            if (unscaledTime)
+                unscaledDeltaTime = Time.unscaledDeltaTime;
 
             // Vertical head position "spring simulation" for jumping/landing impacts.
             // Input to spring from change in character Y velocity.
@@ -149,7 +154,7 @@ namespace Hertzole.GoldPlayer.Core
             // Damping towards zero velocity.
             springVelocity *= springDampen;
             // Output to head Y position.
-            springPos += springVelocity * (unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime);
+            springPos += springVelocity * (unscaledTime ? unscaledDeltaTime : deltaTime);
             // Clamp spring distance.
             springPos = Mathf.Clamp(springPos, -.3f, .3f);
 
@@ -161,7 +166,7 @@ namespace Hertzole.GoldPlayer.Core
 
             float flatVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
             float strideLengthen = 1 + (flatVelocity * strideMultiplier);
-            bobCycle += (flatVelocity / strideLengthen) * ((unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime) / bobFrequency);
+            bobCycle += (flatVelocity / strideLengthen) * ((unscaledTime ? unscaledDeltaTime : deltaTime) / bobFrequency);
 
             float bobFactor = Mathf.Sin(bobCycle * Mathf.PI * 2);
             float bobSwayFactor = Mathf.Sin(bobCycle * Mathf.PI * 2 + Mathf.PI * .5f);
@@ -169,9 +174,9 @@ namespace Hertzole.GoldPlayer.Core
             bobFactor *= bobFactor;
 
             if (new Vector3(velocity.x, 0, velocity.z).magnitude < 0.1f)
-                bobFade = Mathf.Lerp(bobFade, 0, (unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime));
+                bobFade = Mathf.Lerp(bobFade, 0, (unscaledTime ? unscaledDeltaTime : deltaTime));
             else
-                bobFade = Mathf.Lerp(bobFade, 1, (unscaledTime ? Time.unscaledDeltaTime : Time.deltaTime));
+                bobFade = Mathf.Lerp(bobFade, 1, (unscaledTime ? unscaledDeltaTime : deltaTime));
 
             float speedHeightFactor = 1 + (flatVelocity * heightMultiplier);
 

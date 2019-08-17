@@ -46,14 +46,14 @@ namespace Hertzole.GoldPlayer.Core
             bobClass.Initialize();
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
-            BobHandler();
+            BobHandler(deltaTime);
         }
 
-        protected virtual void BobHandler()
+        protected virtual void BobHandler(float deltaTime)
         {
-            bobClass.DoBob(CharacterController.velocity, GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS));
+            bobClass.DoBob(CharacterController.velocity, deltaTime, GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS));
         }
     }
 }

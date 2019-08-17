@@ -37,7 +37,7 @@ namespace Hertzole.GoldPlayer.Core
             originalParent = PlayerTransform.parent;
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
             // If it isn't enabled, just stop here.
             if (!enabled)

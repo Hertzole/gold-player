@@ -127,31 +127,31 @@ namespace Hertzole.GoldPlayer.Core
             }
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
-            DoStepCycle();
+            DoStepCycle(deltaTime);
             AudioHandler();
 
             if (audioType == AudioTypes.Custom && customBehaviour != null)
-                customBehaviour.OnUpdate();
+                customBehaviour.OnUpdate(deltaTime);
         }
 
-        public override void OnFixedUpdate()
+        public override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (audioType == AudioTypes.Custom && customBehaviour != null)
-                customBehaviour.OnFixedUpdate();
+                customBehaviour.OnFixedUpdate(fixedDeltaTime);
         }
 
-        public override void OnLateUpdate()
+        public override void OnLateUpdate(float deltaTime)
         {
             if (audioType == AudioTypes.Custom && customBehaviour != null)
-                customBehaviour.OnLateUpdate();
+                customBehaviour.OnLateUpdate(deltaTime);
         }
 
         /// <summary>
         /// Handles the step cycle logic.
         /// </summary>
-        protected virtual void DoStepCycle()
+        protected virtual void DoStepCycle(float deltaTime)
         {
             // If the step cycle should be based on head bob, get it from there.
             // Else do it by itself.
@@ -167,26 +167,26 @@ namespace Hertzole.GoldPlayer.Core
                 else
                 {
                     // Head bob was disabled. Do the math here.
-                    DoStepCycleMath();
+                    DoStepCycleMath(deltaTime);
                 }
             }
             else
             {
                 // It should not be based on head bob. Do the math here.
-                DoStepCycleMath();
+                DoStepCycleMath(deltaTime);
             }
         }
 
         /// <summary>
         /// Calculates the step cycle.
         /// </summary>
-        protected virtual void DoStepCycleMath()
+        protected virtual void DoStepCycleMath(float deltaTime)
         {
             // Get the velocity from the character controller.
             float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude;
             // Calculate some stride thing. (Not 100% what everything here does)
             float strideLengthen = 1 + (flatVelocity * 0.3f);
-            stepCycle += (flatVelocity / strideLengthen) * (Time.deltaTime / stepTime);
+            stepCycle += (flatVelocity / strideLengthen) * (deltaTime / stepTime);
         }
 
         /// <summary>

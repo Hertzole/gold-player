@@ -65,16 +65,16 @@ namespace Hertzole.GoldPlayer.Core
             currentRegenWait = regenWait;
         }
 
-        public override void OnUpdate()
+        public override void OnUpdate(float deltaTime)
         {
             // Do the stamina logic.
-            HandleStamina();
+            HandleStamina(deltaTime);
         }
 
         /// <summary>
         /// Handles all the stamina logic.
         /// </summary>
-        protected virtual void HandleStamina()
+        protected virtual void HandleStamina(float deltaTime)
         {
             // There's no point in doing stamina logic if we can't run. Stop here if running is disabled.
             if (!PlayerController.Movement.CanRun)
@@ -91,18 +91,18 @@ namespace Hertzole.GoldPlayer.Core
                 // If 'isRunning' is true, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
                 if (PlayerController.Movement.IsRunning)
-                    DrainStamina();
+                    DrainStamina(deltaTime);
                 else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
-                    RegenStamina();
+                    RegenStamina(deltaTime);
             }
             else if (drainStaminaWhen == RunAction.FasterThanRunSpeedAndPressingRun)
             {
                 // If 'isRunning' is true and the run button is being held down, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
                 if (PlayerController.Movement.IsRunning && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
-                    DrainStamina();
+                    DrainStamina(deltaTime);
                 else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
-                    RegenStamina();
+                    RegenStamina(deltaTime);
             }
 
             // Clamps the values so they stay within range.
@@ -112,11 +112,11 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Drains the stamina.
         /// </summary>
-        protected virtual void DrainStamina()
+        protected virtual void DrainStamina(float deltaTime)
         {
             // Only drain the stamina is the current stamina is above 0.
             if (currentStamina > 0)
-                currentStamina -= drainRate * Time.deltaTime;
+                currentStamina -= drainRate * deltaTime;
 
             // Set the current regen wait to 0.
             currentRegenWait = 0;
@@ -125,16 +125,16 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Does the stamina regeneration logic.
         /// </summary>
-        protected virtual void RegenStamina()
+        protected virtual void RegenStamina(float deltaTime)
         {
             // If the current regen wait is less than the regen wait, increase the current regen wait.
             if (currentRegenWait < regenWait)
-                currentRegenWait += Time.deltaTime;
+                currentRegenWait += deltaTime;
 
             // If the current regen wait is the same as regen wait and current stamina is less than max stamina,
             // increase the current stamina with regen rate.
             if (currentRegenWait >= regenWait && currentStamina < maxStamina)
-                currentStamina += regenRate * Time.deltaTime;
+                currentStamina += regenRate * deltaTime;
         }
 
         /// <summary>
