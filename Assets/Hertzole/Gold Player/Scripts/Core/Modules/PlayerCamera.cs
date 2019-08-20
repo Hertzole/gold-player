@@ -214,8 +214,8 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Apply the input and mouse sensitivity.
-            targetHeadAngles.x += mouseInput.y * mouseSensitivity * Time.unscaledDeltaTime;
-            targetBodyAngles.y += mouseInput.x * mouseSensitivity * Time.unscaledDeltaTime;
+            targetHeadAngles.x += mouseInput.y * mouseSensitivity * Time.fixedUnscaledDeltaTime;
+            targetBodyAngles.y += mouseInput.x * mouseSensitivity * Time.fixedUnscaledDeltaTime;
 
             // Clamp the head angle.
             targetHeadAngles.x = Mathf.Clamp(targetHeadAngles.x, minimumX, maximumX);
