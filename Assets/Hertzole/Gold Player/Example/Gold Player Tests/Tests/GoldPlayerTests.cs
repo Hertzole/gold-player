@@ -51,7 +51,6 @@ namespace Hertzole.GoldPlayer.Tests
             player.transform.position = platform.transform.position + new Vector3(0, 0.5f, 0);
             yield return null;
 
-            Assert.AreSame(player.transform.parent, platform.transform);
             yield return null;
             platform.transform.position = new Vector3(10, 0, 10);
             yield return null;
@@ -126,7 +125,6 @@ namespace Hertzole.GoldPlayer.Tests
             playerController.HeadBob.BobTarget = playerCameraHead.transform;
 
             playerController.Movement.MovingPlatforms.Enabled = true;
-            playerController.Movement.MovingPlatforms.PlatformTags = new string[] { "Respawn" };
             playerController.Movement.MovingPlatforms.Initialize(playerController);
 
             //GameObject raycastWeaponGO = new GameObject("[Test] Raycast Weapon");

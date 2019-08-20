@@ -173,10 +173,8 @@ namespace Hertzole.GoldPlayer.Core
             bobFactor = 1 - (bobFactor * .5f + 1);
             bobFactor *= bobFactor;
 
-            if (new Vector3(velocity.x, 0, velocity.z).magnitude < 0.1f)
-                bobFade = Mathf.Lerp(bobFade, 0, (unscaledTime ? unscaledDeltaTime : deltaTime));
-            else
-                bobFade = Mathf.Lerp(bobFade, 1, (unscaledTime ? unscaledDeltaTime : deltaTime));
+            float fadeTarget = new Vector3(velocity.x, 0, velocity.z).magnitude < 0.1f ? 0 : 1;
+            bobFade = Mathf.Lerp(bobFade, fadeTarget, (unscaledTime ? unscaledDeltaTime : deltaTime));
 
             float speedHeightFactor = 1 + (flatVelocity * heightMultiplier);
 
