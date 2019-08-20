@@ -11,30 +11,47 @@ namespace Hertzole.GoldPlayer.Core
         [FormerlySerializedAs("m_Enabled")]
         private bool enabled = true;
         [SerializeField]
-        [Tooltip("The tags the moving platforms are using.")]
-        [FormerlySerializedAs("m_PlatformTags")]
-        private string[] platformTags;
+        [Tooltip("If enabled, the player will move with platforms.")]
+        private bool movePosition = true;
+        [SerializeField]
+        [Tooltip("If enabled, the player will rotate with platforms.")]
+        private bool moveRotation = true;
+        [SerializeField]
+        [Tooltip("Sets the max angle of the platforms the player can stand on.")]
+        private float maxAngle = 45f;
 
         /// <summary> Determines if support for moving platforms should be enabled. </summary>
         public bool Enabled { get { return enabled; } set { enabled = value; } }
-        /// <summary> The tags the moving platforms are using.. </summary>
-        public string[] PlatformTags { get { return platformTags; } set { platformTags = value; } }
+        /// <summary> If enabled, the player will move with platforms. </summary>
+        public bool MovePosition { get { return movePosition; } set { movePosition = value; } }
+        /// <summary> If enabled, the player will rotate with platforms. </summary>
+        public bool MoveRotation { get { return moveRotation; } set { moveRotation = value; } }
+        /// <summary> Sets the max angle of the platforms the player can stand on. </summary>
+        public float MaxAngle { get { return maxAngle; } set { maxAngle = value; } }
 
-        // The parent the player was using from the start.
-        private Transform originalParent = null;
+        private bool DidPlatformMove { get { return currentPlatform != null && currentPlatformLastPosition != currentPlatform.position; } }
+
+        private float minNormalY;
+        private const float CHECK_DISTANCE = 0.2f;
+
         // The current platform the player should be moving with.
         private Transform currentPlatform = null;
+        private Transform recordedPlatform = null;
 
-        // All the colliders currently under the player.
-        private Collider[] groundColliders = new Collider[0];
+        private Vector3 currentPlatformLastPosition = Vector3.zero;
+        private Vector3 currentPlatformLocalPoint = Vector3.zero;
+        private Vector3 currentPlatformGlobalPoint = Vector3.zero;
+
+        private Quaternion currentPlatformLocalRotation = Quaternion.identity;
+        private Quaternion currentPlatformGlobalRotation = Quaternion.identity;
 
         // The current hit directly underneath the player.
         private RaycastHit groundHit;
 
         protected override void OnInitialize()
         {
-            // Set the original parent.
-            originalParent = PlayerTransform.parent;
+            Vector3 vector = Quaternion.Euler(maxAngle, 0, 0) * Vector3.up;
+            minNormalY = vector.y;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -43,121 +60,84 @@ namespace Hertzole.GoldPlayer.Core
             if (!enabled)
                 return;
 
-            // Call the platform checking.
-            CheckPlatform();
-            // Call the parent switching.
-            DoParentSwitching();
+            if (currentPlatform == null)
+                CheckUnderneath();
+
+            Transform previousPlatform = currentPlatform;
+            UpdatePlatform(deltaTime);
+            PostUpdatePlatform(previousPlatform);
         }
 
-        /// <summary>
-        /// Checks for platforms and assigns the current platform variable.
-        /// </summary>
-        protected virtual void CheckPlatform()
+        protected virtual void UpdatePlatform(float deltaTime)
         {
-            // Update the ground hit.
-            CheckRaycast();
-            // Update the ground colliders.
-            CheckBox();
+            if (currentPlatform == null || recordedPlatform == null)
+                return;
 
-            // If the ground colliders are more than 1, try to determine with the ground hit.
-            // Else if the ground colliders are just one, only use that.
-            // Else if both ground colliders are empty and the ground hit is empty, set the current platform to null.
-            if (groundColliders.Length > 1)
+            Transform usePlatform = currentPlatform;
+
+            if (!currentPlatform != recordedPlatform)
+                usePlatform = recordedPlatform;
+
+            if (movePosition)
             {
-                // If the ground hit isn't null, check if the hit contains a platform tag.
-                if (groundHit.transform != null)
+                Vector3 newGlobalPlatformPoint = usePlatform.TransformPoint(currentPlatformLocalPoint);
+                Vector3 moveDistance = (newGlobalPlatformPoint - currentPlatformGlobalPoint);
+                if (DidPlatformMove)
                 {
-                    // Go through every platform tag and see if the ground hit has a tag.
-                    for (int i = 0; i < platformTags.Length; i++)
-                    {
-                        // If the ground hit has a platform tag, assign the current platform.
-                        if (groundHit.transform.CompareTag(platformTags[i]))
-                        {
-                            // Set the current platform to the ground hit.
-                            currentPlatform = groundHit.transform;
-                            // Break out of the for loop.
-                            break;
-                        }
-
-                        // There was no transform with the right tag, set the current platform to null.
-                        currentPlatform = null;
-                    }
-                }
-                else
-                {
-                    // Go through every ground collider.
-                    for (int i = 0; i < groundColliders.Length; i++)
-                    {
-                        // Go through every platform tag to see if the ground collider has a platform tag.
-                        for (int j = 0; j < platformTags.Length; j++)
-                        {
-                            // Check if the platform has a platform tag.
-                            if (groundColliders[i].CompareTag(platformTags[j]))
-                            {
-                                // Assign the current platform.
-                                currentPlatform = groundColliders[i].transform;
-                                // Break out of the for loop.
-                                break;
-                            }
-
-                            // There was no platform matching. Set the current platform to null.
-                            currentPlatform = null;
-                        }
-                    }
+                    CharacterController.Move(moveDistance);
                 }
             }
-            else if (groundColliders.Length == 1)
+
+            if (moveRotation)
             {
-                // Go through and check if the one ground collider has a platform tag.
-                for (int i = 0; i < platformTags.Length; i++)
-                {
-                    // Compare the tag.
-                    if (groundColliders[0].CompareTag(platformTags[i]))
-                    {
-                        // Set the current platform.
-                        currentPlatform = groundColliders[0].transform;
-                        // Break out of the for loop.
-                        break;
-                    }
-
-                    // There was no matching tags. Set the current platform to null.
-                    currentPlatform = null;
-                }
+                Quaternion newGlobalPlatformRotation = usePlatform.rotation * currentPlatformLocalRotation;
+                Quaternion rotationDiff = newGlobalPlatformRotation * Quaternion.Inverse(currentPlatformGlobalRotation);
+                rotationDiff = Quaternion.FromToRotation(rotationDiff * PlayerTransform.up, PlayerTransform.up) * rotationDiff;
+                PlayerTransform.rotation = rotationDiff * PlayerTransform.rotation;
             }
-            else if (groundHit.transform == null)
+
+            currentPlatform = null;
+        }
+
+        private void PostUpdatePlatform(Transform previousPlatform)
+        {
+            if (currentPlatform == null && previousPlatform != null)
+                CheckUnderneath();
+
+            recordedPlatform = currentPlatform;
+            if (currentPlatform == null)
+                return;
+
+            currentPlatformGlobalPoint = PlayerTransform.position;
+            currentPlatformLastPosition = currentPlatform.position;
+            currentPlatformLocalPoint = currentPlatform.InverseTransformPoint(PlayerTransform.position);
+
+            currentPlatformGlobalRotation = PlayerTransform.rotation;
+            currentPlatformLocalRotation = Quaternion.Inverse(currentPlatform.rotation) * PlayerTransform.rotation;
+        }
+
+        private void CheckUnderneath()
+        {
+            if (Physics.Raycast(PlayerTransform.position, new Vector3(0, -1, 0), out groundHit, CHECK_DISTANCE, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore))
+                CheckPlatformCollision(new Vector3(0f, -CHECK_DISTANCE, 0f), groundHit.normal, groundHit.transform);
+        }
+
+        private void CheckPlatformCollision(Vector3 hitDirection, Vector3 hitNormal, Transform hitTransform)
+        {
+            // Did character move down and hit an up-facing normal?
+            if (hitDirection.y < 0.0f && hitNormal.y >= minNormalY)
+                currentPlatform = hitTransform;
+        }
+
+#if UNITY_EDITOR
+        public override void OnValidate()
+        {
+            if (Application.isPlaying)
             {
-                // If there are no ground colliders and no ground hit, set the current platform to null.
-                currentPlatform = null;
+                Vector3 vector = Quaternion.Euler(maxAngle, 0, 0) * Vector3.up;
+                minNormalY = vector.y;
             }
         }
-
-        /// <summary>
-        /// Updates the ground hit raycast hit.
-        /// </summary>
-        protected virtual void CheckRaycast()
-        {
-            Physics.Raycast(PlayerTransform.position, -PlayerTransform.up, out groundHit, 0.2f, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore);
-        }
-
-        /// <summary>
-        /// Updates the ground colliders.
-        /// </summary>
-        protected virtual void CheckBox()
-        {
-            groundColliders = Physics.OverlapBox(PlayerTransform.position, new Vector3(CharacterController.radius, 0.2f, CharacterController.radius), Quaternion.identity, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore);
-        }
-
-        /// <summary>
-        /// Handles the parent switching.
-        /// </summary>
-        protected virtual void DoParentSwitching()
-        {
-            // If the current platform isn't null and the player parent isn't the current platform, set the player parent to the platform.
-            // Else if the current platform is null the player parent isn't the original parent, set the player parent to the original parent.
-            if (currentPlatform != null && PlayerTransform.parent != currentPlatform)
-                PlayerTransform.SetParent(currentPlatform, true);
-            else if (currentPlatform == null && PlayerTransform.parent != originalParent)
-                PlayerTransform.SetParent(originalParent, true);
-        }
+#endif
     }
 }
