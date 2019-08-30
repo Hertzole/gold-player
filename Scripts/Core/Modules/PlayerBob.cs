@@ -28,6 +28,8 @@ namespace Hertzole.GoldPlayer.Core
         public float LandMove { get { return bobClass.LandMove; } set { bobClass.LandMove = value; } }
         /// <summary> How much the target will tilt when landing. </summary>
         public float LandTilt { get { return bobClass.LandTilt; } set { bobClass.LandTilt = value; } }
+        /// <summary> If enabled, the target will tilt when strafing. </summary>
+        public bool EnableStrafeTilting { get { return bobClass.EnableStrafeTilting; } set { bobClass.EnableStrafeTilting = value; } }
         /// <summary> How much the target will tilt when strafing. </summary>
         public float StrafeTilt { get { return bobClass.StrafeTilt; } set { bobClass.StrafeTilt = value; } }
         /// <summary> The object to bob. </summary>
