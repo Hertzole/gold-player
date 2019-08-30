@@ -298,13 +298,13 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void ValidateCrouchHeight(float height)
         {
-            crouchHeightWarning.style.display = height < 0.8f ? (StyleEnum<DisplayStyle>)DisplayStyle.Flex : (StyleEnum<DisplayStyle>)DisplayStyle.None;
+            crouchHeightWarning.style.display = height < 0.8f ? DisplayStyle.Flex : (StyleEnum<DisplayStyle>)DisplayStyle.None;
         }
 
         private void ValidateGroundLayer(int layer)
         {
             groundLayerWarning.style.display = layer == (layer | (1 << goldPlayer.gameObject.layer)) ?
-                (StyleEnum<DisplayStyle>)DisplayStyle.Flex : (StyleEnum<DisplayStyle>)DisplayStyle.None;
+                (StyleEnum<DisplayStyle>)DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void CreateHeadBobGUI()
@@ -321,6 +321,9 @@ namespace Hertzole.GoldPlayer.Editor
                         headBobElements.Add(GoldPlayerUIHelper.GetSpace());
 
                     if (it.name.Equals("landMove"))
+                        headBobElements.Add(GoldPlayerUIHelper.GetSpace());
+
+                    if (it.name.Equals("enableStrafeTilting"))
                         headBobElements.Add(GoldPlayerUIHelper.GetSpace());
 
                     if (it.name.Equals("bobTarget"))

@@ -62,6 +62,14 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("How much the target will tilt when landing.")]
         [FormerlySerializedAs("m_LandTilt")]
         private float landTilt = 20f;
+
+#if UNITY_EDITOR
+        [Space]
+#endif
+
+        [SerializeField]
+        [Tooltip("If enabled, the target will tilt when strafing.")]
+        private bool enableStrafeTilting = true;
         [SerializeField]
         [Tooltip("How much the target will tilt when strafing.")]
         [FormerlySerializedAs("m_StrafeTilt")]
@@ -110,6 +118,8 @@ namespace Hertzole.GoldPlayer.Core
         public float LandMove { get { return landMove; } set { landMove = value; } }
         /// <summary> How much the target will tilt when landing. </summary>
         public float LandTilt { get { return landTilt; } set { landTilt = value; } }
+        /// <summary> If enabled, the target will tilt when strafing. </summary>
+        public bool EnableStrafeTilting { get { return enableStrafeTilting; } set { enableStrafeTilting = value; } }
         /// <summary> How much the target will tilt when strafing. </summary>
         public float StrafeTilt { get { return strafeTilt; } set { strafeTilt = value; } }
         /// <summary> The object to bob. </summary>
@@ -177,6 +187,10 @@ namespace Hertzole.GoldPlayer.Core
             bobFade = Mathf.Lerp(bobFade, fadeTarget, (unscaledTime ? unscaledDeltaTime : deltaTime));
 
             float speedHeightFactor = 1 + (flatVelocity * heightMultiplier);
+
+            // If strafe tilting isn't enabled, just set it to 0 to stop the effect.
+            if (!enableStrafeTilting)
+                zTiltAxis = 0;
 
             this.zTilt = Mathf.SmoothDamp(this.zTilt, -zTiltAxis, ref zTiltVelocity, 0.2f);
 
