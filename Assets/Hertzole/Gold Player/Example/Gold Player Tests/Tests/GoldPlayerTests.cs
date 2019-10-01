@@ -76,7 +76,11 @@ namespace Hertzole.GoldPlayer.Tests
             yield return null;
             Assert.That(() =>
             {
+#if HERTZLIB_UPDATE_MANAGER
+                player.OnUpdate();
+#else
                 player.Update();
+#endif
             }, Is.Not.AllocatingGCMemory());
         }
 

@@ -15,15 +15,34 @@ public static class ExportTool
             if (allPaths[i].StartsWith("Assets/"))
             {
                 if (allPaths[i].StartsWith("Assets/Editor"))
+                {
                     continue;
+                }
+
                 if (allPaths[i].ToLower().Contains("probuilder"))
+                {
                     continue;
+                }
+
                 if (allPaths[i].ToLower().Contains("gold player tests"))
+                {
                     continue;
+                }
+
                 if (allPaths[i].ToLower().Contains("textmesh pro"))
+                {
                     continue;
+                }
+
                 if (allPaths[i].ToLower().Contains("editor generator"))
+                {
                     continue;
+                }
+
+                if (allPaths[i].ToLower().Contains("hertzlib"))
+                {
+                    continue;
+                }
 
                 validPaths.Add(allPaths[i]);
             }
@@ -32,6 +51,8 @@ public static class ExportTool
         string exportPath = EditorUtility.SaveFilePanel("Export package", Application.dataPath + "/../Exports", "Gold Player", "unitypackage");
 
         if (!string.IsNullOrEmpty(exportPath))
+        {
             AssetDatabase.ExportPackage(validPaths.ToArray(), exportPath, ExportPackageOptions.Interactive);
+        }
     }
 }

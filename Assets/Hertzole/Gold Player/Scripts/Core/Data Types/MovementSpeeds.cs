@@ -48,9 +48,14 @@ namespace Hertzole.GoldPlayer.Core
         {
             float previousMax = forwardSpeed;
             if (sidewaysSpeed > previousMax)
+            {
                 previousMax = sidewaysSpeed;
+            }
+
             if (backwardsSpeed > previousMax)
+            {
                 previousMax = backwardsSpeed;
+            }
 
             Max = previousMax;
         }

@@ -127,7 +127,9 @@ namespace Hertzole.GoldPlayer.Interaction
             {
                 // If there's no hit transform, stop here.
                 if (interactableHit.collider == null)
+                {
                     return;
+                }
 
                 // If there's no current hit or the hits doesn't match, update it and
                 // the player need to check for a interactable again.
@@ -174,7 +176,9 @@ namespace Hertzole.GoldPlayer.Interaction
             // If we change "Ignore Triggers" at runtime and in the editor,
             // make sure to update it.
             if (Application.isPlaying)
+            {
                 SetTriggerInteraction();
+            }
         }
 #endif
     }

@@ -133,19 +133,25 @@ namespace Hertzole.GoldPlayer.Core
             AudioHandler();
 
             if (audioType == AudioTypes.Custom && customBehaviour != null)
+            {
                 customBehaviour.OnUpdate(deltaTime);
+            }
         }
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (audioType == AudioTypes.Custom && customBehaviour != null)
+            {
                 customBehaviour.OnFixedUpdate(fixedDeltaTime);
+            }
         }
 
         public override void OnLateUpdate(float deltaTime)
         {
             if (audioType == AudioTypes.Custom && customBehaviour != null)
+            {
                 customBehaviour.OnLateUpdate(deltaTime);
+            }
         }
 
         /// <summary>
@@ -248,11 +254,17 @@ namespace Hertzole.GoldPlayer.Core
                     // Else if the player is crouching, play the crouching footsteps.
                     // Else just play the walking footsteps.
                     if (PlayerController.Movement.IsRunning)
+                    {
                         runFootsteps.Play(footstepsSource);
+                    }
                     else if (PlayerController.Movement.IsCrouching)
+                    {
                         crouchFootsteps.Play(footstepsSource);
+                    }
                     else
+                    {
                         walkFootsteps.Play(footstepsSource);
+                    }
                 }
                 else if (audioType == AudioTypes.Custom && customBehaviour != null)
                 {

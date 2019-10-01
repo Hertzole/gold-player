@@ -72,26 +72,17 @@ namespace Hertzole.GoldPlayer
 
         public override bool GetButton(string buttonName)
         {
-            if (useKeyCodes)
-                return Input.GetKey(inputsDic[buttonName].Key);
-            else
-                return Input.GetButton(inputsDic[buttonName].InputName);
+            return useKeyCodes ? Input.GetKey(inputsDic[buttonName].Key) : Input.GetButton(inputsDic[buttonName].InputName);
         }
 
         public override bool GetButtonDown(string buttonName)
         {
-            if (useKeyCodes)
-                return Input.GetKeyDown(inputsDic[buttonName].Key);
-            else
-                return Input.GetButtonDown(inputsDic[buttonName].InputName);
+            return useKeyCodes ? Input.GetKeyDown(inputsDic[buttonName].Key) : Input.GetButtonDown(inputsDic[buttonName].InputName);
         }
 
         public override bool GetButtonUp(string buttonName)
         {
-            if (useKeyCodes)
-                return Input.GetKeyUp(inputsDic[buttonName].Key);
-            else
-                return Input.GetButtonUp(inputsDic[buttonName].InputName);
+            return useKeyCodes ? Input.GetKeyUp(inputsDic[buttonName].Key) : Input.GetButtonUp(inputsDic[buttonName].InputName);
         }
 
         public override float GetAxis(string axisName)
