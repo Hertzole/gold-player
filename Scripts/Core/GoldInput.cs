@@ -56,7 +56,9 @@ namespace Hertzole.GoldPlayer.Core
             for (int i = 0; i < inputsArray.Length; i++)
             {
                 if (inputsArray[i].ButtonName == buttonName)
+                {
                     return inputsArray[i];
+                }
             }
 
             Debug.LogError("No input with the name '" + buttonName + "' assigned on '" + gameObject.name + "'!");

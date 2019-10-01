@@ -194,11 +194,15 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the camera head field is null, stop here.
             if (cameraHead == null)
+            {
                 return;
+            }
 
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.
             if (Input.GetMouseButtonDown(0) && shouldLockCursor)
+            {
                 LockCursor(true);
+            }
 
             // If the player can look around, get the input. 
             // Else just set the input to zero.
@@ -235,7 +239,9 @@ namespace Hertzole.GoldPlayer.Core
                 currentRecoilTime += deltaTime;
                 // Cap the current recoil time at the max recoil time.
                 if (currentRecoilTime > recoilTime)
+                {
                     currentRecoilTime = recoilTime;
+                }
 
                 // Calculate the percentage and lerp with it.
                 float recoilPercentage = currentRecoilTime / recoilTime;
@@ -265,7 +271,9 @@ namespace Hertzole.GoldPlayer.Core
                 shakeTimer += deltaTime;
                 // Stop shaking whenever the shake timer is above the shake duration.
                 if (shakeTimer >= shakeDuration)
+                {
                     doShake = false;
+                }
 
                 // Calculate the percentage of the lerp.
                 float shakePercentage = shakeTimer / shakeDuration;

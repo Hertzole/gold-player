@@ -132,7 +132,9 @@ namespace Hertzole.GoldPlayer.Core
             if (enableBob)
             {
                 if (!bobTarget)
+                {
                     throw new System.NullReferenceException("No Bob Target set!");
+                }
 
                 originalHeadLocalPosition = bobTarget.localPosition;
             }
@@ -146,7 +148,9 @@ namespace Hertzole.GoldPlayer.Core
         public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis)
         {
             if (!enableBob || bobTarget == null)
+            {
                 return;
+            }
 
             Vector3 velocityChange = velocity - previousVelocity;
             previousVelocity = velocity;
@@ -154,7 +158,9 @@ namespace Hertzole.GoldPlayer.Core
             // Cache unscaled delta time to minimize calls to native engine code.
             float unscaledDeltaTime = 0;
             if (unscaledTime)
+            {
                 unscaledDeltaTime = Time.unscaledDeltaTime;
+            }
 
             // Vertical head position "spring simulation" for jumping/landing impacts.
             // Input to spring from change in character Y velocity.
@@ -190,7 +196,9 @@ namespace Hertzole.GoldPlayer.Core
 
             // If strafe tilting isn't enabled, just set it to 0 to stop the effect.
             if (!enableStrafeTilting)
+            {
                 zTiltAxis = 0;
+            }
 
             this.zTilt = Mathf.SmoothDamp(this.zTilt, -zTiltAxis, ref zTiltVelocity, 0.2f);
 

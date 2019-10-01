@@ -158,7 +158,9 @@ namespace Hertzole.GoldPlayer.Core
 
                     // If change volume is enabled, set the volume.
                     if (changeVolume)
+                    {
                         audioSource.volume = volume;
+                    }
 
                     // If there are more than one audio clip, shuffle the clips.
                     // Else just play the one clip available.

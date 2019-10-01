@@ -58,10 +58,14 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If it isn't enabled, just stop here.
             if (!enabled)
+            {
                 return;
+            }
 
             if (currentPlatform == null)
+            {
                 CheckUnderneath();
+            }
 
             Transform previousPlatform = currentPlatform;
             UpdatePlatform(deltaTime);
@@ -71,12 +75,16 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void UpdatePlatform(float deltaTime)
         {
             if (currentPlatform == null || recordedPlatform == null)
+            {
                 return;
+            }
 
             Transform usePlatform = currentPlatform;
 
             if (!currentPlatform != recordedPlatform)
+            {
                 usePlatform = recordedPlatform;
+            }
 
             if (movePosition)
             {
@@ -102,11 +110,15 @@ namespace Hertzole.GoldPlayer.Core
         private void PostUpdatePlatform(Transform previousPlatform)
         {
             if (currentPlatform == null && previousPlatform != null)
+            {
                 CheckUnderneath();
+            }
 
             recordedPlatform = currentPlatform;
             if (currentPlatform == null)
+            {
                 return;
+            }
 
             currentPlatformGlobalPoint = PlayerTransform.position;
             currentPlatformLastPosition = currentPlatform.position;
@@ -119,14 +131,18 @@ namespace Hertzole.GoldPlayer.Core
         private void CheckUnderneath()
         {
             if (Physics.Raycast(PlayerTransform.position, new Vector3(0, -1, 0), out groundHit, CHECK_DISTANCE, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore))
+            {
                 CheckPlatformCollision(new Vector3(0f, -CHECK_DISTANCE, 0f), groundHit.normal, groundHit.transform);
+            }
         }
 
         private void CheckPlatformCollision(Vector3 hitDirection, Vector3 hitNormal, Transform hitTransform)
         {
             // Did character move down and hit an up-facing normal?
             if (hitDirection.y < 0.0f && hitNormal.y >= minNormalY)
+            {
                 currentPlatform = hitTransform;
+            }
         }
 
 #if UNITY_EDITOR

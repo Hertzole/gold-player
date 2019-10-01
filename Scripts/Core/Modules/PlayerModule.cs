@@ -11,7 +11,7 @@ namespace Hertzole.GoldPlayer
         protected CharacterController CharacterController { get { return playerController.Controller; } }
 
         private Transform playerTransform;
-        protected Transform PlayerTransform { get { if (playerTransform == null) playerTransform = playerController.transform; return playerTransform; } }
+        protected Transform PlayerTransform { get { if (playerTransform == null) { playerTransform = playerController.transform; } return playerTransform; } }
 
         private GoldInput playerInput;
         protected GoldInput PlayerInput { get { return playerInput; } }
@@ -28,11 +28,15 @@ namespace Hertzole.GoldPlayer
         {
             // If the module has already been initialized, stop here.
             if (HasBeenInitialized)
+            {
                 return;
+            }
 
             playerController = player;
             if (input != null)
+            {
                 playerInput = input;
+            }
 
             OnInitialize();
 
@@ -101,7 +105,9 @@ namespace Hertzole.GoldPlayer
         {
             // If the default axis name is blank, use the one provided in axisName.
             if (string.IsNullOrEmpty(defaultAxisName))
+            {
                 defaultAxisName = axisName;
+            }
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
             return PlayerInput != null ? PlayerInput.GetAxis(axisName) : Input.GetAxis(defaultAxisName);
@@ -116,7 +122,9 @@ namespace Hertzole.GoldPlayer
         {
             // If the default axis name is blank, use the one provided in axisName.
             if (string.IsNullOrEmpty(defaultAxisName))
+            {
                 defaultAxisName = axisName;
+            }
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
             return PlayerInput != null ? PlayerInput.GetAxisRaw(axisName) : Input.GetAxisRaw(defaultAxisName);

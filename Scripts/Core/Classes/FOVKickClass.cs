@@ -86,7 +86,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If there's no target camera, stop here.
             if (targetCamera == null)
+            {
                 return;
+            }
 
             // Create the new FOV by taking the original FOV and adding kick amount.
             newFOV = targetCamera.fieldOfView + kickAmount;
@@ -104,7 +106,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If FOV kick is disabled, stop here.
             if (!enableFOVKick)
+            {
                 return;
+            }
 
             // If "Initialize" hasn't been called yet, complain and stop here.
             if (!hasBeenInitialized)
@@ -135,7 +139,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If FOV kick is disabled, stop here.
             if (!enableFOVKick)
+            {
                 return;
+            }
 
             // If active is true, lerp the target camera field of view to the new FOV.
             // Else lerp it to the original FOV.

@@ -203,14 +203,14 @@ namespace Hertzole.GoldPlayer.Core
         public bool CanMoveAround { get { return canMoveAround; } set { canMoveAround = value; } }
 
         /// <summary> The speeds when walking. </summary>
-        public MovementSpeeds WalkingSpeeds { get { return walkingSpeeds; } set { walkingSpeeds = value; if (!isRunning) moveSpeed = value; } }
+        public MovementSpeeds WalkingSpeeds { get { return walkingSpeeds; } set { walkingSpeeds = value; if (!isRunning) { moveSpeed = value; } } }
 
         /// <summary> Determines if the player can run. </summary>
         public bool CanRun { get { return canRun; } set { canRun = value; } }
         /// <summary> Configuration of running as a toggle. </summary>
         public RunToggleMode RunToggleMode { get { return runToggleMode; } set { runToggleMode = value; } }
         /// <summary> The speeds when running. </summary>
-        public MovementSpeeds RunSpeeds { get { return runSpeeds; } set { runSpeeds = value; if (isRunning) moveSpeed = value; } }
+        public MovementSpeeds RunSpeeds { get { return runSpeeds; } set { runSpeeds = value; if (isRunning) { moveSpeed = value; } } }
         /// <summary> Everything related to stamina (limited running). </summary>
         public StaminaClass Stamina { get { return stamina; } set { stamina = value; } }
 
@@ -245,13 +245,13 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> How long is takes for the player to reach top speed. </summary>
         public float Acceleration { get { return acceleration; } set { acceleration = value; } }
         /// <summary> Sets the gravity of the player. </summary>
-        public float Gravity { get { return gravity; } set { float v = value; if (v < 0) v = -v; gravity = v; } }
+        public float Gravity { get { return gravity; } set { float v = value; if (v < 0) { v = -v; } gravity = v; } }
         /// <summary> How much control the player will have in the air. </summary>
         public float AirControl { get { return airControl; } set { airControl = value > 1 ? 1 : value < 0 ? 0 : value; } }
         /// <summary> Determines if ground stick should be enabled. This would stop the player for bouncing down slopes. </summary>
         public bool EnableGroundStick { get { return enableGroundStick; } set { enableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
-        public float GroundStick { get { return groundStick; } set { float v = value; if (v < 0) v = -v; groundStick = v; } }
+        public float GroundStick { get { return groundStick; } set { float v = value; if (v < 0) { v = -v; } groundStick = v; } }
         /// <summary> Everything related to moving platforms. </summary>
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
@@ -297,10 +297,14 @@ namespace Hertzole.GoldPlayer.Core
 
             // Make the gravity + if needed.
             if (gravity < 0)
+            {
                 gravity = -gravity;
+            }
             // Make the ground stick + if needed.
             if (groundStick < 0)
+            {
                 groundStick = -groundStick;
+            }
 
             // Set the move to the walking speeds.
             moveSpeed = walkingSpeeds;
@@ -352,7 +356,9 @@ namespace Hertzole.GoldPlayer.Core
             hasUserInput = horizontal != 0 || vertical != 0;
 
             if (!hasUserInput)
+            {
                 didRunSinceLastBreakInMovement = false;
+            }
 
             // Take the X input and smooth it.
             movementInput.x = Mathf.SmoothDamp(movementInput.x, horizontal, ref forwardSpeedVelocity, acceleration);
@@ -361,7 +367,9 @@ namespace Hertzole.GoldPlayer.Core
 
             // Normalize the input so the player doesn't run faster when running diagonally.
             if (movementInput.sqrMagnitude > 1)
+            {
                 movementInput.Normalize();
+            }
 
             // Return the input.
             return movementInput;
@@ -405,11 +413,15 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // If the current air time is above 0, decrease it.
                 if (currentAirTime > 0)
+                {
                     currentAirTime -= deltaTime;
+                }
 
                 // If current air time is less than or equal to 0, the player should no longer jump.
                 if (currentAirTime <= 0)
+                {
                     shouldJump = false;
+                }
             }
 
             // If the player isn't grounded, handle gravity.
@@ -424,7 +436,9 @@ namespace Hertzole.GoldPlayer.Core
                     jumpPosition = PlayerTransform.position;
                     //
                     if (!isJumping)
+                    {
                         currentJumps++;
+                    }
                 }
 
                 // If the player's head is touching the ceiling, move the player down so they don't
@@ -492,7 +506,9 @@ namespace Hertzole.GoldPlayer.Core
 
             // If the player should jump, jump!
             if (shouldJump)
+            {
                 Jump();
+            }
         }
 
         /// <summary>
@@ -502,11 +518,17 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual bool ShouldJump()
         {
             if (isGrounded && !isJumping)
+            {
                 return true;
+            }
             else if (airJumpsAmount > 0 && currentJumps < airJumpsAmount)
+            {
                 return true;
+            }
             else if (airJump && isFalling && currentAirTime > 0)
+            {
                 return true;
+            }
 
             return false;
         }
@@ -526,9 +548,13 @@ namespace Hertzole.GoldPlayer.Core
                     // If movement input Y is above 0, we're moving forward, so apply forward move speed.
                     // Else if below 0, we're moving backwards, so apply backwards move speed.
                     if (movementInput.y > 0)
+                    {
                         moveDirection.z *= moveSpeed.ForwardSpeed;
+                    }
                     else
+                    {
                         moveDirection.z *= moveSpeed.BackwardsSpeed;
+                    }
 
                     // Apply the sideways movement speed to the X movement.
                     moveDirection.x *= moveSpeed.SidewaysSpeed;
@@ -544,9 +570,13 @@ namespace Hertzole.GoldPlayer.Core
                     airVelocity = new Vector3(groundVelocity.x * airControl, moveDirection.y, groundVelocity.z * airControl);
                     // Apply the same movement speeds as when grounded.
                     if (movementInput.y > 0)
+                    {
                         airVelocity.z += (moveSpeed.ForwardSpeed * this.airControl) * movementInput.y;
+                    }
                     else
+                    {
                         airVelocity.z += (moveSpeed.BackwardsSpeed * this.airControl) * movementInput.y;
+                    }
 
                     // Sideways movement speed.
                     airVelocity.x += (moveSpeed.SidewaysSpeed * this.airControl) * movementInput.x;
@@ -604,9 +634,13 @@ namespace Hertzole.GoldPlayer.Core
                 // If movement input Y is above 0, we're moving forward, so apply forward move speed.
                 // Else if below 0, we're moving backwards, so apply backwards move speed.
                 if (movementInput.y > 0)
+                {
                     moveDirection.z *= moveSpeed.ForwardSpeed;
+                }
                 else
+                {
                     moveDirection.z *= moveSpeed.BackwardsSpeed;
+                }
 
                 // Apply the sideways movement speed to the X movement.
                 moveDirection.x *= moveSpeed.SidewaysSpeed;
@@ -631,7 +665,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the player can't run, just stop here.
             if (!canRun)
+            {
                 return;
+            }
 
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             isRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > walkingSpeeds.Max + 0.5f;
@@ -653,17 +689,27 @@ namespace Hertzole.GoldPlayer.Core
                 case RunToggleMode.Permanent:
                 {
                     if (runButtonPressed)
+                    {
                         shouldRun = !shouldRun;
+                    }
+
                     break;
                 }
                 case RunToggleMode.UntilNoInput:
                 {
                     if (!hasUserInput)
+                    {
                         shouldRun = false;
+                    }
                     else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
+                    {
                         shouldRun = true;
+                    }
                     else if (runButtonPressed)
+                    {
                         shouldRun = !shouldRun;
+                    }
+
                     break;
                 }
             }
@@ -675,11 +721,17 @@ namespace Hertzole.GoldPlayer.Core
                 // Else if stamina is not enabled, simply set move speed to run speeds.
                 // Else if stamina is enabled and current stamina is 0 (or less), set move speed to walking speed.
                 if (stamina.EnableStamina && stamina.CurrentStamina > 0)
+                {
                     moveSpeed = runSpeeds;
+                }
                 else if (!stamina.EnableStamina)
+                {
                     moveSpeed = runSpeeds;
+                }
                 else if (stamina.CurrentStamina <= 0)
+                {
                     moveSpeed = walkingSpeeds;
+                }
             }
             else if (!isCrouching && !shouldRun)
             {
@@ -747,7 +799,10 @@ namespace Hertzole.GoldPlayer.Core
                         GoldPlayerConstants.CROUCH_BUTTON_NAME,
                         GoldPlayerConstants.CROUCH_DEFAULT_KEY);
                         if (crouchButtonPressed)
+                        {
                             shouldCrouch = !shouldCrouch;
+                        }
+
                         break;
                     }
                 }
@@ -842,7 +897,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the force impact is over 0.2, apply the force impact to the move direction.
             if (forceImpact.magnitude > 0.2f)
+            {
                 moveDirection = new Vector3(forceImpact.x, moveDirection.y, forceImpact.z);
+            }
 
             // Lerp the force impact to zero over time.
             forceImpact = Vector3.Lerp(forceImpact, Vector3.zero, 5 * deltaTime);
@@ -860,7 +917,10 @@ namespace Hertzole.GoldPlayer.Core
 
             // Reflect down force on the ground.
             if (direction.y < 0)
+            {
                 direction.y = -direction.y;
+            }
+
             if (direction.y > 0)
             {
                 // Set 'isJumping' to true so the player tells everything we're jumping.
@@ -895,10 +955,14 @@ namespace Hertzole.GoldPlayer.Core
 
             // Make sure gravity is always positive.
             if (gravity < 0)
+            {
                 gravity = -gravity;
+            }
             // Make sure ground stick is always positive.
             if (groundStick < 0)
+            {
                 groundStick = -groundStick;
+            }
         }
 #endif
     }

@@ -2,7 +2,8 @@
     "name": "Hertzole.GoldPlayer",
     "references": [
         "Unity.TextMeshPro",
-        "Unity.ugui"
+        "Unity.ugui",
+        "Hertzole.HertzLib"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -22,5 +23,6 @@
             "expression": "",
             "define": "USE_TMP"
         }
-    ]
+    ],
+    "noEngineReferences": false
 }

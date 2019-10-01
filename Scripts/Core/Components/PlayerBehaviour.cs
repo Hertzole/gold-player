@@ -13,9 +13,9 @@ namespace Hertzole.GoldPlayer.Core
         private GoldPlayerController playerController;
 
         /// <summary> Player input shortcut. It is not certain that this actually exists on the player! </summary>
-        protected GoldInput PlayerInput { get { if (!playerInput) playerInput = GetComponent<GoldInput>(); return playerInput; } }
+        protected GoldInput PlayerInput { get { if (!playerInput) { playerInput = GetComponent<GoldInput>(); } return playerInput; } }
         /// <summary> Player controller shortcut. It is not certain that this actually exists on the player! </summary>
-        public GoldPlayerController PlayerController { get { if (!playerController) playerController = GetComponent<GoldPlayerController>(); return playerController; } }
+        public GoldPlayerController PlayerController { get { if (!playerController) { playerController = GetComponent<GoldPlayerController>(); } return playerController; } }
 
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.
@@ -59,7 +59,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the default axis name is blank, use the one provided in axisName.
             if (string.IsNullOrEmpty(defaultAxisName))
+            {
                 defaultAxisName = axisName;
+            }
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
             return PlayerInput != null ? PlayerInput.GetAxis(axisName) : Input.GetAxis(defaultAxisName);
@@ -74,7 +76,9 @@ namespace Hertzole.GoldPlayer.Core
         {
             // If the default axis name is blank, use the one provided in axisName.
             if (string.IsNullOrEmpty(defaultAxisName))
+            {
                 defaultAxisName = axisName;
+            }
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
             return PlayerInput != null ? PlayerInput.GetAxisRaw(axisName) : Input.GetAxisRaw(defaultAxisName);

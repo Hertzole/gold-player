@@ -64,7 +64,9 @@ namespace Hertzole.GoldPlayer
         private void Start()
         {
             if (InitOnStart)
+            {
                 Initialize();
+            }
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -92,13 +94,24 @@ namespace Hertzole.GoldPlayer
             float deltaTime = Time.deltaTime;
 
             if (movement.HasBeenInitialized)
+            {
                 movement.OnUpdate(deltaTime);
+            }
+
             if (camera.HasBeenInitialized)
+            {
                 camera.OnUpdate(deltaTime);
+            }
+
             if (headBob.HasBeenInitialized)
+            {
                 headBob.OnUpdate(deltaTime);
+            }
+
             if (audio.HasBeenInitialized)
+            {
                 audio.OnUpdate(deltaTime);
+            }
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -110,13 +123,24 @@ namespace Hertzole.GoldPlayer
             float fixedDeltaTime = Time.fixedDeltaTime;
 
             if (movement.HasBeenInitialized)
+            {
                 movement.OnFixedUpdate(fixedDeltaTime);
+            }
+
             if (camera.HasBeenInitialized)
+            {
                 camera.OnFixedUpdate(fixedDeltaTime);
+            }
+
             if (headBob.HasBeenInitialized)
+            {
                 headBob.OnFixedUpdate(fixedDeltaTime);
+            }
+
             if (audio.HasBeenInitialized)
+            {
                 audio.OnFixedUpdate(fixedDeltaTime);
+            }
         }
 
 #if HERTZLIB_UPDATE_MANAGER
@@ -128,13 +152,24 @@ namespace Hertzole.GoldPlayer
             float deltaTime = Time.deltaTime;
 
             if (movement.HasBeenInitialized)
+            {
                 movement.OnLateUpdate(deltaTime);
+            }
+
             if (camera.HasBeenInitialized)
+            {
                 camera.OnLateUpdate(deltaTime);
+            }
+
             if (headBob.HasBeenInitialized)
+            {
                 headBob.OnLateUpdate(deltaTime);
+            }
+
             if (audio.HasBeenInitialized)
+            {
                 audio.OnLateUpdate(deltaTime);
+            }
         }
 
         /// <summary>

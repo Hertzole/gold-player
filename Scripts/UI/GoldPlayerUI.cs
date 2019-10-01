@@ -141,7 +141,7 @@ namespace Hertzole.GoldPlayer.UI
         public GoldPlayerController Player
         {
             // If the player is null, and auto find is on, find the player.
-            get { if (!player && autoFindPlayer) player = FindObjectOfType<GoldPlayerController>(); return player; }
+            get { if (!player && autoFindPlayer) { player = FindObjectOfType<GoldPlayerController>(); } return player; }
             set { SetPlayer(value); }
         }
 
@@ -151,7 +151,7 @@ namespace Hertzole.GoldPlayer.UI
         protected GoldPlayerInteraction PlayerInteraction
         {
             // If the player interaction is null, and auto find is on, find the player interaction.
-            get { if (!playerInteraction && autoFindInteraction) playerInteraction = FindObjectOfType<GoldPlayerInteraction>(); return playerInteraction; }
+            get { if (!playerInteraction && autoFindInteraction) { playerInteraction = FindObjectOfType<GoldPlayerInteraction>(); } return playerInteraction; }
             set { playerInteraction = value; }
         }
 #endif
@@ -200,11 +200,19 @@ namespace Hertzole.GoldPlayer.UI
                 if (!Player.Movement.CanRun || !Player.Movement.Stamina.EnableStamina)
                 {
                     if (sprintingBarImage != null)
+                    {
                         sprintingBarImage.gameObject.SetActive(false);
+                    }
+
                     if (sprintingBarSlider != null)
+                    {
                         sprintingBarSlider.gameObject.SetActive(false);
+                    }
+
                     if (sprintingLabel != null)
+                    {
                         sprintingLabel.gameObject.SetActive(false);
+                    }
 
                     return;
                 }
@@ -226,9 +234,15 @@ namespace Hertzole.GoldPlayer.UI
                         break;
                     case ProgressBarType.Image:
                         if (sprintingBarImage != null)
+                        {
                             sprintingBarImage.gameObject.SetActive(true);
+                        }
+
                         if (sprintingBarSlider != null)
+                        {
                             sprintingBarSlider.gameObject.SetActive(false);
+                        }
+
                         break;
                     default:
                         throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
@@ -244,9 +258,13 @@ namespace Hertzole.GoldPlayer.UI
         {
             // Get the player interaction.
             if (player)
+            {
                 playerInteraction = player.GetComponent<GoldPlayerInteraction>();
+            }
             else if (autoFindPlayer)
+            {
                 playerInteraction = FindObjectOfType<GoldPlayerInteraction>();
+            }
         }
 #endif
 
@@ -271,18 +289,26 @@ namespace Hertzole.GoldPlayer.UI
                 {
                     case ProgressBarType.Slider:
                         if (sprintingBarSlider != null)
+                        {
                             sprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina;
+                        }
+
                         break;
                     case ProgressBarType.Image:
                         if (sprintingBarImage != null)
+                        {
                             sprintingBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
+                        }
+
                         break;
                     default:
                         throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
                 }
 
                 if (sprintingLabel != null)
+                {
                     sprintingLabel.text = GetLabel(sprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+                }
             }
 #else
             Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");
@@ -298,7 +324,9 @@ namespace Hertzole.GoldPlayer.UI
             {
                 // Toggle the interaction box based on if it can be seen.
                 if (interactionBox != null)
+                {
                     interactionBox.SetActive(PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden);
+                }
 
                 // If the player can interact the the interactable isn't hidden,
                 // set the message to either a custom message or the one in Player Interaction.
@@ -311,7 +339,9 @@ namespace Hertzole.GoldPlayer.UI
             else
             {
                 if (interactionBox != null)
+                {
                     interactionBox.SetActive(false);
+                }
             }
 #else
             Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");
@@ -327,7 +357,9 @@ namespace Hertzole.GoldPlayer.UI
 #if GOLD_PLAYER_INTERACTION
             // Only get the interaction if the previous set player isn't the new player.
             if (player != null && this.player != player)
+            {
                 playerInteraction = player.GetComponent<GoldPlayerInteraction>();
+            }
 #endif
             // Set the player.
             this.player = player;
