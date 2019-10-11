@@ -168,17 +168,19 @@ namespace Hertzole.GoldPlayer.UI
             OnAwake();
         }
 
-#if HERTZLIB_UPDATE_MANAGER
         protected virtual void OnEnable()
         {
+#if HERTZLIB_UPDATE_MANAGER
             UpdateManager.AddUpdate(this);
+#endif
         }
 
         protected virtual void OnDisable()
         {
+#if HERTZLIB_UPDATE_MANAGER
             UpdateManager.RemoveUpdate(this);
-        }
 #endif
+        }
 
         protected virtual void OnAwake() { }
 
