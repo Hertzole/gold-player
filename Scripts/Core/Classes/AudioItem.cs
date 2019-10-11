@@ -41,7 +41,7 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("All the audio clips.")]
         [FormerlySerializedAs("m_AudioClips")]
-        private AudioClip[] audioClips = new AudioClip[0];
+        private AudioClip[] audioClips = System.Array.Empty<AudioClip>();
 
         /// <summary> Determines if this audio should be enabled. </summary>
         public bool Enabled { get { return enabled; } set { enabled = value; } }

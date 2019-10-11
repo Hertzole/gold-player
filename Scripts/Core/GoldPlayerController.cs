@@ -69,21 +69,23 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-#if HERTZLIB_UPDATE_MANAGER
         protected virtual void OnEnable()
         {
+#if HERTZLIB_UPDATE_MANAGER
             UpdateManager.AddUpdate(this);
             UpdateManager.AddFixedUpdate(this);
             UpdateManager.AddLateUpdate(this);
+#endif
         }
 
         protected virtual void OnDisable()
         {
+#if HERTZLIB_UPDATE_MANAGER
             UpdateManager.RemoveUpdate(this);
             UpdateManager.RemoveFixedUpdate(this);
             UpdateManager.RemoveLateUpdate(this);
-        }
 #endif
+        }
 
 #if HERTZLIB_UPDATE_MANAGER
         public void OnUpdate()
