@@ -127,7 +127,7 @@ namespace Hertzole.GoldPlayer.Core
             else if (kickWhen == RunAction.FasterThanRunSpeedAndPressingRun)
             {
                 // Do FOV kick if 'isRunning' is true and the run button is being held down.
-                DoFOV(GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY) && PlayerController.Movement.IsRunning, deltaTime);
+                DoFOV(GetButton(GoldPlayerConstants.RUN_BUTTON_NAME) && PlayerController.Movement.IsRunning, deltaTime);
             }
         }
 

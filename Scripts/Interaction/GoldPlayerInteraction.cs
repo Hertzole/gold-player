@@ -158,7 +158,7 @@ namespace Hertzole.GoldPlayer.Interaction
                 CanInteract = CurrentHitInteractable != null && CurrentHitInteractable.CanInteract;
 
                 // If the player presses the interact key and it can react, call interact.
-                if (GetButtonDown(interactInput, KeyCode.E) && CanInteract)
+                if (GetButtonDown(interactInput) && CanInteract)
                 {
                     CurrentHitInteractable.Interact();
                 }

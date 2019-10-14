@@ -181,6 +181,12 @@ namespace Hertzole.GoldPlayer
         {
             GetReferences();
 
+            if (playerInput == null)
+            {
+                Debug.LogError(gameObject.name + " needs to have a input script derived from GoldInputSystem! Add the standard 'GoldPlayerInputSystem' to fix.");
+                return;
+            }
+
             InitializeModules();
         }
 

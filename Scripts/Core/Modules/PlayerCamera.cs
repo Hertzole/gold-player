@@ -33,7 +33,11 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("How fast the camera head should move when looking around.")]
         [FormerlySerializedAs("m_MouseSensitivity")]
+#if ENABLE_INPUT_SYSTEM
+        private float mouseSensitivity = 3f;
+#else
         private float mouseSensitivity = 10f;
+#endif
         [SerializeField]
         [Tooltip("Sets how smooth the movement should be.")]
         [FormerlySerializedAs("m_MouseDamping")]
@@ -199,17 +203,37 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.
+#if ENABLE_INPUT_SYSTEM
+            if (UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame && shouldLockCursor)
+            {
+                LockCursor(true);
+            }
+#else
             if (Input.GetMouseButtonDown(0) && shouldLockCursor)
             {
                 LockCursor(true);
             }
+#endif
 
             // If the player can look around, get the input. 
             // Else just set the input to zero.
             if (canLookAround)
             {
                 // Set the input.
+#if ENABLE_INPUT_SYSTEM
+                mouseInput = GetVector2Input("Look") * mouseSensitivity;
+                if (invertXAxis)
+                {
+                    mouseInput.x = -mouseInput.x;
+                }
+
+                if (invertYAxis)
+                {
+                    mouseInput.y = -mouseInput.y;
+                }
+#else
                 mouseInput = new Vector2(invertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), invertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * mouseSensitivity;
+#endif
             }
             else
             {
