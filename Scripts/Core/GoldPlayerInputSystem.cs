@@ -1,10 +1,18 @@
 ﻿using Hertzole.GoldPlayer.Core;
 using System.Collections.Generic;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+#endif
 
 namespace Hertzole.GoldPlayer
 {
+#if !ENABLE_INPUT_SYSTEM
+    [System.Obsolete("You're not using the new Input System so this component will be useless.")]
+#else
+    [AddComponentMenu("Gold Player/Gold Player Input System", 02)]
+    [DisallowMultipleComponent]
+#endif
     public class GoldPlayerInputSystem : GoldInput
     {
 #if ENABLE_INPUT_SYSTEM

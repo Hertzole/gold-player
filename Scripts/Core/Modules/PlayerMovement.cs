@@ -702,7 +702,7 @@ namespace Hertzole.GoldPlayer.Core
             OnJump?.Invoke(jumpHeight);
 #else
             if (OnJump != null)
-                OnJump.Invoke(m_JumpHeight);
+                OnJump.Invoke(jumpHeight);
 #endif
         }
 

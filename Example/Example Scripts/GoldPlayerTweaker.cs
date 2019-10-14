@@ -4,7 +4,6 @@
 
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 #if USE_GUI
 using UnityEngine.Serialization;
@@ -57,11 +56,11 @@ namespace Hertzole.GoldPlayer.Example
         public KeyCode ResetSceneKey { get { return resetSceneKey; } set { resetSceneKey = value; } }
 #else
         [SerializeField]
-        private InputAction toggleAction = new InputAction();
-        public InputAction ToggleAction { get { return toggleAction; } set { toggleAction = value; } }
+        private UnityEngine.InputSystem.InputAction toggleAction = new UnityEngine.InputSystem.InputAction();
+        public UnityEngine.InputSystem.InputAction ToggleAction { get { return toggleAction; } set { toggleAction = value; } }
         [SerializeField]
-        private InputAction resetSceneAction = new InputAction();
-        public InputAction ResetSceneAction { get { return resetSceneAction; } set { resetSceneAction = value; } }
+        private UnityEngine.InputSystem.InputAction resetSceneAction = new UnityEngine.InputSystem.InputAction();
+        public UnityEngine.InputSystem.InputAction ResetSceneAction { get { return resetSceneAction; } set { resetSceneAction = value; } }
 #endif
 
 #if USE_GUI

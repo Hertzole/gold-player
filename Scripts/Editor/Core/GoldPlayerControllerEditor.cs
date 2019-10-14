@@ -2,8 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 #if UNITY_2019_1_OR_NEWER
-using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 #endif
 
 namespace Hertzole.GoldPlayer.Editor
@@ -107,6 +107,11 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 if (it.propertyPath.StartsWith(camera.name) && it.depth < 2)
                 {
+                    if (it.name.StartsWith("input_"))
+                    {
+                        continue;
+                    }
+
                     EditorGUILayout.PropertyField(it, true);
                 }
             }
@@ -119,6 +124,11 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 if (it.propertyPath.StartsWith(movement.name) && it.depth < 2)
                 {
+                    if (it.name.StartsWith("input_"))
+                    {
+                        continue;
+                    }
+
                     EditorGUILayout.PropertyField(it, true);
                     if (it.name.Equals("crouchHeight") && it.floatValue < 0.8f)
                     {
