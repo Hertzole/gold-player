@@ -95,7 +95,7 @@ namespace Hertzole.GoldPlayer.Example
 #endif
         }
 
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         private void OnEnable()
         {
             toggleAction.Enable();
