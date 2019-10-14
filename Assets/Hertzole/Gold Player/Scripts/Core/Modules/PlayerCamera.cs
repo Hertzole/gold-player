@@ -65,6 +65,25 @@ namespace Hertzole.GoldPlayer.Core
         [FormerlySerializedAs("m_CameraHead")]
         private Transform cameraHead = null;
 
+        [SerializeField]
+#if !ENABLE_INPUT_SYSTEM
+        [HideInInspector]
+#endif
+        [Tooltip("Look action for the new Input System.")]
+        private string input_Look = "Look";
+        [SerializeField]
+#if ENABLE_INPUT_SYSTEM
+        [HideInInspector]
+#endif
+        [Tooltip("Mouse X axis for the old Input Manager.")]
+        private string input_MouseX = "Mouse X";
+        [SerializeField]
+#if ENABLE_INPUT_SYSTEM
+        [HideInInspector]
+#endif
+        [Tooltip("Mouse Y axis for the old Input Manager.")]
+        private string input_MouseY = "Mouse Y";
+
         // Determines if a camera shake should be preformed.
         private bool doShake = false;
         // Was the camera previously shaking?
@@ -132,6 +151,13 @@ namespace Hertzole.GoldPlayer.Core
         public FOVKickClass FOVKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
         /// <summary> The camera head that should be moved around. </summary>
         public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
+
+        /// <summary> Look action for the new Input System. </summary>
+        public string LookInput { get { return input_Look; } set { input_Look = value; } }
+        /// <summary> Mouse X axis for the old Input Manager. </summary>
+        public string MouseX { get { return input_MouseX; } set { input_MouseX = value; } }
+        /// <summary> Mouse Y axis for the old Input Manager. </summary>
+        public string MouseY { get { return input_MouseY; } set { input_MouseY = value; } }
 
         /// <summary> Where the head should be looking. </summary>
         public Vector3 TargetHeadAngles { get { return targetHeadAngles; } }
@@ -221,7 +247,7 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // Set the input.
 #if ENABLE_INPUT_SYSTEM
-                mouseInput = GetVector2Input("Look") * mouseSensitivity;
+                mouseInput = GetVector2Input(input_Look) * mouseSensitivity;
                 if (invertXAxis)
                 {
                     mouseInput.x = -mouseInput.x;
@@ -232,7 +258,7 @@ namespace Hertzole.GoldPlayer.Core
                     mouseInput.y = -mouseInput.y;
                 }
 #else
-                mouseInput = new Vector2(invertXAxis ? -GetAxis(GoldPlayerConstants.MOUSE_X) : GetAxis(GoldPlayerConstants.MOUSE_X), invertYAxis ? -GetAxis(GoldPlayerConstants.MOUSE_Y) : GetAxis(GoldPlayerConstants.MOUSE_Y)) * mouseSensitivity;
+                mouseInput = new Vector2(invertXAxis ? -GetAxis(input_MouseX) : GetAxis(input_MouseX), invertYAxis ? -GetAxis(input_MouseY) : GetAxis(input_MouseY)) * mouseSensitivity;
 #endif
             }
             else

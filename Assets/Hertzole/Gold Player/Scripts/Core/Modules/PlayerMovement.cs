@@ -126,6 +126,35 @@ namespace Hertzole.GoldPlayer.Core
         [FormerlySerializedAs("m_MovingPlatforms")]
         private MovingPlatformsClass movingPlatforms = new MovingPlatformsClass();
 
+        //////// INPUT
+        [SerializeField]
+#if !ENABLE_INPUT_SYSTEM
+        [HideInInspector]
+#endif
+        [Tooltip("Move action for the new Input System.")]
+        private string input_Move = "Move";
+        [SerializeField]
+#if ENABLE_INPUT_SYSTEM
+        [HideInInspector]
+#endif
+        [Tooltip("Horizontal move axis for the old Input Manager.")]
+        private string input_HorizontalAxis = "Horizontal";
+        [SerializeField]
+#if ENABLE_INPUT_SYSTEM
+        [HideInInspector]
+#endif
+        [Tooltip("Vertical move axis for the old Input Manager.")]
+        private string input_VerticalAxis = "Vertical";
+        [SerializeField]
+        [Tooltip("Jump input action.")]
+        private string input_Jump = "Jump";
+        [SerializeField]
+        [Tooltip("Run input action.")]
+        private string input_Run = "Run";
+        [SerializeField]
+        [Tooltip("Crouch input action.")]
+        private string input_Crouch = "Crouch";
+
         // The real calculated jump height.
         protected float realJumpHeight = 0;
         // The original character controller height.
@@ -255,6 +284,19 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Everything related to moving platforms. </summary>
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
+        /// <summary> Move action for the new Input System. </summary>
+        public string MoveInput { get { return input_Move; } set { input_Move = value; } }
+        /// <summary> Horizontal move axis for the old Input Manager. </summary>
+        public string HorizontalAxis { get { return input_HorizontalAxis; } set { input_HorizontalAxis = value; } }
+        /// <summary> Vertical move axis for the old Input Manager. </summary>
+        public string VerticalAxis { get { return input_VerticalAxis; } set { input_VerticalAxis = value; } }
+        /// <summary> Jump input action. </summary>
+        public string JumpInput { get { return input_Jump; } set { input_Jump = value; } }
+        /// <summary> Run input action. </summary>
+        public string RunInput { get { return input_Run; } set { input_Run = value; } }
+        /// <summary> Crouch input action. </summary>
+        public string CrouchInput { get { return input_Crouch; } set { input_Crouch = value; } }
+
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return isGrounded; } }
         /// <summary> Is the player moving at all? </summary>
@@ -351,12 +393,12 @@ namespace Hertzole.GoldPlayer.Core
         public Vector2 GetInput()
         {
 #if ENABLE_INPUT_SYSTEM
-            Vector2 input = GetVector2Input("Move");
+            Vector2 input = GetVector2Input(input_Move);
             float horizontal = input.x;
             float vertical = input.y;
 #else
-            float horizontal = GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS);
-            float vertical = GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS);
+            float horizontal = GetAxisRaw(input_HorizontalAxis);
+            float vertical = GetAxisRaw(input_VerticalAxis);
 #endif
 
             hasUserInput = horizontal != 0 || vertical != 0;
@@ -504,7 +546,7 @@ namespace Hertzole.GoldPlayer.Core
             // Make sure the player is moving in the right direction.
             HandleMovementDirection();
             // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
-            if (canJump && canMoveAround && GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME))
+            if (canJump && canMoveAround && GetButtonDown(input_Jump))
             {
                 // Check if the player should jump.
                 shouldJump = ShouldJump();
@@ -678,8 +720,8 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             isRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > walkingSpeeds.Max + 0.5f;
 
-            bool runButtonPressed = GetButtonDown(GoldPlayerConstants.RUN_BUTTON_NAME);
-            bool runButtonDown = GetButton(GoldPlayerConstants.RUN_BUTTON_NAME);
+            bool runButtonPressed = GetButtonDown(input_Run);
+            bool runButtonDown = GetButton(input_Run);
 
             switch (runToggleMode)
             {
@@ -790,12 +832,12 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     case CrouchToggleMode.Off:
                     {
-                        shouldCrouch = GetButton(GoldPlayerConstants.CROUCH_BUTTON_NAME);
+                        shouldCrouch = GetButton(input_Crouch);
                         break;
                     }
                     case CrouchToggleMode.Permanent:
                     {
-                        bool crouchButtonPressed = GetButtonDown(GoldPlayerConstants.CROUCH_BUTTON_NAME);
+                        bool crouchButtonPressed = GetButtonDown(input_Crouch);
                         if (crouchButtonPressed)
                         {
                             shouldCrouch = !shouldCrouch;
