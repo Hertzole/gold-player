@@ -98,7 +98,7 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     DrainStamina(deltaTime);
                 }
-                else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
+                else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME))
                 {
                     RegenStamina(deltaTime);
                 }
@@ -107,11 +107,11 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // If 'isRunning' is true and the run button is being held down, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
-                if (PlayerController.Movement.IsRunning && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
+                if (PlayerController.Movement.IsRunning && GetButton(GoldPlayerConstants.RUN_BUTTON_NAME))
                 {
                     DrainStamina(deltaTime);
                 }
-                else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME, GoldPlayerConstants.RUN_DEFAULT_KEY))
+                else if (!GetButton(GoldPlayerConstants.RUN_BUTTON_NAME))
                 {
                     RegenStamina(deltaTime);
                 }

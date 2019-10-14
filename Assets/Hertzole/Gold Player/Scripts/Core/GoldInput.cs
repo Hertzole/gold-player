@@ -33,6 +33,9 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Returns the value of the virtual axis identified by axisName.
         /// </summary>
+#if ENABLE_INPUT_SYSTEM
+        [System.Obsolete("Only used with the Input Manager. Will do nothing with the new Input System.")]
+#endif
         public virtual float GetAxis(string axisName)
         {
             return 0;
@@ -41,28 +44,20 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Returns the value of the virtual axis identified by axisName with no smoothing filtering applied.
         /// </summary>
+#if ENABLE_INPUT_SYSTEM
+        [System.Obsolete("Only used with the Input Manager. Will do nothing with the new Input System.")]
+#endif
         public virtual float GetAxisRaw(string axisName)
         {
             return 0;
         }
 
-        /// <summary>
-        /// Returns the Input Item that matches the buttonName in the given InputItem array.
-        /// </summary>
-        /// <param name="buttonName">The name of the item to try and find.</param>
-        /// <param name="inputsArray">The array to search in to find the item.</param>
-        protected virtual InputItem GetItem(string buttonName, InputItem[] inputsArray)
+#if !ENABLE_INPUT_SYSTEM
+        [System.Obsolete("Only used in the new Input System. Will do nothing with Input Manager.")]
+#endif
+        public virtual Vector2 GetVector2(string actionName)
         {
-            for (int i = 0; i < inputsArray.Length; i++)
-            {
-                if (inputsArray[i].ButtonName == buttonName)
-                {
-                    return inputsArray[i];
-                }
-            }
-
-            Debug.LogError("No input with the name '" + buttonName + "' assigned on '" + gameObject.name + "'!");
-            return new InputItem();
+            return Vector2.zero;
         }
     }
 }

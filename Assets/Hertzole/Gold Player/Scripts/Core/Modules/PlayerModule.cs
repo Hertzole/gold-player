@@ -24,7 +24,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="player">The player controller itself.</param>
         /// <param name="input">Input, if available.</param>
-        public void Initialize(GoldPlayerController player, GoldInput input = null)
+        public void Initialize(GoldPlayerController player, GoldInput input)
         {
             // If the module has already been initialized, stop here.
             if (HasBeenInitialized)
@@ -63,37 +63,43 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void OnLateUpdate(float deltaTime) { }
 
+        [System.Obsolete("Use 'GetButton' without defaultKey parameter instead.")]
+        protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButton(buttonName); }
+
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
         /// <param name="defaultKey">A default key in case the input script is null.</param>
-        protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None)
+        protected bool GetButton(string buttonName)
         {
-            // If player input isn't null, get the key using that. Else use the default key.
-            return PlayerInput != null ? PlayerInput.GetButton(buttonName) : Input.GetKey(defaultKey);
+            return PlayerInput.GetButton(buttonName);
         }
+
+        [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead.")]
+        protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonDown(buttonName); }
 
         /// <summary>
         /// Equivalent to Input's GetButtonDown/GetKeyDown function.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
         /// <param name="defaultKey">A default key in case the input script is null.</param>
-        protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None)
+        protected bool GetButtonDown(string buttonName)
         {
-            // If player input isn't null, get the key using that. Else use the default key.
-            return PlayerInput != null ? PlayerInput.GetButtonDown(buttonName) : Input.GetKeyDown(defaultKey);
+            return PlayerInput.GetButtonDown(buttonName);
         }
+
+        [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead.")]
+        protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonUp(buttonName); }
 
         /// <summary>
         /// Equivalent to Input's GetButtonUp/GetKeyUp function.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
         /// <param name="defaultKey">A default key in case the input script is null.</param>
-        protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None)
+        protected bool GetButtonUp(string buttonName)
         {
-            // If player input isn't null, get the key using that. Else use the default key.
-            return PlayerInput != null ? PlayerInput.GetButtonUp(buttonName) : Input.GetKeyUp(defaultKey);
+            return PlayerInput.GetButtonUp(buttonName);
         }
 
         /// <summary>
@@ -101,8 +107,14 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="axisName">The axis name you want to get.</param>
         /// <param name="defaultAxisName">A default axis name in case the input script is null.</param>
+#if ENABLE_INPUT_SYSTEM
+        [System.Obsolete("GetAxis does nothing with the new input system.")]
+#endif
         protected float GetAxis(string axisName, string defaultAxisName = "")
         {
+#if ENABLE_INPUT_SYSTEM
+            return 0;
+#else
             // If the default axis name is blank, use the one provided in axisName.
             if (string.IsNullOrEmpty(defaultAxisName))
             {
@@ -111,6 +123,7 @@ namespace Hertzole.GoldPlayer
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
             return PlayerInput != null ? PlayerInput.GetAxis(axisName) : Input.GetAxis(defaultAxisName);
+#endif
         }
 
         /// <summary>
@@ -118,8 +131,14 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="axisName">The axis name you want to get.</param>
         /// <param name="defaultAxisName">A default axis name in case the input script is null.</param>
+#if ENABLE_INPUT_SYSTEM
+        [System.Obsolete("GetAxisRaw does nothing with the new input system.")]
+#endif
         protected float GetAxisRaw(string axisName, string defaultAxisName = "")
         {
+#if ENABLE_INPUT_SYSTEM
+            return 0;
+#else
             // If the default axis name is blank, use the one provided in axisName.
             if (string.IsNullOrEmpty(defaultAxisName))
             {
@@ -128,6 +147,19 @@ namespace Hertzole.GoldPlayer
 
             // If player input isn't null, get the axis using that. Else use the default axis name.
             return PlayerInput != null ? PlayerInput.GetAxisRaw(axisName) : Input.GetAxisRaw(defaultAxisName);
+#endif
+        }
+
+#if !ENABLE_INPUT_SYSTEM
+        [System.Obsolete("GetVector2Input does nothing with the Input Manager.")]
+#endif
+        protected Vector2 GetVector2Input(string action)
+        {
+#if ENABLE_INPUT_SYSTEM
+            return PlayerInput.GetVector2(action);
+#else
+            return Vector2.zero;
+#endif
         }
 
 #if UNITY_EDITOR

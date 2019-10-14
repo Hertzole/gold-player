@@ -4,9 +4,10 @@
 
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 #if USE_GUI
 using UnityEngine.Serialization;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 #endif
 
@@ -44,6 +45,8 @@ namespace Hertzole.GoldPlayer.Example
         private GoldPlayerTweakField tweakField;
         public GoldPlayerTweakField TweakField { get { return tweakField; } set { tweakField = value; } }
         [Space]
+
+#if !ENABLE_INPUT_SYSTEM
         [SerializeField]
         [FormerlySerializedAs("m_ToggleKey")]
         private KeyCode toggleKey = KeyCode.F1;
@@ -52,6 +55,14 @@ namespace Hertzole.GoldPlayer.Example
         [FormerlySerializedAs("m_ResetSceneKey")]
         private KeyCode resetSceneKey = KeyCode.F2;
         public KeyCode ResetSceneKey { get { return resetSceneKey; } set { resetSceneKey = value; } }
+#else
+        [SerializeField]
+        private InputAction toggleAction = new InputAction();
+        public InputAction ToggleAction { get { return toggleAction; } set { toggleAction = value; } }
+        [SerializeField]
+        private InputAction resetSceneAction = new InputAction();
+        public InputAction ResetSceneAction { get { return resetSceneAction; } set { resetSceneAction = value; } }
+#endif
 
 #if USE_GUI
         private bool showing = false;
@@ -74,7 +85,6 @@ namespace Hertzole.GoldPlayer.Example
                 previousCanLook = TargetPlayer.Camera.CanLookAround;
                 previousCanMove = TargetPlayer.Movement.CanMoveAround;
                 previousLockCursor = TargetPlayer.Camera.ShouldLockCursor;
-                tweakText.text = "Press " + ToggleKey + " to tweak settings";
                 viewport.anchorMin = new Vector2(0, 0);
                 viewport.anchorMax = new Vector2(1, 1);
                 viewport.sizeDelta = new Vector2(0, 0);
@@ -85,6 +95,18 @@ namespace Hertzole.GoldPlayer.Example
             Debug.LogWarning("GoldPlayerTweaker can't be used without UGUI!");
 #endif
         }
+
+#if ENABLE_INPUT_SYSTEM
+        private void OnEnable()
+        {
+            toggleAction.Enable();
+        }
+
+        private void OnDisable()
+        {
+            toggleAction.Disable();
+        }
+#endif
 
         private void SetupUI()
         {
@@ -172,8 +194,11 @@ namespace Hertzole.GoldPlayer.Example
         void Update()
         {
             if (!targetPlayer)
+            {
                 return;
+            }
 
+#if !ENABLE_INPUT_SYSTEM
             if (Input.GetKeyDown(toggleKey))
             {
                 SetShowing(!showing);
@@ -183,6 +208,17 @@ namespace Hertzole.GoldPlayer.Example
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
+#else
+            if (toggleAction.triggered)
+            {
+                SetShowing(!showing);
+            }
+
+            if (resetSceneAction.triggered)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+#endif
         }
 #endif
 

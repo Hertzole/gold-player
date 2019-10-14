@@ -5041,7 +5041,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press <key> to tweak settings
+  m_Text: Press F1 to tweak settings
 --- !u!222 &842506849
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9152,8 +9152,30 @@ MonoBehaviour:
   viewport: {fileID: 1175845338}
   headerLabel: {fileID: 1155328336}
   tweakField: {fileID: 1624051829}
-  toggleKey: 282
-  resetSceneKey: 283
+  toggleAction:
+    m_Name: Toggle
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0cead5e1-e45a-4911-8c62-5e4407b91aeb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 6996d615-294e-44e8-b5df-6bbea1cf3fa2
+      m_Path: <Keyboard>/f1
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Toggle
+      m_Flags: 0
+  resetSceneAction:
+    m_Name: Reset Scene
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b046f4f5-1d70-46f5-a4cf-bc6edff57a89
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
 --- !u!1001 &1611738055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9855,6 +9877,22 @@ PrefabInstance:
     - target: {fileID: 4692390546913958, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4692390546913958, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4692390546913958, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4692390546913958, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221496511255106, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: m_Name
+      value: Gold Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
@@ -12050,16 +12088,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 2134751621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
+  m_RepeatRate: 0.1
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDeviceSelectAction: {fileID: 2559092417903258184, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
 --- !u!114 &2134751623
 MonoBehaviour:
   m_ObjectHideFlags: 0

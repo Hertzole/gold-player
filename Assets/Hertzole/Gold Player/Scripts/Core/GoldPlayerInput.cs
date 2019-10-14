@@ -12,7 +12,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Determines if the input should be based around KeyCodes. If false, Input Manager will be used.")]
         [FormerlySerializedAs("m_UseKeyCodes")]
-        private bool useKeyCodes;
+        private bool useKeyCodes = true;
 
         [Space]
 
@@ -70,6 +70,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+#if !ENABLE_INPUT_SYSTEM
         public override bool GetButton(string buttonName)
         {
             if (inputsDic == null)
@@ -118,6 +119,26 @@ namespace Hertzole.GoldPlayer
             }
 
             return Input.GetAxisRaw(inputsDic[axisName].InputName);
+        }
+#endif
+
+        /// <summary>
+        /// Returns the Input Item that matches the buttonName in the given InputItem array.
+        /// </summary>
+        /// <param name="buttonName">The name of the item to try and find.</param>
+        /// <param name="inputsArray">The array to search in to find the item.</param>
+        protected virtual InputItem GetItem(string buttonName, InputItem[] inputsArray)
+        {
+            for (int i = 0; i < inputsArray.Length; i++)
+            {
+                if (inputsArray[i].ButtonName == buttonName)
+                {
+                    return inputsArray[i];
+                }
+            }
+
+            Debug.LogError("No input with the name '" + buttonName + "' assigned on '" + gameObject.name + "'!");
+            return new InputItem();
         }
     }
 }

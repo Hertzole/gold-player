@@ -3,7 +3,8 @@
     "references": [
         "Unity.TextMeshPro",
         "Unity.ugui",
-        "Hertzole.HertzLib"
+        "Hertzole.HertzLib",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

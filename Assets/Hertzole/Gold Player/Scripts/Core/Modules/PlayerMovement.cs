@@ -350,8 +350,14 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
+#if ENABLE_INPUT_SYSTEM
+            Vector2 input = GetVector2Input("Move");
+            float horizontal = input.x;
+            float vertical = input.y;
+#else
             float horizontal = GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS);
             float vertical = GetAxisRaw(GoldPlayerConstants.VERTICAL_AXIS);
+#endif
 
             hasUserInput = horizontal != 0 || vertical != 0;
 
@@ -498,7 +504,7 @@ namespace Hertzole.GoldPlayer.Core
             // Make sure the player is moving in the right direction.
             HandleMovementDirection();
             // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
-            if (canJump && canMoveAround && GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME, GoldPlayerConstants.JUMP_DEFAULT_KEY))
+            if (canJump && canMoveAround && GetButtonDown(GoldPlayerConstants.JUMP_BUTTON_NAME))
             {
                 // Check if the player should jump.
                 shouldJump = ShouldJump();
@@ -672,12 +678,8 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             isRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > walkingSpeeds.Max + 0.5f;
 
-            bool runButtonPressed = GetButtonDown(
-                GoldPlayerConstants.RUN_BUTTON_NAME,
-                GoldPlayerConstants.RUN_DEFAULT_KEY);
-            bool runButtonDown = GetButton(
-                GoldPlayerConstants.RUN_BUTTON_NAME,
-                GoldPlayerConstants.RUN_DEFAULT_KEY);
+            bool runButtonPressed = GetButtonDown(GoldPlayerConstants.RUN_BUTTON_NAME);
+            bool runButtonDown = GetButton(GoldPlayerConstants.RUN_BUTTON_NAME);
 
             switch (runToggleMode)
             {
@@ -788,16 +790,12 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     case CrouchToggleMode.Off:
                     {
-                        shouldCrouch = GetButton(
-                            GoldPlayerConstants.CROUCH_BUTTON_NAME,
-                            GoldPlayerConstants.CROUCH_DEFAULT_KEY);
+                        shouldCrouch = GetButton(GoldPlayerConstants.CROUCH_BUTTON_NAME);
                         break;
                     }
                     case CrouchToggleMode.Permanent:
                     {
-                        bool crouchButtonPressed = GetButtonDown(
-                        GoldPlayerConstants.CROUCH_BUTTON_NAME,
-                        GoldPlayerConstants.CROUCH_DEFAULT_KEY);
+                        bool crouchButtonPressed = GetButtonDown(GoldPlayerConstants.CROUCH_BUTTON_NAME);
                         if (crouchButtonPressed)
                         {
                             shouldCrouch = !shouldCrouch;
