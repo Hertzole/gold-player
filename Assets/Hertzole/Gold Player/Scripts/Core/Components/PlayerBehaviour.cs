@@ -61,12 +61,12 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         /// <param name="axisName">The axis name you want to get.</param>
         /// <param name="defaultAxisName">A default axis name in case the input script is null.</param>
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [System.Obsolete("GetAxis does nothing with the new input system.")]
 #endif
         protected float GetAxis(string axisName, string defaultAxisName = "")
         {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             return 0;
 #else
             // If the default axis name is blank, use the one provided in axisName.
@@ -85,12 +85,12 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         /// <param name="axisName">The axis name you want to get.</param>
         /// <param name="defaultAxisName">A default axis name in case the input script is null.</param>
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [System.Obsolete("GetAxisRaw does nothing with the new input system.")]
 #endif
         protected float GetAxisRaw(string axisName, string defaultAxisName = "")
         {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             return 0;
 #else
             // If the default axis name is blank, use the one provided in axisName.
@@ -109,7 +109,7 @@ namespace Hertzole.GoldPlayer.Core
 #endif
         protected Vector2 GetVector2Input(string action)
         {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             return PlayerInput.GetVector2(action);
 #else
             return Vector2.zero;

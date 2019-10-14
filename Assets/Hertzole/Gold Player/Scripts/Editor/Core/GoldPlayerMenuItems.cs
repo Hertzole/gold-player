@@ -78,7 +78,7 @@ namespace Hertzole.GoldPlayer.Editor
             goldController.Audio.JumpSource = jumpSource;
             goldController.Audio.LandSource = landSource;
 
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             root.AddComponent<GoldPlayerInputSystem>();
 #else
             root.AddComponent<GoldPlayerInput>();

@@ -33,7 +33,7 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("How fast the camera head should move when looking around.")]
         [FormerlySerializedAs("m_MouseSensitivity")]
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         private float mouseSensitivity = 3f;
 #else
         private float mouseSensitivity = 10f;
@@ -72,13 +72,13 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("Look action for the new Input System.")]
         private string input_Look = "Look";
         [SerializeField]
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [HideInInspector]
 #endif
         [Tooltip("Mouse X axis for the old Input Manager.")]
         private string input_MouseX = "Mouse X";
         [SerializeField]
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [HideInInspector]
 #endif
         [Tooltip("Mouse Y axis for the old Input Manager.")]
@@ -229,7 +229,7 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Make sure to lock the cursor when pressing the mouse button, but only if ShouldLockCursor is true.
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             if (UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame && shouldLockCursor)
             {
                 LockCursor(true);
@@ -246,7 +246,7 @@ namespace Hertzole.GoldPlayer.Core
             if (canLookAround)
             {
                 // Set the input.
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
                 mouseInput = GetVector2Input(input_Look) * mouseSensitivity;
                 if (invertXAxis)
                 {

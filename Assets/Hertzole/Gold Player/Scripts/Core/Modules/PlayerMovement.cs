@@ -134,13 +134,13 @@ namespace Hertzole.GoldPlayer.Core
         [Tooltip("Move action for the new Input System.")]
         private string input_Move = "Move";
         [SerializeField]
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [HideInInspector]
 #endif
         [Tooltip("Horizontal move axis for the old Input Manager.")]
         private string input_HorizontalAxis = "Horizontal";
         [SerializeField]
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [HideInInspector]
 #endif
         [Tooltip("Vertical move axis for the old Input Manager.")]
@@ -392,7 +392,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <returns></returns>
         public Vector2 GetInput()
         {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             Vector2 input = GetVector2Input(input_Move);
             float horizontal = input.x;
             float vertical = input.y;

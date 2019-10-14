@@ -1,7 +1,7 @@
 ﻿using Hertzole.GoldPlayer.Core;
 using System.Collections.Generic;
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
 using UnityEngine.InputSystem;
 #endif
 
@@ -15,7 +15,7 @@ namespace Hertzole.GoldPlayer
 #endif
     public class GoldPlayerInputSystem : GoldInput
     {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [SerializeField]
         private InputActionAsset input = null;
 
@@ -26,12 +26,12 @@ namespace Hertzole.GoldPlayer
 
         private void Start()
         {
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             UpdateActions();
 #endif
         }
 
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         private void OnEnable()
         {
             input.Enable();
