@@ -1,4 +1,5 @@
 ﻿#if UNITY_2019_1_OR_NEWER
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,6 +24,14 @@ namespace Hertzole.GoldPlayer.Editor
                     paddingBottom = 0
                 }
             };
+        }
+
+        public static IMGUIContainer GetHelpBox(string message, MessageType type)
+        {
+            return new IMGUIContainer(() =>
+            {
+                EditorGUILayout.HelpBox(message, type);
+            });
         }
     }
 }

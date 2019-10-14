@@ -29,7 +29,9 @@ namespace Hertzole.GoldPlayer.Editor
             // Remove any colliders, if they are present.
             Collider graphicsCollider = graphic.GetComponent<Collider>();
             if (graphicsCollider != null)
+            {
                 Object.DestroyImmediate(graphicsCollider);
+            }
 
             // Create the bob target and set the position.
             GameObject bobTarget = CreateChild("Bob Target", root);
@@ -76,6 +78,12 @@ namespace Hertzole.GoldPlayer.Editor
             goldController.Audio.JumpSource = jumpSource;
             goldController.Audio.LandSource = landSource;
 
+#if ENABLE_INPUT_SYSTEM
+            root.AddComponent<GoldPlayerInputSystem>();
+#else
+            root.AddComponent<GoldPlayerInput>();
+#endif
+
             // Register the undo.
             Undo.RegisterCreatedObjectUndo(root, "Create " + root.name);
         }
@@ -120,9 +128,14 @@ namespace Hertzole.GoldPlayer.Editor
         {
             SceneView view = SceneView.currentDrawingSceneView;
             if (!view)
+            {
                 view = SceneView.sceneViews[0] as SceneView;
+            }
+
             if (view)
+            {
                 view.MoveToView(go.transform);
+            }
         }
     }
 }

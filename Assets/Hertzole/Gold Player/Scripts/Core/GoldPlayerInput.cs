@@ -5,8 +5,12 @@ using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
+#if !ENABLE_INPUT_SYSTEM
     [AddComponentMenu("Gold Player/Gold Player Input", 02)]
     [DisallowMultipleComponent]
+#else
+    [System.Obsolete("You're using the new Input System so this component will be useless.")]
+#endif
     public class GoldPlayerInput : GoldInput
     {
         [SerializeField]
