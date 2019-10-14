@@ -19,7 +19,7 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     unityFontStyleAndWeight = FontStyle.Bold,
                     paddingTop = 9,
-                    paddingLeft = 0,
+                    paddingLeft = 2,
                     paddingBottom = 0
                 }
             };

@@ -56,9 +56,9 @@ namespace Hertzole.GoldPlayer.Core
         protected virtual void BobHandler(float deltaTime)
         {
 #if ENABLE_INPUT_SYSTEM
-            float zTilt = GetVector2Input("Move").x;
+            float zTilt = GetVector2Input(PlayerController.Movement.MoveInput).x;
 #else
-            float zTilt = GetAxisRaw(GoldPlayerConstants.HORIZONTAL_AXIS);
+            float zTilt = GetAxisRaw(PlayerController.Movement.HorizontalAxis);
 #endif
             bobClass.DoBob(CharacterController.velocity, deltaTime, zTilt);
         }

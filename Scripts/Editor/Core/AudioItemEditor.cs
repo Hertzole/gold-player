@@ -3,6 +3,7 @@ using Hertzole.GoldPlayer.Core;
 using UnityEditor;
 #if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 #else
 using UnityEngine;
@@ -32,8 +33,6 @@ namespace Hertzole.GoldPlayer.Editor
         private VisualElement enabled;
         private VisualElement randomPitch;
         private VisualElement pitch;
-        private VisualElement minPitch;
-        private VisualElement maxPitch;
         private VisualElement changeVolume;
         private VisualElement volume;
         private VisualElement audioClips;
@@ -178,7 +177,7 @@ namespace Hertzole.GoldPlayer.Editor
         {
             VisualElement root = new VisualElement();
 
-            Foldout foldout = new Foldout { text = property.displayName, value = property.isExpanded, };
+            Foldout foldout = new Foldout { text = property.displayName, value = property.isExpanded };
             //TODO: Fix isExpanded being set when any bool is changed.
             foldout.RegisterValueChangedCallback((evt) => { property.isExpanded = evt.newValue; });
 
@@ -188,13 +187,64 @@ namespace Hertzole.GoldPlayer.Editor
             enabled = new PropertyField(property.FindPropertyRelative("enabled"));
             randomPitch = new PropertyField(property.FindPropertyRelative("randomPitch"));
             pitch = new PropertyField(property.FindPropertyRelative("pitch"));
-            minPitch = new PropertyField(property.FindPropertyRelative("minPitch"));
-            maxPitch = new PropertyField(property.FindPropertyRelative("maxPitch"));
 
-            //TODO: Make one liner.
             randomPitchElements = new VisualElement();
-            randomPitchElements.Add(minPitch);
-            randomPitchElements.Add(maxPitch);
+            randomPitchElements.AddToClassList("unity-property-field");
+
+            VisualElement basePitchFields = new VisualElement();
+            basePitchFields.AddToClassList("unity-base-field");
+            basePitchFields.AddToClassList("unity-base-text-field");
+            basePitchFields.AddToClassList("unity-float-field");
+
+            Label pitchLabel = new Label("Pitch");
+            pitchLabel.AddToClassList("unity-text-element");
+            pitchLabel.AddToClassList("unity-label");
+            pitchLabel.AddToClassList("unity-base-field__label");
+            pitchLabel.AddToClassList("unity-base-text-field__label");
+            pitchLabel.AddToClassList("unity-float-field__label");
+            pitchLabel.AddToClassList("unity-property-field__label");
+
+            FloatField minPitchField = new FloatField
+            {
+                bindingPath = property.FindPropertyRelative("minPitch").propertyPath,
+            };
+            minPitchField.style.flexGrow = 1;
+            minPitchField.AddToClassList("unity-property-field__input");
+
+            FloatField maxPitchField = new FloatField
+            {
+                bindingPath = property.FindPropertyRelative("maxPitch").propertyPath,
+            };
+            maxPitchField.style.flexGrow = 1;
+            maxPitchField.AddToClassList("unity-property-field__input");
+
+            VisualElement pitchFields = new VisualElement()
+            {
+                name = "pitch-fields"
+            };
+            pitchFields.style.flexDirection = FlexDirection.Row;
+            pitchFields.style.flexGrow = 1;
+
+            Label minLabel = new Label("Min");
+            minLabel.AddToClassList("unity-text-element");
+            minLabel.AddToClassList("unity-label");
+            minLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+
+            pitchFields.Add(minLabel);
+            pitchFields.Add(minPitchField);
+
+            Label maxLabel = new Label("Max");
+            maxLabel.AddToClassList("unity-text-element");
+            maxLabel.AddToClassList("unity-label");
+            maxLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+
+            pitchFields.Add(maxLabel);
+            pitchFields.Add(maxPitchField);
+
+            basePitchFields.Add(pitchLabel);
+            basePitchFields.Add(pitchFields);
+
+            randomPitchElements.Add(basePitchFields);
 
             changeVolume = new PropertyField(property.FindPropertyRelative("changeVolume"));
             volume = new PropertyField(property.FindPropertyRelative("volume"));
@@ -225,8 +275,6 @@ namespace Hertzole.GoldPlayer.Editor
         {
             randomPitch.SetEnabled(toggle);
             pitch.SetEnabled(toggle);
-            minPitch.SetEnabled(toggle);
-            maxPitch.SetEnabled(toggle);
             changeVolume.SetEnabled(toggle);
             volume.SetEnabled(toggle);
             audioClips.SetEnabled(toggle);
