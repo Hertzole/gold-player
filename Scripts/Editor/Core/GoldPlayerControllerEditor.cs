@@ -4,6 +4,7 @@ using UnityEngine;
 #if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
 #endif
 
 namespace Hertzole.GoldPlayer.Editor
@@ -208,10 +209,7 @@ namespace Hertzole.GoldPlayer.Editor
         {
             root = new VisualElement();
 
-            controllerWarning = new IMGUIContainer(() =>
-            {
-                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
-            });
+            controllerWarning = GetHelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
 
             if (characterController != null)
             {
@@ -241,7 +239,7 @@ namespace Hertzole.GoldPlayer.Editor
             });
 
             root.Add(toolbarContainer);
-            root.Add(GoldPlayerUIHelper.GetSpace(3));
+            root.Add(GetSpace(3));
 
             inputElements = new VisualElement();
 
@@ -272,7 +270,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void CreateCameraGUI()
         {
-            inputElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Camera"));
+            inputElements.Add(GetHeaderLabel("Camera"));
 
             cameraElements = new VisualElement();
             SerializedProperty it = camera.Copy();
@@ -282,22 +280,22 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     if (it.name.Equals("invertXAxis"))
                     {
-                        cameraElements.Add(GoldPlayerUIHelper.GetSpace());
+                        cameraElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("mouseSensitivity"))
                     {
-                        cameraElements.Add(GoldPlayerUIHelper.GetSpace());
+                        cameraElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("fieldOfViewKick"))
                     {
-                        cameraElements.Add(GoldPlayerUIHelper.GetSpace());
+                        cameraElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("cameraHead"))
                     {
-                        cameraElements.Add(GoldPlayerUIHelper.GetSpace());
+                        cameraElements.Add(GetSpace());
                     }
 
                     if (it.name.StartsWith("input_"))
@@ -313,7 +311,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void CreateMovementGUI()
         {
-            inputElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Movement"));
+            inputElements.Add(GetHeaderLabel("Movement"));
 
             movementElements = new VisualElement();
 
@@ -325,27 +323,27 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     if (it.name.Equals("walkingSpeeds"))
                     {
-                        movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Walking"));
+                        movementElements.Add(GetHeaderLabel("Walking"));
                     }
 
                     if (it.name.Equals("canRun"))
                     {
-                        movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Running"));
+                        movementElements.Add(GetHeaderLabel("Running"));
                     }
 
                     if (it.name.Equals("canJump"))
                     {
-                        movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Jumping"));
+                        movementElements.Add(GetHeaderLabel("Jumping"));
                     }
 
                     if (it.name.Equals("canCrouch"))
                     {
-                        movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Crouching"));
+                        movementElements.Add(GetHeaderLabel("Crouching"));
                     }
 
                     if (it.name.Equals("groundLayer"))
                     {
-                        movementElements.Add(GoldPlayerUIHelper.GetHeaderLabel("Other"));
+                        movementElements.Add(GetHeaderLabel("Other"));
                     }
 
                     if (it.name.StartsWith("input_"))
@@ -358,11 +356,7 @@ namespace Hertzole.GoldPlayer.Editor
                     movementElements.Add(field);
                     if (it.name.Equals("crouchHeight"))
                     {
-                        //HACK: Maybe find a neat replacement for help boxes.
-                        crouchHeightWarning = new IMGUIContainer(() =>
-                        {
-                            EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
-                        });
+                        crouchHeightWarning = GetHelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
 
                         movementElements.Add(crouchHeightWarning);
 
@@ -373,11 +367,7 @@ namespace Hertzole.GoldPlayer.Editor
 
                     if (it.name.Equals("groundLayer"))
                     {
-                        //HACK: Maybe find a neat replacement for help boxes.
-                        groundLayerWarning = new IMGUIContainer(() =>
-                        {
-                            EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
-                        });
+                        groundLayerWarning = GetHelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
 
                         field.RegisterCallback<ChangeEvent<int>>((evt) => { ValidateGroundLayer(evt.newValue); });
 
@@ -410,22 +400,22 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     if (it.name.Equals("bobFrequency"))
                     {
-                        headBobElements.Add(GoldPlayerUIHelper.GetSpace());
+                        headBobElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("landMove"))
                     {
-                        headBobElements.Add(GoldPlayerUIHelper.GetSpace());
+                        headBobElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("enableStrafeTilting"))
                     {
-                        headBobElements.Add(GoldPlayerUIHelper.GetSpace());
+                        headBobElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("bobTarget"))
                     {
-                        headBobElements.Add(GoldPlayerUIHelper.GetSpace());
+                        headBobElements.Add(GetSpace());
                     }
 
                     headBobElements.Add(new PropertyField(it));
@@ -446,17 +436,17 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     if (it.name.Equals("basedOnHeadBob"))
                     {
-                        audioElements.Add(GoldPlayerUIHelper.GetSpace());
+                        audioElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("walkFootsteps"))
                     {
-                        audioElements.Add(GoldPlayerUIHelper.GetSpace());
+                        audioElements.Add(GetSpace());
                     }
 
                     if (it.name.Equals("footstepsSource"))
                     {
-                        audioElements.Add(GoldPlayerUIHelper.GetSpace());
+                        audioElements.Add(GetSpace());
                     }
 
                     audioElements.Add(new PropertyField(it));

@@ -1,12 +1,10 @@
 #if UNITY_EDITOR
 using Hertzole.GoldPlayer.Core;
 using UnityEditor;
+using UnityEngine;
 #if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
-#else
-using UnityEngine;
 #endif
 
 namespace Hertzole.GoldPlayer.Editor
@@ -14,7 +12,6 @@ namespace Hertzole.GoldPlayer.Editor
     [CustomPropertyDrawer(typeof(AudioItem))]
     internal class AudioItemEditor : PropertyDrawer
     {
-#if !UNITY_2019_1_OR_NEWER
         // The full complete rect.
         private Rect fullRect;
         // The rect for the current field.
@@ -26,7 +23,8 @@ namespace Hertzole.GoldPlayer.Editor
 
         // Check to see if the property height should be from the GUI.
         private bool doGUI = false;
-#else
+
+#if UNITY_2019_1_OR_NEWER
         private VisualElement elements;
         private VisualElement randomPitchElements;
 
@@ -38,7 +36,6 @@ namespace Hertzole.GoldPlayer.Editor
         private VisualElement audioClips;
 #endif
 
-#if !UNITY_2019_1_OR_NEWER
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             // Set 'doGUI' to true as we want to bae it of the GUI.
@@ -64,6 +61,11 @@ namespace Hertzole.GoldPlayer.Editor
                 AddToRect();
                 // The 'Enabled' field.
                 EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("enabled"));
+
+                bool oldEnabled = GUI.enabled;
+
+                GUI.enabled = property.FindPropertyRelative("enabled").boolValue;
+
                 // Add to the rect.
                 AddToRect();
                 // The 'Random Pitch' field.
@@ -121,6 +123,9 @@ namespace Hertzole.GoldPlayer.Editor
                         AddToRect();
                     }
                 }
+
+                GUI.enabled = oldEnabled;
+
                 // Remove the indent.
                 EditorGUI.indentLevel--;
             }
@@ -140,7 +145,10 @@ namespace Hertzole.GoldPlayer.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (!doGUI)
+            {
                 fullRect = CalculateFullRectHeight(property);
+            }
+
             return fullRect.height;
         }
 
@@ -159,7 +167,10 @@ namespace Hertzole.GoldPlayer.Editor
                 rect.height += lineHeight + padding;
                 rect.height += lineHeight + padding;
                 if (property.FindPropertyRelative("changeVolume").boolValue)
+                {
                     rect.height += lineHeight + padding;
+                }
+
                 rect.height += lineHeight + padding;
                 if (property.FindPropertyRelative("audioClips").isExpanded)
                 {
@@ -172,14 +183,14 @@ namespace Hertzole.GoldPlayer.Editor
             }
             return rect;
         }
-#else
+
+#if UNITY_2019_1_OR_NEWER
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             VisualElement root = new VisualElement();
 
             Foldout foldout = new Foldout { text = property.displayName, value = property.isExpanded };
-            //TODO: Fix isExpanded being set when any bool is changed.
-            foldout.RegisterValueChangedCallback((evt) => { property.isExpanded = evt.newValue; });
+            foldout.RegisterValueChangedCallback((evt) => { property.isExpanded = foldout.value; });
 
             elements = new VisualElement();
             foldout.contentContainer.Add(elements);
@@ -275,6 +286,7 @@ namespace Hertzole.GoldPlayer.Editor
         {
             randomPitch.SetEnabled(toggle);
             pitch.SetEnabled(toggle);
+            randomPitchElements.SetEnabled(toggle);
             changeVolume.SetEnabled(toggle);
             volume.SetEnabled(toggle);
             audioClips.SetEnabled(toggle);
