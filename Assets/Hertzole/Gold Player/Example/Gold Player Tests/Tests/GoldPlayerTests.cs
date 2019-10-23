@@ -125,6 +125,8 @@ namespace Hertzole.GoldPlayer.Tests
             Camera camera = playerCameraHead.AddComponent<Camera>();
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             GoldPlayerInputSystem input = playerGO.AddComponent<GoldPlayerInputSystem>();
+#else
+            GoldPlayerInput input = playerGO.AddComponent<GoldPlayerInput>();
 #endif
             playerController.GetComponent<CharacterController>().center = new Vector3(0, 1, 0);
             playerController.Camera.CameraHead = playerCameraHead.transform;
@@ -132,11 +134,7 @@ namespace Hertzole.GoldPlayer.Tests
             playerController.HeadBob.BobTarget = playerCameraHead.transform;
 
             playerController.Movement.MovingPlatforms.Enabled = true;
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             playerController.Movement.MovingPlatforms.Initialize(playerController, input);
-#else
-            playerController.Movement.MovingPlatforms.Initialize(playerController);
-#endif
 
             //GameObject raycastWeaponGO = new GameObject("[Test] Raycast Weapon");
             //GoldPlayerWeapon raycastWeapon = raycastWeaponGO.AddComponent<GoldPlayerWeapon>();
