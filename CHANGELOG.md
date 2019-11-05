@@ -21,6 +21,7 @@
 - Fixed the camera being FPS dependent. (Was very sluggish on high FPS and fast on lower FPS)
 - Fixed errors that would occur when HertzLib Update Manager was present.
 - Fixed errors appearing when playing and recompiling.
+- Fixed the player stopping on a dime when Can Move Around was changed when moving.
 
 ---
 

@@ -20,6 +20,14 @@ namespace Hertzole.HertzLib
 
     public static class UpdateManager
     {
+#if UNITY_2019_3_OR_NEWER
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void Init()
+        {
+            UpdateManagerBehaviour.m_Destroying = false;
+        }
+#endif
+
         [DisallowMultipleComponent]
         [HelpURL("https://github.com/Hertzole/HertzLib/wiki/Update-Manager")]
         internal class UpdateManagerBehaviour : MonoBehaviour
@@ -42,7 +50,7 @@ namespace Hertzole.HertzLib
             }
 
             // Sets if the object is in the process of being destroyed.
-            private static bool m_Destroying = false;
+            internal static bool m_Destroying = false;
 
             private List<IFixedUpdate> m_FixedUpdateList = new List<IFixedUpdate>();
             private static List<IFixedUpdate> FixedUpdateList { get { return Instance.m_FixedUpdateList; } set { Instance.m_FixedUpdateList = value; } }
@@ -69,7 +77,9 @@ namespace Hertzole.HertzLib
                 if (m_FixedUpdateList.Count > 0)
                 {
                     for (int i = 0; i < m_FixedUpdateList.Count; i++)
+                    {
                         m_FixedUpdateList[i].OnFixedUpdate();
+                    }
                 }
             }
 
@@ -79,7 +89,9 @@ namespace Hertzole.HertzLib
                 if (m_LateUpdateList.Count > 0)
                 {
                     for (int i = 0; i < m_LateUpdateList.Count; i++)
+                    {
                         m_LateUpdateList[i].OnLateUpdate();
+                    }
                 }
             }
 
@@ -89,7 +101,9 @@ namespace Hertzole.HertzLib
                 if (m_UpdateList.Count > 0)
                 {
                     for (int i = 0; i < m_UpdateList.Count; i++)
+                    {
                         m_UpdateList[i].OnUpdate();
+                    }
                 }
             }
 
@@ -101,7 +115,9 @@ namespace Hertzole.HertzLib
             {
                 // Don't do anything if the object will be destroyed.
                 if (m_Destroying)
+                {
                     return;
+                }
 
                 UpdateList.Add(update);
             }
@@ -114,7 +130,9 @@ namespace Hertzole.HertzLib
             {
                 // Don't do anything if the object will be destroyed.
                 if (m_Destroying)
+                {
                     return;
+                }
 
                 UpdateList.Remove(update);
             }
@@ -127,7 +145,9 @@ namespace Hertzole.HertzLib
             {
                 // Don't do anything if the object will be destroyed.
                 if (m_Destroying)
+                {
                     return;
+                }
 
                 FixedUpdateList.Add(update);
             }
@@ -140,7 +160,9 @@ namespace Hertzole.HertzLib
             {
                 // Don't do anything if the object will be destroyed.
                 if (m_Destroying)
+                {
                     return;
+                }
 
                 FixedUpdateList.Remove(update);
             }
@@ -153,7 +175,9 @@ namespace Hertzole.HertzLib
             {
                 // Don't do anything if the object will be destroyed.
                 if (m_Destroying)
+                {
                     return;
+                }
 
                 LateUpdateList.Add(update);
             }
@@ -166,7 +190,9 @@ namespace Hertzole.HertzLib
             {
                 // Don't do anything if the object will be destroyed.
                 if (m_Destroying)
+                {
                     return;
+                }
 
                 LateUpdateList.Remove(update);
             }
@@ -187,7 +213,9 @@ namespace Hertzole.HertzLib
 
             // Add the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.AddUpdate(update);
+            }
         }
 
         /// <summary>
@@ -205,7 +233,9 @@ namespace Hertzole.HertzLib
 
             // Remove the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.RemoveUpdate(update);
+            }
         }
 
         /// <summary>
@@ -223,7 +253,9 @@ namespace Hertzole.HertzLib
 
             // Add the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.AddFixedUpdate(update);
+            }
         }
 
         /// <summary>
@@ -241,7 +273,9 @@ namespace Hertzole.HertzLib
 
             // Remove the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.RemoveFixedUpdate(update);
+            }
         }
 
         /// <summary>
@@ -259,7 +293,9 @@ namespace Hertzole.HertzLib
 
             // Add the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.AddLateUpdate(update);
+            }
         }
 
         /// <summary>
@@ -277,7 +313,9 @@ namespace Hertzole.HertzLib
 
             // Remove the update on the instance.
             if (UpdateManagerBehaviour.Instance)
+            {
                 UpdateManagerBehaviour.Instance.RemoveLateUpdate(update);
+            }
         }
     }
 }
