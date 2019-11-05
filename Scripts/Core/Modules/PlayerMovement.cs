@@ -394,8 +394,8 @@ namespace Hertzole.GoldPlayer.Core
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             Vector2 input = GetVector2Input(input_Move);
-            float horizontal = input.x;
-            float vertical = input.y;
+            float horizontal = canMoveAround ? input.x : 0;
+            float vertical = canMoveAround ? input.y : 0;
 #else
             float horizontal = GetAxisRaw(input_HorizontalAxis);
             float vertical = GetAxisRaw(input_VerticalAxis);
@@ -482,20 +482,23 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     // Set the jump position to the current player transform.
                     jumpPosition = PlayerTransform.position;
-                    //
                     if (!isJumping)
                     {
                         currentJumps++;
                     }
                 }
 
-                // If the player's head is touching the ceiling, move the player down so they don't
-                // get stuck on the ceiling.
-                if ((CharacterController.collisionFlags & CollisionFlags.Above) != 0)
+                // When the step offset is above 0 the player can get stuck on the ceiling. Try and prevent that.
+                if (CharacterController.stepOffset > 0)
                 {
-                    moveDirection.y = -5f;
-                    isJumping = false;
-                    isFalling = true;
+                    // If the player's head is touching the ceiling, move the player down so they don't
+                    // get stuck on the ceiling.
+                    if ((CharacterController.collisionFlags & CollisionFlags.Above) != 0)
+                    {
+                        moveDirection.y = -5f;
+                        isJumping = false;
+                        isFalling = true;
+                    }
                 }
 
                 // The player was previously not grounded.
@@ -586,64 +589,52 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void HandleMovementDirection()
         {
-            // Only run if we can move around.
-            if (canMoveAround)
+            if (isGrounded)
             {
-                if (isGrounded)
+                // Get the move direction from the movement input X and Y (on the Z axis).
+                moveDirection = new Vector3(movementInput.x, moveDirection.y, movementInput.y);
+                // If movement input Y is above 0, we're moving forward, so apply forward move speed.
+                // Else if below 0, we're moving backwards, so apply backwards move speed.
+                if (movementInput.y > 0)
                 {
-                    // Get the move direction from the movement input X and Y (on the Z axis).
-                    moveDirection = new Vector3(movementInput.x, moveDirection.y, movementInput.y);
-                    // If movement input Y is above 0, we're moving forward, so apply forward move speed.
-                    // Else if below 0, we're moving backwards, so apply backwards move speed.
-                    if (movementInput.y > 0)
-                    {
-                        moveDirection.z *= moveSpeed.ForwardSpeed;
-                    }
-                    else
-                    {
-                        moveDirection.z *= moveSpeed.BackwardsSpeed;
-                    }
-
-                    // Apply the sideways movement speed to the X movement.
-                    moveDirection.x *= moveSpeed.SidewaysSpeed;
-
-                    // Update the grounded velocity to the current move direction.
-                    groundVelocity = moveDirection;
+                    moveDirection.z *= moveSpeed.ForwardSpeed;
                 }
                 else
                 {
-                    // Get the "inverted air control". (Inspector value being 1, this is 0. Value is 0.2, this is 0.8)
-                    float airControl = 1 - this.airControl;
-                    // Set the air velocity based on the ground velocity multiplied with the air control.
-                    airVelocity = new Vector3(groundVelocity.x * airControl, moveDirection.y, groundVelocity.z * airControl);
-                    // Apply the same movement speeds as when grounded.
-                    if (movementInput.y > 0)
-                    {
-                        airVelocity.z += (moveSpeed.ForwardSpeed * this.airControl) * movementInput.y;
-                    }
-                    else
-                    {
-                        airVelocity.z += (moveSpeed.BackwardsSpeed * this.airControl) * movementInput.y;
-                    }
-
-                    // Sideways movement speed.
-                    airVelocity.x += (moveSpeed.SidewaysSpeed * this.airControl) * movementInput.x;
-
-                    // Set the move direction to the air velocity.
-                    moveDirection = airVelocity;
+                    moveDirection.z *= moveSpeed.BackwardsSpeed;
                 }
 
-                // Make sure we're moving in the direction the transform is facing.
-                moveDirection = PlayerTransform.TransformDirection(moveDirection);
+                // Apply the sideways movement speed to the X movement.
+                moveDirection.x *= moveSpeed.SidewaysSpeed;
+
+                // Update the grounded velocity to the current move direction.
+                groundVelocity = moveDirection;
             }
             else
             {
-                if (isGrounded)
+                // Get the "inverted air control". (Inspector value being 1, this is 0. Value is 0.2, this is 0.8)
+                float airControl = 1 - this.airControl;
+                // Set the air velocity based on the ground velocity multiplied with the air control.
+                airVelocity = new Vector3(groundVelocity.x * airControl, moveDirection.y, groundVelocity.z * airControl);
+                // Apply the same movement speeds as when grounded.
+                if (movementInput.y > 0)
                 {
-                    // If we can't move around, just return zero.
-                    moveDirection = new Vector3(0, moveDirection.y, 0);
+                    airVelocity.z += (moveSpeed.ForwardSpeed * this.airControl) * movementInput.y;
                 }
+                else
+                {
+                    airVelocity.z += (moveSpeed.BackwardsSpeed * this.airControl) * movementInput.y;
+                }
+
+                // Sideways movement speed.
+                airVelocity.x += (moveSpeed.SidewaysSpeed * this.airControl) * movementInput.x;
+
+                // Set the move direction to the air velocity.
+                moveDirection = airVelocity;
             }
+
+            // Make sure we're moving in the direction the transform is facing.
+            moveDirection = PlayerTransform.TransformDirection(moveDirection);
         }
 
         /// <summary>
