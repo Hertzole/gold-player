@@ -29,6 +29,13 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_Audio")]
         private new PlayerAudio audio = new PlayerAudio();
 
+        [SerializeField]
+#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+        [HideInInspector]
+#endif
+        [Tooltip("The main action map for the Input Actions.")]
+        private string actionMap = "Player";
+
         private bool initOnStart = true;
         protected bool hasBeenInitialized = false;
 
@@ -55,6 +62,25 @@ namespace Hertzole.GoldPlayer
         public PlayerBob HeadBob { get { return headBob; } set { headBob = value; } }
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
         public PlayerAudio Audio { get { return audio; } set { audio = value; } }
+
+        /// <summary> The main action map for the Input Actions. </summary>
+        public string ActionMap
+        {
+            get
+            {
+#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+                Debug.LogWarning("GoldPlayerController.ActionMap is useless when not using the new Input System.");
+#endif
+                return actionMap;
+            }
+            set
+            {
+#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+                Debug.LogWarning("GoldPlayerController.ActionMap is useless when not using the new Input System.");
+#endif
+                actionMap = value;
+            }
+        }
 
         /// <summary> The input system for the player. </summary>
         public GoldInput PlayerInput { get { return playerInput; } }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 #endif
 
 namespace Hertzole.GoldPlayer
 {
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
     [System.Obsolete("You're not using the new Input System so this component will be useless.")]
 #else
     [AddComponentMenu("Gold Player/Gold Player Input System", 02)]
@@ -20,8 +21,6 @@ namespace Hertzole.GoldPlayer
         private InputActionAsset input = null;
 
         private Dictionary<string, InputAction> actions;
-        private Dictionary<string, bool> actionDown;
-        private Dictionary<string, bool> actionUp;
 #endif
 
         private void Start()
@@ -45,16 +44,12 @@ namespace Hertzole.GoldPlayer
         private void UpdateActions()
         {
             actions = new Dictionary<string, InputAction>();
-            actionDown = new Dictionary<string, bool>();
-            actionUp = new Dictionary<string, bool>();
 
             foreach (InputActionMap item in input.actionMaps)
             {
                 foreach (InputAction action in item.actions)
                 {
-                    actions.Add(action.name, action);
-                    actionDown.Add(action.name, false);
-                    actionUp.Add(action.name, false);
+                    actions.Add(item.name + "/" + action.name, action);
                 }
             }
         }
@@ -68,7 +63,7 @@ namespace Hertzole.GoldPlayer
 
             if (actions.TryGetValue(buttonName, out InputAction inputAction))
             {
-                return inputAction.ReadValue<float>() == 1;
+                return inputAction.activeControl is ButtonControl button && button.isPressed;
             }
             else
             {
@@ -86,19 +81,7 @@ namespace Hertzole.GoldPlayer
 
             if (actions.TryGetValue(buttonName, out InputAction inputAction))
             {
-                bool value = inputAction.ReadValue<float>() == 1;
-                if (value && !actionDown[buttonName])
-                {
-                    actionDown[buttonName] = value;
-                    return true;
-                }
-                else if (!value)
-                {
-                    actionDown[buttonName] = value;
-                    return false;
-                }
-
-                return false;
+                return inputAction.activeControl is ButtonControl button && button.wasPressedThisFrame;
             }
             else
             {
@@ -116,24 +99,54 @@ namespace Hertzole.GoldPlayer
 
             if (actions.TryGetValue(buttonName, out InputAction inputAction))
             {
-                bool value = inputAction.ReadValue<float>() == 1;
-                if (value && !actionUp[buttonName])
-                {
-                    actionUp[buttonName] = value;
-                    return false;
-                }
-                else if (!value && actionUp[buttonName])
-                {
-                    actionUp[buttonName] = value;
-                    return true;
-                }
-
-                return false;
+                return inputAction.activeControl is ButtonControl button && button.wasReleasedThisFrame;
             }
             else
             {
                 Debug.LogError("Can't find action '" + buttonName + "' in " + input.name + "!");
                 return false;
+            }
+        }
+
+        public override float GetAxis(string axisName)
+        {
+            if (actions.TryGetValue(axisName, out InputAction inputAction))
+            {
+                if (inputAction.activeControl is AxisControl axis)
+                {
+                    return axis.ReadValue();
+                }
+                else
+                {
+                    Debug.LogError(axisName + " is not an axis type.");
+                    return 0;
+                }
+            }
+            else
+            {
+                Debug.LogError("Can't find action '" + axisName + "' in " + input.name + "!");
+                return 0;
+            }
+        }
+
+        public override float GetAxisRaw(string axisName)
+        {
+            if (actions.TryGetValue(axisName, out InputAction inputAction))
+            {
+                if (inputAction.activeControl is AxisControl axis)
+                {
+                    return axis.ReadUnprocessedValue();
+                }
+                else
+                {
+                    Debug.LogError(axisName + " is not an axis type.");
+                    return 0;
+                }
+            }
+            else
+            {
+                Debug.LogError("Can't find action '" + axisName + "' in " + input.name + "!");
+                return 0;
             }
         }
 

@@ -545,6 +545,9 @@ MonoBehaviour:
       lerpTimeFrom: 2.5
       targetCamera: {fileID: 20764455326535260}
     cameraHead: {fileID: 4766509410355108}
+    input_Look: Look
+    input_MouseX: Mouse X
+    input_MouseY: Mouse Y
   movement:
     canMoveAround: 1
     walkingSpeeds:
@@ -592,6 +595,12 @@ MonoBehaviour:
       movePosition: 1
       moveRotation: 1
       maxAngle: 45
+    input_Move: Move
+    input_HorizontalAxis: Horizontal
+    input_VerticalAxis: Vertical
+    input_Jump: Jump
+    input_Run: Run
+    input_Crouch: Crouch
   headBob:
     bobClass:
       enableBob: 1
