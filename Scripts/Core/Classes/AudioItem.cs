@@ -7,41 +7,41 @@ namespace Hertzole.GoldPlayer.Core
     /// Used for easily playing audio clip(s) with parameters.
     /// </summary>
     [System.Serializable]
-    public class AudioItem
+    public struct AudioItem
     {
         [SerializeField]
         [Tooltip("Determines if this audio should be enabled.")]
         [FormerlySerializedAs("m_Enabled")]
-        private bool enabled = true;
+        private bool enabled;
         [SerializeField]
         [Tooltip("Determines if the pitch should be randomized.")]
         [FormerlySerializedAs("m_RandomPitch")]
-        private bool randomPitch = true;
+        private bool randomPitch;
         [SerializeField]
         [Tooltip("The pitch that the audio should play at.")]
         [FormerlySerializedAs("m_Pitch")]
-        private float pitch = 1f;
+        private float pitch;
         [SerializeField]
         [Tooltip("The minimum pitch the audio can play at.")]
         [FormerlySerializedAs("m_MinPitch")]
-        private float minPitch = 0.9f;
+        private float minPitch;
         [SerializeField]
         [Tooltip("The maximum pitch the audio can play at.")]
         [FormerlySerializedAs("m_MaxPitch")]
-        private float maxPitch = 1.1f;
+        private float maxPitch;
         [SerializeField]
         [Tooltip("Determines if the volume should be changed when playing.")]
         [FormerlySerializedAs("m_ChangeVolume")]
-        private bool changeVolume = false;
+        private bool changeVolume;
         [SerializeField]
         [Range(0f, 1f)]
         [Tooltip("The volume that should be set when playing.")]
         [FormerlySerializedAs("m_Volume")]
-        private float volume = 1f;
+        private float volume;
         [SerializeField]
         [Tooltip("All the audio clips.")]
         [FormerlySerializedAs("m_AudioClips")]
-        private AudioClip[] audioClips = new AudioClip[0];
+        private AudioClip[] audioClips;
 
         /// <summary> Determines if this audio should be enabled. </summary>
         public bool Enabled { get { return enabled; } set { enabled = value; } }
@@ -60,12 +60,18 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> All the audio clips. </summary>
         public AudioClip[] AudioClips { get { return audioClips; } set { audioClips = value; } }
 
-        public AudioItem() { }
-
         public AudioItem(bool enabled)
         {
             // Set enabled to the provided enabled parameter.
             this.enabled = enabled;
+            // Fill in the rest with standard values.
+            randomPitch = false;
+            pitch = 1;
+            minPitch = 1;
+            maxPitch = 1;
+            changeVolume = false;
+            volume = 1;
+            audioClips = new AudioClip[0];
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch)
@@ -80,6 +86,10 @@ namespace Hertzole.GoldPlayer.Core
             this.minPitch = minPitch;
             // Set the maximum pitch to the provided maximum pitch parameter.
             this.maxPitch = maxPitch;
+            // Fill in the rest with standard values.
+            changeVolume = false;
+            volume = 1;
+            audioClips = new AudioClip[0];
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume)
@@ -98,6 +108,8 @@ namespace Hertzole.GoldPlayer.Core
             this.changeVolume = changeVolume;
             // Set the volume to the provided volume parameter.
             this.volume = volume;
+            // Fill in the rest with standard values.
+            audioClips = new AudioClip[0];
         }
 
         public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip audioClip)
