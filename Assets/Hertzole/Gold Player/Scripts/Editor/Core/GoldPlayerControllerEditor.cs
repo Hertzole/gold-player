@@ -243,6 +243,10 @@ namespace Hertzole.GoldPlayer.Editor
 
             inputElements = new VisualElement();
 
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+            inputElements.Add(new PropertyField(serializedObject.FindProperty("actionMap")));
+#endif
+
             CreateCameraGUI();
             CreateMovementGUI();
             CreateHeadBobGUI();

@@ -33,9 +33,6 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Returns the value of the virtual axis identified by axisName.
         /// </summary>
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-        [System.Obsolete("Only used with the Input Manager. Will do nothing with the new Input System.")]
-#endif
         public virtual float GetAxis(string axisName)
         {
             return 0;
@@ -44,9 +41,6 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary>
         /// Returns the value of the virtual axis identified by axisName with no smoothing filtering applied.
         /// </summary>
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-        [System.Obsolete("Only used with the Input Manager. Will do nothing with the new Input System.")]
-#endif
         public virtual float GetAxisRaw(string axisName)
         {
             return 0;

@@ -24,10 +24,9 @@ namespace Hertzole.GoldPlayer.Core
         /// Equivalent to Input's GetButton/GetKey function.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
-        /// <param name="defaultKey">A default key in case the input script is null.</param>
         protected bool GetButton(string buttonName)
         {
-            return PlayerInput.GetButton(buttonName);
+            return PlayerInput.GetButton(PlayerController == null ? buttonName : PlayerController.ActionMap + "/" + buttonName);
         }
 
         [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead.")]
@@ -37,10 +36,9 @@ namespace Hertzole.GoldPlayer.Core
         /// Equivalent to Input's GetButtonDown/GetKeyDown function.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
-        /// <param name="defaultKey">A default key in case the input script is null.</param>
         protected bool GetButtonDown(string buttonName)
         {
-            return PlayerInput.GetButtonDown(buttonName);
+            return PlayerInput.GetButtonDown(PlayerController == null ? buttonName : PlayerController.ActionMap + "/" + buttonName);
         }
 
         [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead.")]
@@ -50,58 +48,34 @@ namespace Hertzole.GoldPlayer.Core
         /// Equivalent to Input's GetButtonUp/GetKeyUp function.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
-        /// <param name="defaultKey">A default key in case the input script is null.</param>
         protected bool GetButtonUp(string buttonName)
         {
-            return PlayerInput.GetButtonUp(buttonName);
+            return PlayerInput.GetButtonUp(PlayerController == null ? buttonName : PlayerController.ActionMap + "/" + buttonName);
         }
+
+        [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead.")]
+        protected float GetAxis(string axisName, string defaultAxisName = "") { return GetAxis(axisName); }
 
         /// <summary>
         /// Equivalent to Input's GetAxis function.
         /// </summary>
         /// <param name="axisName">The axis name you want to get.</param>
-        /// <param name="defaultAxisName">A default axis name in case the input script is null.</param>
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-        [System.Obsolete("GetAxis does nothing with the new input system.")]
-#endif
-        protected float GetAxis(string axisName, string defaultAxisName = "")
+        protected float GetAxis(string axisName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            return 0;
-#else
-            // If the default axis name is blank, use the one provided in axisName.
-            if (string.IsNullOrEmpty(defaultAxisName))
-            {
-                defaultAxisName = axisName;
-            }
-
-            // If player input isn't null, get the axis using that. Else use the default axis name.
-            return PlayerInput != null ? PlayerInput.GetAxis(axisName) : Input.GetAxis(defaultAxisName);
-#endif
+            return PlayerInput.GetAxis(PlayerController == null ? axisName : PlayerController.ActionMap + "/" + axisName);
         }
+
+        [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead.")]
+        protected float GetAxisRaw(string axisName, string defaultAxisName = "") { return GetAxisRaw(axisName); }
 
         /// <summary>
         /// Equivalent to Input's GetAxisRaw function.
         /// </summary>
         /// <param name="axisName">The axis name you want to get.</param>
         /// <param name="defaultAxisName">A default axis name in case the input script is null.</param>
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-        [System.Obsolete("GetAxisRaw does nothing with the new input system.")]
-#endif
-        protected float GetAxisRaw(string axisName, string defaultAxisName = "")
+        protected float GetAxisRaw(string axisName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            return 0;
-#else
-            // If the default axis name is blank, use the one provided in axisName.
-            if (string.IsNullOrEmpty(defaultAxisName))
-            {
-                defaultAxisName = axisName;
-            }
-
-            // If player input isn't null, get the axis using that. Else use the default axis name.
-            return PlayerInput != null ? PlayerInput.GetAxisRaw(axisName) : Input.GetAxisRaw(defaultAxisName);
-#endif
+            return PlayerInput.GetAxisRaw(PlayerController == null ? axisName : PlayerController.ActionMap + "/" + axisName);
         }
 
 #if !ENABLE_INPUT_SYSTEM
@@ -110,7 +84,7 @@ namespace Hertzole.GoldPlayer.Core
         protected Vector2 GetVector2Input(string action)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            return PlayerInput.GetVector2(action);
+            return PlayerInput.GetVector2(PlayerController == null ? action : PlayerController.ActionMap + "/" + action);
 #else
             return Vector2.zero;
 #endif

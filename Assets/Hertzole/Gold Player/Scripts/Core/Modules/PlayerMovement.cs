@@ -128,7 +128,7 @@ namespace Hertzole.GoldPlayer.Core
 
         //////// INPUT
         [SerializeField]
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
         [HideInInspector]
 #endif
         [Tooltip("Move action for the new Input System.")]
