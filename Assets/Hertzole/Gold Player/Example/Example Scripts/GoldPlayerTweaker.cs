@@ -2,12 +2,12 @@
 #define USE_GUI
 #endif
 
-using System.Reflection;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 #if USE_GUI
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 #endif
 
 namespace Hertzole.GoldPlayer.Example
@@ -22,8 +22,8 @@ namespace Hertzole.GoldPlayer.Example
 #if USE_GUI
         [SerializeField]
         [FormerlySerializedAs("m_TweakText")]
-        private Text tweakText;
-        public Text TweakText { get { return tweakText; } set { tweakText = value; } }
+        private TextMeshProUGUI tweakText;
+        public TextMeshProUGUI TweakText { get { return tweakText; } set { tweakText = value; } }
 #endif
         [SerializeField]
         [FormerlySerializedAs("m_Panel")]
@@ -36,8 +36,8 @@ namespace Hertzole.GoldPlayer.Example
         public RectTransform Viewport { get { return viewport; } set { viewport = value; } }
         [SerializeField]
         [FormerlySerializedAs("m_HeaderLabel")]
-        private Text headerLabel;
-        public Text HeaderLabel { get { return headerLabel; } set { headerLabel = value; } }
+        private TextMeshProUGUI headerLabel;
+        public TextMeshProUGUI HeaderLabel { get { return headerLabel; } set { headerLabel = value; } }
 #endif
         [SerializeField]
         [FormerlySerializedAs("m_TweakField")]
@@ -110,57 +110,57 @@ namespace Hertzole.GoldPlayer.Example
         private void SetupUI()
         {
             CreateHeader("Camera");
-            CreateTweaker("Invert X Axis", targetPlayer.Camera.GetType().GetProperty("InvertXAxis"), targetPlayer.Camera);
-            CreateTweaker("Invert Y Axis", targetPlayer.Camera.GetType().GetProperty("InvertYAxis"), targetPlayer.Camera);
-            CreateTweaker("Mouse Sensitivity", targetPlayer.Camera.GetType().GetProperty("MouseSensitivity"), targetPlayer.Camera);
-            CreateTweaker("Mouse Damping", targetPlayer.Camera.GetType().GetProperty("MouseDamping"), targetPlayer.Camera);
-            CreateTweaker("Minimum X", targetPlayer.Camera.GetType().GetProperty("MinimumX"), targetPlayer.Camera);
-            CreateTweaker("Maximum X", targetPlayer.Camera.GetType().GetProperty("MaximumX"), targetPlayer.Camera);
+            CreateTweaker("Invert X Axis", x => { targetPlayer.Camera.InvertXAxis = x; }, targetPlayer.Camera.InvertXAxis);
+            CreateTweaker("Invert Y Axis", x => { targetPlayer.Camera.InvertYAxis = x; }, targetPlayer.Camera.InvertYAxis);
+            CreateTweaker("Mouse Sensitivity", x => { targetPlayer.Camera.MouseSensitivity = x; }, targetPlayer.Camera.MouseSensitivity);
+            CreateTweaker("Mouse Damping", x => { targetPlayer.Camera.MouseDamping = x; }, targetPlayer.Camera.MouseDamping);
+            CreateTweaker("Minimum X", x => { targetPlayer.Camera.MinimumX = x; }, targetPlayer.Camera.MinimumX);
+            CreateTweaker("Maximum X", x => { targetPlayer.Camera.MaximumX = x; }, targetPlayer.Camera.MaximumX);
             CreateSubHeader("FOV Kick");
-            CreateTweaker("Enable FOV Kick", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("EnableFOVKick"), targetPlayer.Camera.FieldOfViewKick);
-            CreateTweaker("Kick Amount", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("KickAmount"), targetPlayer.Camera.FieldOfViewKick);
-            CreateTweaker("Lerp Time To", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("LerpTimeTo"), targetPlayer.Camera.FieldOfViewKick);
-            CreateTweaker("Lerp Time From", targetPlayer.Camera.FieldOfViewKick.GetType().GetProperty("LerpTimeFrom"), targetPlayer.Camera.FieldOfViewKick);
+            CreateTweaker("Enable FOV Kick", x => { targetPlayer.Camera.FieldOfViewKick.EnableFOVKick = x; }, targetPlayer.Camera.FieldOfViewKick.EnableFOVKick);
+            CreateTweaker("Kick Amount", x => { targetPlayer.Camera.FieldOfViewKick.KickAmount = x; }, targetPlayer.Camera.FieldOfViewKick.KickAmount);
+            CreateTweaker("Lerp Time To", x => { targetPlayer.Camera.FieldOfViewKick.LerpTimeTo = x; }, targetPlayer.Camera.FieldOfViewKick.LerpTimeTo);
+            CreateTweaker("Lerp Time From", x => { targetPlayer.Camera.FieldOfViewKick.LerpTimeFrom = x; }, targetPlayer.Camera.FieldOfViewKick.LerpTimeFrom);
 
             CreateHeader("Movement");
             CreateSubHeader("Running");
-            CreateTweaker("Can Run", targetPlayer.Movement.GetType().GetProperty("CanRun"), targetPlayer.Movement);
+            CreateTweaker("Can Run", x => { targetPlayer.Movement.CanRun = x; }, targetPlayer.Movement.CanRun);
             CreateSubHeader("Jumping");
-            CreateTweaker("Can Jump", targetPlayer.Movement.GetType().GetProperty("CanJump"), targetPlayer.Movement);
-            CreateTweaker("Jump Height", targetPlayer.Movement.GetType().GetProperty("JumpHeight"), targetPlayer.Movement);
-            CreateTweaker("Air Jump", targetPlayer.Movement.GetType().GetProperty("AirJump"), targetPlayer.Movement);
-            CreateTweaker("Air Jump Time", targetPlayer.Movement.GetType().GetProperty("AirJumpTime"), targetPlayer.Movement);
-            CreateTweaker("Air Jumps Amount", targetPlayer.Movement.GetType().GetProperty("AirJumpsAmount"), targetPlayer.Movement);
-            CreateTweaker("Allow Air Jump Direction Change", targetPlayer.Movement.GetType().GetProperty("AllowAirJumpDirectionChange"), targetPlayer.Movement);
+            CreateTweaker("Can Jump", x => { targetPlayer.Movement.CanJump = x; }, targetPlayer.Movement.CanJump);
+            CreateTweaker("Jump Height", x => { targetPlayer.Movement.JumpHeight = x; }, targetPlayer.Movement.JumpHeight);
+            CreateTweaker("Air Jump", x => { targetPlayer.Movement.AirJump = x; }, targetPlayer.Movement.AirJump);
+            CreateTweaker("Air Jump Time", x => { targetPlayer.Movement.AirJumpTime = x; }, targetPlayer.Movement.AirJumpTime);
+            CreateTweaker("Air Jumps Amount", x => { targetPlayer.Movement.AirJumpsAmount = x; }, targetPlayer.Movement.AirJumpsAmount);
+            CreateTweaker("Allow Air Jump Direction Change", x => { targetPlayer.Movement.AllowAirJumpDirectionChange = x; }, targetPlayer.Movement.AllowAirJumpDirectionChange);
             CreateSubHeader("Crouching");
-            CreateTweaker("Can Crouch", targetPlayer.Movement.GetType().GetProperty("CanCrouch"), targetPlayer.Movement);
-            CreateTweaker("Crouch Jumping", targetPlayer.Movement.GetType().GetProperty("CrouchJumping"), targetPlayer.Movement);
-            CreateTweaker("Crouch Height", targetPlayer.Movement.GetType().GetProperty("CrouchHeight"), targetPlayer.Movement);
-            CreateTweaker("Crouch Head Lerp", targetPlayer.Movement.GetType().GetProperty("CrouchHeadLerp"), targetPlayer.Movement);
+            CreateTweaker("Can Crouch", x => { targetPlayer.Movement.CanCrouch = x; }, targetPlayer.Movement.CanCrouch);
+            CreateTweaker("Crouch Jumping", x => { targetPlayer.Movement.CrouchJumping = x; }, targetPlayer.Movement.CrouchJumping);
+            CreateTweaker("Crouch Height", x => { targetPlayer.Movement.CrouchHeight = x; }, targetPlayer.Movement.CrouchHeight);
+            CreateTweaker("Crouch Head Lerp", x => { targetPlayer.Movement.CrouchHeadLerp = x; }, targetPlayer.Movement.CrouchHeadLerp);
             CreateSubHeader("Other");
-            CreateTweaker("Acceleration", targetPlayer.Movement.GetType().GetProperty("Acceleration"), targetPlayer.Movement);
-            CreateTweaker("Gravity", targetPlayer.Movement.GetType().GetProperty("Gravity"), targetPlayer.Movement);
-            CreateTweaker("Air Control", targetPlayer.Movement.GetType().GetProperty("AirControl"), targetPlayer.Movement, true, 0, 1);
-            CreateTweaker("Enable Ground Stick", targetPlayer.Movement.GetType().GetProperty("EnableGroundStick"), targetPlayer.Movement);
-            CreateTweaker("GroundStick", targetPlayer.Movement.GetType().GetProperty("GroundStick"), targetPlayer.Movement);
+            CreateTweaker("Acceleration", x => { targetPlayer.Movement.Acceleration = x; }, targetPlayer.Movement.Acceleration);
+            CreateTweaker("Gravity", x => { targetPlayer.Movement.Gravity = x; }, targetPlayer.Movement.Gravity);
+            CreateTweaker("Air Control", x => { targetPlayer.Movement.AirControl = x; }, targetPlayer.Movement.AirControl, true, 0, 1);
+            CreateTweaker("Enable Ground Stick", x => { targetPlayer.Movement.EnableGroundStick = x; }, targetPlayer.Movement.EnableGroundStick);
+            CreateTweaker("GroundStick", x => { targetPlayer.Movement.GroundStick = x; }, targetPlayer.Movement.GroundStick);
 
             CreateHeader("Head bob");
-            CreateTweaker("Enable Bob", targetPlayer.HeadBob.GetType().GetProperty("EnableBob"), targetPlayer.HeadBob);
-            CreateTweaker("Bob Frequency", targetPlayer.HeadBob.GetType().GetProperty("BobFrequency"), targetPlayer.HeadBob);
-            CreateTweaker("Bob Height", targetPlayer.HeadBob.GetType().GetProperty("BobHeight"), targetPlayer.HeadBob);
-            CreateTweaker("Sway Angle", targetPlayer.HeadBob.GetType().GetProperty("SwayAngle"), targetPlayer.HeadBob);
-            CreateTweaker("Side Movement", targetPlayer.HeadBob.GetType().GetProperty("SideMovement"), targetPlayer.HeadBob);
-            CreateTweaker("height Multiplier", targetPlayer.HeadBob.GetType().GetProperty("HeightMultiplier"), targetPlayer.HeadBob);
-            CreateTweaker("Stride Multiplier", targetPlayer.HeadBob.GetType().GetProperty("StrideMultiplier"), targetPlayer.HeadBob);
-            CreateTweaker("Land Move", targetPlayer.HeadBob.GetType().GetProperty("LandMove"), targetPlayer.HeadBob);
-            CreateTweaker("Land Tilt", targetPlayer.HeadBob.GetType().GetProperty("LandTilt"), targetPlayer.HeadBob);
-            CreateTweaker("Strafe Tilt", targetPlayer.HeadBob.GetType().GetProperty("StrafeTilt"), targetPlayer.HeadBob);
+            CreateTweaker("Enable Bob", x => { targetPlayer.HeadBob.EnableBob = x; }, targetPlayer.HeadBob.EnableBob);
+            CreateTweaker("Bob Frequency", x => { targetPlayer.HeadBob.BobFrequency = x; }, targetPlayer.HeadBob.BobFrequency);
+            CreateTweaker("Bob Height", x => { targetPlayer.HeadBob.BobHeight = x; }, targetPlayer.HeadBob.BobHeight);
+            CreateTweaker("Sway Angle", x => { targetPlayer.HeadBob.SwayAngle = x; }, targetPlayer.HeadBob.SwayAngle);
+            CreateTweaker("Side Movement", x => { targetPlayer.HeadBob.SideMovement = x; }, targetPlayer.HeadBob.SideMovement);
+            CreateTweaker("height Multiplier", x => { targetPlayer.HeadBob.HeightMultiplier = x; }, targetPlayer.HeadBob.HeightMultiplier);
+            CreateTweaker("Stride Multiplier", x => { targetPlayer.HeadBob.StrideMultiplier = x; }, targetPlayer.HeadBob.StrideMultiplier);
+            CreateTweaker("Land Move", x => { targetPlayer.HeadBob.LandMove = x; }, targetPlayer.HeadBob.LandMove);
+            CreateTweaker("Land Tilt", x => { targetPlayer.HeadBob.LandTilt = x; }, targetPlayer.HeadBob.LandTilt);
+            CreateTweaker("Strafe Tilt", x => { targetPlayer.HeadBob.StrafeTilt = x; }, targetPlayer.HeadBob.StrafeTilt);
         }
 
         public void CreateHeader(string text)
         {
 #if USE_GUI
-            Text newText = Instantiate(headerLabel, headerLabel.transform.parent);
+            TextMeshProUGUI newText = Instantiate(headerLabel, headerLabel.transform.parent);
             newText.text = text;
             newText.gameObject.SetActive(true);
 #endif
@@ -169,23 +169,29 @@ namespace Hertzole.GoldPlayer.Example
         public void CreateSubHeader(string text)
         {
 #if USE_GUI
-            Text newText = Instantiate(headerLabel, headerLabel.transform.parent);
+            TextMeshProUGUI newText = Instantiate(headerLabel, headerLabel.transform.parent);
             newText.text = text;
-            newText.fontStyle = FontStyle.Normal;
+            newText.fontStyle = FontStyles.Normal;
             newText.gameObject.SetActive(true);
 #endif
         }
 
-        public void CreateTweaker(string label, PropertyInfo info, object caller, bool slider = false, float minSliderNum = 0, float maxSliderNum = 1)
+        public void CreateTweaker(string label, Action<bool> onChanged, bool defaultValue)
         {
-            if (info == null)
-            {
-                Debug.LogError(label + ": No property with the name provided!");
-                return;
-            }
-
             GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
-            newField.SetupField(label, info, caller, slider, minSliderNum, maxSliderNum);
+            newField.SetupField(label, onChanged, defaultValue);
+        }
+
+        public void CreateTweaker(string label, Action<float> onChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1)
+        {
+            GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
+            newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider);
+        }
+
+        public void CreateTweaker(string label, Action<int> onChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1)
+        {
+            GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
+            newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider);
         }
 
 #if USE_GUI

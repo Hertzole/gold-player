@@ -2,7 +2,8 @@
 #define USE_GUI
 #endif
 
-using System.Reflection;
+using System;
+using TMPro;
 using UnityEngine;
 #if USE_GUI
 using UnityEngine.Serialization;
@@ -17,12 +18,12 @@ namespace Hertzole.GoldPlayer.Example
 #if USE_GUI
         [SerializeField]
         [FormerlySerializedAs("m_Label")]
-        private Text label;
-        public Text Label { get { return label; } set { label = value; } }
+        private TextMeshProUGUI label;
+        public TextMeshProUGUI Label { get { return label; } set { label = value; } }
         [SerializeField]
         [FormerlySerializedAs("m_TextField")]
-        private InputField textField;
-        public InputField TextField { get { return textField; } set { textField = value; } }
+        private TMP_InputField textField;
+        public TMP_InputField TextField { get { return textField; } set { textField = value; } }
         [SerializeField]
         [FormerlySerializedAs("m_ToggleField")]
         private Toggle toggleField;
@@ -33,69 +34,106 @@ namespace Hertzole.GoldPlayer.Example
         public Slider SliderField { get { return sliderField; } set { sliderField = value; } }
 #endif
 
-        public void SetupField(string label, PropertyInfo info, object caller, bool slider = false, float minSliderNum = 0, float maxSliderNum = 1)
+        public void SetupField(string label, Action<bool> valueChanged, bool defaultValue)
         {
 #if USE_GUI
             textField.gameObject.SetActive(false);
-            toggleField.gameObject.SetActive(false);
             sliderField.gameObject.SetActive(false);
+            toggleField.gameObject.SetActive(true);
             this.label.text = label;
+
+            toggleField.isOn = defaultValue;
+            toggleField.onValueChanged.AddListener(x =>
+            {
+                if (valueChanged != null)
+                {
+                    valueChanged.Invoke(x);
+                }
+            });
+
             gameObject.SetActive(true);
+#endif
+        }
 
-            if (info.PropertyType == typeof(bool))
+        public void SetupField(string label, Action<float> valueChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1)
+        {
+#if USE_GUI
+            textField.gameObject.SetActive(!slider);
+            sliderField.gameObject.SetActive(slider);
+            toggleField.gameObject.SetActive(false);
+            this.label.text = label;
+
+            if (slider)
             {
-                toggleField.gameObject.SetActive(true);
-                toggleField.isOn = (bool)info.GetValue(caller, null);
-
-                toggleField.onValueChanged.AddListener(delegate
-                { info.SetValue(caller, toggleField.isOn, null); });
-            }
-
-            if (info.PropertyType == typeof(float) || info.PropertyType == typeof(int))
-            {
-                bool isInt = info.PropertyType == typeof(int);
-
-                float floatValue = 0;
-                int intValue = 0;
-
-                if (isInt)
-                    intValue = (int)info.GetValue(caller, null);
-                else
-                    floatValue = (float)info.GetValue(caller, null);
-
-                if (slider)
+                sliderField.minValue = minSlider;
+                sliderField.maxValue = maxSlider;
+                sliderField.value = defaultValue;
+                sliderField.wholeNumbers = false;
+                this.label.text = label + ": " + sliderField.value.ToString("F3");
+                sliderField.onValueChanged.AddListener(x =>
                 {
-                    textField.gameObject.SetActive(false);
-                    sliderField.gameObject.SetActive(true);
-
-                    sliderField.minValue = minSliderNum;
-                    sliderField.maxValue = maxSliderNum;
-                    sliderField.value = isInt ? intValue : floatValue;
-                    sliderField.wholeNumbers = isInt;
                     this.label.text = label + ": " + sliderField.value.ToString("F3");
-                    sliderField.onValueChanged.AddListener(delegate
+                    if (valueChanged != null)
                     {
-                        info.SetValue(caller, isInt ? Mathf.RoundToInt(sliderField.value) : sliderField.value, null);
-                        this.label.text = label + ": " + sliderField.value.ToString("F3");
-                    });
-                }
-                else
-                {
-                    textField.gameObject.SetActive(true);
-                    sliderField.gameObject.SetActive(false);
-
-                    textField.contentType = isInt ? InputField.ContentType.IntegerNumber : InputField.ContentType.DecimalNumber;
-                    textField.text = (isInt ? intValue : floatValue).ToString();
-
-                    textField.onValueChanged.AddListener(delegate
-                    {
-                        if (isInt)
-                            info.SetValue(caller, int.Parse(textField.text), null);
-                        else
-                            info.SetValue(caller, float.Parse(textField.text), null);
-                    });
-                }
+                        valueChanged.Invoke(x);
+                    }
+                });
             }
+            else
+            {
+                textField.text = defaultValue.ToString();
+                textField.contentType = TMP_InputField.ContentType.DecimalNumber;
+                textField.onValueChanged.AddListener(x =>
+                {
+                    if (valueChanged != null)
+                    {
+                        valueChanged.Invoke(float.Parse(x));
+                    }
+                });
+            }
+
+            gameObject.SetActive(true);
+#endif
+        }
+
+        public void SetupField(string label, Action<int> valueChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1)
+        {
+#if USE_GUI
+            textField.gameObject.SetActive(!slider);
+            sliderField.gameObject.SetActive(slider);
+            toggleField.gameObject.SetActive(false);
+            this.label.text = label;
+
+            if (slider)
+            {
+                sliderField.minValue = minSlider;
+                sliderField.maxValue = maxSlider;
+                sliderField.value = defaultValue;
+                sliderField.wholeNumbers = true;
+                this.label.text = label + ": " + sliderField.value.ToString();
+                sliderField.onValueChanged.AddListener(x =>
+                {
+                    this.label.text = label + ": " + sliderField.value.ToString();
+                    if (valueChanged != null)
+                    {
+                        valueChanged.Invoke(Mathf.RoundToInt(x));
+                    }
+                });
+            }
+            else
+            {
+                textField.text = defaultValue.ToString();
+                textField.contentType = TMP_InputField.ContentType.IntegerNumber;
+                textField.onValueChanged.AddListener(x =>
+                {
+                    if (valueChanged != null)
+                    {
+                        valueChanged.Invoke(int.Parse(x));
+                    }
+                });
+            }
+
+            gameObject.SetActive(true);
 #endif
         }
     }
