@@ -4,6 +4,7 @@ namespace Hertzole.GoldPlayer.Core
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("")]
+    [System.Obsolete("Inherit from 'IGoldInput' instead.")]
     public abstract class GoldInput : MonoBehaviour
     {
         /// <summary>

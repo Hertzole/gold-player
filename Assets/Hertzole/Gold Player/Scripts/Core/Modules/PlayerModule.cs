@@ -5,7 +5,7 @@ namespace Hertzole.GoldPlayer
 {
     public class PlayerModule
     {
-        private string rootActionMap;
+        private string rootActionMap = "";
 
         private GoldPlayerController playerController;
         protected GoldPlayerController PlayerController { get { return playerController; } }
@@ -15,8 +15,8 @@ namespace Hertzole.GoldPlayer
         private Transform playerTransform;
         protected Transform PlayerTransform { get { if (playerTransform == null) { playerTransform = playerController.transform; } return playerTransform; } }
 
-        private GoldInput playerInput;
-        protected GoldInput PlayerInput { get { return playerInput; } }
+        private IGoldInput playerInput;
+        protected IGoldInput PlayerInput { get { return playerInput; } }
 
         /// <summary> True if the module has been initialized. </summary>
         public bool HasBeenInitialized { get; private set; }
@@ -26,7 +26,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="player">The player controller itself.</param>
         /// <param name="input">Input, if available.</param>
-        public void Initialize(GoldPlayerController player, GoldInput input)
+        public void Initialize(GoldPlayerController player, IGoldInput input)
         {
             // If the module has already been initialized, stop here.
             if (HasBeenInitialized)
@@ -40,10 +40,12 @@ namespace Hertzole.GoldPlayer
                 playerInput = input;
             }
 
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             if (player != null)
             {
                 rootActionMap = player.ActionMap;
             }
+#endif
 
             OnInitialize();
 

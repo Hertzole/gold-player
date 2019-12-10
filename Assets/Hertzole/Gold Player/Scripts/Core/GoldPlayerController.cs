@@ -39,7 +39,7 @@ namespace Hertzole.GoldPlayer
         private bool initOnStart = true;
         protected bool hasBeenInitialized = false;
 
-        private GoldInput playerInput;
+        private IGoldInput playerInput;
         private CharacterController controller;
 
         /// <summary> Has all the scripts be initialized? </summary>
@@ -83,7 +83,7 @@ namespace Hertzole.GoldPlayer
         }
 
         /// <summary> The input system for the player. </summary>
-        public GoldInput PlayerInput { get { return playerInput; } }
+        public IGoldInput PlayerInput { get { return playerInput; } }
         /// <summary> The character controller on the player. </summary>
         public CharacterController Controller { get { return controller; } }
 
@@ -221,7 +221,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void GetReferences()
         {
-            playerInput = gameObject.GetComponent<GoldInput>();
+            playerInput = gameObject.GetComponent<IGoldInput>();
             controller = gameObject.GetComponent<CharacterController>();
         }
 
