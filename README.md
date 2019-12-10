@@ -10,16 +10,16 @@ I feel like the standard controllers provided by Unity is REALLY bad, like serio
 ## How do I get started?
 #### If you want to use it in a game:  
 **NEW PACKAGE VERSION!**  
-Starting with Unity 2018.3, you can use git as packages in the package manager! Go [here](https://github.com/Hertzole/gold-player/tree/package#how-do-i-get-started) for installation instructions. If you don't want to use that, you can go the normal route...
+Starting with Unity 2018.3, you can use git as packages in the package manager! Go [here](https://github.com/Hertzole/gold-player/tree/package#package-installation) for installation instructions. If you don't want to use that, you can go the normal route...
 
 Go to [Releases](https://github.com/Hertzole/gold-player/releases) and get the latest release in the form of a Unity package. This will make sure you get a version that should work just fine without any problems. The player is *supported* from Unity 2018.1 and up but it should work fine to at least Unity 2017.1. You may just need to do some manual work on import (like taking care of assembly definitions) (Notice! If you want to use the provided UI component you NEED to use TextMesh Pro in 2018.1 and up and normal text in 2017.3 and down)  
 However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it. **NOTICE THAT THE PROJECT REQUIRES AT LEAST UNITY VERSION 2019.3!**
 #### If you want to contribute:
-Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files. **NOTICE THAT THE PROJECT REQUIRES UNITY VERSION 2018.1!**
+Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files. **NOTICE THAT THE PROJECT REQUIRES UNITY VERSION 2019.3!**
 
 ## What do I get?
 When you use this player controller you will get the following:
-- A solid player controller
+- A solid and performant player controller
 - Running and crouching
 - Head bob
 - Audio for footsteps, jumping, and landing
@@ -29,11 +29,12 @@ When you use this player controller you will get the following:
 - Documented code
 - Interaction component
 - Easy to use UI component
+- Support for [Unity's new Input System](https://github.com/Unity-Technologies/InputSystem/)
 
 ## What can I expect later?
 I have several things I want to do with this player controller. Here are some thing I would like to do.
 - Extra components (stuff that could help you make your game and hooks into the player)
-- Intergrate the [new Unity Input System](https://github.com/Unity-Technologies/InputSystem) (when it becomes more stable).
+- Performance improvements
 - More easy to use API
 
 Those are just some things I can think of right now. I will, of course, add more stuff as time goes on!
