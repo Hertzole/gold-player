@@ -188,6 +188,12 @@ namespace Hertzole.GoldPlayer.Core
         /// </summary>
         protected virtual void DoStepCycleMath(float deltaTime)
         {
+            if (CharacterController == null)
+            {
+                Debug.LogError("Character Controller on " + PlayerController.gameObject.name + " is null. Did you run the GetReferences method?");
+                return;
+            }
+
             // Get the velocity from the character controller.
             float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude;
             // Calculate some stride thing. (Not 100% what everything here does)

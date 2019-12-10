@@ -9,11 +9,11 @@ namespace Hertzole.GoldPlayer.Core
     [AddComponentMenu("")]
     public abstract class PlayerBehaviour : MonoBehaviour
     {
-        private GoldInput playerInput;
+        private IGoldInput playerInput;
         private GoldPlayerController playerController;
 
         /// <summary> Player input shortcut. </summary>
-        protected GoldInput PlayerInput { get { if (!playerInput) { playerInput = GetComponent<GoldInput>(); } return playerInput; } }
+        protected IGoldInput PlayerInput { get { if (playerInput == null) { playerInput = GetComponent<IGoldInput>(); } return playerInput; } }
         /// <summary> Player controller shortcut. It is not certain that this actually exists on the player! </summary>
         public GoldPlayerController PlayerController { get { if (!playerController) { playerController = GetComponent<GoldPlayerController>(); } return playerController; } }
 

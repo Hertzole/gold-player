@@ -14,14 +14,25 @@ namespace Hertzole.GoldPlayer
     [AddComponentMenu("Gold Player/Gold Player Input System", 02)]
     [DisallowMultipleComponent]
 #endif
-    public class GoldPlayerInputSystem : GoldInput
+    public class GoldPlayerInputSystem : MonoBehaviour, IGoldInput
     {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         [SerializeField]
         private InputActionAsset input = null;
+#endif
+        [SerializeField]
+        private bool autoEnableInput = true;
+        [SerializeField]
+        private bool autoDisableInput = true;
+
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+        public InputActionAsset Input { get { return input; } set { input = value; } }
+#endif
+
+        public bool AutoEnableInput { get { return autoEnableInput; } set { autoEnableInput = value; } }
+        public bool AutoDisableInput { get { return autoDisableInput; } set { autoDisableInput = value; } }
 
         private Dictionary<string, InputAction> actions;
-#endif
 
         private void Start()
         {
@@ -30,15 +41,35 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
+        public void EnableInput()
+        {
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+            input.Enable();
+#endif
+        }
+
+        public void DisableInput()
+        {
+#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+            input.Disable();
+#endif
+        }
+
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         private void OnEnable()
         {
-            input.Enable();
+            if (autoEnableInput)
+            {
+                EnableInput();
+            }
         }
 
         private void OnDisable()
         {
-            input.Disable();
+            if (autoDisableInput)
+            {
+                DisableInput();
+            }
         }
 
         private void UpdateActions()
@@ -54,7 +85,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override bool GetButton(string buttonName)
+        public bool GetButton(string buttonName)
         {
             if (actions == null)
             {
@@ -72,7 +103,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override bool GetButtonDown(string buttonName)
+        public bool GetButtonDown(string buttonName)
         {
             if (actions == null)
             {
@@ -90,7 +121,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override bool GetButtonUp(string buttonName)
+        public bool GetButtonUp(string buttonName)
         {
             if (actions == null)
             {
@@ -108,7 +139,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override float GetAxis(string axisName)
+        public float GetAxis(string axisName)
         {
             if (actions.TryGetValue(axisName, out InputAction inputAction))
             {
@@ -129,7 +160,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override float GetAxisRaw(string axisName)
+        public float GetAxisRaw(string axisName)
         {
             if (actions.TryGetValue(axisName, out InputAction inputAction))
             {
@@ -150,7 +181,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override Vector2 GetVector2(string action)
+        public Vector2 GetVector2(string action)
         {
             if (actions == null)
             {

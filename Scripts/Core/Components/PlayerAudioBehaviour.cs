@@ -12,7 +12,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The player controller. </summary>
         protected GoldPlayerController PlayerController { get; private set; }
         /// <summary> The player input. </summary>
-        protected GoldInput PlayerInput { get; private set; }
+        protected IGoldInput PlayerInput { get; private set; }
 
         /// <summary> The audio source where all the footsteps sounds will be played. </summary>
         protected AudioSource FootstepsSource { get; private set; }
@@ -27,7 +27,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <param name="footstepsSource"></param>
         /// <param name="jumpSource"></param>
         /// <param name="landSource"></param>
-        public void Initialize(GoldPlayerController playerController, GoldInput input, AudioSource footstepsSource, AudioSource jumpSource, AudioSource landSource)
+        public void Initialize(GoldPlayerController playerController, IGoldInput input, AudioSource footstepsSource, AudioSource jumpSource, AudioSource landSource)
         {
             PlayerController = playerController;
             PlayerInput = input;

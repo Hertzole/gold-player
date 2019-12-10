@@ -10,8 +10,9 @@ namespace Hertzole.GoldPlayer
     [DisallowMultipleComponent]
 #else
     [System.Obsolete("You're using the new Input System so this component will be useless.")]
+    [AddComponentMenu("")]
 #endif
-    public class GoldPlayerInput : GoldInput
+    public class GoldPlayerInput : MonoBehaviour, IGoldInput
     {
         [SerializeField]
         [Tooltip("Determines if the input should be based around KeyCodes. If false, Input Manager will be used.")]
@@ -74,8 +75,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-#if !ENABLE_INPUT_SYSTEM
-        public override bool GetButton(string buttonName)
+        public bool GetButton(string buttonName)
         {
             if (inputsDic == null)
             {
@@ -85,7 +85,7 @@ namespace Hertzole.GoldPlayer
             return useKeyCodes ? Input.GetKey(inputsDic[buttonName].Key) : Input.GetButton(inputsDic[buttonName].InputName);
         }
 
-        public override bool GetButtonDown(string buttonName)
+        public bool GetButtonDown(string buttonName)
         {
             if (inputsDic == null)
             {
@@ -95,7 +95,7 @@ namespace Hertzole.GoldPlayer
             return useKeyCodes ? Input.GetKeyDown(inputsDic[buttonName].Key) : Input.GetButtonDown(inputsDic[buttonName].InputName);
         }
 
-        public override bool GetButtonUp(string buttonName)
+        public bool GetButtonUp(string buttonName)
         {
             if (inputsDic == null)
             {
@@ -105,7 +105,7 @@ namespace Hertzole.GoldPlayer
             return useKeyCodes ? Input.GetKeyUp(inputsDic[buttonName].Key) : Input.GetButtonUp(inputsDic[buttonName].InputName);
         }
 
-        public override float GetAxis(string axisName)
+        public float GetAxis(string axisName)
         {
             if (inputsDic == null)
             {
@@ -115,7 +115,7 @@ namespace Hertzole.GoldPlayer
             return Input.GetAxis(inputsDic[axisName].InputName);
         }
 
-        public override float GetAxisRaw(string axisName)
+        public float GetAxisRaw(string axisName)
         {
             if (inputsDic == null)
             {
@@ -124,7 +124,12 @@ namespace Hertzole.GoldPlayer
 
             return Input.GetAxisRaw(inputsDic[axisName].InputName);
         }
-#endif
+
+        public Vector2 GetVector2(string action)
+        {
+            Debug.LogWarning("GetVector2 will do nothing when using the Input Manager.");
+            return Vector2.zero;
+        }
 
         /// <summary>
         /// Returns the Input Item that matches the buttonName in the given InputItem array.
