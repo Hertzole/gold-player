@@ -6,7 +6,7 @@ namespace Hertzole.GoldPlayer.Interaction
 {
     [AddComponentMenu("Gold Player/Interaction/Player Interactable")]
     [DisallowMultipleComponent]
-    public class GoldPlayerInteractable : MonoBehaviour
+    public class GoldPlayerInteractable : MonoBehaviour, IGoldPlayerInteractable
     {
         [System.Serializable]
         public class InteractionEvent : UnityEvent { }
@@ -43,7 +43,7 @@ namespace Hertzole.GoldPlayer.Interaction
 
         /// <summary> Determines if the object can be interacted with. </summary>
         public bool CanInteract { get { return canInteract; } set { canInteract = value; } }
-        /// <summary> Determines if the object should be hidden.\n(Used for UI to not show a interaction message) </summary>
+        /// <summary> Determines if the object should be hidden. (Used for UI to not show a interaction message) </summary>
         public bool IsHidden { get { return isHidden; } set { isHidden = value; } }
         /// <summary> Determines if a custom interaction message should be shown. </summary>
         public bool UseCustomMessage { get { return useCustomMessage; } set { useCustomMessage = value; } }

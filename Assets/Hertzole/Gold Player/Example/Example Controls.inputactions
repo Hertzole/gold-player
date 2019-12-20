@@ -18,7 +18,7 @@
                     "type": "Button",
                     "id": "8b6bb957-5f78-40b6-adf3-c0ca449e44cc",
                     "expectedControlType": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(x=0.1,y=0.1)",
                     "interactions": ""
                 },
                 {
@@ -41,6 +41,14 @@
                     "name": "Run",
                     "type": "Button",
                     "id": "d2a5329e-8e7e-4382-9eaf-eb384832dfd3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "6428c99f-55be-403f-bd6b-1070cdbc44db",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -154,6 +162,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ae0baf1-de9b-4de8-9195-f43c27aeed09",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

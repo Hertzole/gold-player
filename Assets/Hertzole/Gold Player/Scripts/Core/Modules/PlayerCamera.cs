@@ -33,11 +33,7 @@ namespace Hertzole.GoldPlayer.Core
         [SerializeField]
         [Tooltip("How fast the camera head should move when looking around.")]
         [FormerlySerializedAs("m_MouseSensitivity")]
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-        private float mouseSensitivity = 3f;
-#else
         private float mouseSensitivity = 10f;
-#endif
         [SerializeField]
         [Tooltip("Sets how smooth the movement should be.")]
         [FormerlySerializedAs("m_MouseDamping")]

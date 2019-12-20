@@ -81,7 +81,7 @@ namespace Hertzole.GoldPlayer.Interaction
         /// <summary> The input name for interaction to use. </summary>
         public string InteractInput { get { return interactInput; } set { interactInput = value; } }
         /// <summary> The current hit interactable. </summary>
-        public GoldPlayerInteractable CurrentHitInteractable { get; private set; }
+        public IGoldPlayerInteractable CurrentHitInteractable { get; private set; }
 
         protected virtual void Awake()
         {
@@ -147,9 +147,12 @@ namespace Hertzole.GoldPlayer.Interaction
                 {
                     // Prefer interactables on the collider itself, but if the collider doesn't
                     // have one, then look on the rigidbody.
-                    CurrentHitInteractable =
-                        interactableHit.collider.GetComponent<GoldPlayerInteractable>() ??
-                        interactableHit.rigidbody.GetComponent<GoldPlayerInteractable>();
+                    CurrentHitInteractable = interactableHit.collider.GetComponent<IGoldPlayerInteractable>();
+                    if (CurrentHitInteractable == null && interactableHit.rigidbody != null)
+                    {
+                        interactableHit.rigidbody.GetComponent<IGoldPlayerInteractable>();
+                    }
+
                     haveCheckedInteractable = true;
                 }
 
