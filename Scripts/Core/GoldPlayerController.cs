@@ -1,6 +1,3 @@
-#if HERTZLIB_UPDATE_MANAGER
-using Hertzole.HertzLib;
-#endif
 using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,11 +7,7 @@ namespace Hertzole.GoldPlayer
     [RequireComponent(typeof(CharacterController))]
     [DisallowMultipleComponent]
     [AddComponentMenu("Gold Player/Gold Player Controller", 01)]
-#if HERTZLIB_UPDATE_MANAGER
-    public class GoldPlayerController : MonoBehaviour, IUpdate, IFixedUpdate, ILateUpdate
-#else
     public class GoldPlayerController : MonoBehaviour
-#endif
     {
         [SerializeField]
         [FormerlySerializedAs("m_Camera")]
@@ -95,29 +88,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        protected virtual void OnEnable()
-        {
-#if HERTZLIB_UPDATE_MANAGER
-            UpdateManager.AddUpdate(this);
-            UpdateManager.AddFixedUpdate(this);
-            UpdateManager.AddLateUpdate(this);
-#endif
-        }
-
-        protected virtual void OnDisable()
-        {
-#if HERTZLIB_UPDATE_MANAGER
-            UpdateManager.RemoveUpdate(this);
-            UpdateManager.RemoveFixedUpdate(this);
-            UpdateManager.RemoveLateUpdate(this);
-#endif
-        }
-
-#if HERTZLIB_UPDATE_MANAGER
-        public void OnUpdate()
-#else
         public void Update()
-#endif
         {
             float deltaTime = Time.deltaTime;
 
@@ -142,11 +113,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-#if HERTZLIB_UPDATE_MANAGER
-        public void OnFixedUpdate()
-#else
         public void FixedUpdate()
-#endif
         {
             float fixedDeltaTime = Time.fixedDeltaTime;
 
@@ -171,11 +138,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-#if HERTZLIB_UPDATE_MANAGER
-        public void OnLateUpdate()
-#else
         public void LateUpdate()
-#endif
         {
             float deltaTime = Time.deltaTime;
 

@@ -1,6 +1,3 @@
-#if HERTZLIB_UPDATE_MANAGER
-using Hertzole.HertzLib;
-#endif
 using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -9,11 +6,7 @@ namespace Hertzole.GoldPlayer.Interaction
 {
     [AddComponentMenu("Gold Player/Interaction/Player Interaction")]
     [DisallowMultipleComponent]
-#if HERTZLIB_UPDATE_MANAGER
-    public class GoldPlayerInteraction : PlayerBehaviour, IUpdate
-#else
     public class GoldPlayerInteraction : PlayerBehaviour
-#endif
     {
         [SerializeField]
         [Tooltip("The player camera head.")]
@@ -51,7 +44,7 @@ namespace Hertzole.GoldPlayer.Interaction
         [SerializeField]
         [Tooltip("The input name for interaction to use.")]
         [FormerlySerializedAs("m_InteractInput")]
-        private string interactInput = "Interact";
+        private string interactInput = "Player/Interact";
 
         // Flag to determine if we have checked for a interactable.
         private bool haveCheckedInteractable = false;
@@ -89,20 +82,6 @@ namespace Hertzole.GoldPlayer.Interaction
             SetTriggerInteraction();
         }
 
-        protected virtual void OnEnable()
-        {
-#if HERTZLIB_UPDATE_MANAGER
-            UpdateManager.AddUpdate(this);
-#endif
-        }
-
-        protected virtual void OnDisable()
-        {
-#if HERTZLIB_UPDATE_MANAGER
-            UpdateManager.RemoveUpdate(this);
-#endif
-        }
-
         /// <summary>
         /// Sets how it should behave with triggers.
         /// </summary>
@@ -112,11 +91,12 @@ namespace Hertzole.GoldPlayer.Interaction
         }
 
         // Update is called once per frame
-#if HERTZLIB_UPDATE_MANAGER
-        public virtual void OnUpdate()
-#else
-        public virtual void Update()
-#endif
+        private void Update()
+        {
+            DoInteraction();
+        }
+
+        protected virtual void DoInteraction()
         {
             // Do the raycast.
             if (Physics.Raycast(
