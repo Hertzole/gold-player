@@ -1,16 +1,22 @@
 {
     "name": "Hertzole.GoldPlayer.Tests",
     "references": [
-        "Hertzole.GoldPlayer"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "Hertzole.GoldPlayer",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": []
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

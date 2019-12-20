@@ -5,7 +5,7 @@ namespace Hertzole.GoldPlayer
 {
     public class PlayerModule
     {
-        private string rootActionMap = "";
+        protected string rootActionMap = "";
 
         private GoldPlayerController playerController;
         protected GoldPlayerController PlayerController { get { return playerController; } }
@@ -81,7 +81,7 @@ namespace Hertzole.GoldPlayer
         /// <param name="buttonName">The button name you want to get.</param>
         protected bool GetButton(string buttonName)
         {
-            return PlayerInput.GetButton(string.IsNullOrWhiteSpace(rootActionMap) ? buttonName : rootActionMap + "/" + buttonName);
+            return PlayerInput.GetButton(buttonName);
         }
 
         [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead.")]
@@ -93,7 +93,7 @@ namespace Hertzole.GoldPlayer
         /// <param name="buttonName">The button name you want to get.</param>
         protected bool GetButtonDown(string buttonName)
         {
-            return PlayerInput.GetButtonDown(string.IsNullOrWhiteSpace(rootActionMap) ? buttonName : rootActionMap + "/" + buttonName);
+            return PlayerInput.GetButtonDown(buttonName);
         }
 
         [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead.")]
@@ -105,7 +105,7 @@ namespace Hertzole.GoldPlayer
         /// <param name="buttonName">The button name you want to get.</param>
         protected bool GetButtonUp(string buttonName)
         {
-            return PlayerInput.GetButtonUp(string.IsNullOrWhiteSpace(rootActionMap) ? buttonName : rootActionMap + "/" + buttonName);
+            return PlayerInput.GetButtonUp(buttonName);
         }
 
         [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead.")]
@@ -117,7 +117,7 @@ namespace Hertzole.GoldPlayer
         /// <param name="axisName">The axis name you want to get.</param>
         protected float GetAxis(string axisName)
         {
-            return PlayerInput.GetAxis(string.IsNullOrWhiteSpace(rootActionMap) ? axisName : rootActionMap + "/" + axisName);
+            return PlayerInput.GetAxis(axisName);
         }
 
         [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead.")]
@@ -129,7 +129,7 @@ namespace Hertzole.GoldPlayer
         /// <param name="axisName">The axis name you want to get.</param>
         protected float GetAxisRaw(string axisName)
         {
-            return PlayerInput.GetAxisRaw(string.IsNullOrWhiteSpace(rootActionMap) ? axisName : rootActionMap + "/" + axisName);
+            return PlayerInput.GetAxisRaw(axisName);
         }
 
 #if !ENABLE_INPUT_SYSTEM
@@ -138,7 +138,7 @@ namespace Hertzole.GoldPlayer
         protected Vector2 GetVector2Input(string action)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            return PlayerInput.GetVector2(string.IsNullOrWhiteSpace(rootActionMap) ? action : rootActionMap + "/" + action);
+            return PlayerInput.GetVector2(action);
 #else
             return Vector2.zero;
 #endif

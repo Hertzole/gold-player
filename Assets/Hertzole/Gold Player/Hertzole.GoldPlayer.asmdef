@@ -2,9 +2,8 @@
     "name": "Hertzole.GoldPlayer",
     "references": [
         "Unity.TextMeshPro",
-        "Unity.ugui",
-        "Hertzole.HertzLib",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

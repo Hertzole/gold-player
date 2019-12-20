@@ -44,14 +44,28 @@ namespace Hertzole.GoldPlayer
         public void EnableInput()
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            input.Enable();
+            if (input != null)
+            {
+                input.Enable();
+            }
+            else
+            {
+                Debug.LogWarning("There's no input asset on " + gameObject.name + " to enable.", gameObject);
+            }
 #endif
         }
 
         public void DisableInput()
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            input.Disable();
+            if (input != null)
+            {
+                input.Disable();
+            }
+            else
+            {
+                Debug.LogWarning("There's no input asset on " + gameObject.name + " to disable.", gameObject);
+            }
 #endif
         }
 
@@ -74,6 +88,12 @@ namespace Hertzole.GoldPlayer
 
         private void UpdateActions()
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return;
+            }
+
             actions = new Dictionary<string, InputAction>();
 
             foreach (InputActionMap item in input.actionMaps)
@@ -87,6 +107,12 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButton(string buttonName)
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return false;
+            }
+
             if (actions == null)
             {
                 UpdateActions();
@@ -105,6 +131,12 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButtonDown(string buttonName)
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return false;
+            }
+
             if (actions == null)
             {
                 UpdateActions();
@@ -123,6 +155,12 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButtonUp(string buttonName)
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return false;
+            }
+
             if (actions == null)
             {
                 UpdateActions();
@@ -141,6 +179,12 @@ namespace Hertzole.GoldPlayer
 
         public float GetAxis(string axisName)
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return 0;
+            }
+
             if (actions.TryGetValue(axisName, out InputAction inputAction))
             {
                 if (inputAction.activeControl is AxisControl axis)
@@ -162,6 +206,12 @@ namespace Hertzole.GoldPlayer
 
         public float GetAxisRaw(string axisName)
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return 0;
+            }
+
             if (actions.TryGetValue(axisName, out InputAction inputAction))
             {
                 if (inputAction.activeControl is AxisControl axis)
@@ -183,6 +233,12 @@ namespace Hertzole.GoldPlayer
 
         public Vector2 GetVector2(string action)
         {
+            if (input == null)
+            {
+                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                return Vector2.zero;
+            }
+
             if (actions == null)
             {
                 UpdateActions();

@@ -229,6 +229,11 @@ namespace Hertzole.GoldPlayer.Core
         // The impact of the applied force.
         protected Vector3 forceImpact = Vector3.zero;
 
+        protected string moveInput;
+        protected string jumpInput;
+        protected string runInput;
+        protected string crouchInput;
+
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         protected MovementSpeeds moveSpeed = new MovementSpeeds();
 
@@ -294,17 +299,17 @@ namespace Hertzole.GoldPlayer.Core
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
         /// <summary> Move action for the new Input System. </summary>
-        public string MoveInput { get { return input_Move; } set { input_Move = value; } }
+        public string MoveInput { get { return moveInput; } set { input_Move = value; moveInput = rootActionMap + "/" + value; } }
         /// <summary> Horizontal move axis for the old Input Manager. </summary>
         public string HorizontalAxis { get { return input_HorizontalAxis; } set { input_HorizontalAxis = value; } }
         /// <summary> Vertical move axis for the old Input Manager. </summary>
         public string VerticalAxis { get { return input_VerticalAxis; } set { input_VerticalAxis = value; } }
         /// <summary> Jump input action. </summary>
-        public string JumpInput { get { return input_Jump; } set { input_Jump = value; } }
+        public string JumpInput { get { return jumpInput; } set { input_Jump = value; jumpInput = rootActionMap + "/" + value; } }
         /// <summary> Run input action. </summary>
-        public string RunInput { get { return input_Run; } set { input_Run = value; } }
+        public string RunInput { get { return runInput; } set { input_Run = value; runInput = rootActionMap + "/" + value; } }
         /// <summary> Crouch input action. </summary>
-        public string CrouchInput { get { return input_Crouch; } set { input_Crouch = value; } }
+        public string CrouchInput { get { return crouchInput; } set { input_Crouch = value; crouchInput = rootActionMap + "/" + value; } }
 
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return isGrounded; } }
@@ -378,6 +383,12 @@ namespace Hertzole.GoldPlayer.Core
             crouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - (CharacterController.height - crouchHeight);
             // Set the current crouch camera position to the original camera position.
             currentCrouchCameraPosition = originalCameraPosition;
+
+            // Set up input actions to stop concatenation in update.
+            moveInput = rootActionMap + "/" + input_Move;
+            jumpInput = rootActionMap + "/" + input_Jump;
+            runInput = rootActionMap + "/" + input_Run;
+            crouchInput = rootActionMap + "/" + input_Crouch;
         }
 
         /// <summary>
@@ -407,7 +418,7 @@ namespace Hertzole.GoldPlayer.Core
         public Vector2 GetInput()
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            Vector2 input = GetVector2Input(input_Move);
+            Vector2 input = GetVector2Input(moveInput);
             float horizontal = canMoveAround ? input.x : 0;
             float vertical = canMoveAround ? input.y : 0;
 #else
@@ -563,7 +574,7 @@ namespace Hertzole.GoldPlayer.Core
             // Make sure the player is moving in the right direction.
             HandleMovementDirection();
             // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
-            if (canJump && canMoveAround && GetButtonDown(input_Jump))
+            if (canJump && canMoveAround && GetButtonDown(jumpInput))
             {
                 // Check if the player should jump.
                 shouldJump = ShouldJump();
@@ -725,8 +736,8 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             isRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > walkingSpeeds.Max + 0.5f;
 
-            bool runButtonPressed = GetButtonDown(input_Run);
-            bool runButtonDown = GetButton(input_Run);
+            bool runButtonPressed = GetButtonDown(runInput);
+            bool runButtonDown = GetButton(runInput);
 
             switch (runToggleMode)
             {
@@ -837,12 +848,12 @@ namespace Hertzole.GoldPlayer.Core
                 {
                     case CrouchToggleMode.Off:
                     {
-                        shouldCrouch = GetButton(input_Crouch);
+                        shouldCrouch = GetButton(crouchInput);
                         break;
                     }
                     case CrouchToggleMode.Permanent:
                     {
-                        bool crouchButtonPressed = GetButtonDown(input_Crouch);
+                        bool crouchButtonPressed = GetButtonDown(crouchInput);
                         if (crouchButtonPressed)
                         {
                             shouldCrouch = !shouldCrouch;
@@ -996,6 +1007,11 @@ namespace Hertzole.GoldPlayer.Core
                 walkingSpeeds.OnValidate();
                 runSpeeds.OnValidate();
                 crouchSpeeds.OnValidate();
+
+                moveInput = rootActionMap + "/" + input_Move;
+                jumpInput = rootActionMap + "/" + input_Jump;
+                runInput = rootActionMap + "/" + input_Run;
+                crouchInput = rootActionMap + "/" + input_Crouch;
             }
 
             // Make sure gravity is always positive.
