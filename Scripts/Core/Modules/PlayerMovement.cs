@@ -173,6 +173,10 @@ namespace Hertzole.GoldPlayer.Core
         protected float sidewaysSpeedVelocity = 0;
         // The current air time of the player.
         protected float currentAirTime = 0;
+        // The current move speed multiplier.
+        protected float moveSpeedMultiplier = 1;
+        // The current jump height multiplier,
+        protected float jumpHeightMultiplier = 1;
 
         // The current amount of times an air jump has been performed.
         protected int currentJumps = 0;
@@ -234,6 +238,11 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> The speeds when walking. </summary>
         public MovementSpeeds WalkingSpeeds { get { return walkingSpeeds; } set { walkingSpeeds = value; if (!isRunning) { moveSpeed = value; } } }
 
+        /// <summary> Multiplies the current move speed. </summary>
+        public float MoveSpeedMultiplier { get { return moveSpeedMultiplier; } set { moveSpeedMultiplier = value; } }
+        /// <summary> Multiplies the current jump height. </summary>
+        public float JumpHeightMultiplier { get { return jumpHeightMultiplier; } set { jumpHeightMultiplier = value; CalculateJumpHeight(jumpHeight * value); } }
+
         /// <summary> Determines if the player can run. </summary>
         public bool CanRun { get { return canRun; } set { canRun = value; } }
         /// <summary> Configuration of running as a toggle. </summary>
@@ -246,7 +255,7 @@ namespace Hertzole.GoldPlayer.Core
         /// <summary> Determines if the player can jump. </summary>
         public bool CanJump { get { return canJump; } set { canJump = value; } }
         /// <summary> The height the player can jump in Unity units. </summary>
-        public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; realJumpHeight = CalculateJumpHeight(value); } }
+        public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; realJumpHeight = CalculateJumpHeight(value * jumpHeightMultiplier); } }
         /// <summary> Determines if the player can jump for some time when falling. </summary>
         public bool AirJump { get { return airJump; } set { airJump = value; } }
         /// <summary> How long the player can be in the air and still jump. </summary>
@@ -348,10 +357,15 @@ namespace Hertzole.GoldPlayer.Core
                 groundStick = -groundStick;
             }
 
+            // Reset move speed multiplier.
+            moveSpeedMultiplier = 1f;
+            // Reset jump height multiplier.
+            jumpHeightMultiplier = 1f;
+
             // Set the move to the walking speeds.
             moveSpeed = walkingSpeeds;
             // Calculate the real jump height.
-            realJumpHeight = CalculateJumpHeight(jumpHeight);
+            realJumpHeight = CalculateJumpHeight(jumpHeight * jumpHeightMultiplier);
             // Set the original controller height.
             originalControllerHeight = CharacterController.height;
             // Set the original controller center.
@@ -597,15 +611,15 @@ namespace Hertzole.GoldPlayer.Core
                 // Else if below 0, we're moving backwards, so apply backwards move speed.
                 if (movementInput.y > 0)
                 {
-                    moveDirection.z *= moveSpeed.ForwardSpeed;
+                    moveDirection.z *= moveSpeed.ForwardSpeed * moveSpeedMultiplier;
                 }
                 else
                 {
-                    moveDirection.z *= moveSpeed.BackwardsSpeed;
+                    moveDirection.z *= moveSpeed.BackwardsSpeed * moveSpeedMultiplier;
                 }
 
                 // Apply the sideways movement speed to the X movement.
-                moveDirection.x *= moveSpeed.SidewaysSpeed;
+                moveDirection.x *= moveSpeed.SidewaysSpeed * moveSpeedMultiplier;
 
                 // Update the grounded velocity to the current move direction.
                 groundVelocity = moveDirection;
@@ -619,15 +633,15 @@ namespace Hertzole.GoldPlayer.Core
                 // Apply the same movement speeds as when grounded.
                 if (movementInput.y > 0)
                 {
-                    airVelocity.z += (moveSpeed.ForwardSpeed * this.airControl) * movementInput.y;
+                    airVelocity.z += ((moveSpeed.ForwardSpeed * moveSpeedMultiplier) * this.airControl) * movementInput.y;
                 }
                 else
                 {
-                    airVelocity.z += (moveSpeed.BackwardsSpeed * this.airControl) * movementInput.y;
+                    airVelocity.z += ((moveSpeed.BackwardsSpeed * moveSpeedMultiplier) * this.airControl) * movementInput.y;
                 }
 
                 // Sideways movement speed.
-                airVelocity.x += (moveSpeed.SidewaysSpeed * this.airControl) * movementInput.x;
+                airVelocity.x += ((moveSpeed.SidewaysSpeed * moveSpeedMultiplier) * this.airControl) * movementInput.x;
 
                 // Set the move direction to the air velocity.
                 moveDirection = airVelocity;
@@ -674,15 +688,15 @@ namespace Hertzole.GoldPlayer.Core
                 // Else if below 0, we're moving backwards, so apply backwards move speed.
                 if (movementInput.y > 0)
                 {
-                    moveDirection.z *= moveSpeed.ForwardSpeed;
+                    moveDirection.z *= moveSpeed.ForwardSpeed * moveSpeedMultiplier;
                 }
                 else
                 {
-                    moveDirection.z *= moveSpeed.BackwardsSpeed;
+                    moveDirection.z *= moveSpeed.BackwardsSpeed * moveSpeedMultiplier;
                 }
 
                 // Apply the sideways movement speed to the X movement.
-                moveDirection.x *= moveSpeed.SidewaysSpeed;
+                moveDirection.x *= moveSpeed.SidewaysSpeed * moveSpeedMultiplier;
 
                 // Update the grounded velocity to the current move direction.
                 groundVelocity = moveDirection;
