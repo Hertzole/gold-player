@@ -231,6 +231,33 @@ namespace Hertzole.GoldPlayer
             audio.Initialize(this, PlayerInput);
         }
 
+        /// <summary>
+        /// Sets the world position. Required because the character controller can stop 'transform.position' from working.
+        /// </summary>
+        public void SetPosition(Vector3 position)
+        {
+            controller.enabled = false;
+            transform.position = position;
+            controller.enabled = true;
+        }
+
+        /// <summary>
+        /// Sets the local position. Required because the character controller can stop 'transform.localPosition' from working.
+        /// </summary>
+        public void SetLocalPosition(Vector3 position)
+        {
+            controller.enabled = false;
+            transform.localPosition = position;
+            controller.enabled = true;
+        }
+
+        public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
+        {
+            controller.enabled = false;
+            transform.SetPositionAndRotation(position, rotation);
+            controller.enabled = true;
+        }
+
 #if UNITY_EDITOR
         private void OnValidate()
         {

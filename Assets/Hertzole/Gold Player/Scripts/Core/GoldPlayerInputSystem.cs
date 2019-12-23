@@ -1,6 +1,7 @@
 ﻿using Hertzole.GoldPlayer.Core;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 #endif
