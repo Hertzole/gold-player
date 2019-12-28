@@ -533,7 +533,7 @@ MonoBehaviour:
     shouldLockCursor: 1
     invertXAxis: 0
     invertYAxis: 0
-    mouseSensitivity: 3
+    mouseSensitivity: 10
     mouseDamping: 0
     minimumX: -90
     maximumX: 90
@@ -683,6 +683,7 @@ MonoBehaviour:
     footstepsSource: {fileID: 82954318653944560}
     jumpSource: {fileID: 82223488866792472}
     landSource: {fileID: 82055704424789464}
+  actionMap: Player
 --- !u!114 &1771784234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,6 +697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: -944628639613478452, guid: 0b5686141ac42094688c7771035dbff1, type: 3}
+  autoEnableInput: 1
+  autoDisableInput: 1
 --- !u!1 &1327509270473940
 GameObject:
   m_ObjectHideFlags: 0
