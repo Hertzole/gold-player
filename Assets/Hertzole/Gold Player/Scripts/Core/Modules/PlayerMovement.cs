@@ -299,17 +299,17 @@ namespace Hertzole.GoldPlayer.Core
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
         /// <summary> Move action for the new Input System. </summary>
-        public string MoveInput { get { return moveInput; } set { input_Move = value; moveInput = rootActionMap + "/" + value; } }
+        public string MoveInput { get { return moveInput; } set { input_Move = value; moveInput = string.IsNullOrEmpty(rootActionMap) ? value : rootActionMap + "/" + value; } }
         /// <summary> Horizontal move axis for the old Input Manager. </summary>
         public string HorizontalAxis { get { return input_HorizontalAxis; } set { input_HorizontalAxis = value; } }
         /// <summary> Vertical move axis for the old Input Manager. </summary>
         public string VerticalAxis { get { return input_VerticalAxis; } set { input_VerticalAxis = value; } }
         /// <summary> Jump input action. </summary>
-        public string JumpInput { get { return jumpInput; } set { input_Jump = value; jumpInput = rootActionMap + "/" + value; } }
+        public string JumpInput { get { return jumpInput; } set { input_Jump = value; jumpInput = string.IsNullOrEmpty(rootActionMap) ? value : rootActionMap + "/" + value; } }
         /// <summary> Run input action. </summary>
-        public string RunInput { get { return runInput; } set { input_Run = value; runInput = rootActionMap + "/" + value; } }
+        public string RunInput { get { return runInput; } set { input_Run = value; runInput = string.IsNullOrEmpty(rootActionMap) ? value : rootActionMap + "/" + value; } }
         /// <summary> Crouch input action. </summary>
-        public string CrouchInput { get { return crouchInput; } set { input_Crouch = value; crouchInput = rootActionMap + "/" + value; } }
+        public string CrouchInput { get { return crouchInput; } set { input_Crouch = value; crouchInput = string.IsNullOrEmpty(rootActionMap) ? value : rootActionMap + "/" + value; } }
 
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return isGrounded; } }
@@ -385,10 +385,10 @@ namespace Hertzole.GoldPlayer.Core
             currentCrouchCameraPosition = originalCameraPosition;
 
             // Set up input actions to stop concatenation in update.
-            moveInput = rootActionMap + "/" + input_Move;
-            jumpInput = rootActionMap + "/" + input_Jump;
-            runInput = rootActionMap + "/" + input_Run;
-            crouchInput = rootActionMap + "/" + input_Crouch;
+            MoveInput = input_Move;
+            JumpInput = input_Jump;
+            RunInput = input_Run;
+            CrouchInput = input_Crouch;
         }
 
         /// <summary>
@@ -1008,10 +1008,10 @@ namespace Hertzole.GoldPlayer.Core
                 runSpeeds.OnValidate();
                 crouchSpeeds.OnValidate();
 
-                moveInput = rootActionMap + "/" + input_Move;
-                jumpInput = rootActionMap + "/" + input_Jump;
-                runInput = rootActionMap + "/" + input_Run;
-                crouchInput = rootActionMap + "/" + input_Crouch;
+                MoveInput = input_Move;
+                JumpInput = input_Jump;
+                RunInput = input_Run;
+                CrouchInput = input_Crouch;
             }
 
             // Make sure gravity is always positive.
