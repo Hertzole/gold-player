@@ -422,8 +422,8 @@ namespace Hertzole.GoldPlayer.Core
             float horizontal = canMoveAround ? input.x : 0;
             float vertical = canMoveAround ? input.y : 0;
 #else
-            float horizontal = GetAxisRaw(input_HorizontalAxis);
-            float vertical = GetAxisRaw(input_VerticalAxis);
+            float horizontal = canMoveAround ? GetAxisRaw(input_HorizontalAxis) : 0;
+            float vertical = canMoveAround ? GetAxisRaw(input_VerticalAxis) : 0;
 #endif
 
             hasUserInput = horizontal != 0 || vertical != 0;
