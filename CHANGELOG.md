@@ -1,3 +1,30 @@
+# 1.5
+### Added:
+- Movement multipliers in code. Can be used to easily make the player faster/slower and jump higher.
+- Camera force look.
+- `SetPosition`, `SetLocalPosition`, and `SetPositionAndRotation` methods added to easily set the position.
+
+### Improvements:
+- Eliminated garbage caused by string concatenation.
+
+### Changes:
+- Removed all references to HertzLib update manager.
+
+### Fixes:
+- Fixed not being able to use the old input manager.
+
+---
+
+## 1.4.1
+### Improvements:
+- Input now looks for an interface instead of a class. It makes it much easier to make your own input class.
+- You can now manually control when input gets enabled and disabled in Gold Player Input System.
+- Interaction now looks for an interface instead of just one class. It makes it much easier to make your own interactable objects through code.
+
+### Fixes:
+- Fixed using normal input manager not working.
+- Fixed Null error with interaction component.
+
 ## 1.4
 ### Added:
 - Added support for Unity's new input system (requires 2019.3+ to work with Gold Player!)
