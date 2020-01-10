@@ -110,9 +110,6 @@ namespace Hertzole.GoldPlayer.Core
         // The smoothing intensity when force looking.
         private float lookAtStrength;
 
-        // The action used for looking around.
-        private string lookInput;
-
         // The current input from the mouse.
         private Vector2 mouseInput = Vector2.zero;
 
@@ -171,7 +168,7 @@ namespace Hertzole.GoldPlayer.Core
         public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
 
         /// <summary> Look action for the new Input System. </summary>
-        public string LookInput { get { return lookInput; } set { input_Look = value; lookInput = rootActionMap + "/" + input_Look; } }
+        public string LookInput { get { return input_Look; } set { input_Look = value; } }
         /// <summary> Mouse X axis for the old Input Manager. </summary>
         public string MouseX { get { return input_MouseX; } set { input_MouseX = value; } }
         /// <summary> Mouse Y axis for the old Input Manager. </summary>
@@ -211,8 +208,6 @@ namespace Hertzole.GoldPlayer.Core
 
             // Initialize the FOV kick module.
             fieldOfViewKick.Initialize(PlayerController, PlayerInput);
-
-            lookInput = rootActionMap + "/" + input_Look;
         }
 
         /// <summary>
@@ -268,7 +263,7 @@ namespace Hertzole.GoldPlayer.Core
             {
                 // Set the input.
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-                mouseInput = GetVector2Input(lookInput) * mouseSensitivity;
+                mouseInput = GetVector2Input(input_Look) * mouseSensitivity;
                 if (invertXAxis)
                 {
                     mouseInput.x = -mouseInput.x;
@@ -544,8 +539,6 @@ namespace Hertzole.GoldPlayer.Core
         public override void OnValidate()
         {
             fieldOfViewKick.OnValidate();
-
-            lookInput = rootActionMap + "/" + input_Look;
         }
 #endif
     }

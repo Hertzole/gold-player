@@ -5,8 +5,6 @@ namespace Hertzole.GoldPlayer
 {
     public class PlayerModule
     {
-        protected string rootActionMap = "";
-
         private GoldPlayerController playerController;
         protected GoldPlayerController PlayerController { get { return playerController; } }
 
@@ -39,13 +37,6 @@ namespace Hertzole.GoldPlayer
             {
                 playerInput = input;
             }
-
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (player != null)
-            {
-                rootActionMap = player.ActionMap;
-            }
-#endif
 
             OnInitialize();
 

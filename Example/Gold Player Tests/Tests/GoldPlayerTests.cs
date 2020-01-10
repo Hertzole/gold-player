@@ -127,7 +127,7 @@ namespace Hertzole.GoldPlayer.Tests
             Camera camera = playerCameraHead.AddComponent<Camera>();
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             GoldPlayerInputSystem input = playerGO.AddComponent<GoldPlayerInputSystem>();
-            input.Input = UnityEngine.InputSystem.InputActionAsset.FromJson(inputJson);
+            input.InputAsset = UnityEngine.InputSystem.InputActionAsset.FromJson(inputJson);
             input.EnableInput();
 #else
             GoldPlayerInput input = playerGO.AddComponent<GoldPlayerInput>();
