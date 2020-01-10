@@ -1,5 +1,6 @@
 ﻿using Hertzole.GoldPlayer.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
@@ -17,19 +18,34 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerInputSystem : MonoBehaviour, IGoldInput
     {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+        [System.Serializable]
+        public struct InputItem
+        {
+            public string actionName;
+            public InputActionReference action;
+        }
+
         [SerializeField]
-        private InputActionAsset input = null;
+        [FormerlySerializedAs("input")]
+        private InputActionAsset inputAsset = null;
+        [SerializeField]
+        private InputItem[] actions = null;
 #endif
         [SerializeField]
         private bool autoEnableInput = true;
         [SerializeField]
         private bool autoDisableInput = true;
 
+        private bool enabledInput = false;
+
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-        public InputActionAsset Input { get { return input; } set { input = value; } }
-        private Dictionary<string, InputAction> actions;
+        [System.Obsolete("Use 'InputAsset' instead.")]
+        public InputActionAsset Input { get { return InputAsset; } set { InputAsset = value; } }
+        public InputActionAsset InputAsset { get { return inputAsset; } set { inputAsset = value; } }
+        private Dictionary<string, InputAction> actionsDictionary;
 #endif
 
+        public bool EnabledInput { get { return enabledInput; } }
         public bool AutoEnableInput { get { return autoEnableInput; } set { autoEnableInput = value; } }
         public bool AutoDisableInput { get { return autoDisableInput; } set { autoDisableInput = value; } }
 
@@ -43,29 +59,30 @@ namespace Hertzole.GoldPlayer
         public void EnableInput()
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input != null)
+            for (int i = 0; i < actions.Length; i++)
             {
-                input.Enable();
+                if (actions[i].action != null)
+                {
+                    actions[i].action.action.Enable();
+                }
             }
-            else
-            {
-                Debug.LogWarning("There's no input asset on " + gameObject.name + " to enable.", gameObject);
-            }
+
 #endif
+            enabledInput = true;
         }
 
         public void DisableInput()
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input != null)
+            for (int i = 0; i < actions.Length; i++)
             {
-                input.Disable();
-            }
-            else
-            {
-                Debug.LogWarning("There's no input asset on " + gameObject.name + " to disable.", gameObject);
+                if (actions[i].action != null)
+                {
+                    actions[i].action.action.Disable();
+                }
             }
 #endif
+            enabledInput = false;
         }
 
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
@@ -87,20 +104,10 @@ namespace Hertzole.GoldPlayer
 
         private void UpdateActions()
         {
-            if (input == null)
+            actionsDictionary = new Dictionary<string, InputAction>();
+            for (int i = 0; i < actions.Length; i++)
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
-                return;
-            }
-
-            actions = new Dictionary<string, InputAction>();
-
-            foreach (InputActionMap item in input.actionMaps)
-            {
-                foreach (InputAction action in item.actions)
-                {
-                    actions.Add(item.name + "/" + action.name, action);
-                }
+                actionsDictionary.Add(actions[i].actionName, actions[i].action);
             }
         }
 #endif
@@ -108,24 +115,29 @@ namespace Hertzole.GoldPlayer
         public bool GetButton(string buttonName)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input == null)
+            if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return false;
             }
 
-            if (actions == null)
+            if (actionsDictionary == null)
             {
                 UpdateActions();
             }
 
-            if (actions.TryGetValue(buttonName, out InputAction inputAction))
+            if (actionsDictionary.TryGetValue(buttonName, out InputAction inputAction))
             {
+                if (inputAction == null)
+                {
+                    return false;
+                }
+
                 return inputAction.activeControl is ButtonControl button && button.isPressed;
             }
             else
             {
-                Debug.LogError("Can't find action '" + buttonName + "' in " + input.name + "!");
+                Debug.LogError("Can't find action '" + buttonName + "' in " + inputAsset.name + "!");
                 return false;
             }
 #else
@@ -136,24 +148,29 @@ namespace Hertzole.GoldPlayer
         public bool GetButtonDown(string buttonName)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input == null)
+            if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return false;
             }
 
-            if (actions == null)
+            if (actionsDictionary == null)
             {
                 UpdateActions();
             }
 
-            if (actions.TryGetValue(buttonName, out InputAction inputAction))
+            if (actionsDictionary.TryGetValue(buttonName, out InputAction inputAction))
             {
+                if (inputAction == null)
+                {
+                    return false;
+                }
+
                 return inputAction.activeControl is ButtonControl button && button.wasPressedThisFrame;
             }
             else
             {
-                Debug.LogError("Can't find action '" + buttonName + "' in " + input.name + "!");
+                Debug.LogError("Can't find action '" + buttonName + "' in " + inputAsset.name + "!");
                 return false;
             }
 #else
@@ -164,24 +181,29 @@ namespace Hertzole.GoldPlayer
         public bool GetButtonUp(string buttonName)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input == null)
+            if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return false;
             }
 
-            if (actions == null)
+            if (actionsDictionary == null)
             {
                 UpdateActions();
             }
 
-            if (actions.TryGetValue(buttonName, out InputAction inputAction))
+            if (actionsDictionary.TryGetValue(buttonName, out InputAction inputAction))
             {
+                if (inputAction == null)
+                {
+                    return false;
+                }
+
                 return inputAction.activeControl is ButtonControl button && button.wasReleasedThisFrame;
             }
             else
             {
-                Debug.LogError("Can't find action '" + buttonName + "' in " + input.name + "!");
+                Debug.LogError("Can't find action '" + buttonName + "' in " + inputAsset.name + "!");
                 return false;
             }
 #else
@@ -192,14 +214,19 @@ namespace Hertzole.GoldPlayer
         public float GetAxis(string axisName)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input == null)
+            if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return 0;
             }
 
-            if (actions.TryGetValue(axisName, out InputAction inputAction))
+            if (actionsDictionary.TryGetValue(axisName, out InputAction inputAction))
             {
+                if (inputAction == null)
+                {
+                    return 0;
+                }
+
                 if (inputAction.activeControl is AxisControl axis)
                 {
                     return axis.ReadValue();
@@ -212,7 +239,7 @@ namespace Hertzole.GoldPlayer
             }
             else
             {
-                Debug.LogError("Can't find action '" + axisName + "' in " + input.name + "!");
+                Debug.LogError("Can't find action '" + axisName + "' in " + inputAsset.name + "!");
                 return 0;
             }
 #else
@@ -223,14 +250,19 @@ namespace Hertzole.GoldPlayer
         public float GetAxisRaw(string axisName)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input == null)
+            if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return 0;
             }
 
-            if (actions.TryGetValue(axisName, out InputAction inputAction))
+            if (actionsDictionary.TryGetValue(axisName, out InputAction inputAction))
             {
+                if (inputAction == null)
+                {
+                    return 0;
+                }
+
                 if (inputAction.activeControl is AxisControl axis)
                 {
                     return axis.ReadUnprocessedValue();
@@ -243,7 +275,7 @@ namespace Hertzole.GoldPlayer
             }
             else
             {
-                Debug.LogError("Can't find action '" + axisName + "' in " + input.name + "!");
+                Debug.LogError("Can't find action '" + axisName + "' in " + inputAsset.name + "!");
                 return 0;
             }
 #else
@@ -254,29 +286,49 @@ namespace Hertzole.GoldPlayer
         public Vector2 GetVector2(string action)
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-            if (input == null)
+            if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return Vector2.zero;
             }
 
-            if (actions == null)
+            if (actionsDictionary == null)
             {
                 UpdateActions();
             }
 
-            if (actions.TryGetValue(action, out InputAction inputAction))
+            if (actionsDictionary.TryGetValue(action, out InputAction inputAction))
             {
+                if (inputAction == null)
+                {
+                    return Vector2.zero;
+                }
+
                 return inputAction.ReadValue<Vector2>();
             }
             else
             {
-                Debug.LogError("Can't find action '" + action + "' in " + input.name + "!");
+                Debug.LogError("Can't find action '" + action + "' in " + inputAsset.name + "!");
                 return Vector2.zero;
             }
 #else
             return Vector2.zero;
 #endif
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (Application.isPlaying)
+            {
+                UpdateActions();
+
+                if (enabledInput)
+                {
+                    EnableInput();
+                }
+            }
+        }
+#endif
     }
 }

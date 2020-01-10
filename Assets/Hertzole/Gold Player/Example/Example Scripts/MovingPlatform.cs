@@ -76,7 +76,9 @@ namespace Hertzole.GoldPlayer.Example
             currentWaypoint++;
 
             if (currentWaypoint == waypoints.Count)
+            {
                 currentWaypoint = 0;
+            }
         }
 
 #if UNITY_EDITOR

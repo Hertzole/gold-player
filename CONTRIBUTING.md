@@ -41,65 +41,6 @@ Function example:
 /// </summary>
 ```
 
-## Using Update/FixedUpdate/LateUpdate
-If the code you've made requires an update function, make sure to include defines for the [HertzLib Update Manager](https://github.com/Hertzole/HertzLib/wiki/Update-Manager). That way it can automatically use that if it's present.  
-Here's how you would go about adding support for it.
-### 1 - Add the using statement:  
-Add this to the top of your class that needs it:  
-```csharp
-#if HERTZLIB_UPDATE_MANAGER
-using Hertzole.HertzLib;
-#endif
-```
-### 2 - Make sure your class will use it:
-On the class that needs the function, add this at the top:  
-```csharp
-#if HERTZLIB_UPDATE_MANAGER
-public class MyNewClass : PlayerBehaviour, IUpdate
-#else
-public class MyNewClass : PlayerBehaviour
-#endif
-```
-`IUpdate` can be changed to `IFixedUpdate` or `ILateUpdate`, or simply added alongside each other.
-### 3 - Register it:
-In your OnEnable and OnDisable, you need to register and unregister it to make sure the Update Manager calls the update functions on this class. The OnEnable and OnDisable classes should be `protected virtual` so they can be overridden if needed.
-```csharp
-#if HERTZLIB_UPDATE_MANAGER
-    protected virtual void OnEnable()
-    {
-        UpdateManager.AddUpdate(this);
-    }
-
-    protected virtual void OnDisable()
-    {
-        UpdateManager.RemoveUpdate(this);
-    }
-#endif
-```
-If you need OnEnable/OnDisable, they don't have to be `protected virtual` as stated before, and then you make sure only the Update Manager code is enclosed inside the #if, like this:  
-```csharp
-private void OnEnable()
-{
-#if HERTZLIB_UPDATE_MANAGER
-    UpdateManager.AddUpdate(this);
-#endif
-    // Other code...
-}
-```
-Add/RemoveUpdate can also be replaced or added alongside Add/RemoveFixedUpdate and Add/RemoveLateUpdate.
-### 4 - Add the update functions:
-Now it's time for the actual update functions, and it follows along a similar format:  
-```csharp
-#if HERTZLIB_UPDATE_MANAGER
-    public void OnUpdate()
-#else
-    private void Update()
-#endif
-```
-Update has OnUpdate, FixedUpdate has OnFixedUpdate, and LateUpdate has OnLateUpdate. OnUpdate/OnFixedUpdate/OnLateUpdate **must** be `public`! The standard Unity update functions can be whatever you want.
-
-And that's it! It now supports the Update Manager from HertzLib!
-
 ## OnValidate
 OnValidate is a Unity "magic function" that gets called when the script's fields are changed in the inspector, so that means it's an editor only function. So it doesn't need to be included in the build. Enclose it in `#if UNITY_EDITOR`, like this:  
 ```csharp

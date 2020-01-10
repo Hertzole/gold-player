@@ -1,9 +1,9 @@
 {
     "name": "Hertzole.GoldPlayer.Editor",
     "references": [
-        "Hertzole.GoldPlayer"
+        "Hertzole.GoldPlayer",
+        "Unity.InputSystem"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -12,5 +12,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

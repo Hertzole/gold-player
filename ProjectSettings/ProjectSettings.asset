@@ -121,6 +121,8 @@ PlayerSettings:
   bundleVersion: 1.0
   preloadedAssets:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -565,6 +567,7 @@ PlayerSettings:
     Standalone: 0
     Windows Store Apps: 1
   il2cppCompilerConfiguration:
+    Standalone: 2
     WebGL: 2
   managedStrippingLevel:
     Standalone: 3

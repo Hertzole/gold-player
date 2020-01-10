@@ -1,4 +1,18 @@
-# 1.5
+## 1.6
+
+### Added:
+- Gold Player Input System editor for the new input changes.
+
+### Changes:
+- Made `MovementInput`, `SmoothedMovementInput`, `ShouldJump`, `ShouldRun`, and `ShouldCrouch` public to be able to control movement through code.
+- Input actions are now directly referenced instead of just using the whole input actions asset.
+
+### Fixes:
+- Fixed head bob strafe tilt still being applied even when the player can't move.
+
+---
+
+## 1.5
 ### Added:
 - Movement multipliers in code. Can be used to easily make the player faster/slower and jump higher.
 - Camera force look.
