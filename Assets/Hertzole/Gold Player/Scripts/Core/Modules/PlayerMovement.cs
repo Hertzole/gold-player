@@ -209,11 +209,15 @@ namespace Hertzole.GoldPlayer.Core
         protected bool previouslyRunning = false;
         // Determines if the player should jump.
         protected bool shouldJump = false;
+        // Checking if the jump button is pressed.
+        protected bool pressedJump = false;
 
-        // Input values for movement on the X and Z axis, automatically dampened for smoothing.
+        // Raw input values for movement on the X and Z axis.
         protected Vector2 movementInput = Vector2.zero;
+        // Input values for movement on the X and Z axis, automatically dampened for smoothing.
+        protected Vector2 smoothedMovementInput = Vector2.zero;
         // Whether or not the player registered movement input this frame. This can be false while
-        // m_MovementInput is non-zero due to the smoothing applied to m_MovementInput.
+        // movementInput is non-zero due to the smoothing applied to movementInput.
         protected bool hasUserInput = false;
 
         // The original character controller center.
@@ -238,7 +242,7 @@ namespace Hertzole.GoldPlayer.Core
         protected MovementSpeeds moveSpeed = new MovementSpeeds();
 
         /// <summary> Determines if the player can move at all. </summary>
-        public bool CanMoveAround { get { return canMoveAround; } set { canMoveAround = value; } }
+        public bool CanMoveAround { get { return canMoveAround; } set { canMoveAround = value; if (!value) { ResetMovementInput(); } } }
 
         /// <summary> The speeds when walking. </summary>
         public MovementSpeeds WalkingSpeeds { get { return walkingSpeeds; } set { walkingSpeeds = value; if (!isRunning) { moveSpeed = value; } } }
@@ -325,6 +329,17 @@ namespace Hertzole.GoldPlayer.Core
         public bool IsCrouching { get { return isCrouching; } }
         /// <summary> Can the player stand up while crouching? </summary>
         public bool CanStandUp { get { return canStandUp; } }
+        /// <summary> Should the player try to jump? </summary>
+        public bool ShouldJump { get { return pressedJump; } set { pressedJump = value; } }
+        /// <summary> Should the player run? </summary>
+        public bool ShouldRun { get { return shouldRun; } set { shouldRun = value; } }
+        /// <summary> Should the player crouch? </summary>
+        public bool ShouldCrouch { get { return shouldCrouch; } set { shouldCrouch = value; } }
+
+        /// <summary> Raw input values for movement on the X and Z axis. </summary>
+        public Vector2 MovementInput { get { return movementInput; } set { movementInput = value; } }
+        /// <summary> Input values for movement on the X and Z axis, automatically dampened for smoothing. </summary>
+        public Vector2 SmoothedMovementInput { get { return smoothedMovementInput; } set { smoothedMovementInput = value; } }
 
         /// <summary> Fires when the player jumps. </summary>
         public event GoldPlayerDelegates.JumpEvent OnJump;
@@ -419,14 +434,20 @@ namespace Hertzole.GoldPlayer.Core
         {
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             Vector2 input = GetVector2Input(moveInput);
-            float horizontal = canMoveAround ? input.x : 0;
-            float vertical = canMoveAround ? input.y : 0;
+            if (canMoveAround)
+            {
+                movementInput.x = input.x;
+                movementInput.y = input.y;
+            }
 #else
-            float horizontal = canMoveAround ? GetAxisRaw(input_HorizontalAxis) : 0;
-            float vertical = canMoveAround ? GetAxisRaw(input_VerticalAxis) : 0;
+            if (canMoveAround)
+            {
+                movementInput.x = GetAxisRaw(input_HorizontalAxis);
+                movementInput.y = GetAxisRaw(input_VerticalAxis);
+            }
 #endif
 
-            hasUserInput = horizontal != 0 || vertical != 0;
+            hasUserInput = movementInput.x != 0 || movementInput.y != 0;
 
             if (!hasUserInput)
             {
@@ -434,18 +455,18 @@ namespace Hertzole.GoldPlayer.Core
             }
 
             // Take the X input and smooth it.
-            movementInput.x = Mathf.SmoothDamp(movementInput.x, horizontal, ref forwardSpeedVelocity, acceleration);
+            smoothedMovementInput.x = Mathf.SmoothDamp(smoothedMovementInput.x, movementInput.x, ref forwardSpeedVelocity, acceleration);
             // Take the Y input and smooth it.
-            movementInput.y = Mathf.SmoothDamp(movementInput.y, vertical, ref sidewaysSpeedVelocity, acceleration);
+            smoothedMovementInput.y = Mathf.SmoothDamp(smoothedMovementInput.y, movementInput.y, ref sidewaysSpeedVelocity, acceleration);
 
             // Normalize the input so the player doesn't run faster when running diagonally.
-            if (movementInput.sqrMagnitude > 1)
+            if (smoothedMovementInput.sqrMagnitude > 1)
             {
-                movementInput.Normalize();
+                smoothedMovementInput.Normalize();
             }
 
             // Return the input.
-            return movementInput;
+            return smoothedMovementInput;
         }
 
         /// <summary>
@@ -571,13 +592,18 @@ namespace Hertzole.GoldPlayer.Core
                 moveDirection.y = enableGroundStick ? -groundStick : 0;
             }
 
+            if (canMoveAround)
+            {
+                pressedJump = GetButtonDown(jumpInput);
+            }
+
             // Make sure the player is moving in the right direction.
             HandleMovementDirection();
             // Tell the player it should jump if the jump button is pressed, the player can jump, and if the player can move around.
-            if (canJump && canMoveAround && GetButtonDown(jumpInput))
+            if (canJump && pressedJump)
             {
                 // Check if the player should jump.
-                shouldJump = ShouldJump();
+                shouldJump = ShouldPlayerJump();
             }
 
             // If the player should jump, jump!
@@ -591,7 +617,7 @@ namespace Hertzole.GoldPlayer.Core
         /// Determines if the player should jump.
         /// </summary>
         /// <returns>True if the player should jump.</returns>
-        protected virtual bool ShouldJump()
+        protected virtual bool ShouldPlayerJump()
         {
             if (isGrounded && !isJumping)
             {
@@ -617,10 +643,10 @@ namespace Hertzole.GoldPlayer.Core
             if (isGrounded)
             {
                 // Get the move direction from the movement input X and Y (on the Z axis).
-                moveDirection = new Vector3(movementInput.x, moveDirection.y, movementInput.y);
+                moveDirection = new Vector3(smoothedMovementInput.x, moveDirection.y, smoothedMovementInput.y);
                 // If movement input Y is above 0, we're moving forward, so apply forward move speed.
                 // Else if below 0, we're moving backwards, so apply backwards move speed.
-                if (movementInput.y > 0)
+                if (smoothedMovementInput.y > 0)
                 {
                     moveDirection.z *= moveSpeed.ForwardSpeed * moveSpeedMultiplier;
                 }
@@ -642,17 +668,17 @@ namespace Hertzole.GoldPlayer.Core
                 // Set the air velocity based on the ground velocity multiplied with the air control.
                 airVelocity = new Vector3(groundVelocity.x * airControl, moveDirection.y, groundVelocity.z * airControl);
                 // Apply the same movement speeds as when grounded.
-                if (movementInput.y > 0)
+                if (smoothedMovementInput.y > 0)
                 {
-                    airVelocity.z += ((moveSpeed.ForwardSpeed * moveSpeedMultiplier) * this.airControl) * movementInput.y;
+                    airVelocity.z += ((moveSpeed.ForwardSpeed * moveSpeedMultiplier) * this.airControl) * smoothedMovementInput.y;
                 }
                 else
                 {
-                    airVelocity.z += ((moveSpeed.BackwardsSpeed * moveSpeedMultiplier) * this.airControl) * movementInput.y;
+                    airVelocity.z += ((moveSpeed.BackwardsSpeed * moveSpeedMultiplier) * this.airControl) * smoothedMovementInput.y;
                 }
 
                 // Sideways movement speed.
-                airVelocity.x += ((moveSpeed.SidewaysSpeed * moveSpeedMultiplier) * this.airControl) * movementInput.x;
+                airVelocity.x += ((moveSpeed.SidewaysSpeed * moveSpeedMultiplier) * this.airControl) * smoothedMovementInput.x;
 
                 // Set the move direction to the air velocity.
                 moveDirection = airVelocity;
@@ -694,10 +720,10 @@ namespace Hertzole.GoldPlayer.Core
             if (currentJumps > 0 && allowAirJumpDirectionChange)
             {
                 // Get the move direction from the movement input X and Y (on the Z axis).
-                moveDirection = new Vector3(movementInput.x, moveDirection.y, movementInput.y);
+                moveDirection = new Vector3(smoothedMovementInput.x, moveDirection.y, smoothedMovementInput.y);
                 // If movement input Y is above 0, we're moving forward, so apply forward move speed.
                 // Else if below 0, we're moving backwards, so apply backwards move speed.
-                if (movementInput.y > 0)
+                if (smoothedMovementInput.y > 0)
                 {
                     moveDirection.z *= moveSpeed.ForwardSpeed * moveSpeedMultiplier;
                 }
@@ -736,41 +762,45 @@ namespace Hertzole.GoldPlayer.Core
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             isRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > walkingSpeeds.Max + 0.5f;
 
-            bool runButtonPressed = GetButtonDown(runInput);
-            bool runButtonDown = GetButton(runInput);
-
-            switch (runToggleMode)
+            // Only set shouldRun if the player can move around.
+            if (canMoveAround)
             {
-                case RunToggleMode.Off:
-                {
-                    shouldRun = runButtonDown;
-                    break;
-                }
-                case RunToggleMode.Permanent:
-                {
-                    if (runButtonPressed)
-                    {
-                        shouldRun = !shouldRun;
-                    }
+                bool runButtonPressed = GetButtonDown(runInput);
+                bool runButtonDown = GetButton(runInput);
 
-                    break;
-                }
-                case RunToggleMode.UntilNoInput:
+                switch (runToggleMode)
                 {
-                    if (!hasUserInput)
+                    case RunToggleMode.Off:
                     {
-                        shouldRun = false;
+                        shouldRun = runButtonDown;
+                        break;
                     }
-                    else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
+                    case RunToggleMode.Permanent:
                     {
-                        shouldRun = true;
-                    }
-                    else if (runButtonPressed)
-                    {
-                        shouldRun = !shouldRun;
-                    }
+                        if (runButtonPressed)
+                        {
+                            shouldRun = !shouldRun;
+                        }
 
-                    break;
+                        break;
+                    }
+                    case RunToggleMode.UntilNoInput:
+                    {
+                        if (!hasUserInput)
+                        {
+                            shouldRun = false;
+                        }
+                        else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
+                        {
+                            shouldRun = true;
+                        }
+                        else if (runButtonPressed)
+                        {
+                            shouldRun = !shouldRun;
+                        }
+
+                        break;
+                    }
                 }
             }
 
@@ -844,22 +874,25 @@ namespace Hertzole.GoldPlayer.Core
             // Only run the code if we can crouch. If we can't, always set 'isCrouching' to false.
             if (canCrouch)
             {
-                switch (crouchToggleMode)
+                if (canMoveAround)
                 {
-                    case CrouchToggleMode.Off:
+                    switch (crouchToggleMode)
                     {
-                        shouldCrouch = GetButton(crouchInput);
-                        break;
-                    }
-                    case CrouchToggleMode.Permanent:
-                    {
-                        bool crouchButtonPressed = GetButtonDown(crouchInput);
-                        if (crouchButtonPressed)
+                        case CrouchToggleMode.Off:
                         {
-                            shouldCrouch = !shouldCrouch;
+                            shouldCrouch = GetButton(crouchInput);
+                            break;
                         }
+                        case CrouchToggleMode.Permanent:
+                        {
+                            bool crouchButtonPressed = GetButtonDown(crouchInput);
+                            if (crouchButtonPressed)
+                            {
+                                shouldCrouch = !shouldCrouch;
+                            }
 
-                        break;
+                            break;
+                        }
                     }
                 }
 
@@ -993,6 +1026,17 @@ namespace Hertzole.GoldPlayer.Core
             moveDirection = forceImpact;
         }
 
+        /// <summary>
+        /// Resets all movmenet related input.
+        /// </summary>
+        protected virtual void ResetMovementInput()
+        {
+            movementInput = Vector2.zero;
+            pressedJump = false;
+            shouldRun = false;
+            shouldCrouch = false;
+        }
+
 #if UNITY_EDITOR
         public override void OnValidate()
         {
@@ -1012,6 +1056,11 @@ namespace Hertzole.GoldPlayer.Core
                 JumpInput = input_Jump;
                 RunInput = input_Run;
                 CrouchInput = input_Crouch;
+
+                if (!canMoveAround)
+                {
+                    ResetMovementInput();
+                }
             }
 
             // Make sure gravity is always positive.
