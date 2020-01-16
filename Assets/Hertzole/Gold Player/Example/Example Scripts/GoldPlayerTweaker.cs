@@ -3,11 +3,12 @@
 #endif
 
 using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-#if USE_GUI
 using UnityEngine.Serialization;
+#if USE_GUI
+using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 #endif
 
 namespace Hertzole.GoldPlayer.Example
