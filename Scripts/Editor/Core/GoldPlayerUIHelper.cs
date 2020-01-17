@@ -26,7 +26,7 @@ namespace Hertzole.GoldPlayer.Editor
             };
         }
 
-        public static IMGUIContainer GetHelpBox(string message, MessageType type)
+        public static VisualElement GetHelpBox(string message, MessageType type)
         {
             return new IMGUIContainer(() =>
             {

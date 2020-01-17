@@ -1,3 +1,4 @@
+using Hertzole.GoldPlayer.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,6 +6,13 @@ namespace Hertzole.GoldPlayer.Editor
 {
     public static class GoldPlayerMenuItems
     {
+        private const string STEP1_GUID = "44e59b73420f0e64fb30e755c49b3823";
+        private const string STEP2_GUID = "62e6bf700540ea9478b91b33afa85e7e";
+        private const string STEP3_GUID = "bbe4ed33245f5804db42ff8c43d75412";
+        private const string STEP4_GUID = "1e5761292ed025241bdb02ff49c552dd";
+        private const string JUMP_GUID = "11cc82c4daa9f304dbbfab62c9207608";
+        private const string LAND_GUID = "ceb0f9d730c213441b4eaccb59f6fcde";
+
         [MenuItem("GameObject/3D Object/Gold Player Controller")]
         public static void CreateGoldPlayer(MenuCommand menuCommand)
         {
@@ -78,6 +86,25 @@ namespace Hertzole.GoldPlayer.Editor
             goldController.Audio.JumpSource = jumpSource;
             goldController.Audio.LandSource = landSource;
 
+            AudioClip step1 = GetAsset<AudioClip>(STEP1_GUID);
+            AudioClip step2 = GetAsset<AudioClip>(STEP2_GUID);
+            AudioClip step3 = GetAsset<AudioClip>(STEP3_GUID);
+            AudioClip step4 = GetAsset<AudioClip>(STEP4_GUID);
+            AudioClip jump = GetAsset<AudioClip>(JUMP_GUID);
+            AudioClip land = GetAsset<AudioClip>(LAND_GUID);
+
+            AudioItem walkSounds = CreateAudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f, step1, step2, step3, step4);
+            AudioItem runSounds = CreateAudioItem(true, true, 1.4f, 1.4f, 1.6f, true, 1f, step1, step2, step3, step4);
+            AudioItem crouchSounds = CreateAudioItem(true, true, 1f, 0.9f, 1.1f, true, 0.4f, step1, step2, step3, step4);
+            AudioItem jumpSound = CreateAudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f, jump);
+            AudioItem landSound = CreateAudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f, land);
+
+            goldController.Audio.WalkFootsteps = walkSounds;
+            goldController.Audio.RunFootsteps = runSounds;
+            goldController.Audio.CrouchFootsteps = crouchSounds;
+            goldController.Audio.Jumping = jumpSound;
+            goldController.Audio.Landing = landSound;
+
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
             root.AddComponent<GoldPlayerInputSystem>();
 #else
@@ -93,6 +120,38 @@ namespace Hertzole.GoldPlayer.Editor
             GameObject go = new GameObject(name) { layer = parent.layer };
             go.transform.SetParent(parent.transform, false);
             return go;
+        }
+
+        private static T GetAsset<T>(string guid) where T : Object
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            return string.IsNullOrEmpty(path) ? null : AssetDatabase.LoadAssetAtPath<T>(path);
+        }
+
+        private static AudioItem CreateAudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVol, float vol, params AudioClip[] clips)
+        {
+            AudioItem item = new AudioItem(enabled, randomPitch, pitch, minPitch, maxPitch, changeVol, vol);
+            int clipSize = 0;
+            for (int i = 0; i < clips.Length; i++)
+            {
+                if (clips[i] != null)
+                {
+                    clipSize++;
+                }
+            }
+
+            item.AudioClips = new AudioClip[clipSize];
+            int index = 0;
+            for (int i = 0; i < clips.Length; i++)
+            {
+                if (clips[i] != null)
+                {
+                    item.AudioClips[index] = clips[i];
+                    index++;
+                }
+            }
+
+            return item;
         }
 
         /*
