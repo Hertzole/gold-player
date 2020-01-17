@@ -1,7 +1,11 @@
 ## 1.6
 
 ### Added:
+- Added Gold Player Animator for easy and simple animation support.
 - Gold Player Input System editor for the new input changes.
+
+### Improvements:
+- When creating a player through 'GameObject - 3D - Gold Player Controller', it now fills in audio clips if the standard ones are present.
 
 ### Changes:
 - Made `MovementInput`, `SmoothedMovementInput`, `ShouldJump`, `ShouldRun`, and `ShouldCrouch` public to be able to control movement through code.

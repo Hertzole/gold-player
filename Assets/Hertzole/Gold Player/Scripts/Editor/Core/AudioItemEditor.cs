@@ -162,16 +162,12 @@ namespace Hertzole.GoldPlayer.Editor
             Rect rect = new Rect(0, 0, 0, lineHeight);
             if (property.isExpanded)
             {
-                rect.height += lineHeight + padding;
-                rect.height += lineHeight + padding;
-                rect.height += lineHeight + padding;
-                rect.height += lineHeight + padding;
+                rect.height += (lineHeight + padding) * 5;
                 if (property.FindPropertyRelative("changeVolume").boolValue)
                 {
                     rect.height += lineHeight + padding;
                 }
 
-                rect.height += lineHeight + padding;
                 if (property.FindPropertyRelative("audioClips").isExpanded)
                 {
                     rect.height += lineHeight + padding;
