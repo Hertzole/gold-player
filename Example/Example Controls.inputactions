@@ -18,7 +18,7 @@
                     "type": "Button",
                     "id": "8b6bb957-5f78-40b6-adf3-c0ca449e44cc",
                     "expectedControlType": "",
-                    "processors": "ScaleVector2(x=0.1,y=0.1)",
+                    "processors": "",
                     "interactions": ""
                 },
                 {
@@ -69,7 +69,7 @@
                 {
                     "name": "",
                     "id": "92d9e2ff-418e-477b-a2a0-2920247b6931",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -134,6 +134,17 @@
                 },
                 {
                     "name": "",
+                    "id": "d0715142-d44c-4750-9824-cd404e4fe959",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9cedc362-1bee-48b5-935c-79ea9e619298",
                     "path": "<Keyboard>/c",
                     "interactions": "",
@@ -159,8 +170,19 @@
                     "id": "3ce60a52-151e-4295-aa13-75406fa09020",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "ScaleVector2(x=0.1,y=0.1)",
                     "groups": "Keyboard",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4f8b6710-e5e7-4db2-97c9-7965a77218da",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -172,6 +194,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a69b5152-fc98-484d-a54c-acd6cc2e67a4",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
