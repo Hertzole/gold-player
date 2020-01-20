@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hertzole.GoldPlayer.Animator
+namespace Hertzole.GoldPlayer
 {
     public class GoldPlayerAnimator : MonoBehaviour
     {

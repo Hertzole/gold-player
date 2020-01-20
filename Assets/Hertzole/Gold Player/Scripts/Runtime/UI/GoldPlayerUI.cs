@@ -8,9 +8,6 @@
 #define USE_GUI
 #endif
 
-#if GOLD_PLAYER_INTERACTION
-using Hertzole.GoldPlayer.Interaction;
-#endif
 #if USE_TMP
 using TMPro;
 #endif
@@ -20,7 +17,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 #endif
 
-namespace Hertzole.GoldPlayer.UI
+namespace Hertzole.GoldPlayer
 {
     [AddComponentMenu("Gold Player/UI/Gold Player UI")]
     public class GoldPlayerUI : MonoBehaviour

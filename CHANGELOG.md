@@ -10,6 +10,8 @@
 ### Changes:
 - Made `MovementInput`, `SmoothedMovementInput`, `ShouldJump`, `ShouldRun`, and `ShouldCrouch` public to be able to control movement through code.
 - Input actions are now directly referenced instead of just using the whole input actions asset.
+- Changed folder structure to match the same structure of packages.
+- (**BREAKING CHANGE**) Removed all sub-namespaces from scripts. All Gold Player scripts are now in `Hertzole.GoldPlayer`. Your code may break if you've referenced Gold Player in code but you mostly only need to remove old namespaces.
 
 ### Fixes:
 - Fixed head bob strafe tilt still being applied even when the player can't move.

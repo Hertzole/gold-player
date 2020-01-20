@@ -1,4 +1,3 @@
-using Hertzole.GoldPlayer.Core;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;

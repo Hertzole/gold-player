@@ -1,4 +1,4 @@
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     public enum RunAction
     {

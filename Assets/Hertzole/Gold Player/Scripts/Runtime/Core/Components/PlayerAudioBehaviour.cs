@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     /// <summary>
     /// Used to make custom player audio behaviours.
