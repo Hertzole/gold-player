@@ -3,12 +3,11 @@ using UnityEditor;
 #if UNITY_2019_1_OR_NEWER
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
-using Hertzole.GoldPlayer.Editor;
 #else
 using UnityEngine;
 #endif
 
-namespace Hertzole.GoldPlayer.Interaction.Editor
+namespace Hertzole.GoldPlayer.Editor
 {
     [CustomEditor(typeof(GoldPlayerInteractable))]
     internal class GoldPlayerInteractableEditor : UnityEditor.Editor

@@ -1,5 +1,4 @@
-﻿using Hertzole.GoldPlayer.Core;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
 using System.Collections.Generic;
@@ -360,7 +359,7 @@ namespace Hertzole.GoldPlayer
         {
             GoldPlayerController gp = GetComponent<GoldPlayerController>();
 #if GOLD_PLAYER_INTERACTION
-            Interaction.GoldPlayerInteraction gi = GetComponent<Interaction.GoldPlayerInteraction>();
+            GoldPlayerInteraction gi = GetComponent<GoldPlayerInteraction>();
 #endif
 
             actions = new InputItem[]

@@ -1,4 +1,4 @@
-﻿namespace Hertzole.GoldPlayer.Interaction
+﻿namespace Hertzole.GoldPlayer
 {
     /// <summary>
     /// Used to easily hook into the GoldPlayerInteraction component. It will target this interface.

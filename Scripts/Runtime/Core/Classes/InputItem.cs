@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     /// <summary>
     /// Used in Gold Player to make Input a little bit easier to handle.

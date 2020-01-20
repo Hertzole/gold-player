@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     /// <summary>
     /// Used for external player components that need to be a MonoBehaviour.

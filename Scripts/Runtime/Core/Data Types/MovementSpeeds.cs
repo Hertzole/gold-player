@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     [Serializable]
     public struct MovementSpeeds

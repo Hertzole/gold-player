@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     /*  This head bob code is based on Unity's standard assets player released
      *  some time in 2014(?), when it was actually good. Something happened

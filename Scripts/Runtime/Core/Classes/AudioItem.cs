@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     /// <summary>
     /// Used for easily playing audio clip(s) with parameters.

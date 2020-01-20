@@ -1,5 +1,4 @@
 #if UNITY_2018_3_OR_NEWER
-using Hertzole.GoldPlayer.Core;
 //using Hertzole.GoldPlayer.Weapons;
 using NUnit.Framework;
 using System.Collections;

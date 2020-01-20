@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hertzole.GoldPlayer.Core
+namespace Hertzole.GoldPlayer
 {
     public interface IGoldInput
     {

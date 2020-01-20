@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Hertzole.GoldPlayer.Interaction
+namespace Hertzole.GoldPlayer
 {
     [AddComponentMenu("Gold Player/Interaction/Gold Player Interactable")]
     [DisallowMultipleComponent]

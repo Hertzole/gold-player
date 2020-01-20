@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 
-namespace Hertzole.GoldPlayer.Interaction.Editor
+namespace Hertzole.GoldPlayer.Editor
 {
     [InitializeOnLoad]
     public static class GoldPlayerInteractionDefine
@@ -16,7 +16,10 @@ namespace Hertzole.GoldPlayer.Interaction.Editor
             {
                 string toAdd = scriptDefines;
                 if (!scriptDefines.EndsWith(";"))
+                {
                     toAdd += ";";
+                }
+
                 toAdd += DEFINE;
 
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, toAdd);
