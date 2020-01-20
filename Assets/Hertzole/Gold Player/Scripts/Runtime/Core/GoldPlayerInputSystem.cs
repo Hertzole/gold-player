@@ -23,6 +23,32 @@ namespace Hertzole.GoldPlayer
         {
             public string actionName;
             public InputActionReference action;
+
+            public InputItem(string actionName, InputActionReference action)
+            {
+                this.actionName = actionName;
+                this.action = action;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj != null && obj is InputItem item ? item.actionName == actionName && item.action == action : false;
+            }
+
+            public override int GetHashCode()
+            {
+                return (action.action.name + "." + actionName).GetHashCode();
+            }
+
+            public static bool operator ==(InputItem left, InputItem right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(InputItem left, InputItem right)
+            {
+                return !(left == right);
+            }
         }
 
         [SerializeField]
@@ -328,6 +354,26 @@ namespace Hertzole.GoldPlayer
                     EnableInput();
                 }
             }
+        }
+
+        private void Reset()
+        {
+            GoldPlayerController gp = GetComponent<GoldPlayerController>();
+#if GOLD_PLAYER_INTERACTION
+            Interaction.GoldPlayerInteraction gi = GetComponent<Interaction.GoldPlayerInteraction>();
+#endif
+
+            actions = new InputItem[]
+            {
+                new InputItem(gp != null ? gp.Camera.LookInput : "Look", null),
+                new InputItem(gp != null ? gp.Movement.MoveInput : "Move", null),
+                new InputItem(gp != null ? gp.Movement.JumpInput : "Jump", null),
+                new InputItem(gp != null ? gp.Movement.RunInput : "Run", null),
+                new InputItem(gp != null ? gp.Movement.CrouchInput : "Crouch",null),
+#if GOLD_PLAYER_INTERACTION
+                new InputItem(gi != null ? gi.InteractInput : "Interact",null)
+#endif
+            };
         }
 #endif
     }

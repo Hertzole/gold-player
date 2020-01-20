@@ -7,6 +7,8 @@ namespace Hertzole.GoldPlayer.Animator
         [SerializeField]
         private UnityEngine.Animator animator = null;
         [SerializeField]
+        private float maxSpeed = 6f;
+        [SerializeField]
         private string moveX = "MoveX";
         [SerializeField]
         private string moveZ = "MoveZ";
@@ -28,7 +30,7 @@ namespace Hertzole.GoldPlayer.Animator
         private void Update()
         {
             Vector3 velocity = transform.InverseTransformDirection(controller.velocity);
-            velocity /= 6;
+            velocity /= maxSpeed;
 
             animator.SetFloat(moveXHash, velocity.x);
             animator.SetFloat(moveZHash, velocity.z);
