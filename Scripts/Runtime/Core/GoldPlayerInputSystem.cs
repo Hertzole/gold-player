@@ -11,7 +11,7 @@ namespace Hertzole.GoldPlayer
 #if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
     [System.Obsolete("You're not using the new Input System so this component will be useless.")]
 #else
-    [AddComponentMenu("Gold Player/Gold Player Input System", 02)]
+    [AddComponentMenu("Gold Player/Gold Player Input System", 1)]
     [DisallowMultipleComponent]
 #endif
     public class GoldPlayerInputSystem : MonoBehaviour, IGoldInput

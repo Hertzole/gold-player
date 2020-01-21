@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer.Example
 {
-    [AddComponentMenu("Gold Player/Examples/Moving Platform", 20)]
+    [AddComponentMenu("Gold Player/Examples/Moving Platform", 100)]
     public class MovingPlatform : MonoBehaviour
     {
         [System.Serializable]

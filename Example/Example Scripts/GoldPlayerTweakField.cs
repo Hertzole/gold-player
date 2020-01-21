@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer.Example
 {
-    [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker Field", 22)]
+    [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker Field", 100)]
     public class GoldPlayerTweakField : MonoBehaviour
     {
 #if USE_GUI

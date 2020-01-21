@@ -7,13 +7,12 @@ using UnityEngine;
 using UnityEngine.Serialization;
 #if USE_GUI
 using TMPro;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 #endif
 
 namespace Hertzole.GoldPlayer.Example
 {
-    [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker", 21)]
+    [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker", 100)]
     public class GoldPlayerTweaker : MonoBehaviour
     {
         [SerializeField]

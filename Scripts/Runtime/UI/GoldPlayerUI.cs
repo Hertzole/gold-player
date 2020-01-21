@@ -19,7 +19,7 @@ using UnityEngine.UI;
 
 namespace Hertzole.GoldPlayer
 {
-    [AddComponentMenu("Gold Player/UI/Gold Player UI")]
+    [AddComponentMenu("Gold Player/Gold Player UI", 10)]
     public class GoldPlayerUI : MonoBehaviour
     {
         // The type of progress bar.

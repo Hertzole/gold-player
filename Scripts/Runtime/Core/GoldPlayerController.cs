@@ -5,7 +5,7 @@ namespace Hertzole.GoldPlayer
 {
     [RequireComponent(typeof(CharacterController))]
     [DisallowMultipleComponent]
-    [AddComponentMenu("Gold Player/Gold Player Controller", 01)]
+    [AddComponentMenu("Gold Player/Gold Player Controller", 0)]
     public class GoldPlayerController : MonoBehaviour
     {
         [SerializeField]
