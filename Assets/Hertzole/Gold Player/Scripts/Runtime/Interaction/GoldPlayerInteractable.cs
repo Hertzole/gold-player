@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
-    [AddComponentMenu("Gold Player/Interaction/Gold Player Interactable")]
+    [AddComponentMenu("Gold Player/Gold Player Interactable", 20)]
     [DisallowMultipleComponent]
     public class GoldPlayerInteractable : MonoBehaviour, IGoldPlayerInteractable
     {

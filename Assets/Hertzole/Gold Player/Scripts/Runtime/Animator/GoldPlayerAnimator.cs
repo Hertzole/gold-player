@@ -2,10 +2,12 @@
 
 namespace Hertzole.GoldPlayer
 {
+    [DisallowMultipleComponent]
+    [AddComponentMenu("Gold Player/Gold Player Animator", 10)]
     public class GoldPlayerAnimator : MonoBehaviour
     {
         [SerializeField]
-        private UnityEngine.Animator animator = null;
+        private Animator animator = null;
         [SerializeField]
         private float maxSpeed = 6f;
         [SerializeField]

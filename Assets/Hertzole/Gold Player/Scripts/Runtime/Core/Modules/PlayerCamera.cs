@@ -257,7 +257,7 @@ namespace Hertzole.GoldPlayer
             }
 #endif
 
-            // If the player can look around, get the input. 
+            // If the player can look around, get the input.
             // Else just set the input to zero.
             if (canLookAround && !forceLooking)
             {

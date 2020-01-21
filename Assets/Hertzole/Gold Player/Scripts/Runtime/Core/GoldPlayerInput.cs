@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 namespace Hertzole.GoldPlayer
 {
 #if !ENABLE_INPUT_SYSTEM
-    [AddComponentMenu("Gold Player/Gold Player Input", 02)]
+    [AddComponentMenu("Gold Player/Gold Player Input", 1)]
     [DisallowMultipleComponent]
 #else
     [System.Obsolete("You're using the new Input System so this component will be useless.")]
