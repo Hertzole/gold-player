@@ -9,6 +9,10 @@ namespace Hertzole.GoldPlayer
     [AddComponentMenu("")]
     public abstract class PlayerAudioBehaviour : MonoBehaviour
     {
+        [SerializeField]
+        [Tooltip("If true, this will handle all the audio handling. Else the Player Audio module will handle it.")]
+        private bool independentAudioHandling = false;
+
         /// <summary> The player controller. </summary>
         protected GoldPlayerController PlayerController { get; private set; }
         /// <summary> The player input. </summary>
@@ -20,6 +24,9 @@ namespace Hertzole.GoldPlayer
         protected AudioSource JumpSource { get; private set; }
         /// <summary> The audio source where all the land sounds will be played. </summary>
         protected AudioSource LandSource { get; private set; }
+
+        /// <summary> If true, this will handle all the audio handling. Else the Player Audio module will handle it. </summary>
+        public virtual bool IndependentAudioHandling { get { return independentAudioHandling; } set { independentAudioHandling = value; } }
 
         /// <summary>
         /// Initializes the audio behaviour.

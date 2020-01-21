@@ -130,7 +130,10 @@ namespace Hertzole.GoldPlayer
         public override void OnUpdate(float deltaTime)
         {
             DoStepCycle(deltaTime);
-            AudioHandler();
+            if (audioType == AudioTypes.Standard || (customBehaviour != null && !customBehaviour.IndependentAudioHandling))
+            {
+                AudioHandler();
+            }
 
             if (audioType == AudioTypes.Custom && customBehaviour != null)
             {
@@ -218,7 +221,7 @@ namespace Hertzole.GoldPlayer
                     if (!previouslyGrounded)
                     {
                         // Play the land sound.
-                        PlayLandSound();
+                        InternalPlayLandSound();
                     }
                     else
                     {
@@ -226,7 +229,7 @@ namespace Hertzole.GoldPlayer
                         if (stepCycle > nextStepTime)
                         {
                             // Play a footstep sound.
-                            PlayFootstepSound();
+                            InternalPlayFootstepSound();
                         }
                     }
                     // Set previous grounded to true, as the player was previously grounded.
@@ -238,7 +241,7 @@ namespace Hertzole.GoldPlayer
                     if (previouslyGrounded)
                     {
                         // Play the jump sound.
-                        PlayJumpSound();
+                        InternalPlayJumpSound();
                     }
                     // The player is no longer grounded, so set previously grounded to false.
                     previouslyGrounded = false;
@@ -246,35 +249,64 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+        private void InternalPlayFootstepSound()
+        {
+            if (audioType == AudioTypes.Standard)
+            {
+                PlayFootstepSound();
+            }
+            else if (audioType == AudioTypes.Custom && customBehaviour != null)
+            {
+                customBehaviour.PlayFoostepSound();
+            }
+        }
+
+        private void InternalPlayJumpSound()
+        {
+            if (audioType == AudioTypes.Standard)
+            {
+                PlayJumpSound();
+            }
+            else if (audioType == AudioTypes.Custom && customBehaviour != null)
+            {
+                customBehaviour.PlayJumpSound();
+            }
+        }
+
+        private void InternalPlayLandSound()
+        {
+            if (audioType == AudioTypes.Standard)
+            {
+                PlayLandSound();
+            }
+            else if (audioType == AudioTypes.Custom && customBehaviour != null)
+            {
+                customBehaviour.PlayLandSound();
+            }
+        }
+
         /// <summary>
-        /// Plays a random footstep sound.
+        /// Plays a random footstep sound that adapts to sprinting and crouching.
         /// </summary>
         public virtual void PlayFootstepSound()
         {
             // Only run if the audio feature is enabled.
             if (enableAudio)
             {
-                if (audioType == AudioTypes.Standard)
+                // If the player is running, play the running footsteps.
+                // Else if the player is crouching, play the crouching footsteps.
+                // Else just play the walking footsteps.
+                if (PlayerController.Movement.IsRunning)
                 {
-                    // If the player is running, play the running footsteps.
-                    // Else if the player is crouching, play the crouching footsteps.
-                    // Else just play the walking footsteps.
-                    if (PlayerController.Movement.IsRunning)
-                    {
-                        runFootsteps.Play(footstepsSource);
-                    }
-                    else if (PlayerController.Movement.IsCrouching)
-                    {
-                        crouchFootsteps.Play(footstepsSource);
-                    }
-                    else
-                    {
-                        walkFootsteps.Play(footstepsSource);
-                    }
+                    runFootsteps.Play(footstepsSource);
                 }
-                else if (audioType == AudioTypes.Custom && customBehaviour != null)
+                else if (PlayerController.Movement.IsCrouching)
                 {
-                    customBehaviour.PlayFoostepSound();
+                    crouchFootsteps.Play(footstepsSource);
+                }
+                else
+                {
+                    walkFootsteps.Play(footstepsSource);
                 }
 
                 // Add some time to the next step time.
@@ -290,14 +322,7 @@ namespace Hertzole.GoldPlayer
             // Only play if the audio feature is enabled and the jump sound is enabled.
             if (enableAudio && jumping.Enabled)
             {
-                if (audioType == AudioTypes.Standard)
-                {
-                    jumping.Play(jumpSource);
-                }
-                else if (audioType == AudioTypes.Custom)
-                {
-                    customBehaviour.PlayJumpSound();
-                }
+                jumping.Play(jumpSource);
             }
         }
 
@@ -309,14 +334,7 @@ namespace Hertzole.GoldPlayer
             // Only play if the audio feature is enabled and the landing sound is enabled.
             if (enableAudio && landing.Enabled)
             {
-                if (audioType == AudioTypes.Standard)
-                {
-                    landing.Play(landSource);
-                }
-                else if (audioType == AudioTypes.Custom)
-                {
-                    customBehaviour.PlayLandSound();
-                }
+                landing.Play(landSource);
 
                 // Add some time to the next step time.
                 nextStepTime = stepCycle + 0.5f;
