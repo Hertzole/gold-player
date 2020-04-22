@@ -341,7 +341,7 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
         private void OnValidate()
         {
             if (Application.isPlaying)
@@ -368,9 +368,9 @@ namespace Hertzole.GoldPlayer
                 new InputItem(gp != null ? gp.Movement.MoveInput : "Move", null),
                 new InputItem(gp != null ? gp.Movement.JumpInput : "Jump", null),
                 new InputItem(gp != null ? gp.Movement.RunInput : "Run", null),
-                new InputItem(gp != null ? gp.Movement.CrouchInput : "Crouch",null),
+                new InputItem(gp != null ? gp.Movement.CrouchInput : "Crouch", null),
 #if GOLD_PLAYER_INTERACTION
-                new InputItem(gi != null ? gi.InteractInput : "Interact",null)
+                new InputItem(gi != null ? gi.InteractInput : "Interact", null)
 #endif
             };
         }

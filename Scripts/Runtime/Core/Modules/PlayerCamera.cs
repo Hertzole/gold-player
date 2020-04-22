@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -263,7 +263,7 @@ namespace Hertzole.GoldPlayer
             {
                 // Set the input.
 #if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
-                mouseInput = GetVector2Input(input_Look) * mouseSensitivity;
+                mouseInput = GetVector2Input(input_Look);
                 if (invertXAxis)
                 {
                     mouseInput.x = -mouseInput.x;
@@ -274,7 +274,7 @@ namespace Hertzole.GoldPlayer
                     mouseInput.y = -mouseInput.y;
                 }
 #else
-                mouseInput = new Vector2(invertXAxis ? -GetAxis(input_MouseX) : GetAxis(input_MouseX), invertYAxis ? -GetAxis(input_MouseY) : GetAxis(input_MouseY)) * mouseSensitivity;
+                mouseInput = new Vector2(invertXAxis ? -GetAxis(input_MouseX) : GetAxis(input_MouseX), invertYAxis ? -GetAxis(input_MouseY) : GetAxis(input_MouseY));
 #endif
             }
             else

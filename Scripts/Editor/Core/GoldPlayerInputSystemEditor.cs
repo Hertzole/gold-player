@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+using System;
 using System.Linq;
 using UnityEditor;
 using UnityEditorInternal;
@@ -158,3 +159,4 @@ namespace Hertzole.GoldPlayer.Editor
         }
     }
 }
+#endif

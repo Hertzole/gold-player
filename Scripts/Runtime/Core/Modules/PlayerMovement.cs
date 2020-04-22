@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -760,36 +760,34 @@ namespace Hertzole.GoldPlayer
                 switch (runToggleMode)
                 {
                     case RunToggleMode.Off:
-                    {
-                        shouldRun = runButtonDown;
-                        break;
-                    }
+					{
+						shouldRun = runButtonDown;
+						break;
+					}
                     case RunToggleMode.Permanent:
-                    {
-                        if (runButtonPressed)
-                        {
-                            shouldRun = !shouldRun;
-                        }
-
-                        break;
-                    }
+					{
+						if (runButtonPressed)
+						{
+							shouldRun = !shouldRun;
+						}
+						break;
+					}
                     case RunToggleMode.UntilNoInput:
-                    {
-                        if (!hasUserInput)
-                        {
-                            shouldRun = false;
-                        }
-                        else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
-                        {
-                            shouldRun = true;
-                        }
-                        else if (runButtonPressed)
-                        {
-                            shouldRun = !shouldRun;
-                        }
-
-                        break;
-                    }
+					{
+						if (!hasUserInput)
+						{
+							shouldRun = false;
+						}
+						else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
+						{
+							shouldRun = true;
+						}
+						else if (runButtonPressed)
+						{
+							shouldRun = !shouldRun;
+						}
+						break;
+					}
                 }
             }
 
@@ -868,20 +866,19 @@ namespace Hertzole.GoldPlayer
                     switch (crouchToggleMode)
                     {
                         case CrouchToggleMode.Off:
-                        {
-                            shouldCrouch = GetButton(input_Crouch);
-                            break;
-                        }
+						{
+							shouldCrouch = GetButton(input_Crouch);
+							break;
+						}
                         case CrouchToggleMode.Permanent:
-                        {
-                            bool crouchButtonPressed = GetButtonDown(input_Crouch);
-                            if (crouchButtonPressed)
-                            {
-                                shouldCrouch = !shouldCrouch;
-                            }
-
-                            break;
-                        }
+						{
+							bool crouchButtonPressed = GetButtonDown(input_Crouch);
+							if (crouchButtonPressed)
+							{
+								shouldCrouch = !shouldCrouch;
+							}
+							break;
+						}
                     }
                 }
 
