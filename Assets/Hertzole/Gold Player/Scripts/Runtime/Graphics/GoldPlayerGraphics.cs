@@ -248,6 +248,6 @@ namespace Hertzole.GoldPlayer
                 UpdateGraphics(owner == GraphicsOwner.Me);
             }
         }
-    }
 #endif
+    }
 }
