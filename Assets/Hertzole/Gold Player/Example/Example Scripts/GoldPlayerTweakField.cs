@@ -1,4 +1,4 @@
-#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+﻿#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
 #define USE_GUI
 #endif
 
@@ -55,7 +55,7 @@ namespace Hertzole.GoldPlayer.Example
 #endif
         }
 
-        public void SetupField(string label, Action<float> valueChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1)
+        public void SetupField(string label, Action<float> valueChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1, float labelDivide = 1f)
         {
 #if USE_GUI
             textField.gameObject.SetActive(!slider);
@@ -69,10 +69,10 @@ namespace Hertzole.GoldPlayer.Example
                 sliderField.maxValue = maxSlider;
                 sliderField.value = defaultValue;
                 sliderField.wholeNumbers = false;
-                this.label.text = label + ": " + sliderField.value.ToString("F3");
+                this.label.text = label + ": " + (sliderField.value / labelDivide).ToString("F3");
                 sliderField.onValueChanged.AddListener(x =>
                 {
-                    this.label.text = label + ": " + sliderField.value.ToString("F3");
+                    this.label.text = label + ": " + (sliderField.value / labelDivide).ToString("F3");
                     if (valueChanged != null)
                     {
                         valueChanged.Invoke(x);
@@ -96,7 +96,7 @@ namespace Hertzole.GoldPlayer.Example
 #endif
         }
 
-        public void SetupField(string label, Action<int> valueChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1)
+        public void SetupField(string label, Action<int> valueChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1, float labelDivide = 1)
         {
 #if USE_GUI
             textField.gameObject.SetActive(!slider);
@@ -110,10 +110,10 @@ namespace Hertzole.GoldPlayer.Example
                 sliderField.maxValue = maxSlider;
                 sliderField.value = defaultValue;
                 sliderField.wholeNumbers = true;
-                this.label.text = label + ": " + sliderField.value.ToString();
+                this.label.text = label + ": " + sliderField.value / labelDivide;
                 sliderField.onValueChanged.AddListener(x =>
                 {
-                    this.label.text = label + ": " + sliderField.value.ToString();
+                    this.label.text = label + ": " + sliderField.value / labelDivide;
                     if (valueChanged != null)
                     {
                         valueChanged.Invoke(Mathf.RoundToInt(x));

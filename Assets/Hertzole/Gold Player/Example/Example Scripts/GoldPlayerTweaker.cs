@@ -1,4 +1,4 @@
-#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+﻿#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
 #define USE_GUI
 #endif
 
@@ -8,6 +8,9 @@ using UnityEngine.Serialization;
 #if USE_GUI
 using TMPro;
 using UnityEngine.SceneManagement;
+#endif
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
 #endif
 
 namespace Hertzole.GoldPlayer.Example
@@ -56,11 +59,11 @@ namespace Hertzole.GoldPlayer.Example
         public KeyCode ResetSceneKey { get { return resetSceneKey; } set { resetSceneKey = value; } }
 #else
         [SerializeField]
-        private UnityEngine.InputSystem.InputAction toggleAction = new UnityEngine.InputSystem.InputAction();
-        public UnityEngine.InputSystem.InputAction ToggleAction { get { return toggleAction; } set { toggleAction = value; } }
+        private InputAction toggleAction = new InputAction();
+        public InputAction ToggleAction { get { return toggleAction; } set { toggleAction = value; } }
         [SerializeField]
-        private UnityEngine.InputSystem.InputAction resetSceneAction = new UnityEngine.InputSystem.InputAction();
-        public UnityEngine.InputSystem.InputAction ResetSceneAction { get { return resetSceneAction; } set { resetSceneAction = value; } }
+        private InputAction resetSceneAction = new InputAction();
+        public InputAction ResetSceneAction { get { return resetSceneAction; } set { resetSceneAction = value; } }
 #endif
 
 #if USE_GUI
@@ -90,6 +93,12 @@ namespace Hertzole.GoldPlayer.Example
 
                 SetupUI();
             }
+
+#if ENABLE_INPUT_SYSTEM
+            tweakText.text = "Press " + toggleAction.GetBindingDisplayString() + " to tweak settings. Press " + resetSceneAction.GetBindingDisplayString() + " to reset scene.";
+#else
+            tweakText.text = "Press " + toggleKey.ToString() + " to tweak settings. Press " + resetSceneKey.ToString() + " to reset scene.";
+#endif
 #else
             Debug.LogWarning("GoldPlayerTweaker can't be used without UGUI!");
 #endif
@@ -99,16 +108,21 @@ namespace Hertzole.GoldPlayer.Example
         private void OnEnable()
         {
             toggleAction.Enable();
+            resetSceneAction.Enable();
         }
 
         private void OnDisable()
         {
             toggleAction.Disable();
+            resetSceneAction.Disable();
         }
 #endif
 
         private void SetupUI()
         {
+            CreateHeader("Game");
+            CreateTweaker("Timescale", x => { Time.timeScale = x / 10f; }, 10, true, 1, 20, 10f);
+
             CreateHeader("Camera");
             CreateTweaker("Invert X Axis", x => { targetPlayer.Camera.InvertXAxis = x; }, targetPlayer.Camera.InvertXAxis);
             CreateTweaker("Invert Y Axis", x => { targetPlayer.Camera.InvertYAxis = x; }, targetPlayer.Camera.InvertYAxis);
@@ -182,16 +196,16 @@ namespace Hertzole.GoldPlayer.Example
             newField.SetupField(label, onChanged, defaultValue);
         }
 
-        public void CreateTweaker(string label, Action<float> onChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1)
+        public void CreateTweaker(string label, Action<float> onChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1, float labelDivide = 1f)
         {
             GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
-            newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider);
+            newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider, labelDivide);
         }
 
-        public void CreateTweaker(string label, Action<int> onChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1)
+        public void CreateTweaker(string label, Action<int> onChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1, float labelDivide = 1f)
         {
             GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
-            newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider);
+            newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider, labelDivide);
         }
 
 #if USE_GUI
