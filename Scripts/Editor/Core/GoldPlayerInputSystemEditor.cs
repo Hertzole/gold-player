@@ -1,4 +1,4 @@
-﻿#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+﻿#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
 using System;
 using System.Linq;
 using UnityEditor;

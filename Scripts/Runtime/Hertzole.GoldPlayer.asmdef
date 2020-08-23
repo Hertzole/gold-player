@@ -16,12 +16,17 @@
         {
             "name": "com.unity.ugui",
             "expression": "",
-            "define": "USE_UGUI"
+            "define": "GOLD_PLAYER_UGUI"
         },
         {
             "name": "com.unity.textmeshpro",
             "expression": "",
-            "define": "USE_TMP"
+            "define": "GOLD_PLAYER_TMP"
+        },
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "GOLD_PLAYER_NEW_INPUT"
         }
     ],
     "noEngineReferences": false

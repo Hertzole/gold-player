@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
@@ -122,12 +122,12 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetAxisRaw(axisName);
         }
 
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [System.Obsolete("GetVector2Input does nothing with the Input Manager.")]
 #endif
         protected Vector2 GetVector2Input(string action)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             return PlayerInput.GetVector2(action);
 #else
             return Vector2.zero;

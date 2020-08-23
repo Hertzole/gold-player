@@ -1,4 +1,4 @@
-#if UNITY_2018_3_OR_NEWER
+﻿#if UNITY_2018_3_OR_NEWER
 //using Hertzole.GoldPlayer.Weapons;
 using NUnit.Framework;
 using System.Collections;
@@ -124,7 +124,7 @@ namespace Hertzole.GoldPlayer.Tests
             GoldPlayerController playerController = playerGO.AddComponent<GoldPlayerController>();
             GameObject playerCameraHead = new GameObject("[TEST] Test Player Camera Head");
             Camera camera = playerCameraHead.AddComponent<Camera>();
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             GoldPlayerInputSystem input = playerGO.AddComponent<GoldPlayerInputSystem>();
             input.InputAsset = UnityEngine.InputSystem.InputActionAsset.FromJson(inputJson);
             input.EnableInput();

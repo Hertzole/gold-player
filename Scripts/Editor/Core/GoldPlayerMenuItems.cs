@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Editor
@@ -104,7 +104,7 @@ namespace Hertzole.GoldPlayer.Editor
             goldController.Audio.Jumping = jumpSound;
             goldController.Audio.Landing = landSound;
 
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             root.AddComponent<GoldPlayerInputSystem>();
 #else
             root.AddComponent<GoldPlayerInput>();

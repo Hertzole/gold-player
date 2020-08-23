@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
     [AddComponentMenu("Gold Player/Gold Player Input", 1)]
     [DisallowMultipleComponent]
 #else
