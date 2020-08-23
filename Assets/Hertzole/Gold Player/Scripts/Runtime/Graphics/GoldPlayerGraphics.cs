@@ -114,10 +114,6 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Graphics are inivislbe for 'me' and visible for 'others'.")]
         private GraphicsOwner owner = GraphicsOwner.Me;
 
-#if UNITY_EDITOR
-        [Space]
-#endif
-
         [SerializeField]
         private GraphicsObject[] objects = null;
 
