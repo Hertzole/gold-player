@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
@@ -47,7 +47,7 @@ namespace Hertzole.GoldPlayer
             return 0;
         }
 
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [System.Obsolete("Only used in the new Input System. Will do nothing with Input Manager.")]
 #endif
         public virtual Vector2 GetVector2(string actionName)

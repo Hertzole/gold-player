@@ -29,7 +29,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         float GetAxisRaw(string axis);
 
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         /// <summary>
         /// Returns a Vector2 axis.
         /// </summary>

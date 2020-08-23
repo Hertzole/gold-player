@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -54,14 +54,14 @@ namespace Hertzole.GoldPlayer
         {
             get
             {
-#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
                 Debug.LogWarning("GoldPlayerController.ActionMap is useless when not using the new Input System.");
 #endif
                 return string.Empty;
             }
             set
             {
-#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
                 Debug.LogWarning("GoldPlayerController.ActionMap is useless when not using the new Input System.");
 #endif
             }

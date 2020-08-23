@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace Hertzole.GoldPlayer
 {
-#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
     [System.Obsolete("You're not using the new Input System so this component will be useless.")]
 #else
     [AddComponentMenu("Gold Player/Gold Player Input System", 1)]
@@ -16,7 +16,7 @@ namespace Hertzole.GoldPlayer
 #endif
     public class GoldPlayerInputSystem : MonoBehaviour, IGoldInput
     {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [System.Serializable]
         public struct InputItem
         {
@@ -63,7 +63,7 @@ namespace Hertzole.GoldPlayer
 
         private bool enabledInput = false;
 
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [System.Obsolete("Use 'InputAsset' instead.")]
         public InputActionAsset Input { get { return InputAsset; } set { InputAsset = value; } }
         public InputActionAsset InputAsset { get { return inputAsset; } set { inputAsset = value; } }
@@ -76,14 +76,14 @@ namespace Hertzole.GoldPlayer
 
         private void Start()
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
             UpdateActions();
 #endif
         }
 
         public void EnableInput()
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
             for (int i = 0; i < actions.Length; i++)
             {
                 if (actions[i].action != null)
@@ -98,7 +98,7 @@ namespace Hertzole.GoldPlayer
 
         public void DisableInput()
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             for (int i = 0; i < actions.Length; i++)
             {
                 if (actions[i].action != null)
@@ -110,7 +110,7 @@ namespace Hertzole.GoldPlayer
             enabledInput = false;
         }
 
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
         private void OnEnable()
         {
             if (autoEnableInput)
@@ -139,7 +139,7 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButton(string buttonName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -172,7 +172,7 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButtonDown(string buttonName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -205,7 +205,7 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButtonUp(string buttonName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -238,7 +238,7 @@ namespace Hertzole.GoldPlayer
 
         public float GetAxis(string axisName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -274,7 +274,7 @@ namespace Hertzole.GoldPlayer
 
         public float GetAxisRaw(string axisName)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -310,7 +310,7 @@ namespace Hertzole.GoldPlayer
 
         public Vector2 GetVector2(string action)
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -341,7 +341,7 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
-#if UNITY_EDITOR && ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if UNITY_EDITOR && ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         private void OnValidate()
         {
             if (Application.isPlaying)

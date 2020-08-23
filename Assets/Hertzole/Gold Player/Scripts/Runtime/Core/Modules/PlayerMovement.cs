@@ -128,19 +128,19 @@ namespace Hertzole.GoldPlayer
 
         //////// INPUT
         [SerializeField]
-#if !ENABLE_INPUT_SYSTEM || !UNITY_2019_3_OR_NEWER
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [HideInInspector]
 #endif
         [Tooltip("Move action for the new Input System.")]
         private string input_Move = "Move";
         [SerializeField]
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [HideInInspector]
 #endif
         [Tooltip("Horizontal move axis for the old Input Manager.")]
         private string input_HorizontalAxis = "Horizontal";
         [SerializeField]
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [HideInInspector]
 #endif
         [Tooltip("Vertical move axis for the old Input Manager.")]
@@ -421,7 +421,7 @@ namespace Hertzole.GoldPlayer
         /// <returns></returns>
         public Vector2 GetInput()
         {
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             Vector2 input = GetVector2Input(input_Move);
             if (canMoveAround)
             {
@@ -760,34 +760,34 @@ namespace Hertzole.GoldPlayer
                 switch (runToggleMode)
                 {
                     case RunToggleMode.Off:
-					{
-						shouldRun = runButtonDown;
-						break;
-					}
+                        {
+                            shouldRun = runButtonDown;
+                            break;
+                        }
                     case RunToggleMode.Permanent:
-					{
-						if (runButtonPressed)
-						{
-							shouldRun = !shouldRun;
-						}
-						break;
-					}
+                        {
+                            if (runButtonPressed)
+                            {
+                                shouldRun = !shouldRun;
+                            }
+                            break;
+                        }
                     case RunToggleMode.UntilNoInput:
-					{
-						if (!hasUserInput)
-						{
-							shouldRun = false;
-						}
-						else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
-						{
-							shouldRun = true;
-						}
-						else if (runButtonPressed)
-						{
-							shouldRun = !shouldRun;
-						}
-						break;
-					}
+                        {
+                            if (!hasUserInput)
+                            {
+                                shouldRun = false;
+                            }
+                            else if (!isRunning && !didRunSinceLastBreakInMovement && runButtonDown)
+                            {
+                                shouldRun = true;
+                            }
+                            else if (runButtonPressed)
+                            {
+                                shouldRun = !shouldRun;
+                            }
+                            break;
+                        }
                 }
             }
 
@@ -866,19 +866,19 @@ namespace Hertzole.GoldPlayer
                     switch (crouchToggleMode)
                     {
                         case CrouchToggleMode.Off:
-						{
-							shouldCrouch = GetButton(input_Crouch);
-							break;
-						}
+                            {
+                                shouldCrouch = GetButton(input_Crouch);
+                                break;
+                            }
                         case CrouchToggleMode.Permanent:
-						{
-							bool crouchButtonPressed = GetButtonDown(input_Crouch);
-							if (crouchButtonPressed)
-							{
-								shouldCrouch = !shouldCrouch;
-							}
-							break;
-						}
+                            {
+                                bool crouchButtonPressed = GetButtonDown(input_Crouch);
+                                if (crouchButtonPressed)
+                                {
+                                    shouldCrouch = !shouldCrouch;
+                                }
+                                break;
+                            }
                     }
                 }
 

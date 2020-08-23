@@ -17,6 +17,12 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "GOLD_PLAYER_NEW_INPUT"
+        }
+    ],
     "noEngineReferences": false
 }

@@ -1,4 +1,4 @@
-﻿#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+﻿#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && GOLD_PLAYER_UGUI)
 #define USE_GUI
 #endif
 
@@ -6,10 +6,14 @@ using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 #if USE_GUI
+#if GOLD_PLAYER_TMP
 using TMPro;
+#else
+using UnityEngine.UI;
+#endif
 using UnityEngine.SceneManagement;
 #endif
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT && GOLD_PLAYER_NEW_INPUT
 using UnityEngine.InputSystem;
 #endif
 
@@ -25,8 +29,13 @@ namespace Hertzole.GoldPlayer.Example
 #if USE_GUI
         [SerializeField]
         [FormerlySerializedAs("m_TweakText")]
+#if GOLD_PLAYER_TMP
         private TextMeshProUGUI tweakText;
         public TextMeshProUGUI TweakText { get { return tweakText; } set { tweakText = value; } }
+#else
+        private Text tweakText;
+        public Text TweakText { get { return tweakText; } set { tweakText = value; } }
+#endif
 #endif
         [SerializeField]
         [FormerlySerializedAs("m_Panel")]
@@ -39,8 +48,13 @@ namespace Hertzole.GoldPlayer.Example
         public RectTransform Viewport { get { return viewport; } set { viewport = value; } }
         [SerializeField]
         [FormerlySerializedAs("m_HeaderLabel")]
+#if GOLD_PLAYER_TMP
         private TextMeshProUGUI headerLabel;
         public TextMeshProUGUI HeaderLabel { get { return headerLabel; } set { headerLabel = value; } }
+#else
+        private Text headerLabel;
+        public Text HeaderLabel { get { return headerLabel; } set { headerLabel = value; } }
+#endif
 #endif
         [SerializeField]
         [FormerlySerializedAs("m_TweakField")]
@@ -48,7 +62,7 @@ namespace Hertzole.GoldPlayer.Example
         public GoldPlayerTweakField TweakField { get { return tweakField; } set { tweakField = value; } }
         [Space]
 
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         [SerializeField]
         [FormerlySerializedAs("m_ToggleKey")]
         private KeyCode toggleKey = KeyCode.F1;
@@ -94,7 +108,7 @@ namespace Hertzole.GoldPlayer.Example
                 SetupUI();
             }
 
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             tweakText.text = "Press " + toggleAction.GetBindingDisplayString() + " to tweak settings. Press " + resetSceneAction.GetBindingDisplayString() + " to reset scene.";
 #else
             tweakText.text = "Press " + toggleKey.ToString() + " to tweak settings. Press " + resetSceneKey.ToString() + " to reset scene.";
@@ -104,7 +118,7 @@ namespace Hertzole.GoldPlayer.Example
 #endif
         }
 
-#if ENABLE_INPUT_SYSTEM && UNITY_2019_3_OR_NEWER
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
         private void OnEnable()
         {
             toggleAction.Enable();
@@ -217,7 +231,7 @@ namespace Hertzole.GoldPlayer.Example
                 return;
             }
 
-#if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             if (Input.GetKeyDown(toggleKey))
             {
                 SetShowing(!showing);
@@ -252,9 +266,9 @@ namespace Hertzole.GoldPlayer.Example
             }
 
             showing = toggle;
-            TargetPlayer.Camera.CanLookAround = toggle ? false : previousCanLook;
-            TargetPlayer.Movement.CanMoveAround = toggle ? false : previousCanMove;
-            TargetPlayer.Camera.ShouldLockCursor = toggle ? false : previousLockCursor;
+            TargetPlayer.Camera.CanLookAround = !toggle && previousCanLook;
+            TargetPlayer.Movement.CanMoveAround = !toggle && previousCanMove;
+            TargetPlayer.Camera.ShouldLockCursor = !toggle && previousLockCursor;
             TargetPlayer.Camera.LockCursor(!toggle);
             tweakText.gameObject.SetActive(!toggle);
             Panel.SetActive(showing);

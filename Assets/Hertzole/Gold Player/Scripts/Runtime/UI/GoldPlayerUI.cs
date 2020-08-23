@@ -1,10 +1,10 @@
-// If Unity 2018 or newer is running, use TextMeshPro instead,
+﻿// If Unity 2018 or newer is running, use TextMeshPro instead,
 // as it's the recommended text solution.
-#if UNITY_2018_1_OR_NEWER && !UNITY_2019_2_OR_NEWER
+#if UNITY_2018_1_OR_NEWER && GOLD_PLAYER_TMP
 #define USE_TMP
 #endif
 
-#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && USE_UGUI)
+#if !UNITY_2019_2_OR_NEWER || (UNITY_2019_2_OR_NEWER && GOLD_PLAYER_UGUI)
 #define USE_GUI
 #endif
 
