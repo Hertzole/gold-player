@@ -1,9 +1,9 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 #if UNITY_2019_1_OR_NEWER
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
 #endif
 
@@ -35,6 +35,7 @@ namespace Hertzole.GoldPlayer.Editor
         private VisualElement inputElements;
 
         private VisualElement controllerWarning;
+        private VisualElement controllerWarningFix;
         private VisualElement crouchHeightWarning;
         private VisualElement groundLayerWarning;
 #endif
@@ -65,9 +66,14 @@ namespace Hertzole.GoldPlayer.Editor
 #if !UNITY_2019_1_OR_NEWER
         public override void OnInspectorGUI()
         {
-            if (characterController.center.y != characterController.height / 2)
+            if (characterController != null && characterController.center.y != characterController.height / 2)
             {
                 EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
+                if (GUILayout.Button("Fix"))
+                {
+                    Undo.RecordObject(characterController, "Fixed player center");
+                    characterController.center = new Vector3(characterController.center.x, characterController.height / 2, characterController.center.z);
+                }
             }
 
             serializedObject.Update();
@@ -209,20 +215,44 @@ namespace Hertzole.GoldPlayer.Editor
         {
             root = new VisualElement();
 
-            controllerWarning = GetHelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
+            controllerWarning = new IMGUIContainer(() =>
+            {
+                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
+            });
+            controllerWarningFix = new Button(() =>
+            {
+                if (characterController != null)
+                {
+                    Undo.RecordObject(characterController, "Fixed player center");
+                    characterController.center = new Vector3(characterController.center.x, characterController.height / 2, characterController.center.z);
+                }
+            })
+            {
+                text = "Fix"
+            };
 
             if (characterController != null)
             {
-                controllerWarning.style.display = characterController.center.y != characterController.height / 2 ? DisplayStyle.Flex : DisplayStyle.None;
+                bool show = characterController.center.y != characterController.height / 2;
+                controllerWarning.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+                controllerWarningFix.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+            else
+            {
+                controllerWarning.style.display = DisplayStyle.None;
+                controllerWarningFix.style.display = DisplayStyle.None;
             }
 
             root.Add(controllerWarning);
+            root.Add(controllerWarningFix);
 
             IVisualElementScheduledItem controllerCheck = root.schedule.Execute(() =>
             {
                 if (characterController != null)
                 {
-                    controllerWarning.style.display = characterController.center.y != characterController.height / 2 ? DisplayStyle.Flex : DisplayStyle.None;
+                    bool show = characterController.center.y != characterController.height / 2;
+                    controllerWarning.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+                    controllerWarningFix.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
                 }
             });
             controllerCheck.Every(100);

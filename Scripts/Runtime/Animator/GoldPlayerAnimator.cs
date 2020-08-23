@@ -24,8 +24,8 @@ namespace Hertzole.GoldPlayer
 
         private void Awake()
         {
-            moveXHash = UnityEngine.Animator.StringToHash(moveX);
-            moveZHash = UnityEngine.Animator.StringToHash(moveZ);
+            moveXHash = Animator.StringToHash(moveX);
+            moveZHash = Animator.StringToHash(moveZ);
         }
 
         // Update is called once per frame
@@ -39,7 +39,6 @@ namespace Hertzole.GoldPlayer
         }
 
 #if UNITY_EDITOR
-
         private void OnValidate()
         {
             GetStandardComponents();
@@ -57,7 +56,6 @@ namespace Hertzole.GoldPlayer
                 controller = GetComponent<CharacterController>();
             }
         }
-
 #endif
     }
 }
