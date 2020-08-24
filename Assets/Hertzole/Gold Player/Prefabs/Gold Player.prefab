@@ -456,7 +456,7 @@ MonoBehaviour:
     shouldLockCursor: 1
     invertXAxis: 0
     invertYAxis: 0
-    mouseSensitivity: 10
+    mouseSensitivity: 2
     mouseDamping: 0
     minimumX: -90
     maximumX: 90
