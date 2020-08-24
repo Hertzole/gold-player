@@ -140,7 +140,7 @@ namespace Hertzole.GoldPlayer.Example
             CreateHeader("Camera");
             CreateTweaker("Invert X Axis", x => { targetPlayer.Camera.InvertXAxis = x; }, targetPlayer.Camera.InvertXAxis);
             CreateTweaker("Invert Y Axis", x => { targetPlayer.Camera.InvertYAxis = x; }, targetPlayer.Camera.InvertYAxis);
-            CreateTweaker("Mouse Sensitivity", x => { targetPlayer.Camera.MouseSensitivity = x; }, targetPlayer.Camera.MouseSensitivity);
+            CreateTweaker("Mouse Sensitivity", x => { targetPlayer.Camera.MouseSensitivity = new Vector2(x, x); }, targetPlayer.Camera.MouseSensitivity.x);
             CreateTweaker("Mouse Damping", x => { targetPlayer.Camera.MouseDamping = x; }, targetPlayer.Camera.MouseDamping);
             CreateTweaker("Minimum X", x => { targetPlayer.Camera.MinimumX = x; }, targetPlayer.Camera.MinimumX);
             CreateTweaker("Maximum X", x => { targetPlayer.Camera.MaximumX = x; }, targetPlayer.Camera.MaximumX);
