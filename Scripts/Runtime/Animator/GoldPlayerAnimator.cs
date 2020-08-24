@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !GOLD_PLAYER_DISABLE_ANIMATOR
+using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
@@ -59,3 +60,4 @@ namespace Hertzole.GoldPlayer
 #endif
     }
 }
+#endif

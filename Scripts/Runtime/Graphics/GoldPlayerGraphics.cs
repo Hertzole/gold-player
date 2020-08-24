@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !GOLD_PLAYER_DISABLE_GRAPHICS
+using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace Hertzole.GoldPlayer
@@ -247,3 +248,4 @@ namespace Hertzole.GoldPlayer
 #endif
     }
 }
+#endif

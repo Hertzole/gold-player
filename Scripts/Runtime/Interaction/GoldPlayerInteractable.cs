@@ -1,3 +1,4 @@
+﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -61,3 +62,4 @@ namespace Hertzole.GoldPlayer
         }
     }
 }
+#endif
