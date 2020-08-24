@@ -1,4 +1,5 @@
-﻿// If Unity 2018 or newer is running, use TextMeshPro instead,
+﻿#if !GOLD_PLAYER_DISABLE_UI
+// If Unity 2018 or newer is running, use TextMeshPro instead,
 // as it's the recommended text solution.
 #if UNITY_2018_1_OR_NEWER && GOLD_PLAYER_TMP
 #define USE_TMP
@@ -69,7 +70,7 @@ namespace Hertzole.GoldPlayer
         private LabelDisplayType sprintingLabelDisplay = LabelDisplayType.Percentage;
 
         // Only show if GoldPlayer interaction is enabled.
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
 #if UNITY_EDITOR
         [Header("Interaction")]
 #endif
@@ -112,7 +113,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> The type of display if there's a label. </summary>
         public LabelDisplayType SprintingLabelDisplay { get { return sprintingLabelDisplay; } set { sprintingLabelDisplay = value; } }
 
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
         /// <summary> The box/label that should be toggled when the player can interact. </summary>
         public GameObject InteractionBox { get { return interactionBox; } set { interactionBox = value; } }
 #if USE_GUI
@@ -135,7 +136,7 @@ namespace Hertzole.GoldPlayer
             set { SetPlayer(value); }
         }
 
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
         public bool AutoFindInteraction { get { return autoFindInteraction; } set { autoFindInteraction = value; } }
         // Player interaction reference.
         protected GoldPlayerInteraction PlayerInteraction
@@ -150,7 +151,7 @@ namespace Hertzole.GoldPlayer
         {
             // Call all the Player Sprinting awake stuff.
             AwakePlayerSprinting();
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
             // Call all Player Interaction awake stuff.
             AwakePlayerInteraction();
 #endif
@@ -231,7 +232,7 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
         protected virtual void AwakePlayerInteraction()
         {
             // Get the player interaction.
@@ -249,7 +250,7 @@ namespace Hertzole.GoldPlayer
         private void Update()
         {
             SprintingUpdate();
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
             InteractionUpdate();
 #endif
         }
@@ -289,7 +290,7 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
         protected virtual void InteractionUpdate()
         {
 #if USE_GUI
@@ -328,7 +329,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         private void SetPlayer(GoldPlayerController player)
         {
-#if GOLD_PLAYER_INTERACTION
+#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
             // Only get the interaction if the previous set player isn't the new player.
             if (player != null && this.player != player)
             {
@@ -370,3 +371,4 @@ namespace Hertzole.GoldPlayer
 #endif
     }
 }
+#endif

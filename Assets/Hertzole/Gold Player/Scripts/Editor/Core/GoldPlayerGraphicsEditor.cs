@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if !GOLD_PLAYER_DISABLE_GRAPHICS
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using static UnityEditor.EditorGUIUtility;
@@ -75,3 +76,4 @@ namespace Hertzole.GoldPlayer.Editor
         }
     }
 }
+#endif

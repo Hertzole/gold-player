@@ -1,4 +1,5 @@
-﻿namespace Hertzole.GoldPlayer
+﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
+namespace Hertzole.GoldPlayer
 {
     /// <summary>
     /// Used to easily hook into the GoldPlayerInteraction component. It will target this interface.
@@ -16,3 +17,4 @@
         void Interact();
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if !GOLD_PLAYER_DISABLE_AUDIO_EXTRAS
+using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
@@ -38,3 +39,4 @@ namespace Hertzole.GoldPlayer
         }
     }
 }
+#endif
