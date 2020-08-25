@@ -12,18 +12,19 @@ namespace Hertzole.GoldPlayer.Editor
             return new VisualElement() { style = { height = space } };
         }
 
-        public static Label GetHeaderLabel(string text)
+        public static VisualElement GetHeaderLabel(string text)
         {
-            return new Label(text)
-            {
-                style =
-                {
-                    unityFontStyleAndWeight = FontStyle.Bold,
-                    paddingTop = 9,
-                    paddingLeft = 2,
-                    paddingBottom = 0
-                }
-            };
+            VisualElement labelHolder = new VisualElement();
+            labelHolder.AddToClassList("unity-property-field");
+            labelHolder.AddToClassList("unity-base-field");
+
+            labelHolder.style.marginTop = 4;
+
+            Label label = new Label(text);
+            label.style.unityFontStyleAndWeight = FontStyle.Bold;
+            labelHolder.Add(label);
+
+            return labelHolder;
         }
 
         public static VisualElement GetHelpBox(string message, MessageType type)
