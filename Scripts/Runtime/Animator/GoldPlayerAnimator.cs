@@ -12,9 +12,13 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         private float maxSpeed = 6f;
         [SerializeField]
-        private string moveX = "MoveX";
+        private float valueSmooth = 0.15f;
+
+        [Header("Parameters")]
         [SerializeField]
-        private string moveZ = "MoveZ";
+        private int moveX = 0;
+        [SerializeField]
+        private int moveY = 0;
 
         [SerializeField]
         [HideInInspector]
@@ -23,20 +27,31 @@ namespace Hertzole.GoldPlayer
         private int moveXHash;
         private int moveZHash;
 
+        private Vector3 targetVelocity;
+        private Vector3 targetValue;
+
         private void Awake()
         {
-            moveXHash = Animator.StringToHash(moveX);
-            moveZHash = Animator.StringToHash(moveZ);
+            if (animator != null)
+            {
+                moveXHash = animator.GetParameter(moveX).nameHash;
+                moveZHash = animator.GetParameter(moveY).nameHash;
+            }
         }
 
         // Update is called once per frame
         private void Update()
         {
-            Vector3 velocity = transform.InverseTransformDirection(controller.velocity);
-            velocity /= maxSpeed;
+            if (animator != null)
+            {
+                Vector3 velocity = transform.InverseTransformDirection(controller.velocity);
+                velocity /= maxSpeed;
 
-            animator.SetFloat(moveXHash, velocity.x);
-            animator.SetFloat(moveZHash, velocity.z);
+                targetValue = Vector3.SmoothDamp(targetValue, velocity, ref targetVelocity, valueSmooth);
+
+                animator.SetFloat(moveXHash, targetValue.x);
+                animator.SetFloat(moveZHash, targetValue.z);
+            }
         }
 
 #if UNITY_EDITOR

@@ -456,7 +456,7 @@ MonoBehaviour:
     shouldLockCursor: 1
     invertXAxis: 0
     invertYAxis: 0
-    mouseSensitivity: 2
+    mouseSensitivity: {x: 2, y: 2}
     mouseDamping: 0
     minimumX: -90
     maximumX: 90
@@ -654,8 +654,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1919573548807532906}
   maxSpeed: 6
-  moveX: MoveX
-  moveZ: MoveZ
+  valueSmooth: 0.15
+  moveX: 0
+  moveY: 1
   controller: {fileID: 143067952354763362}
 --- !u!114 &1413103216
 MonoBehaviour:
