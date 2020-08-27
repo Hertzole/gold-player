@@ -18,6 +18,11 @@
             "name": "com.unity.inputsystem",
             "expression": "",
             "define": "GOLD_PLAYER_NEW_INPUT"
+        },
+        {
+            "name": "com.unity.cinemachine",
+            "expression": "",
+            "define": "GOLD_PLAYER_CINEMACHINE"
         }
     ],
     "noEngineReferences": false
