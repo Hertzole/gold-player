@@ -119,7 +119,7 @@ namespace Hertzole.GoldPlayer
         private GraphicsObject[] objects = null;
 
         /// <summary> Graphics are inivislbe for 'me' and visible for 'others'. </summary>
-        public GraphicsOwner Owner { get { return owner; } set { if (value != owner) { UpdateGraphics(value == GraphicsOwner.Me); } owner = value; } }
+        public GraphicsOwner Owner { get { return owner; } set { if (value != owner) { UpdateGraphics(value == GraphicsOwner.Me); owner = value; } } }
         public GraphicsObject[] Objects { get { return objects; } set { objects = value; } }
 
         // Start is called before the first frame update
@@ -239,8 +239,8 @@ namespace Hertzole.GoldPlayer
                 }
             }
 
-            // If the owner value is updated through the inspector while playing, update the graphics.
-            if (Application.isPlaying)
+            // If the owner value is updated through the inspector while playing and it isn't the prefab, update the graphics.
+            if (Application.isPlaying && !UnityEditor.PrefabUtility.IsPartOfAnyPrefab(this))
             {
                 UpdateGraphics(owner == GraphicsOwner.Me);
             }

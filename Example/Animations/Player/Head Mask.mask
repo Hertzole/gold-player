@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Head Mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Bodyparts
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Bottom_L
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Bottom_L/Null_11
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Bottom_R
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Bottom_R/Null_8
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Top_L
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Top_L/Null_12
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Top_R
+    m_Weight: 0
+  - m_Path: Bodyparts/Arm_Top_R/Null_9
+    m_Weight: 0
+  - m_Path: Bodyparts/Chest_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Chest_2/Null_15
+    m_Weight: 0
+  - m_Path: Bodyparts/Foot_L_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Foot_L_2/Null_4
+    m_Weight: 0
+  - m_Path: Bodyparts/Foot_R_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Foot_R_2/Null_3
+    m_Weight: 0
+  - m_Path: Bodyparts/Hand_L_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Hand_L_2/Null_10
+    m_Weight: 0
+  - m_Path: Bodyparts/Hand_R_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Hand_R_2/Null_7
+    m_Weight: 0
+  - m_Path: Bodyparts/Head_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Head_2/Null_16
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Bottom_L
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Bottom_L/Null_5
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Bottom_R
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Bottom_R/Null_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Top_L
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Top_L/Null_6
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Top_R
+    m_Weight: 0
+  - m_Path: Bodyparts/Leg_Top_R/Null
+    m_Weight: 0
+  - m_Path: Bodyparts/Pelvis_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Pelvis_2/Null_13
+    m_Weight: 0
+  - m_Path: Bodyparts/Stomach_2
+    m_Weight: 0
+  - m_Path: Bodyparts/Stomach_2/Null_14
+    m_Weight: 0
+  - m_Path: Bones
+    m_Weight: 0
+  - m_Path: Bones/Pelvis
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_L/Knee_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_L/Knee_L/Foot_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_L/Knee_L/Foot_L/Toes_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_R/Knee_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_R/Knee_R/Foot_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Leg_R/Knee_R/Foot_R/Toes_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_L/Elbow_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_L/Elbow_L/Hand_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_L/Elbow_L/Hand_L/Fingers_L
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_R/Elbow_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_R/Elbow_R/Hand_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Arm_R/Elbow_R/Hand_R/Fingers_R
+    m_Weight: 0
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Head
+    m_Weight: 1
+  - m_Path: Bones/Pelvis/Stomach/Chest/Shoulders/Head/Hat
+    m_Weight: 1

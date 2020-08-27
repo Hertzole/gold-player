@@ -1,7 +1,10 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
+#if UNITY_2019_1_OR_NEWER
+#define USE_UI_ELEMENTS
+#endif
 using UnityEditor;
 using UnityEngine;
-#if UNITY_2019_1_OR_NEWER
+#if USE_UI_ELEMENTS
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 #endif
@@ -23,7 +26,7 @@ namespace Hertzole.GoldPlayer.Editor
         // Check to see if the property height should be from the GUI.
         private bool doGUI = false;
 
-#if UNITY_2019_1_OR_NEWER
+#if USE_UI_ELEMENTS
         private VisualElement elements;
         private VisualElement randomPitchElements;
 
@@ -179,7 +182,7 @@ namespace Hertzole.GoldPlayer.Editor
             return rect;
         }
 
-#if UNITY_2019_1_OR_NEWER
+#if USE_UI_ELEMENTS
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             VisualElement root = new VisualElement();
