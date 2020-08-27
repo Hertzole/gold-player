@@ -29,7 +29,8 @@ namespace Hertzole.GoldPlayer.Editor
 
         private SerializedProperty animator;
         private SerializedProperty maxSpeed;
-        private SerializedProperty valueSmooth;
+        private SerializedProperty valueSmoothTime;
+        private SerializedProperty lookAngleHead;
         private SerializedProperty moveX;
         private SerializedProperty moveY;
         private SerializedProperty crouching;
@@ -39,7 +40,8 @@ namespace Hertzole.GoldPlayer.Editor
         {
             animator = serializedObject.FindProperty("animator");
             maxSpeed = serializedObject.FindProperty("maxSpeed");
-            valueSmooth = serializedObject.FindProperty("valueSmooth");
+            valueSmoothTime = serializedObject.FindProperty("valueSmoothTime");
+            lookAngleHead = serializedObject.FindProperty("lookAngleHead");
             moveX = serializedObject.FindProperty("moveX");
             moveY = serializedObject.FindProperty("moveY");
             crouching = serializedObject.FindProperty("crouching");
@@ -132,7 +134,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             root.Add(animatorField);
             root.Add(new PropertyField(maxSpeed));
-            root.Add(new PropertyField(valueSmooth));
+            root.Add(new PropertyField(valueSmoothTime));
 
             root.Add(GoldPlayerUIHelper.GetSpace());
 
@@ -220,7 +222,9 @@ namespace Hertzole.GoldPlayer.Editor
             }
 
             EditorGUILayout.PropertyField(maxSpeed);
-            EditorGUILayout.PropertyField(valueSmooth);
+            EditorGUILayout.PropertyField(valueSmoothTime);
+
+            EditorGUILayout.PropertyField(lookAngleHead);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Parameters", EditorStyles.boldLabel);
