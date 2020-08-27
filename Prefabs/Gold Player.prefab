@@ -654,7 +654,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1919573548807532906}
   maxSpeed: 6
-  valueSmooth: 0.15
+  valueSmoothTime: 1
+  lookAngleHead: {fileID: 4766509410355108}
   moveX:
     index: 0
     enabled: 1
