@@ -1,7 +1,10 @@
 ﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
+#if UNITY_2019_1_OR_NEWER
+#define USE_UI_ELEMENTS
+#endif
 #if UNITY_EDITOR
 using UnityEditor;
-#if UNITY_2019_1_OR_NEWER
+#if USE_UI_ELEMENTS
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 #else
@@ -19,7 +22,7 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty customMessage;
         private SerializedProperty onInteract;
 
-#if UNITY_2019_1_OR_NEWER
+#if USE_UI_ELEMENTS
         private VisualElement useCustomMessageElement;
         private VisualElement customMessageElement;
 #endif
@@ -33,7 +36,7 @@ namespace Hertzole.GoldPlayer.Editor
             onInteract = serializedObject.FindProperty("onInteract");
         }
 
-#if !UNITY_2019_1_OR_NEWER
+#if !USE_UI_ELEMENTS
         public override void OnInspectorGUI()
         {
             serializedObject.Update();

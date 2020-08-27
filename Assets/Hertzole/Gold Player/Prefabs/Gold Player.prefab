@@ -655,9 +655,20 @@ MonoBehaviour:
   animator: {fileID: 1919573548807532906}
   maxSpeed: 6
   valueSmooth: 0.15
-  moveX: 0
-  moveY: 1
+  moveX:
+    index: 0
+    enabled: 1
+  moveY:
+    index: 1
+    enabled: 1
+  crouching:
+    index: 2
+    enabled: 1
+  lookAngle:
+    index: 3
+    enabled: 1
   controller: {fileID: 143067952354763362}
+  playerController: {fileID: 114925915917120512}
 --- !u!114 &1413103216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +704,7 @@ MonoBehaviour:
     - {fileID: 5085556339310689550}
     - {fileID: 5906202168172278984}
     - {fileID: 5633844458634611528}
-    originalRenderShadows: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+    originalRenderShadows: 03000000030000000300000003000000030000000300000003000000030000000300000003000000030000000300000003000000030000000300000003000000
 --- !u!1 &1327509270473940
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,11 +835,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4064973095606872}
     m_Modifications:
-    - target: {fileID: -7931861577938671767, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -10
-      objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
         type: 3}
       propertyPath: m_Controller
@@ -889,20 +895,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -3107764419183184417, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
         type: 3}
       propertyPath: m_Name
       value: Humanoid
-      objectReference: {fileID: 0}
-    - target: {fileID: -392333850933242195, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd7291cbc39b61a45b8e99aa28f3fb96, type: 3}
