@@ -30,7 +30,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Configuration of running as a toggle.")]
         [FormerlySerializedAs("m_RunToggleMode")]
-        private RunToggleMode runToggleMode = RunToggleMode.Off;
+        private RunToggleMode runToggleMode = RunToggleMode.Hold;
         [SerializeField]
         [Tooltip("The movement speeds when running.")]
         [FormerlySerializedAs("m_RunSpeeds")]
@@ -76,7 +76,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Configuration of crouching as a toggle.")]
         [FormerlySerializedAs("m_CrouchToggleMode")]
-        private CrouchToggleMode crouchToggleMode = CrouchToggleMode.Off;
+        private CrouchToggleMode crouchToggleMode = CrouchToggleMode.Hold;
         [SerializeField]
         [Tooltip("The movement speeds when crouching.")]
         [FormerlySerializedAs("m_CrouchSpeeds")]
@@ -759,12 +759,12 @@ namespace Hertzole.GoldPlayer
 
                 switch (runToggleMode)
                 {
-                    case RunToggleMode.Off:
+                    case RunToggleMode.Hold:
                         {
                             shouldRun = runButtonDown;
                             break;
                         }
-                    case RunToggleMode.Permanent:
+                    case RunToggleMode.Toggle:
                         {
                             if (runButtonPressed)
                             {
@@ -865,12 +865,12 @@ namespace Hertzole.GoldPlayer
                 {
                     switch (crouchToggleMode)
                     {
-                        case CrouchToggleMode.Off:
+                        case CrouchToggleMode.Hold:
                             {
                                 shouldCrouch = GetButton(input_Crouch);
                                 break;
                             }
-                        case CrouchToggleMode.Permanent:
+                        case CrouchToggleMode.Toggle:
                             {
                                 bool crouchButtonPressed = GetButtonDown(input_Crouch);
                                 if (crouchButtonPressed)

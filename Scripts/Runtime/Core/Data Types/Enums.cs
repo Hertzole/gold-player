@@ -1,4 +1,4 @@
-namespace Hertzole.GoldPlayer
+﻿namespace Hertzole.GoldPlayer
 {
     public enum RunAction
     {
@@ -20,13 +20,13 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Toggle is off and run button must be held down to run.
         /// </summary>
-        Off = 0,
+        Hold = 0,
 
         /// <summary>
         /// Running is permanently toggled. Player must press run
         /// button again to toggle off.
         /// </summary>
-        Permanent = 1,
+        Toggle = 1,
 
         /// <summary>
         /// Running is toggled on until the player presses the run button
@@ -43,12 +43,12 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Toggle is off and crouch button must be held down to crouch.
         /// </summary>
-        Off = 0,
+        Hold = 0,
 
         /// <summary>
         /// Crouching is permanently toggled. Player must press crouch
         /// button again to toggle off.
         /// </summary>
-        Permanent = 1,
+        Toggle = 1,
     }
 }
