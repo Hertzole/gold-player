@@ -16,6 +16,7 @@ namespace Hertzole.GoldPlayer.Editor
         public bool disableGraphics = false;
         public bool disableAnimator = false;
         public bool disableAudioExtras = false;
+        public bool disableObjectBob = false;
 
         internal static GoldPlayerProjectSettings GetOrCreate()
         {
@@ -32,6 +33,7 @@ namespace Hertzole.GoldPlayer.Editor
                 settings.disableGraphics = false;
                 settings.disableAnimator = false;
                 settings.disableAudioExtras = false;
+                settings.disableObjectBob = false;
 
                 Save(settings);
             }
@@ -73,6 +75,7 @@ namespace Hertzole.GoldPlayer.Editor
             settings.disableGraphics = EditorGUILayout.Toggle("Disable Graphics", settings.disableGraphics);
             settings.disableAnimator = EditorGUILayout.Toggle("Disable Animator", settings.disableAnimator);
             settings.disableAudioExtras = EditorGUILayout.Toggle("Disable Audio Extras", settings.disableAudioExtras);
+            settings.disableObjectBob = EditorGUILayout.Toggle("Disable Object Bob", settings.disableObjectBob);
 
             EditorGUILayout.Space();
 
@@ -125,6 +128,15 @@ namespace Hertzole.GoldPlayer.Editor
                     else
                     {
                         remove.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
+                    }
+
+                    if (settings.disableObjectBob)
+                    {
+                        add.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
+                    }
+                    else
+                    {
+                        remove.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
                     }
 
                     GoldPlayerScriptHelpers.AddAndRemove(add, remove);

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -156,10 +156,9 @@ namespace Hertzole.GoldPlayer
             previousVelocity = velocity;
 
             // Cache unscaled delta time to minimize calls to native engine code.
-            float unscaledDeltaTime = 0;
             if (unscaledTime)
             {
-                unscaledDeltaTime = Time.unscaledDeltaTime;
+                deltaTime = Time.unscaledDeltaTime;
             }
 
             // Vertical head position "spring simulation" for jumping/landing impacts.
@@ -170,7 +169,7 @@ namespace Hertzole.GoldPlayer
             // Damping towards zero velocity.
             springVelocity *= springDampen;
             // Output to head Y position.
-            springPos += springVelocity * (unscaledTime ? unscaledDeltaTime : deltaTime);
+            springPos += springVelocity * deltaTime;
             // Clamp spring distance.
             springPos = Mathf.Clamp(springPos, -.3f, .3f);
 
@@ -182,7 +181,7 @@ namespace Hertzole.GoldPlayer
 
             float flatVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
             float strideLengthen = 1 + (flatVelocity * strideMultiplier);
-            bobCycle += (flatVelocity / strideLengthen) * ((unscaledTime ? unscaledDeltaTime : deltaTime) / bobFrequency);
+            bobCycle += (flatVelocity / strideLengthen) * (deltaTime / bobFrequency);
 
             float bobFactor = Mathf.Sin(bobCycle * Mathf.PI * 2);
             float bobSwayFactor = Mathf.Sin(bobCycle * Mathf.PI * 2 + Mathf.PI * .5f);
@@ -190,7 +189,7 @@ namespace Hertzole.GoldPlayer
             bobFactor *= bobFactor;
 
             float fadeTarget = new Vector3(velocity.x, 0, velocity.z).magnitude < 0.1f ? 0 : 1;
-            bobFade = Mathf.Lerp(bobFade, fadeTarget, (unscaledTime ? unscaledDeltaTime : deltaTime));
+            bobFade = Mathf.Lerp(bobFade, fadeTarget, deltaTime);
 
             float speedHeightFactor = 1 + (flatVelocity * heightMultiplier);
 
@@ -207,7 +206,7 @@ namespace Hertzole.GoldPlayer
             float xTilt = -springPos * landTilt;
             float zTilt = bobSwayFactor * swayAngle * bobFade + this.zTilt * strafeTilt;
 
-            bobTarget.localPosition = originalHeadLocalPosition + new Vector3(xPos, yPos, bobTarget.localPosition.z);
+            bobTarget.localPosition = originalHeadLocalPosition + new Vector3(xPos, yPos, 0);
             bobTarget.localRotation = Quaternion.Euler(xTilt, bobTarget.localRotation.y, bobTarget.localRotation.z + zTilt);
         }
     }

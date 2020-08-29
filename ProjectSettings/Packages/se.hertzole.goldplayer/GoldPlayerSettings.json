@@ -3,5 +3,6 @@
     "disableUI": false,
     "disableGraphics": false,
     "disableAnimator": false,
-    "disableAudioExtras": false
+    "disableAudioExtras": false,
+    "disableObjectBob": false
 }

@@ -135,6 +135,7 @@ namespace Hertzole.GoldPlayer.Editor
             root.Add(animatorField);
             root.Add(new PropertyField(maxSpeed));
             root.Add(new PropertyField(valueSmoothTime));
+            root.Add(new PropertyField(lookAngleHead));
 
             root.Add(GoldPlayerUIHelper.GetSpace());
 
@@ -168,19 +169,29 @@ namespace Hertzole.GoldPlayer.Editor
                 serializedObject.ApplyModifiedProperties();
             }
 
-            PopupField<int> popupField = new PopupField<int>(property.displayName, parametersIndex, index.intValue, FormatItem, FormatItem);
-            popupField.BindProperty(index);
-            popupField.Q<VisualElement>(className: "unity-popup-field__input").SetEnabled(property.FindPropertyRelative("enabled").boolValue);
+            PropertyField propField = new PropertyField(property);
 
-            Toggle enableToggle = new Toggle(string.Empty);
-            popupField.Insert(1, enableToggle);
-            enableToggle.BindProperty(property.FindPropertyRelative("enabled"));
-            enableToggle.RegisterValueChangedCallback(x =>
+            propField.RegisterCallback<GeometryChangedEvent>(evt =>
             {
-                popupField.Q<VisualElement>(className: "unity-popup-field__input").SetEnabled(x.newValue);
+                propField.Q<Foldout>().style.display = DisplayStyle.None;
             });
 
-            return popupField;
+            Label label = new Label(property.displayName);
+            propField.Add(label);
+
+            //PopupField<int> popupField = new PopupField<int>(property.displayName, parametersIndex, index.intValue, FormatItem, FormatItem);
+            //popupField.BindProperty(index);
+            //popupField.Q<VisualElement>(className: "unity-popup-field__input").SetEnabled(property.FindPropertyRelative("enabled").boolValue);
+
+            //Toggle enableToggle = new Toggle(string.Empty);
+            //popupField.Insert(1, enableToggle);
+            //enableToggle.BindProperty(property.FindPropertyRelative("enabled"));
+            //enableToggle.RegisterValueChangedCallback(x =>
+            //{
+            //    popupField.Q<VisualElement>(className: "unity-popup-field__input").SetEnabled(x.newValue);
+            //});
+
+            return propField;
         }
 
         private string FormatItem(int index)
