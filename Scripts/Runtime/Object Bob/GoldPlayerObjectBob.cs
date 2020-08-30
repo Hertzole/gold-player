@@ -1,11 +1,24 @@
-﻿#if !GOLD_PLAYER_DISABLE_OBJECT_BOB
+﻿#if GOLD_PLAYER_DISABLE_OBJECT_BOB
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR
+#define STRIP
+#endif
+
+#if !STRIP
 using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CharacterController))]
+#if !OBSOLETE
     [AddComponentMenu("Gold Player/Gold Player Object Bob", 10)]
+#else
+    [System.Obsolete("Gold Player Object Bob has been disabled. GoldPlayerObjectBob will be removed on build.")]
+    [AddComponentMenu("")]
+#endif
     public class GoldPlayerObjectBob : MonoBehaviour
     {
         [SerializeField]
@@ -20,11 +33,16 @@ namespace Hertzole.GoldPlayer
 
         private void Awake()
         {
+#if OBSOLETE
+            Debug.LogError(gameObject.name + " has GoldPlayerObjectBob attached. It will be removed on build. Please remove this component if you don't intend to use it.", gameObject);
+#else
+
             // Initialize all the argets.
             for (int i = 0; i < targets.Length; i++)
             {
                 targets[i].Initialize();
             }
+#endif
         }
 
         private void Update()

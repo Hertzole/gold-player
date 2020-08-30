@@ -144,6 +144,10 @@ namespace Hertzole.GoldPlayer.Editor
                     GoldPlayerScriptHelpers.AddAndRemove(add, remove);
                     GoldPlayerProjectSettings.Save(settings);
                 }
+                else
+                {
+                    settings = GoldPlayerProjectSettings.GetOrCreate();
+                }
             }
         }
     }

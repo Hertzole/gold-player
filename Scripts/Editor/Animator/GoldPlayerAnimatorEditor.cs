@@ -1,4 +1,6 @@
-﻿#if !GOLD_PLAYER_DISABLE_ANIMATOR
+﻿#if GOLD_PLAYER_DISABLE_ANIMATOR
+#define OBSOLETE
+#endif
 #if UNITY_2019_1_OR_NEWER
 // Currently disabled because IMGUI offers more functionality with dealing with prefabs.
 //#define USE_UI_ELEMENTS 
@@ -14,6 +16,7 @@ using UnityEngine.UIElements;
 
 namespace Hertzole.GoldPlayer.Editor
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     [CustomEditor(typeof(GoldPlayerAnimator))]
     public class GoldPlayerAnimatorEditor : UnityEditor.Editor
     {
@@ -21,7 +24,9 @@ namespace Hertzole.GoldPlayer.Editor
         private List<string> parameters = new List<string>();
         private List<int> parametersIndex = new List<int>();
 #else
+#if !OBSOLETE
         private bool gotParameters = false;
+#endif
         private Object oldAnimator;
         private GUIContent[] parameters;
         private int[] optionValues;
@@ -98,7 +103,9 @@ namespace Hertzole.GoldPlayer.Editor
             }
 
 #if !USE_UI_ELEMENTS
+#if !OBSOLETE
             gotParameters = true;
+#endif
 #endif
         }
 
@@ -212,6 +219,7 @@ namespace Hertzole.GoldPlayer.Editor
 #else
         public override void OnInspectorGUI()
         {
+#if !OBSOLETE
             serializedObject.Update();
 
             if (oldAnimator != animator.objectReferenceValue)
@@ -252,6 +260,12 @@ namespace Hertzole.GoldPlayer.Editor
             GUI.enabled = oEnabled;
 
             serializedObject.ApplyModifiedProperties();
+#else
+            if (GUILayout.Button("Remove Component"))
+            {
+                Undo.DestroyObjectImmediate((GoldPlayerAnimator)target);
+            }
+#endif
         }
 
         private void PopupField(SerializedProperty property)
@@ -272,7 +286,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             EditorGUI.IntPopup(rect, property.FindPropertyRelative("index"), parameters, optionValues, GUIContent.none);
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 #endif
     }
 }
-#endif
