@@ -60,7 +60,21 @@ namespace Hertzole.GoldPlayer
         private Transform targetLookAngle;
 
         /// <summary> The target animator. </summary>
-        public Animator Animator { get { return animator; } set { if (animator != value) { animator = value; ValidateParameters(); GetAnimatorHashes(); } } }
+        public Animator Animator
+        {
+            get { return animator; }
+            set
+            {
+                if (animator != value)
+                {
+                    animator = value;
+#if DEBUG || UNITY_EDITOR
+                    ValidateParameters();
+#endif
+                    GetAnimatorHashes();
+                }
+            }
+        }
         /// <summary> The max speed of your player to divide with. </summary>
         public float MaxSpeed { get { return maxSpeed; } set { maxSpeed = value; } }
         /// <summary> Smooths out the value to make transitions between Move X/Y values. </summary>
@@ -110,7 +124,7 @@ namespace Hertzole.GoldPlayer
         {
             if (animator != null)
             {
-#if DEBUG
+#if DEBUG || UNITY_EDITOR
                 ValidateParameters();
 #endif
                 GetAnimatorHashes();

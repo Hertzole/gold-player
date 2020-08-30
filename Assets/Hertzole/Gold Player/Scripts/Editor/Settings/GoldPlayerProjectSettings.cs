@@ -70,6 +70,8 @@ namespace Hertzole.GoldPlayer.Editor
 
         public override void OnGUI(string searchContext)
         {
+            EditorGUILayout.HelpBox("Disabling components strips them out of your game. This is much more recommended than outright removing script files.", MessageType.Info);
+
             settings.disableInteraction = EditorGUILayout.Toggle("Disable Interaction", settings.disableInteraction);
             settings.disableUI = EditorGUILayout.Toggle("Disable uGUI", settings.disableUI);
             settings.disableGraphics = EditorGUILayout.Toggle("Disable Graphics", settings.disableGraphics);
