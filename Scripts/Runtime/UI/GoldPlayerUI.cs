@@ -58,10 +58,11 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("The label for showing player stamina.")]
         [FormerlySerializedAs("m_SprintingLabel")]
-#if USE_TMP
-        private TextMeshProUGUI sprintingLabel;
-#else
         private Text sprintingLabel;
+#if USE_TMP
+        [SerializeField]
+        [Tooltip("The TextMeshPro label for showing player stamina.")]
+        private TextMeshProUGUI sprintingLabelPro;
 #endif
 #endif
         [SerializeField]
@@ -88,10 +89,11 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("The label for the interaction message.")]
         [FormerlySerializedAs("m_InteractionLabel")]
-#if USE_TMP
-        private TextMeshProUGUI interactionLabel;
-#else
         private Text interactionLabel;
+#if USE_TMP
+        [SerializeField]
+        [Tooltip("The TextMeshPro label for the interaction message.")]
+        private TextMeshProUGUI interactionLabelPro;
 #endif
 #endif
 #endif
@@ -104,10 +106,10 @@ namespace Hertzole.GoldPlayer
         /// <summary> The progress bar as a slider. </summary>
         public Slider SprintingBarSlider { get { return sprintingBarSlider; } set { sprintingBarSlider = value; } }
         /// <summary> The label for showing player stamina. </summary>
-#if USE_TMP
-        public TextMeshProUGUI SprintingLabel { get { return sprintingLabel; } set { sprintingLabel = value; } }
-#else
         public Text SprintingLabel { get { return sprintingLabel; } set { sprintingLabel = value; } }
+#if USE_TMP
+        /// <summary> The TextMeshPro label for showing player stamina. </summary>
+        public TextMeshProUGUI SprintingLabelPro { get { return sprintingLabelPro; } set { sprintingLabelPro = value; } }
 #endif
 #endif
         /// <summary> The type of display if there's a label. </summary>
@@ -118,10 +120,10 @@ namespace Hertzole.GoldPlayer
         public GameObject InteractionBox { get { return interactionBox; } set { interactionBox = value; } }
 #if USE_GUI
         /// <summary> The label for the interaction message. </summary>
-#if USE_TMP
-        public TextMeshProUGUI InteractionLabel { get { return interactionLabel; } set { interactionLabel = value; } }
-#else
         public Text InteractionLabel { get { return interactionLabel; } set { interactionLabel = value; } }
+#if USE_TMP
+        /// <summary> The TextMeshPro label for the interaction message. </summary>
+        public TextMeshProUGUI InteractionLabelPro { get { return interactionLabelPro; } set { interactionLabelPro = value; } }
 #endif
 #endif
 #endif
@@ -280,10 +282,19 @@ namespace Hertzole.GoldPlayer
                         throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
                 }
 
+                string sprintString = GetLabel(sprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+
                 if (sprintingLabel != null)
                 {
-                    sprintingLabel.text = GetLabel(sprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+                    sprintingLabel.text = sprintString;
                 }
+
+#if USE_TMP
+                if (sprintingLabelPro != null)
+                {
+                    sprintingLabelPro.text = sprintString;
+                }
+#endif
             }
 #else
             Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");
@@ -305,10 +316,21 @@ namespace Hertzole.GoldPlayer
 
                 // If the player can interact the the interactable isn't hidden,
                 // set the message to either a custom message or the one in Player Interaction.
-                if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden && interactionLabel != null)
+                if (PlayerInteraction.CanInteract && !PlayerInteraction.CurrentHitInteractable.IsHidden)
                 {
-                    interactionLabel.text = PlayerInteraction.CurrentHitInteractable.UseCustomMessage ?
-                        PlayerInteraction.CurrentHitInteractable.CustomMessage : PlayerInteraction.InteractMessage;
+                    string message = PlayerInteraction.CurrentHitInteractable.UseCustomMessage ? PlayerInteraction.CurrentHitInteractable.CustomMessage : PlayerInteraction.InteractMessage;
+
+                    if (interactionLabel != null)
+                    {
+                        interactionLabel.text = message;
+                    }
+
+#if USE_TMP
+                    if (interactionLabelPro != null)
+                    {
+                        interactionLabelPro.text = message;
+                    }
+#endif
                 }
             }
             else
