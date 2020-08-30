@@ -546,7 +546,7 @@ PlayerSettings:
   webGLDebugSymbols: 0
   webGLEmscriptenArgs: 
   webGLModulesDirectory: 
-  webGLTemplate: APPLICATION:Default
+  webGLTemplate: PROJECT:Fullscreen
   webGLAnalyzeBuildSize: 0
   webGLUseEmbeddedResources: 0
   webGLCompressionFormat: 1
@@ -555,7 +555,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: GOLD_PLAYER_INTERACTION
-    13: GOLD_PLAYER_INTERACTION;HERTZLIB_UPDATE_MANAGER
+    13: GOLD_PLAYER_INTERACTION
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 0
@@ -651,5 +651,5 @@ PlayerSettings:
   organizationId: 
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 1
-  disableOldInputManagerSupport: 0
+  disableOldInputManagerSupport: 1
   legacyClampBlendShapeWeights: 1

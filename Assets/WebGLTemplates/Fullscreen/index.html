@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>%UNITY_WEB_NAME%</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+    <script>
+      var unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%");
+    </script>
+	<style>
+	* {
+	  margin: 0;
+	  padding: 0;
+	  overflow: hidden;
+	}
+
+	#unityContainer {
+	  width: 100% !important;
+	  height: 100% !important;
+	  position: absolute !important;
+	}
+	</style>
+  </head>
+  <body>
+    <div class="webgl-content">
+      <div id="unityContainer"></div>
+    </div>
+  </body>
+</html>

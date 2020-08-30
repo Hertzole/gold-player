@@ -1,0 +1,41 @@
+name: WebGL Example
+on:
+  release:
+    types:
+    - published
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+jobs:
+  build:
+    name: Build WebGL
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        lfs: true
+
+    # Cache
+    - uses: actions/cache@v1.1.0
+      with:
+        path: Library
+        key: Library
+
+    # Build
+    - name: Build project
+      uses: webbertakken/unity-builder@v1.2
+      with:
+        unityVersion: 2019.4.9f1
+        targetPlatform: WebGL
+
+    # Output
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@3.5.9
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: build/WebGL/WebGL # The folder the action should deploy.
+        CLEAN: true
