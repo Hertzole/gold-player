@@ -273,32 +273,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 622914099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2fb832ec185ffc4481590e0f1a3b8de, type: 3}
+  m_Script: {fileID: 11500000, guid: 10fbdadb3552da541b69779cfadf70ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputAsset: {fileID: -944628639613478452, guid: 0b5686141ac42094688c7771035dbff1,
-    type: 3}
-  actions:
-  - actionName: Look
-    action: {fileID: -1751491959069467807, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Move
-    action: {fileID: 3509778451805936107, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Jump
-    action: {fileID: -239634731036072923, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Run
-    action: {fileID: -1886600523852151199, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Crouch
-    action: {fileID: -6511908450422008743, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Interact
-    action: {fileID: 1977937622231241960, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  autoEnableInput: 1
-  autoDisableInput: 1
+  useKeyCodes: 1
+  inputs:
+  - buttonName: Horizontal
+    inputName: Horizontal
+    key: 0
+  - buttonName: Vertical
+    inputName: Vertical
+    key: 0
+  - buttonName: Mouse X
+    inputName: Mouse X
+    key: 0
+  - buttonName: Mouse Y
+    inputName: Mouse Y
+    key: 0
+  - buttonName: Jump
+    inputName: Jump
+    key: 32
+  - buttonName: Crouch
+    inputName: Crouch
+    key: 99
+  - buttonName: Run
+    inputName: Run
+    key: 304
+  - buttonName: Interact
+    inputName: Interact
+    key: 101
 --- !u!114 &622914101
 MonoBehaviour:
   m_ObjectHideFlags: 0
