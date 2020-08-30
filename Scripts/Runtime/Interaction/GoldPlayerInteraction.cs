@@ -44,7 +44,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("The input name for interaction to use.")]
         [FormerlySerializedAs("m_InteractInput")]
-        private string interactInput = "Player/Interact";
+        private string interactInput = "Interact";
 
         // Flag to determine if we have checked for a interactable.
         private bool haveCheckedInteractable = false;
