@@ -1,4 +1,8 @@
-﻿#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+﻿#pragma warning disable CS0618 // Type or member is obsolete
+
+#if !ENABLE_INPUT_SYSTEM || !GOLD_PLAYER_NEW_INPUT
+#define OBSOLETE
+#endif
 using System;
 using System.Linq;
 using UnityEditor;
@@ -11,6 +15,7 @@ namespace Hertzole.GoldPlayer.Editor
     [CustomEditor(typeof(GoldPlayerInputSystem))]
     public class GoldPlayerInputSystemEditor : UnityEditor.Editor
     {
+#if !OBSOLETE
         private SerializedProperty actionAsset;
         private SerializedProperty autoEnableInput;
         private SerializedProperty autoDisableInput;
@@ -38,9 +43,11 @@ namespace Hertzole.GoldPlayer.Editor
 
             PopulateActions();
         }
+#endif
 
         public override void OnInspectorGUI()
         {
+#if !OBSOLETE
             serializedObject.Update();
 
             EditorGUI.BeginChangeCheck();
@@ -70,8 +77,18 @@ namespace Hertzole.GoldPlayer.Editor
             actionList.DoLayoutList();
 
             serializedObject.ApplyModifiedProperties();
+#else
+            if(GUILayout.Button("Replace with Gold Player Input"))
+            {
+                GameObject go = ((GoldPlayerInputSystem)target).gameObject;
+
+                Undo.DestroyObjectImmediate(go.GetComponent<GoldPlayerInputSystem>());
+                Undo.AddComponent<GoldPlayerInput>(go);
+            }
+#endif
         }
 
+#if !OBSOLETE
         private void CreateActionList()
         {
             actionList = new ReorderableList(serializedObject, actions)
@@ -157,6 +174,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             return null;
         }
+#endif
     }
 }
-#endif
+#pragma warning restore CS0618 // Type or member is obsolete

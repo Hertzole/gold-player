@@ -1,6 +1,15 @@
-﻿using UnityEngine;
+﻿#if !ENABLE_INPUT_SYSTEM || !GOLD_PLAYER_NEW_INPUT
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR // If it's obsolete and not in the editor, remove it.
+#define STRIP
+#endif
+
+#if !STRIP
+using UnityEngine;
 using UnityEngine.Serialization;
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -8,7 +17,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace Hertzole.GoldPlayer
 {
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if OBSOLETE
     [System.Obsolete("You're not using the new Input System so this component will be useless.")]
 #else
     [AddComponentMenu("Gold Player/Gold Player Input System", 1)]
@@ -16,10 +25,11 @@ namespace Hertzole.GoldPlayer
 #endif
     public class GoldPlayerInputSystem : MonoBehaviour, IGoldInput
     {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
         [System.Serializable]
         public struct InputItem
         {
+#pragma warning disable CA2235 // Mark all non-serializable fields
             public string actionName;
             public InputActionReference action;
 
@@ -48,6 +58,7 @@ namespace Hertzole.GoldPlayer
             {
                 return !(left == right);
             }
+#pragma warning restore CA2235 // Mark all non-serializable fields
         }
 
         [SerializeField]
@@ -63,7 +74,7 @@ namespace Hertzole.GoldPlayer
 
         private bool enabledInput = false;
 
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
         [System.Obsolete("Use 'InputAsset' instead.")]
         public InputActionAsset Input { get { return InputAsset; } set { InputAsset = value; } }
         public InputActionAsset InputAsset { get { return inputAsset; } set { inputAsset = value; } }
@@ -76,14 +87,14 @@ namespace Hertzole.GoldPlayer
 
         private void Start()
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
+#if !OBSOLETE
             UpdateActions();
 #endif
         }
 
         public void EnableInput()
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
+#if !OBSOLETE
             for (int i = 0; i < actions.Length; i++)
             {
                 if (actions[i].action != null)
@@ -98,7 +109,7 @@ namespace Hertzole.GoldPlayer
 
         public void DisableInput()
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
             for (int i = 0; i < actions.Length; i++)
             {
                 if (actions[i].action != null)
@@ -110,7 +121,7 @@ namespace Hertzole.GoldPlayer
             enabledInput = false;
         }
 
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
+#if !OBSOLETE
         private void OnEnable()
         {
             if (autoEnableInput)
@@ -139,7 +150,7 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButton(string buttonName)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
+#if !OBSOLETE
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -172,7 +183,7 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButtonDown(string buttonName)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
+#if !OBSOLETE
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -205,7 +216,7 @@ namespace Hertzole.GoldPlayer
 
         public bool GetButtonUp(string buttonName)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT 
+#if !OBSOLETE
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -238,7 +249,7 @@ namespace Hertzole.GoldPlayer
 
         public float GetAxis(string axisName)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -274,7 +285,7 @@ namespace Hertzole.GoldPlayer
 
         public float GetAxisRaw(string axisName)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -310,7 +321,7 @@ namespace Hertzole.GoldPlayer
 
         public Vector2 GetVector2(string action)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
@@ -341,7 +352,7 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
-#if UNITY_EDITOR && ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if UNITY_EDITOR && !OBSOLETE
         private void OnValidate()
         {
             if (Application.isPlaying)
@@ -377,3 +388,4 @@ namespace Hertzole.GoldPlayer
 #endif
     }
 }
+#endif
