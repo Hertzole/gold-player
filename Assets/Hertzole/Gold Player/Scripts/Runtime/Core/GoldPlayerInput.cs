@@ -1,10 +1,19 @@
-﻿using System.Collections.Generic;
+﻿#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT // Mark this as obsolete if the new input system is enabled.
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR // If it's obsolete and not in the editor, remove it.
+#define STRIP
+#endif
+
+#if !STRIP
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !OBSOLETE
     [AddComponentMenu("Gold Player/Gold Player Input", 1)]
     [DisallowMultipleComponent]
 #else
@@ -150,3 +159,4 @@ namespace Hertzole.GoldPlayer
         }
     }
 }
+#endif
