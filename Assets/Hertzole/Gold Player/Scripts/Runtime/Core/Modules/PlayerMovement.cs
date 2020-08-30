@@ -304,7 +304,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> Vertical move axis for the old Input Manager. </summary>
         public string VerticalAxis { get { return input_VerticalAxis; } set { input_VerticalAxis = value; } }
         /// <summary> Jump input action. </summary>
-        public string JumpInput { get { return input_Run; } set { input_Jump = value; } }
+        public string JumpInput { get { return input_Jump; } set { input_Jump = value; } }
         /// <summary> Run input action. </summary>
         public string RunInput { get { return input_Run; } set { input_Run = value; } }
         /// <summary> Crouch input action. </summary>
