@@ -554,8 +554,18 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: GOLD_PLAYER_INTERACTION
+    1: GOLD_PLAYER_INTERACTION;HERTZLIB_UPDATE_MANAGER
+    4: 
+    7: 
     13: GOLD_PLAYER_INTERACTION
+    14: 
+    19: 
+    21: 
+    25: 
+    27: 
+    28: 
+    29: 
+    30: 
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 0

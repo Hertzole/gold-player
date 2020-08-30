@@ -1,18 +1,23 @@
-﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
+﻿#if GOLD_PLAYER_DISABLE_INTERACTION
+#define OBSOLETE
+#endif
+
 #if UNITY_2019_1_OR_NEWER
 #define USE_UI_ELEMENTS
 #endif
-#if UNITY_EDITOR
+
 using UnityEditor;
-#if USE_UI_ELEMENTS
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
-#else
 using UnityEngine;
+#if USE_UI_ELEMENTS
+using UnityEngine.UIElements;
+#if !OBSOLETE
+using UnityEditor.UIElements;
+#endif
 #endif
 
 namespace Hertzole.GoldPlayer.Editor
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     [CustomEditor(typeof(GoldPlayerInteractable))]
     internal class GoldPlayerInteractableEditor : UnityEditor.Editor
     {
@@ -29,16 +34,18 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void OnEnable()
         {
+#if !OBSOLETE
             canInteract = serializedObject.FindProperty("canInteract");
             isHidden = serializedObject.FindProperty("isHidden");
             useCustomMessage = serializedObject.FindProperty("useCustomMessage");
             customMessage = serializedObject.FindProperty("customMessage");
             onInteract = serializedObject.FindProperty("onInteract");
+#endif
         }
 
-#if !USE_UI_ELEMENTS
         public override void OnInspectorGUI()
         {
+#if !OBSOLETE
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(canInteract);
@@ -52,12 +59,20 @@ namespace Hertzole.GoldPlayer.Editor
             EditorGUILayout.PropertyField(onInteract);
 
             serializedObject.ApplyModifiedProperties();
-        }
 #else
+            if (GUILayout.Button("Remove Component"))
+            {
+                Undo.DestroyObjectImmediate((GoldPlayerInteractable)target);
+            }
+#endif
+
+        }
+#if USE_UI_ELEMENTS
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new VisualElement();
 
+#if !OBSOLETE
             root.Add(new PropertyField(canInteract));
             root.Add(new PropertyField(isHidden));
 
@@ -74,11 +89,17 @@ namespace Hertzole.GoldPlayer.Editor
             root.Add(customMessageElement);
 
             root.Add(new PropertyField(onInteract));
+#else
+            Button removeButton = new Button(() => { Undo.DestroyObjectImmediate((GoldPlayerInteractable)target); })
+            {
+                text = "Remove Component"
+            };
+            root.Add(removeButton);
+#endif
 
             return root;
         }
 #endif
     }
 }
-#endif
-#endif
+#pragma warning restore CS0618 // Type or member is obsolete

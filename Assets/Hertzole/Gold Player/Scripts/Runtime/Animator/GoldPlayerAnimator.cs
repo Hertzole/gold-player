@@ -1,4 +1,12 @@
-﻿#if !GOLD_PLAYER_DISABLE_ANIMATOR
+﻿#if GOLD_PLAYER_DISABLE_ANIMATOR
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR
+#define STRIP
+#endif
+
+#if !STRIP
 using System;
 using UnityEngine;
 
@@ -6,7 +14,12 @@ namespace Hertzole.GoldPlayer
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CharacterController))]
+#if !OBSOLETE
     [AddComponentMenu("Gold Player/Gold Player Animator", 10)]
+#else
+    [System.Obsolete("Gold Player Animator has been disabled. GoldPlayerAnimator will be removed on build.")]
+    [AddComponentMenu("")]
+#endif
     public class GoldPlayerAnimator : MonoBehaviour
     {
         [SerializeField]
@@ -122,6 +135,9 @@ namespace Hertzole.GoldPlayer
 
         private void Awake()
         {
+#if OBSOLETE
+            Debug.LogError(gameObject.name + " has GoldPlayerAnimator attached. It will be removed on build. Please remove this component if you don't intend to use it.", gameObject);
+#else
             if (animator != null)
             {
 #if DEBUG || UNITY_EDITOR
@@ -131,6 +147,7 @@ namespace Hertzole.GoldPlayer
             }
 
             UpdateTargetLookAngle();
+#endif
         }
 
         // Put this function in debug mode because it should only be present

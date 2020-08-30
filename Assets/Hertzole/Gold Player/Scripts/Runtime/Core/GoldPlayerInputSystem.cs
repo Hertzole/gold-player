@@ -19,6 +19,7 @@ namespace Hertzole.GoldPlayer
 {
 #if OBSOLETE
     [System.Obsolete("You're not using the new Input System so this component will be useless.")]
+    [AddComponentMenu("")]
 #else
     [AddComponentMenu("Gold Player/Gold Player Input System", 1)]
     [DisallowMultipleComponent]
@@ -87,7 +88,9 @@ namespace Hertzole.GoldPlayer
 
         private void Start()
         {
-#if !OBSOLETE
+#if OBSOLETE
+            Debug.LogError(gameObject.name + " has GoldPlayerInputSystem added. It does not work on the legacy input manager.");
+#else
             UpdateActions();
 #endif
         }
@@ -369,7 +372,7 @@ namespace Hertzole.GoldPlayer
         private void Reset()
         {
             GoldPlayerController gp = GetComponent<GoldPlayerController>();
-#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
+#if !GOLD_PLAYER_DISABLE_INTERACTION
             GoldPlayerInteraction gi = GetComponent<GoldPlayerInteraction>();
 #endif
 
@@ -380,7 +383,7 @@ namespace Hertzole.GoldPlayer
                 new InputItem(gp != null ? gp.Movement.JumpInput : "Jump", null),
                 new InputItem(gp != null ? gp.Movement.RunInput : "Run", null),
                 new InputItem(gp != null ? gp.Movement.CrouchInput : "Crouch", null),
-#if GOLD_PLAYER_INTERACTION && !GOLD_PLAYER_DISABLE_INTERACTION
+#if !GOLD_PLAYER_DISABLE_INTERACTION
                 new InputItem(gi != null ? gi.InteractInput : "Interact", null)
 #endif
             };

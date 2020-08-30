@@ -1,11 +1,24 @@
-﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
+﻿#if GOLD_PLAYER_DISABLE_INTERACTION
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR
+#define STRIP
+#endif
+
+#if !STRIP
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
+#if !OBSOLETE
     [AddComponentMenu("Gold Player/Gold Player Interactable", 20)]
+#else
+    [System.Obsolete("Gold Player Interaction has been disabled. GoldPlayerInteractable will be removed on build.")]
+    [AddComponentMenu("")]
+#endif
     [DisallowMultipleComponent]
     public class GoldPlayerInteractable : MonoBehaviour, IGoldPlayerInteractable
     {
@@ -52,6 +65,13 @@ namespace Hertzole.GoldPlayer
         public string CustomMessage { get { return customMessage; } set { customMessage = value; } }
         /// <summary> Called when the object is interacted with. </summary>
         public InteractionEvent OnInteract { get { return onInteract; } set { onInteract = value; } }
+
+#if OBSOLETE
+        private void Awake()
+        {
+            Debug.LogError(gameObject.name + " has GoldPlayerInteractable attached. It will be removed on build. Please remove this component if you don't intend to use it.", gameObject);
+        }
+#endif
 
         /// <summary>
         /// Invokes the interact event.

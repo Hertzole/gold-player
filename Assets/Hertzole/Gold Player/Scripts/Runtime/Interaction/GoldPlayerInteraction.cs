@@ -1,10 +1,23 @@
-﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
+﻿#if GOLD_PLAYER_DISABLE_INTERACTION
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR
+#define STRIP
+#endif
+
+#if !STRIP
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
+#if !OBSOLETE
     [AddComponentMenu("Gold Player/Gold Player Interaction", 20)]
+#else
+    [System.Obsolete("Gold Player Interaction has been disabled. GoldPlayerInteraction will be removed on build.")]
+    [AddComponentMenu("")]
+#endif
     [DisallowMultipleComponent]
     public class GoldPlayerInteraction : PlayerBehaviour
     {
@@ -78,6 +91,10 @@ namespace Hertzole.GoldPlayer
 
         protected virtual void Awake()
         {
+#if OBSOLETE
+            Debug.LogError(gameObject.name + " has GoldPlayerInteraction attached. It will be removed on build. Please remove this component if you don't intend to use it.", gameObject);
+#endif
+
             // Apply the trigger interaction.
             SetTriggerInteraction();
         }

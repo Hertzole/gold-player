@@ -1,4 +1,12 @@
-﻿#if !GOLD_PLAYER_DISABLE_GRAPHICS
+﻿#if GOLD_PLAYER_DISABLE_GRAPHICS
+#define OBSOLETE
+#endif
+
+#if OBSOLETE && !UNITY_EDITOR
+#define STRIP
+#endif
+
+#if !STRIP
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -8,7 +16,12 @@ namespace Hertzole.GoldPlayer
     public enum HandleGraphics { EnableTarget = 0, DisableTarget = 1, EnableRenderers = 2, DisableRenderers = 3, ShawdosOnly = 4 }
 
     [DisallowMultipleComponent]
+#if !OBSOLETE
     [AddComponentMenu("Gold Player/Gold Player Graphics", 10)]
+#else
+    [System.Obsolete("Gold Player Graphics have been disabled. GoldPlayerGraphics will be removed on build.")]
+    [AddComponentMenu("")]
+#endif
     public class GoldPlayerGraphics : MonoBehaviour
     {
         [System.Serializable]
@@ -125,7 +138,11 @@ namespace Hertzole.GoldPlayer
         // Start is called before the first frame update
         private void Start()
         {
+#if OBSOLETE
+            Debug.LogError(gameObject.name + " has GoldPlayerGraphics attached. It will be removed on build. Please remove this component if you don't intend to use it.", gameObject);
+#else
             UpdateGraphics(owner == GraphicsOwner.Me);
+#endif
         }
 
         /// <summary>

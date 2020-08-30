@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 
 namespace Hertzole.GoldPlayer.Editor
@@ -64,30 +67,49 @@ namespace Hertzole.GoldPlayer.Editor
 
         public static void AddAndRemove(List<string> add, List<string> remove)
         {
-            string[] scriptDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';');
-            List<string> newDefines = new List<string>(scriptDefines);
+            Type enumType = typeof(BuildTargetGroup);
 
-            bool dirty = false;
-            for (int i = 0; i < remove.Count; i++)
+            foreach (BuildTargetGroup target in (BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup)))
             {
-                if (newDefines.Remove(remove[i]))
+                if (target == BuildTargetGroup.Unknown)
                 {
-                    dirty = true;
+                    continue;
                 }
-            }
 
-            for (int i = 0; i < add.Count; i++)
-            {
-                if (!newDefines.Contains(add[i]))
+                MemberInfo[] memberInfos = enumType.GetMember(target.ToString());
+                MemberInfo enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == enumType);
+                ObsoleteAttribute[] obsoleteAttributes = enumValueMemberInfo.GetCustomAttributes<ObsoleteAttribute>(false).ToArray();
+
+                if (obsoleteAttributes.Length > 0)
                 {
-                    newDefines.Add(add[i]);
-                    dirty = true;
+                    continue;
                 }
-            }
 
-            if (dirty)
-            {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(",", newDefines));
+                string[] scriptDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(target).Split(';');
+                List<string> newDefines = new List<string>(scriptDefines);
+
+                bool dirty = false;
+                for (int i = 0; i < remove.Count; i++)
+                {
+                    if (newDefines.Remove(remove[i]))
+                    {
+                        dirty = true;
+                    }
+                }
+
+                for (int i = 0; i < add.Count; i++)
+                {
+                    if (!newDefines.Contains(add[i]))
+                    {
+                        newDefines.Add(add[i]);
+                        dirty = true;
+                    }
+                }
+
+                if (dirty)
+                {
+                    PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(",", newDefines));
+                }
             }
         }
     }

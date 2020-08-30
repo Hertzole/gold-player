@@ -41,7 +41,7 @@ namespace Hertzole.GoldPlayer
             new InputItem("Jump", "Jump", KeyCode.Space),
             new InputItem("Crouch", "Crouch", KeyCode.C),
             new InputItem("Run", "Run", KeyCode.LeftShift),
-#if GOLD_PLAYER_INTERACTION
+#if !GOLD_PLAYER_DISABLE_INTERACTION
             new InputItem("Interact", "Interact", KeyCode.E),
 #endif
 #if GOLD_PLAYER_WEAPONS
@@ -69,7 +69,11 @@ namespace Hertzole.GoldPlayer
 
         private void Start()
         {
+#if OBSOLETE
+            Debug.LogError(gameObject.name + " has GoldPlayerInput attached. It does not work when the new input system is enabled.");
+#else
             UpdateInputs();
+#endif
         }
 
         public void UpdateInputs()

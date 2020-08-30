@@ -1,4 +1,7 @@
-﻿#if !GOLD_PLAYER_DISABLE_GRAPHICS
+﻿#if GOLD_PLAYER_DISABLE_GRAPHICS
+#define OBSOLETE
+#endif
+
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -6,6 +9,7 @@ using static UnityEditor.EditorGUIUtility;
 
 namespace Hertzole.GoldPlayer.Editor
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     [CustomEditor(typeof(GoldPlayerGraphics))]
     public class GoldPlayerGraphicsEditor : UnityEditor.Editor
     {
@@ -66,6 +70,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         public override void OnInspectorGUI()
         {
+#if !OBSOLETE
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(owner);
@@ -73,7 +78,13 @@ namespace Hertzole.GoldPlayer.Editor
             list.DoLayoutList();
 
             serializedObject.ApplyModifiedProperties();
+#else
+            if (GUILayout.Button("Remove Component"))
+            {
+                Undo.DestroyObjectImmediate((GoldPlayerGraphics)target);
+            }
+#endif
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 }
-#endif
