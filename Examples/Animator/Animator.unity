@@ -305,7 +305,7 @@ Transform:
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &324557665
 PrefabInstance:
@@ -823,7 +823,7 @@ GameObject:
   - component: {fileID: 505905946}
   - component: {fileID: 505905945}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Animator Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -977,7 +977,7 @@ GameObject:
   - component: {fileID: 825520203}
   - component: {fileID: 825520202}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Graphics Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1058,7 +1058,7 @@ GameObject:
   - component: {fileID: 847436768}
   - component: {fileID: 847436767}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Animator Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1704,7 +1704,7 @@ GameObject:
   - component: {fileID: 1334917847}
   - component: {fileID: 1334917846}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Graphics Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1826,7 +1826,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1380406562
 GameObject:
@@ -2083,7 +2083,7 @@ Transform:
   - {fileID: 712646555}
   - {fileID: 427664511}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1380406567
 MonoBehaviour:
@@ -2793,5 +2793,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
