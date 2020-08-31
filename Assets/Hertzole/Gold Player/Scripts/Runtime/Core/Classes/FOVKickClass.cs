@@ -228,7 +228,10 @@ namespace Hertzole.GoldPlayer
                 }
 #else
                 // Create the new FOV by taking the original FOV and adding kick amount.
-                newFOV = targetCamera.fieldOfView + kickAmount;
+                if (targetCamera != null)
+                {
+                    newFOV = targetCamera.fieldOfView + kickAmount;
+                }
 #endif
             }
         }
