@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -108,7 +108,7 @@ namespace Hertzole.GoldPlayer
         protected override void OnInitialize()
         {
             // If based on head bob is true but head bob is not enabled, complain.
-            if (basedOnHeadBob && !PlayerController.HeadBob.EnableBob)
+            if (enableAudio && basedOnHeadBob && !PlayerController.HeadBob.EnableBob)
             {
                 Debug.LogWarning("Audio on '" + PlayerController.gameObject.name + "' is set to be based on head bob, but head bob isn't actually enabled!", PlayerController);
             }

@@ -87,7 +87,15 @@ namespace Hertzole.GoldPlayer.Example
                 {
                     if (valueChanged != null)
                     {
-                        valueChanged.Invoke(float.Parse(x));
+                        if (string.IsNullOrWhiteSpace(x))
+                        {
+                            x = "0";
+                        }
+
+                        if (float.TryParse(x, out float result))
+                        {
+                            valueChanged.Invoke(result);
+                        }
                     }
                 });
             }
