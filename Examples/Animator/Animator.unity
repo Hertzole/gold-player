@@ -305,7 +305,7 @@ Transform:
   m_LocalScale: {x: 10, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &324557665
 PrefabInstance:
@@ -1826,7 +1826,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1380406562
 GameObject:
@@ -1858,31 +1858,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1380406562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2fb832ec185ffc4481590e0f1a3b8de, type: 3}
+  m_Script: {fileID: 11500000, guid: 10fbdadb3552da541b69779cfadf70ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputAsset: {fileID: -944628639613478452, guid: 0b5686141ac42094688c7771035dbff1,
-    type: 3}
-  actions:
-  - actionName: Look
-    action: {fileID: 6940538419726410420, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Move
-    action: {fileID: -1246895598473198080, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Jump
-    action: {fileID: 335763634227698153, guid: 0b5686141ac42094688c7771035dbff1, type: 3}
-  - actionName: Run
-    action: {fileID: 5190739044734946418, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Crouch
-    action: {fileID: 5064262545289094806, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Interact
-    action: {fileID: -5548793354506133487, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  autoEnableInput: 1
-  autoDisableInput: 1
+  useKeyCodes: 1
+  inputs:
+  - buttonName: Horizontal
+    inputName: Horizontal
+    key: 0
+  - buttonName: Vertical
+    inputName: Vertical
+    key: 0
+  - buttonName: Mouse X
+    inputName: Mouse X
+    key: 0
+  - buttonName: Mouse Y
+    inputName: Mouse Y
+    key: 0
+  - buttonName: Jump
+    inputName: Jump
+    key: 32
+  - buttonName: Crouch
+    inputName: Crouch
+    key: 99
+  - buttonName: Run
+    inputName: Run
+    key: 304
+  - buttonName: Interact
+    inputName: Interact
+    key: 101
 --- !u!114 &1380406564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,7 +1899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d54dcacf068ab4691c871452b251be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera:
+  cam:
     canLookAround: 1
     shouldLockCursor: 1
     invertXAxis: 0
@@ -1906,6 +1910,7 @@ MonoBehaviour:
     maximumX: 90
     fieldOfViewKick:
       enableFOVKick: 1
+      unscaledTime: 0
       kickWhen: 0
       kickAmount: 15
       lerpTimeTo: 4
@@ -1917,6 +1922,7 @@ MonoBehaviour:
     input_MouseY: Mouse Y
   movement:
     canMoveAround: 1
+    unscaledTime: 0
     walkingSpeeds:
       forwardSpeed: 3
       sidewaysSpeed: 2.5
@@ -1983,8 +1989,9 @@ MonoBehaviour:
       enableStrafeTilting: 1
       strafeTilt: 3
       bobTarget: {fileID: 712646555}
-  audio:
+  sounds:
     enableAudio: 1
+    unscaledTime: 0
     audioType: 0
     basedOnHeadBob: 1
     stepTime: 1.5
@@ -2476,31 +2483,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1676977797}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2fb832ec185ffc4481590e0f1a3b8de, type: 3}
+  m_Script: {fileID: 11500000, guid: 10fbdadb3552da541b69779cfadf70ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputAsset: {fileID: -944628639613478452, guid: 0b5686141ac42094688c7771035dbff1,
-    type: 3}
-  actions:
-  - actionName: Look
-    action: {fileID: 6940538419726410420, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Move
-    action: {fileID: -1246895598473198080, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Jump
-    action: {fileID: 335763634227698153, guid: 0b5686141ac42094688c7771035dbff1, type: 3}
-  - actionName: Run
-    action: {fileID: 5190739044734946418, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Crouch
-    action: {fileID: 5064262545289094806, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  - actionName: Interact
-    action: {fileID: -5548793354506133487, guid: 0b5686141ac42094688c7771035dbff1,
-      type: 3}
-  autoEnableInput: 1
-  autoDisableInput: 1
+  useKeyCodes: 1
+  inputs:
+  - buttonName: Horizontal
+    inputName: Horizontal
+    key: 0
+  - buttonName: Vertical
+    inputName: Vertical
+    key: 0
+  - buttonName: Mouse X
+    inputName: Mouse X
+    key: 0
+  - buttonName: Mouse Y
+    inputName: Mouse Y
+    key: 0
+  - buttonName: Jump
+    inputName: Jump
+    key: 32
+  - buttonName: Crouch
+    inputName: Crouch
+    key: 99
+  - buttonName: Run
+    inputName: Run
+    key: 304
+  - buttonName: Interact
+    inputName: Interact
+    key: 101
 --- !u!114 &1676977801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2513,7 +2524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d54dcacf068ab4691c871452b251be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera:
+  cam:
     canLookAround: 1
     shouldLockCursor: 0
     invertXAxis: 1
@@ -2524,6 +2535,7 @@ MonoBehaviour:
     maximumX: 90
     fieldOfViewKick:
       enableFOVKick: 0
+      unscaledTime: 0
       kickWhen: 0
       kickAmount: 15
       lerpTimeTo: 4
@@ -2535,6 +2547,7 @@ MonoBehaviour:
     input_MouseY: Mouse Y
   movement:
     canMoveAround: 1
+    unscaledTime: 0
     walkingSpeeds:
       forwardSpeed: 3
       sidewaysSpeed: -2.5
@@ -2601,8 +2614,9 @@ MonoBehaviour:
       enableStrafeTilting: 1
       strafeTilt: 3
       bobTarget: {fileID: 697169549}
-  audio:
+  sounds:
     enableAudio: 0
+    unscaledTime: 0
     audioType: 0
     basedOnHeadBob: 1
     stepTime: 1.5
@@ -2701,7 +2715,7 @@ Transform:
   - {fileID: 697169549}
   - {fileID: 1180953420}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -180.00002, z: 0}
 --- !u!1 &1924352405
 GameObject:
@@ -2793,5 +2807,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
