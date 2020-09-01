@@ -76,8 +76,10 @@ namespace Hertzole.GoldPlayer
         private bool enabledInput = false;
 
 #if !OBSOLETE
-        [System.Obsolete("Use 'InputAsset' instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'InputAsset' instead. This will be removed on build.", true)]
         public InputActionAsset Input { get { return InputAsset; } set { InputAsset = value; } }
+#endif
         public InputActionAsset InputAsset { get { return inputAsset; } set { inputAsset = value; } }
         private Dictionary<string, InputAction> actionsDictionary;
 #endif

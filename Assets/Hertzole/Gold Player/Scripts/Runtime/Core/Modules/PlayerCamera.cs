@@ -161,8 +161,10 @@ namespace Hertzole.GoldPlayer
         public float MaximumX { get { return maximumX; } set { maximumX = value; } }
         /// <summary> Settings related to field of view kick. </summary>
         public FOVKickClass FieldOfViewKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
-        [System.Obsolete("Use 'FieldOfViewKick' instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'FieldOfViewKick' instead. This will be removed on build.", true)]
         public FOVKickClass FOVKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
+#endif
         /// <summary> The camera head that should be moved around. </summary>
         public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
 

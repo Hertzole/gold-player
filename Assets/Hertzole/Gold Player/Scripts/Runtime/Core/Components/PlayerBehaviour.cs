@@ -17,8 +17,10 @@ namespace Hertzole.GoldPlayer
         /// <summary> Player controller shortcut. It is not certain that this actually exists on the player! </summary>
         public GoldPlayerController PlayerController { get { if (!playerController) { playerController = GetComponent<GoldPlayerController>(); } return playerController; } }
 
-        [System.Obsolete("Use 'GetButton' without defaultKey parameter instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'GetButton' without defaultKey parameter instead. This will be removed on build.", true)]
         protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButton(buttonName); }
+#endif
 
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.
@@ -29,8 +31,10 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetButton(buttonName);
         }
 
-        [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead. This will be removed on build.", true)]
         protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonDown(buttonName); }
+#endif
 
         /// <summary>
         /// Equivalent to Input's GetButtonDown/GetKeyDown function.
@@ -41,8 +45,10 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetButtonDown(buttonName);
         }
 
-        [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead. This will be removed on build.", true)]
         protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonUp(buttonName); }
+#endif
 
         /// <summary>
         /// Equivalent to Input's GetButtonUp/GetKeyUp function.
@@ -53,8 +59,10 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetButtonUp(buttonName);
         }
 
-        [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead. This will be removed on build.", true)]
         protected float GetAxis(string axisName, string defaultAxisName = "") { return GetAxis(axisName); }
+#endif
 
         /// <summary>
         /// Equivalent to Input's GetAxis function.
@@ -65,8 +73,10 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetAxis(axisName);
         }
 
-        [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead.")]
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead. This will be removed on build.", true)]
         protected float GetAxisRaw(string axisName, string defaultAxisName = "") { return GetAxisRaw(axisName); }
+#endif
 
         /// <summary>
         /// Equivalent to Input's GetAxisRaw function.
@@ -79,8 +89,9 @@ namespace Hertzole.GoldPlayer
         }
 
 #if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-        [System.Obsolete("GetVector2Input does nothing with the Input Manager.")]
+        [System.Obsolete("GetVector2Input does nothing with the Input Manager. This will be removed on build.", true)]
 #endif
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT || UNITY_EDITOR
         protected Vector2 GetVector2Input(string action)
         {
 #if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
@@ -89,5 +100,6 @@ namespace Hertzole.GoldPlayer
             return Vector2.zero;
 #endif
         }
+#endif
     }
 }

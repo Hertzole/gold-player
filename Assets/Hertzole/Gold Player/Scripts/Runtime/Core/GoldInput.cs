@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("")]
-    [System.Obsolete("Inherit from 'IGoldInput' instead.")]
+    [System.Obsolete("Inherit from 'IGoldInput' instead. This will be removed from build.", true)]
     public abstract class GoldInput : MonoBehaviour
     {
         /// <summary>
@@ -56,3 +57,4 @@ namespace Hertzole.GoldPlayer
         }
     }
 }
+#endif
