@@ -57,10 +57,10 @@ namespace Hertzole.GoldPlayer.Editor
                 currentTab = 4;
             }
 
-            camera = serializedObject.FindProperty("camera");
+            camera = serializedObject.FindProperty("cam");
             movement = serializedObject.FindProperty("movement");
             headBob = serializedObject.FindProperty("headBob");
-            audio = serializedObject.FindProperty("audio");
+            audio = serializedObject.FindProperty("sounds");
 
             goldPlayer = (GoldPlayerController)target;
             characterController = goldPlayer.GetComponent<CharacterController>();
