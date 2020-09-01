@@ -27,9 +27,11 @@ namespace Hertzole.GoldPlayer
         private IGoldInput playerInput;
         private CharacterController controller;
 
+#if UNITY_EDITOR
         /// <summary> Has all the scripts be initialized? </summary>
-        [System.Obsolete("Use HasBeenFullyInitialized instead.")]
+        [System.Obsolete("Use HasBeenFullyInitialized instead. This will be removed on build.", true)]
         public bool HasBeenInitialized { get { return HasBeenFullyInitialized; } }
+#endif
 
         /// <summary> True if all the modules have been initialized. </summary>
         public bool HasBeenFullyInitialized
@@ -54,8 +56,9 @@ namespace Hertzole.GoldPlayer
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
         public PlayerAudio Audio { get { return audio; } set { audio = value; } }
 
+#if UNITY_EDITOR
         /// <summary> The main action map for the Input Actions. </summary>
-        [System.Obsolete("No longer used.")]
+        [System.Obsolete("No longer used. This will be removed on build.", true)]
         public string ActionMap
         {
             get
