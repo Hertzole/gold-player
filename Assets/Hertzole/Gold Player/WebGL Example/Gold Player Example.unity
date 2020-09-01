@@ -15977,9 +15977,9 @@ MonoBehaviour:
   sprintingLabelDisplay: 1
   autoFindInteraction: 1
   playerInteraction: {fileID: 0}
-  interactionBox: {fileID: 1006520270}
+  interactionBox: {fileID: 0}
   interactionLabel: {fileID: 0}
-  interactionLabelPro: {fileID: 1006520272}
+  interactionLabelPro: {fileID: 0}
 --- !u!1001 &1611738055
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             Label label = new Label(text);
             label.style.unityFontStyleAndWeight = FontStyle.Bold;
+            label.style.paddingLeft = 0;
             labelHolder.Add(label);
 
             return labelHolder;

@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 #if UNITY_2019_1_OR_NEWER
-#define USE_UI_ELEMENTS
+// Disabled because IMGUI simply offers a better experience as of right now.
+//#define USE_UI_ELEMENTS
 #endif
 using UnityEditor;
 using UnityEngine;
