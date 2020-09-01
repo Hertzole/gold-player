@@ -14,6 +14,9 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_EnableFOVKick")]
         private bool enableFOVKick = true;
         [SerializeField]
+        [Tooltip("If true, FOV kick will use unscaled delta time.")]
+        private bool unscaledTime = false;
+        [SerializeField]
         [Tooltip("Sets whenever the FOV kick should kick in.")]
         [FormerlySerializedAs("m_KickWhen")]
         private RunAction kickWhen = RunAction.FasterThanRunSpeed;
@@ -53,6 +56,8 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if FOV kick should be enabled. </summary>
         public bool EnableFOVKick { get { return enableFOVKick; } set { enableFOVKick = value; } }
+        /// <summary> If true, FOV kick will use unscaled delta time. </summary>
+        public bool UnscaledTime { get { return unscaledTime; } set { unscaledTime = value; } }
         /// <summary> Sets whenever the FOV kick should kick in. </summary>
         public RunAction KickWhen { get { return kickWhen; } set { kickWhen = value; UpdateNewFOV(); } }
         /// <summary> Sets how much the FOV will kick. </summary>
@@ -148,6 +153,11 @@ namespace Hertzole.GoldPlayer
 
         public override void OnUpdate(float deltaTime)
         {
+            if (unscaledTime)
+            {
+                deltaTime = Time.unscaledDeltaTime;
+            }
+
             HandleFOV(deltaTime);
         }
 

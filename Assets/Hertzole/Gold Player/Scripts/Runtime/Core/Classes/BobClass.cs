@@ -17,7 +17,7 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_EnableBob")]
         private bool enableBob = true;
         [SerializeField]
-        [Tooltip("If true, Unscaled Delta Time will be used and bobbing will be just as fast when time moves slower.")]
+        [Tooltip("If true, bobbing will use unscaled delta time.")]
         [FormerlySerializedAs("m_UnscaledTime")]
         private bool unscaledTime = false;
 
@@ -100,7 +100,7 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if the bob effect should be enabled. </summary>
         public bool EnableBob { get { return enableBob; } set { enableBob = value; } }
-        /// <summary> If true, Unscaled Delta Time will be used and bobbing will be just as fast when time moves slower. </summary>
+        /// <summary> If true, bobbing will use unscaled delta time. </summary>
         public bool UnscaledTime { get { return unscaledTime; } set { unscaledTime = value; } }
         /// <summary> Sets how frequent the bob happens. </summary>
         public float BobFrequency { get { return bobFrequency; } set { bobFrequency = value; } }
@@ -152,6 +152,8 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
+            velocity *= Time.timeScale;
+
             Vector3 velocityChange = velocity - previousVelocity;
             previousVelocity = velocity;
 
@@ -199,7 +201,7 @@ namespace Hertzole.GoldPlayer
                 zTiltAxis = 0;
             }
 
-            this.zTilt = Mathf.SmoothDamp(this.zTilt, -zTiltAxis, ref zTiltVelocity, 0.2f);
+            this.zTilt = Mathf.SmoothDamp(this.zTilt, -zTiltAxis, ref zTiltVelocity, 0.2f, Mathf.Infinity, deltaTime);
 
             float xPos = -sideMovement * bobSwayFactor;
             float yPos = springPos * landMove + bobFactor * bobHeight * bobFade * speedHeightFactor;

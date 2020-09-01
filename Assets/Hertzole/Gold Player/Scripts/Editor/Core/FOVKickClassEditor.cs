@@ -23,6 +23,8 @@ namespace Hertzole.GoldPlayer.Editor
                 position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 EditorGUI.PropertyField(position, property.FindPropertyRelative("enableFOVKick"));
                 position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                EditorGUI.PropertyField(position, property.FindPropertyRelative("unscaledTime"));
+                position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 EditorGUI.PropertyField(position, property.FindPropertyRelative("kickWhen"));
                 position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 EditorGUI.PropertyField(position, property.FindPropertyRelative("kickAmount"));
@@ -76,6 +78,7 @@ namespace Hertzole.GoldPlayer.Editor
             foldout.text = property.displayName;
 
             foldout.contentContainer.Add(new PropertyField(property.FindPropertyRelative("enableFOVKick")));
+            foldout.contentContainer.Add(new PropertyField(property.FindPropertyRelative("unscaledTime")));
             foldout.contentContainer.Add(new PropertyField(property.FindPropertyRelative("kickWhen")));
             foldout.contentContainer.Add(new PropertyField(property.FindPropertyRelative("kickAmount")));
             foldout.contentContainer.Add(new PropertyField(property.FindPropertyRelative("lerpTimeTo")));

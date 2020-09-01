@@ -38,6 +38,12 @@ namespace Hertzole.GoldPlayer
         }
         /// <summary> If false, 'Initialize()' will not be called on Start and will only be called once another script calls it. </summary>
         public bool InitOnStart { get { return initOnStart; } set { initOnStart = value; } }
+        /// <summary> If true, Gold Player will use unscaled delta time. </summary>
+        public bool UnscaledTime
+        {
+            get { return camera.FieldOfViewKick.UnscaledTime && movement.UnscaledTime && headBob.UnscaledTime && audio.UnscaledTime; }
+            set { camera.FieldOfViewKick.UnscaledTime = value; movement.UnscaledTime = value; headBob.UnscaledTime = value; audio.UnscaledTime = value; }
+        }
 
         /// <summary> Everything related to the player camera (mouse movement). </summary>
         public PlayerCamera Camera { get { return camera; } set { camera = value; } }
@@ -66,11 +72,28 @@ namespace Hertzole.GoldPlayer
 #endif
             }
         }
+#endif
 
         /// <summary> The input system for the player. </summary>
         public IGoldInput PlayerInput { get { return playerInput; } }
         /// <summary> The character controller on the player. </summary>
         public CharacterController Controller { get { return controller; } }
+
+        private void Awake()
+        {
+            // Get all the references as soon as possible.
+            GetReferences();
+
+            // Complain if there's no input present.
+            // Only do this in development builds and the Unity editor. We save a small amount of performance by removing it.
+#if DEBUG || UNITY_EDITOR
+            if (playerInput == null)
+            {
+                Debug.LogError(gameObject.name + " needs to have a input script derived from GoldInputSystem! Add the standard 'GoldPlayerInputSystem' to fix.");
+                return;
+            }
+#endif
+        }
 
         private void Start()
         {
@@ -160,14 +183,6 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void Initialize()
         {
-            GetReferences();
-
-            if (playerInput == null)
-            {
-                Debug.LogError(gameObject.name + " needs to have a input script derived from GoldInputSystem! Add the standard 'GoldPlayerInputSystem' to fix.");
-                return;
-            }
-
             InitializeModules();
         }
 

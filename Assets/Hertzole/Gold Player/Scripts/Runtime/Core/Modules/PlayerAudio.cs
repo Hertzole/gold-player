@@ -14,6 +14,9 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_EnableAudio")]
         private bool enableAudio = true;
         [SerializeField]
+        [Tooltip("If true, audio will use unscaled delta time.")]
+        private bool unscaledTime = false;
+        [SerializeField]
         [Tooltip("Sets how the audio will work.\nCustom will require a PlayerAudioBehaviour attached to the player.")]
         [FormerlySerializedAs("m_AudioType")]
         private AudioTypes audioType = AudioTypes.Standard;
@@ -80,6 +83,8 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if any audio should be played. </summary>
         public bool EnableAudio { get { return enableAudio; } set { enableAudio = value; } }
+        /// <summary> If true, audio will use unscaled delta time. </summary>
+        public bool UnscaledTime { get { return unscaledTime; } set { unscaledTime = value; } }
         /// <summary> Sets how the audio will work. Custom will require a PlayerAudioBehaviour attached to the player. </summary>
         public AudioTypes AudioType { get { return audioType; } set { audioType = value; } }
         /// <summary> Determines if the audio should be based on head bob. </summary>
@@ -129,6 +134,11 @@ namespace Hertzole.GoldPlayer
 
         public override void OnUpdate(float deltaTime)
         {
+            if (unscaledTime)
+            {
+                deltaTime = Time.unscaledDeltaTime;
+            }
+
             DoStepCycle(deltaTime);
             if (audioType == AudioTypes.Standard || (customBehaviour != null && !customBehaviour.IndependentAudioHandling))
             {
@@ -143,6 +153,11 @@ namespace Hertzole.GoldPlayer
 
         public override void OnFixedUpdate(float fixedDeltaTime)
         {
+            if (unscaledTime)
+            {
+                fixedDeltaTime = Time.fixedUnscaledDeltaTime;
+            }
+
             if (audioType == AudioTypes.Custom && customBehaviour != null)
             {
                 customBehaviour.OnFixedUpdate(fixedDeltaTime);
@@ -151,6 +166,11 @@ namespace Hertzole.GoldPlayer
 
         public override void OnLateUpdate(float deltaTime)
         {
+            if (unscaledTime)
+            {
+                deltaTime = Time.unscaledDeltaTime;
+            }
+
             if (audioType == AudioTypes.Custom && customBehaviour != null)
             {
                 customBehaviour.OnLateUpdate(deltaTime);
@@ -198,7 +218,7 @@ namespace Hertzole.GoldPlayer
             }
 
             // Get the velocity from the character controller.
-            float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude;
+            float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude * Time.timeScale;
             // Calculate some stride thing. (Not 100% what everything here does)
             float strideLengthen = 1 + (flatVelocity * 0.3f);
             stepCycle += (flatVelocity / strideLengthen) * (deltaTime / stepTime);
