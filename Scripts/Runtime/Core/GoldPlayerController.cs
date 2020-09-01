@@ -10,7 +10,8 @@ namespace Hertzole.GoldPlayer
     {
         [SerializeField]
         [FormerlySerializedAs("m_Camera")]
-        private new PlayerCamera camera = new PlayerCamera();
+        [FormerlySerializedAs("camera")]
+        private PlayerCamera cam = new PlayerCamera();
         [SerializeField]
         [FormerlySerializedAs("m_Movement")]
         private PlayerMovement movement = new PlayerMovement();
@@ -19,7 +20,8 @@ namespace Hertzole.GoldPlayer
         private PlayerBob headBob = new PlayerBob();
         [SerializeField]
         [FormerlySerializedAs("m_Audio")]
-        private new PlayerAudio audio = new PlayerAudio();
+        [FormerlySerializedAs("audio")]
+        private PlayerAudio sounds = new PlayerAudio();
 
         private bool initOnStart = true;
         protected bool hasBeenInitialized = false;
@@ -36,25 +38,25 @@ namespace Hertzole.GoldPlayer
         /// <summary> True if all the modules have been initialized. </summary>
         public bool HasBeenFullyInitialized
         {
-            get { return camera.HasBeenInitialized && movement.HasBeenInitialized && headBob.HasBeenInitialized && audio.HasBeenInitialized; }
+            get { return cam.HasBeenInitialized && movement.HasBeenInitialized && headBob.HasBeenInitialized && sounds.HasBeenInitialized; }
         }
         /// <summary> If false, 'Initialize()' will not be called on Start and will only be called once another script calls it. </summary>
         public bool InitOnStart { get { return initOnStart; } set { initOnStart = value; } }
         /// <summary> If true, Gold Player will use unscaled delta time. </summary>
         public bool UnscaledTime
         {
-            get { return camera.FieldOfViewKick.UnscaledTime && movement.UnscaledTime && headBob.UnscaledTime && audio.UnscaledTime; }
-            set { camera.FieldOfViewKick.UnscaledTime = value; movement.UnscaledTime = value; headBob.UnscaledTime = value; audio.UnscaledTime = value; }
+            get { return cam.FieldOfViewKick.UnscaledTime && movement.UnscaledTime && headBob.UnscaledTime && sounds.UnscaledTime; }
+            set { cam.FieldOfViewKick.UnscaledTime = value; movement.UnscaledTime = value; headBob.UnscaledTime = value; sounds.UnscaledTime = value; }
         }
 
         /// <summary> Everything related to the player camera (mouse movement). </summary>
-        public PlayerCamera Camera { get { return camera; } set { camera = value; } }
+        public PlayerCamera Camera { get { return cam; } set { cam = value; } }
         /// <summary> Everything related to movement. </summary>
         public PlayerMovement Movement { get { return movement; } set { movement = value; } }
         /// <summary> Everything related to the head bob. </summary>
         public PlayerBob HeadBob { get { return headBob; } set { headBob = value; } }
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
-        public PlayerAudio Audio { get { return audio; } set { audio = value; } }
+        public PlayerAudio Audio { get { return sounds; } set { sounds = value; } }
 
 #if UNITY_EDITOR
         /// <summary> The main action map for the Input Actions. </summary>
@@ -115,9 +117,9 @@ namespace Hertzole.GoldPlayer
                 movement.OnUpdate(deltaTime);
             }
 
-            if (camera.HasBeenInitialized)
+            if (cam.HasBeenInitialized)
             {
-                camera.OnUpdate(deltaTime);
+                cam.OnUpdate(deltaTime);
             }
 
             if (headBob.HasBeenInitialized)
@@ -125,9 +127,9 @@ namespace Hertzole.GoldPlayer
                 headBob.OnUpdate(deltaTime);
             }
 
-            if (audio.HasBeenInitialized)
+            if (sounds.HasBeenInitialized)
             {
-                audio.OnUpdate(deltaTime);
+                sounds.OnUpdate(deltaTime);
             }
         }
 
@@ -140,9 +142,9 @@ namespace Hertzole.GoldPlayer
                 movement.OnFixedUpdate(fixedDeltaTime);
             }
 
-            if (camera.HasBeenInitialized)
+            if (cam.HasBeenInitialized)
             {
-                camera.OnFixedUpdate(fixedDeltaTime);
+                cam.OnFixedUpdate(fixedDeltaTime);
             }
 
             if (headBob.HasBeenInitialized)
@@ -150,9 +152,9 @@ namespace Hertzole.GoldPlayer
                 headBob.OnFixedUpdate(fixedDeltaTime);
             }
 
-            if (audio.HasBeenInitialized)
+            if (sounds.HasBeenInitialized)
             {
-                audio.OnFixedUpdate(fixedDeltaTime);
+                sounds.OnFixedUpdate(fixedDeltaTime);
             }
         }
 
@@ -165,9 +167,9 @@ namespace Hertzole.GoldPlayer
                 movement.OnLateUpdate(deltaTime);
             }
 
-            if (camera.HasBeenInitialized)
+            if (cam.HasBeenInitialized)
             {
-                camera.OnLateUpdate(deltaTime);
+                cam.OnLateUpdate(deltaTime);
             }
 
             if (headBob.HasBeenInitialized)
@@ -175,9 +177,9 @@ namespace Hertzole.GoldPlayer
                 headBob.OnLateUpdate(deltaTime);
             }
 
-            if (audio.HasBeenInitialized)
+            if (sounds.HasBeenInitialized)
             {
-                audio.OnLateUpdate(deltaTime);
+                sounds.OnLateUpdate(deltaTime);
             }
         }
 
@@ -222,7 +224,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeCamera()
         {
-            camera.Initialize(this, PlayerInput);
+            cam.Initialize(this, PlayerInput);
         }
 
         /// <summary>
@@ -238,7 +240,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeAudio()
         {
-            audio.Initialize(this, PlayerInput);
+            sounds.Initialize(this, PlayerInput);
         }
 
         /// <summary>
@@ -272,9 +274,9 @@ namespace Hertzole.GoldPlayer
         private void OnValidate()
         {
             movement.OnValidate();
-            camera.OnValidate();
+            cam.OnValidate();
             headBob.OnValidate();
-            audio.OnValidate();
+            sounds.OnValidate();
         }
 #endif
     }
