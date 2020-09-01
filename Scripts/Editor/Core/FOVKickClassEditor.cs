@@ -62,9 +62,9 @@ namespace Hertzole.GoldPlayer.Editor
             else
             {
 #if GOLD_PLAYER_CINEMACHINE
-                int propCount = 8;
+                int propCount = 9;
 #else
-                int propCount = 7;
+                int propCount = 8;
 #endif
                 return (EditorGUIUtility.singleLineHeight * propCount) + (EditorGUIUtility.standardVerticalSpacing * propCount) + 10;
             }
