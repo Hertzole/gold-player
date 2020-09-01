@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -92,7 +92,17 @@ namespace Hertzole.GoldPlayer
                 Vector3 moveDistance = (newGlobalPlatformPoint - currentPlatformGlobalPoint);
                 if (DidPlatformMove)
                 {
-                    CharacterController.Move(moveDistance);
+                    // If the move distance is really small the player won't move. If it's really small, just 
+                    // add it to the position as the small amount won't be noticable. 
+                    // Otherwise just move normally.
+                    if (moveDistance.magnitude < 0.001f)
+                    {
+                        PlayerTransform.position += moveDistance;
+                    }
+                    else
+                    {
+                        CharacterController.Move(moveDistance);
+                    }
                 }
             }
 

@@ -45,7 +45,7 @@ namespace Hertzole.GoldPlayer.Editor
         public override void OnInspectorGUI()
         {
 #if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-            if (UnityEngine.GUILayout.Button("Replace with Gold Player Input System"))
+            if (GUILayout.Button("Replace with Gold Player Input System"))
             {
                 GameObject go = ((GoldPlayerInput)target).gameObject;
 
