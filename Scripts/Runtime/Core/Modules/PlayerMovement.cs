@@ -13,6 +13,9 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Determines if the player can move at all.")]
         [FormerlySerializedAs("m_CanMoveAround")]
         private bool canMoveAround = true;
+        [SerializeField]
+        [Tooltip("If true, movement will use unscaled delta time.")]
+        private bool unscaledTime = false;
 
         //////// WALKING
         [Header("Walking")]
@@ -238,6 +241,8 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if the player can move at all. </summary>
         public bool CanMoveAround { get { return canMoveAround; } set { canMoveAround = value; if (!value) { ResetMovementInput(); } } }
+        /// <summary> If true, movement will use unscaled delta time. </summary>
+        public bool UnscaledTime { get { return unscaledTime; } set { unscaledTime = value; } }
 
         /// <summary> The speeds when walking. </summary>
         public MovementSpeeds WalkingSpeeds { get { return walkingSpeeds; } set { walkingSpeeds = value; if (!isRunning) { moveSpeed = value; } } }
@@ -419,7 +424,7 @@ namespace Hertzole.GoldPlayer
         /// Updates the movement input values and also returns the current user input.
         /// </summary>
         /// <returns></returns>
-        public Vector2 GetInput()
+        public Vector2 GetInput(float deltaTime)
         {
 #if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             Vector2 input = GetVector2Input(input_Move);
@@ -444,9 +449,9 @@ namespace Hertzole.GoldPlayer
             }
 
             // Take the X input and smooth it.
-            smoothedMovementInput.x = Mathf.SmoothDamp(smoothedMovementInput.x, movementInput.x, ref forwardSpeedVelocity, acceleration);
+            smoothedMovementInput.x = Mathf.SmoothDamp(smoothedMovementInput.x, movementInput.x, ref forwardSpeedVelocity, acceleration, Mathf.Infinity, deltaTime);
             // Take the Y input and smooth it.
-            smoothedMovementInput.y = Mathf.SmoothDamp(smoothedMovementInput.y, movementInput.y, ref sidewaysSpeedVelocity, acceleration);
+            smoothedMovementInput.y = Mathf.SmoothDamp(smoothedMovementInput.y, movementInput.y, ref sidewaysSpeedVelocity, acceleration, Mathf.Infinity, deltaTime);
 
             // Normalize the input so the player doesn't run faster when running diagonally.
             if (smoothedMovementInput.sqrMagnitude > 1)
@@ -463,6 +468,11 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public override void OnUpdate(float deltaTime)
         {
+            if (unscaledTime)
+            {
+                deltaTime = Time.unscaledDeltaTime;
+            }
+
             // Call update on the stamina module.
             stamina.OnUpdate(deltaTime);
             // Call update on the moving platforms module.
@@ -471,7 +481,7 @@ namespace Hertzole.GoldPlayer
             // Check the grounded state.
             isGrounded = CheckGrounded();
             // Update the input.
-            GetInput();
+            GetInput(deltaTime);
 
             // Do movement.
             BasicMovement(deltaTime);
@@ -748,8 +758,12 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
+            // Cache the value here to avoid calling natively to Time twice.
+            float timeScale = Time.timeScale;
+
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
-            isRunning = new Vector2(CharacterController.velocity.x, CharacterController.velocity.z).magnitude > walkingSpeeds.Max + 0.5f;
+            // The velocity also needs to be multiplier with time scale or else it will become extremely large on lower time scales or low on high time scales.
+            isRunning = new Vector2(CharacterController.velocity.x * Time.timeScale, CharacterController.velocity.z * Time.timeScale).magnitude > walkingSpeeds.Max + 0.5f;
 
             // Only set shouldRun if the player can move around.
             if (canMoveAround)

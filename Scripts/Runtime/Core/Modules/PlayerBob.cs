@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -12,6 +12,8 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if the bob effect should be enabled. </summary>
         public bool EnableBob { get { return bobClass.EnableBob; } set { bobClass.EnableBob = value; } }
+        /// <summary> If true, bobbing will use unscaled delta time. </summary>
+        public bool UnscaledTime { get { return bobClass.UnscaledTime; } set { bobClass.UnscaledTime = value; } }
         /// <summary> Sets how frequent the bob happens. </summary>
         public float BobFrequency { get { return bobClass.BobFrequency; } set { bobClass.BobFrequency = value; } }
         /// <summary> The height of the bob. </summary>
