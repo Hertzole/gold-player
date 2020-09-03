@@ -3,12 +3,14 @@
 #if !ENABLE_INPUT_SYSTEM || !GOLD_PLAYER_NEW_INPUT
 #define OBSOLETE
 #endif
+using UnityEditor;
+using UnityEngine;
+#if !OBSOLETE
 using System;
 using System.Linq;
-using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditorInternal;
+#endif
 
 namespace Hertzole.GoldPlayer.Editor
 {

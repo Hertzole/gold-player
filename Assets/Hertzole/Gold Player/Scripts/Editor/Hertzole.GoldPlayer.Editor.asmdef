@@ -23,6 +23,16 @@
             "name": "com.unity.cinemachine",
             "expression": "",
             "define": "GOLD_PLAYER_CINEMACHINE"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "",
+            "define": "GOLD_PLAYER_UGUI"
+        },
+        {
+            "name": "com.unity.textmeshpro",
+            "expression": "",
+            "define": "GOLD_PLAYER_TMP"
         }
     ],
     "noEngineReferences": false

@@ -10,7 +10,7 @@
 
 // If Unity 2018 or newer is running, use TextMeshPro instead,
 // as it's the recommended text solution.
-#if UNITY_2018_1_OR_NEWER && GOLD_PLAYER_TMP
+#if UNITY_2018_1_OR_NEWER || GOLD_PLAYER_TMP
 #define USE_TMP
 #endif
 

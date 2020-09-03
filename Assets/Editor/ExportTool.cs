@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,6 +40,21 @@ public static class ExportTool
                 }
 
                 if (allPaths[i].ToLower().Contains("hertzlib"))
+                {
+                    continue;
+                }
+
+                if (allPaths[i].ToLower().Contains("webgl templates") || allPaths[i].ToLower().Contains("webgltemplates"))
+                {
+                    continue;
+                }
+
+                if (allPaths[i].ToLower().Contains("webgl example"))
+                {
+                    continue;
+                }
+
+                if (allPaths[i].ToLower().Contains("package.json"))
                 {
                     continue;
                 }
