@@ -27,50 +27,19 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerInputSystem : MonoBehaviour, IGoldInput
     {
 #if !OBSOLETE
-        [System.Serializable]
-        public struct InputItem
-        {
-#pragma warning disable CA2235 // Mark all non-serializable fields
-            public string actionName;
-            public InputActionReference action;
-
-            public InputItem(string actionName, InputActionReference action)
-            {
-                this.actionName = actionName;
-                this.action = action;
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj != null && obj is InputItem item ? item.actionName == actionName && item.action == action : false;
-            }
-
-            public override int GetHashCode()
-            {
-                return (action.action.name + "." + actionName).GetHashCode();
-            }
-
-            public static bool operator ==(InputItem left, InputItem right)
-            {
-                return left.Equals(right);
-            }
-
-            public static bool operator !=(InputItem left, InputItem right)
-            {
-                return !(left == right);
-            }
-#pragma warning restore CA2235 // Mark all non-serializable fields
-        }
-
         [SerializeField]
         [FormerlySerializedAs("input")]
+        [Tooltip("The input asset to get all actions from.")]
         private InputActionAsset inputAsset = null;
         [SerializeField]
-        private InputItem[] actions = null;
+        [Tooltip("All the available actions.")]
+        private InputSystemItem[] actions = null;
 #endif
         [SerializeField]
+        [Tooltip("If true, all actions will be enabled on enable.")]
         private bool autoEnableInput = true;
         [SerializeField]
+        [Tooltip("If true, all actions will be disabled on disable.")]
         private bool autoDisableInput = true;
 
         private bool enabledInput = false;
@@ -80,12 +49,16 @@ namespace Hertzole.GoldPlayer
         [System.Obsolete("Use 'InputAsset' instead. This will be removed on build.", true)]
         public InputActionAsset Input { get { return InputAsset; } set { InputAsset = value; } }
 #endif
+        /// <summary> The input asset to get all actions from. </summary>
         public InputActionAsset InputAsset { get { return inputAsset; } set { inputAsset = value; } }
         private Dictionary<string, InputAction> actionsDictionary;
 #endif
 
+        /// <summary> Has input been enabled? </summary>
         public bool EnabledInput { get { return enabledInput; } }
+        /// <summary> If true, all actions will be enabled on enable. </summary>
         public bool AutoEnableInput { get { return autoEnableInput; } set { autoEnableInput = value; } }
+        /// <summary> If true, all actions will be disabled on disable. </summary>
         public bool AutoDisableInput { get { return autoDisableInput; } set { autoDisableInput = value; } }
 
         private void Start()
@@ -97,38 +70,161 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
+        /// <summary>
+        /// Enables all actions.
+        /// </summary>
         public void EnableInput()
         {
 #if !OBSOLETE
             for (int i = 0; i < actions.Length; i++)
             {
-                if (actions[i].action != null)
+                // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+                // If the action doesn't exist, complain.
+                if (actions[i].action == null)
                 {
-                    actions[i].action.action.Enable();
+                    Debug.LogWarning("There's no action asset present on " + actions[i].actionName + ". It will not be enabled.", gameObject);
+                    continue;
                 }
+#endif
+                actions[i].action.action.Enable();
             }
 
 #endif
             enabledInput = true;
         }
 
+        /// <summary>
+        /// Disables all actions.
+        /// </summary>
         public void DisableInput()
         {
 #if !OBSOLETE
             for (int i = 0; i < actions.Length; i++)
             {
-                if (actions[i].action != null)
+                // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+                // If the action doesn't exist, complain.
+                if (actions[i].action == null)
                 {
-                    actions[i].action.action.Disable();
+                    Debug.LogWarning("There's no action asset present on " + actions[i].actionName + ". It will not be disabled.", gameObject);
+                    continue;
                 }
+#endif
+                actions[i].action.action.Disable();
             }
 #endif
             enabledInput = false;
         }
 
+        /// <summary>
+        /// Enables a specific action.
+        /// </summary>
+        /// <param name="actionName">The action by name to enable.</param>
+        public void EnableAction(string actionName)
+        {
+#if !OBSOLETE
+            // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+            // If the action doesn't exist, complain.
+            if (!actionsDictionary.ContainsKey(actionName))
+            {
+                throw new System.ArgumentException("There's no action called '" + actionName + "' on " + gameObject.name + ".");
+            }
+
+            // If there's no action, complain.
+            if (actionsDictionary[actionName] == null)
+            {
+                Debug.LogWarning("There's no action asset present on " + actionsDictionary[actionName] + ".", gameObject);
+                return;
+            }
+#endif // DEBUG || UNITY_EDITOR
+            actionsDictionary[actionName].Enable();
+#endif // !OBSOLETE
+        }
+
+        /// <summary>
+        /// Enables a specific action.
+        /// </summary>
+        /// <param name="actionIndex">The action by index to enable.</param>
+        public void EnableAction(int actionIndex)
+        {
+#if !OBSOLETE
+            // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+            // If the index is out of range, complain.
+            if (actionIndex < 0 || actionIndex >= actions.Length)
+            {
+                throw new System.ArgumentOutOfRangeException("actionIndex");
+            }
+
+            // If there's no action, complain.
+            if (actions[actionIndex].action == null)
+            {
+                Debug.LogWarning("There's no action asset present on " + actions[actionIndex].actionName + ".", gameObject);
+                return;
+            }
+#endif // DEBUG || UNITY_EDITOR
+            actions[actionIndex].action.action.Enable();
+#endif // !OBSOLETE
+        }
+
+        /// <summary>
+        /// Disables a specific action.
+        /// </summary>
+        /// <param name="actionName">The action by name to disable.</param>
+        public void DisableAction(string actionName)
+        {
+#if !OBSOLETE
+            // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+            // If the action doesn't exist, complain.
+            if (!actionsDictionary.ContainsKey(actionName))
+            {
+                throw new System.ArgumentException("There's no action called '" + actionName + "' on " + gameObject.name + ".");
+            }
+
+            // If there's no action, complain.
+            if (actionsDictionary[actionName] == null)
+            {
+                Debug.LogWarning("There's no action asset present on " + actionsDictionary[actionName] + ".", gameObject);
+                return;
+            }
+#endif // DEBUG || UNITY_EDITOR
+            actionsDictionary[actionName].Disable();
+#endif // !OBSOLETE
+        }
+
+        /// <summary>
+        /// Disables a specific action.
+        /// </summary>
+        /// <param name="actionIndex">The action by index to disable.</param>
+        public void DisableAction(int actionIndex)
+        {
+#if !OBSOLETE
+            // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+            // If the index is out of range, complain.
+            if (actionIndex < 0 || actionIndex >= actions.Length)
+            {
+                throw new System.ArgumentOutOfRangeException("actionIndex");
+            }
+
+            // If there's no action, complain.
+            if (actions[actionIndex].action == null)
+            {
+                Debug.LogWarning("There's no action asset present on " + actions[actionIndex].actionName + ".", gameObject);
+                return;
+            }
+#endif // DEBUG || UNITY_EDITOR
+            actions[actionIndex].action.action.Disable();
+#endif // !OBSOLETE
+        }
+
 #if !OBSOLETE
         private void OnEnable()
         {
+            // Enable all input if auto enable input is on.
             if (autoEnableInput)
             {
                 EnableInput();
@@ -137,12 +233,14 @@ namespace Hertzole.GoldPlayer
 
         private void OnDisable()
         {
+            // Disable all input if auto disable input is on.
             if (autoDisableInput)
             {
                 DisableInput();
             }
         }
 
+        // Add all actions to the actions dictionary.
         private void UpdateActions()
         {
             actionsDictionary = new Dictionary<string, InputAction>();
@@ -151,210 +249,166 @@ namespace Hertzole.GoldPlayer
                 actionsDictionary.Add(actions[i].actionName, actions[i].action);
             }
         }
-#endif
+#endif // !OBSOLETE
 
+        /// <summary>
+        /// Returns true while an action is being held down.
+        /// </summary>
+        /// <param name="buttonName">The action to check.</param>
         public bool GetButton(string buttonName)
         {
 #if !OBSOLETE
-            if (inputAsset == null)
+            // Make sure the action exists.
+            if (!DoesActionExist(buttonName))
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return false;
             }
 
-            if (actionsDictionary == null)
-            {
-                UpdateActions();
-            }
-
-            if (actionsDictionary.TryGetValue(buttonName, out InputAction inputAction))
-            {
-                if (inputAction == null)
-                {
-                    return false;
-                }
-
-                return inputAction.activeControl is ButtonControl button && button.isPressed;
-            }
-            else
-            {
-                Debug.LogError("Can't find action '" + buttonName + "' in " + inputAsset.name + "!");
-                return false;
-            }
+            return actionsDictionary[buttonName].activeControl is ButtonControl button && button.isPressed;
 #else
             return false;
 #endif
         }
 
+        /// <summary>
+        /// Returns true if the action was pressed this frame.
+        /// </summary>
+        /// <param name="buttonName">The action to check.</param>
         public bool GetButtonDown(string buttonName)
         {
 #if !OBSOLETE
-            if (inputAsset == null)
+            // Make sure the action exists.
+            if (!DoesActionExist(buttonName))
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return false;
             }
 
-            if (actionsDictionary == null)
-            {
-                UpdateActions();
-            }
-
-            if (actionsDictionary.TryGetValue(buttonName, out InputAction inputAction))
-            {
-                if (inputAction == null)
-                {
-                    return false;
-                }
-
-                return inputAction.activeControl is ButtonControl button && button.wasPressedThisFrame;
-            }
-            else
-            {
-                Debug.LogError("Can't find action '" + buttonName + "' in " + inputAsset.name + "!");
-                return false;
-            }
+            return actionsDictionary[buttonName].activeControl is ButtonControl button && button.wasPressedThisFrame;
 #else
             return false;
 #endif
         }
 
+        /// <summary>
+        /// Returns true if the action was released this frame.
+        /// </summary>
+        /// <param name="buttonName">The action to check.</param>
         public bool GetButtonUp(string buttonName)
         {
 #if !OBSOLETE
-            if (inputAsset == null)
+            // Make sure the action exists.
+            if (!DoesActionExist(buttonName))
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return false;
             }
 
-            if (actionsDictionary == null)
-            {
-                UpdateActions();
-            }
-
-            if (actionsDictionary.TryGetValue(buttonName, out InputAction inputAction))
-            {
-                if (inputAction == null)
-                {
-                    return false;
-                }
-
-                return inputAction.activeControl is ButtonControl button && button.wasReleasedThisFrame;
-            }
-            else
-            {
-                Debug.LogError("Can't find action '" + buttonName + "' in " + inputAsset.name + "!");
-                return false;
-            }
+            return actionsDictionary[buttonName].activeControl is ButtonControl button && button.wasReleasedThisFrame;
 #else
-            return true;
+            return false;
 #endif
         }
 
+        /// <summary>
+        /// Returns the value of an action axis.
+        /// </summary>
+        /// <param name="axisName">The action to check.</param>
         public float GetAxis(string axisName)
         {
 #if !OBSOLETE
-            if (inputAsset == null)
+            // Make sure the action exists.
+            if (!DoesActionExist(axisName, true))
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return 0;
             }
 
-            if (actionsDictionary.TryGetValue(axisName, out InputAction inputAction))
-            {
-                if (inputAction == null)
-                {
-                    return 0;
-                }
-
-                if (inputAction.activeControl is AxisControl axis)
-                {
-                    return axis.ReadValue();
-                }
-                else
-                {
-                    Debug.LogError(axisName + " is not an axis type.");
-                    return 0;
-                }
-            }
-            else
-            {
-                Debug.LogError("Can't find action '" + axisName + "' in " + inputAsset.name + "!");
-                return 0;
-            }
+            return ((AxisControl)actionsDictionary[axisName].activeControl).ReadValue();
 #else
-            return 0;
+            return false;
 #endif
         }
 
+        /// <summary>
+        /// Returns the value of an action axis with no processing applied.
+        /// </summary>
+        /// <param name="axisName">The action to check.</param>
         public float GetAxisRaw(string axisName)
         {
 #if !OBSOLETE
-            if (inputAsset == null)
+            // Make sure the action exists.
+            if (!DoesActionExist(axisName, true))
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
                 return 0;
             }
 
-            if (actionsDictionary.TryGetValue(axisName, out InputAction inputAction))
-            {
-                if (inputAction == null)
-                {
-                    return 0;
-                }
-
-                if (inputAction.activeControl is AxisControl axis)
-                {
-                    return axis.ReadUnprocessedValue();
-                }
-                else
-                {
-                    Debug.LogError(axisName + " is not an axis type.");
-                    return 0;
-                }
-            }
-            else
-            {
-                Debug.LogError("Can't find action '" + axisName + "' in " + inputAsset.name + "!");
-                return 0;
-            }
+            return ((AxisControl)actionsDictionary[axisName].activeControl).ReadUnprocessedValue();
 #else
-            return 0;
+            return false;
 #endif
         }
 
+        /// <summary>
+        /// Returns the Vector2 value from an action.
+        /// </summary>
+        /// <param name="action">The action to check.</param>
         public Vector2 GetVector2(string action)
         {
 #if !OBSOLETE
+            // Make sure the action exists.
+            if (!DoesActionExist(action))
+            {
+                return Vector2.zero;
+            }
+
+            return actionsDictionary[action].ReadValue<Vector2>();
+#else
+            return false;
+#endif
+        }
+
+        private bool DoesActionExist(string action, bool axis = false)
+        {
+            // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
             if (inputAsset == null)
             {
                 Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
-                return Vector2.zero;
+                return false;
             }
+#endif
 
             if (actionsDictionary == null)
             {
                 UpdateActions();
             }
 
-            if (actionsDictionary.TryGetValue(action, out InputAction inputAction))
+            // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+            // If there's no action, complain.
+            if (!actionsDictionary.ContainsKey(action))
             {
-                if (inputAction == null)
-                {
-                    return Vector2.zero;
-                }
+                Debug.LogError("Can't find action '" + action + "' in " + inputAsset.name + ".");
+                return false;
+            }
 
-                return inputAction.ReadValue<Vector2>();
-            }
-            else
+            // Check if there's an action asset assigned.
+            if (actionsDictionary[action] == null)
             {
-                Debug.LogError("Can't find action '" + action + "' in " + inputAsset.name + "!");
-                return Vector2.zero;
+                Debug.LogError("There's no action assigned on '" + action + "'.", gameObject);
+                return false;
             }
-#else
-            return Vector2.zero;
+
+            // If it's an axis action, make sure the type is an axis.
+            if (axis)
+            {
+                if (!(actionsDictionary[action].activeControl is AxisControl))
+                {
+                    Debug.LogError(action + " is not an axis type.");
+                    return false;
+                }
+            }
 #endif
+
+            return true;
         }
 
 #if UNITY_EDITOR && !OBSOLETE
@@ -378,15 +432,16 @@ namespace Hertzole.GoldPlayer
             GoldPlayerInteraction gi = GetComponent<GoldPlayerInteraction>();
 #endif
 
-            actions = new InputItem[]
+            // If the player controller exists, add the input action name from there, otherwise just make it generic.
+            actions = new InputSystemItem[]
             {
-                new InputItem(gp != null ? gp.Camera.LookInput : "Look", null),
-                new InputItem(gp != null ? gp.Movement.MoveInput : "Move", null),
-                new InputItem(gp != null ? gp.Movement.JumpInput : "Jump", null),
-                new InputItem(gp != null ? gp.Movement.RunInput : "Run", null),
-                new InputItem(gp != null ? gp.Movement.CrouchInput : "Crouch", null),
+                new InputSystemItem(gp != null ? gp.Camera.LookInput : "Look", null),
+                new InputSystemItem(gp != null ? gp.Movement.MoveInput : "Move", null),
+                new InputSystemItem(gp != null ? gp.Movement.JumpInput : "Jump", null),
+                new InputSystemItem(gp != null ? gp.Movement.RunInput : "Run", null),
+                new InputSystemItem(gp != null ? gp.Movement.CrouchInput : "Crouch", null),
 #if !GOLD_PLAYER_DISABLE_INTERACTION
-                new InputItem(gi != null ? gi.InteractInput : "Interact", null)
+                new InputSystemItem(gi != null ? gi.InteractInput : "Interact", null)
 #endif
             };
         }

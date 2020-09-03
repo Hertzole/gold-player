@@ -13,7 +13,7 @@ using UnityEngine.UI;
 #endif
 using UnityEngine.SceneManagement;
 #endif
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT && GOLD_PLAYER_NEW_INPUT
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
 using UnityEngine.InputSystem;
 #endif
 

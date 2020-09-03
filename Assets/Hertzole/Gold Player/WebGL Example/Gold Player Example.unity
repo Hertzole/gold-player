@@ -10643,12 +10643,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 790359719}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &790386416 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4766509410355108, guid: 53c43a8ca1f02a4468880d3cecf7c6bb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1771784232}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &800287519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11024,7 +11018,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1771784232}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038546059}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54d54dcacf068ab4691c871452b251be, type: 3}
@@ -12116,7 +12110,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1200324340}
   m_HandleRect: {fileID: 1200324339}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -16798,11 +16792,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114925915917120512, guid: 53c43a8ca1f02a4468880d3cecf7c6bb,
-        type: 3}
-      propertyPath: movement.unscaledMovement
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
 --- !u!1001 &1772430861
@@ -18970,32 +18959,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2038265834}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2038546059 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1221496511255106, guid: 53c43a8ca1f02a4468880d3cecf7c6bb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1771784232}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2038546060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038546059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd97a8e4ed1fe8e43949b305a4b8ab20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraHead: {fileID: 790386416}
-  interactionRange: 2
-  interactionLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  ignoreTriggers: 1
-  interactMessage: Press E to interact
-  interactInput: Interact
 --- !u!1001 &2040288735
 PrefabInstance:
   m_ObjectHideFlags: 0
