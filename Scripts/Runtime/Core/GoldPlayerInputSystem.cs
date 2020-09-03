@@ -8,8 +8,8 @@
 
 #if !STRIP
 using UnityEngine;
-using UnityEngine.Serialization;
 #if !OBSOLETE
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -323,7 +323,7 @@ namespace Hertzole.GoldPlayer
 
             return ((AxisControl)actionsDictionary[axisName].activeControl).ReadValue();
 #else
-            return false;
+            return 0;
 #endif
         }
 
@@ -342,7 +342,7 @@ namespace Hertzole.GoldPlayer
 
             return ((AxisControl)actionsDictionary[axisName].activeControl).ReadUnprocessedValue();
 #else
-            return false;
+            return 0;
 #endif
         }
 
@@ -361,10 +361,11 @@ namespace Hertzole.GoldPlayer
 
             return actionsDictionary[action].ReadValue<Vector2>();
 #else
-            return false;
+            return Vector2.zero;
 #endif
         }
 
+#if !OBSOLETE
         private bool DoesActionExist(string action, bool axis = false)
         {
             // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
@@ -410,6 +411,7 @@ namespace Hertzole.GoldPlayer
 
             return true;
         }
+#endif // !OBSOLETE
 
 #if UNITY_EDITOR && !OBSOLETE
         private void OnValidate()

@@ -9,7 +9,9 @@
 #if !STRIP
 
 using System;
+#if !OBSOLETE
 using UnityEngine.InputSystem;
+#endif // !OBSOLETE
 
 namespace Hertzole.GoldPlayer
 {
@@ -19,9 +21,9 @@ namespace Hertzole.GoldPlayer
 #endif
     public struct InputSystemItem : IEquatable<InputSystemItem>
     {
+#if !OBSOLETE
 #pragma warning disable CA2235 // Mark all non-serializable fields
         public string actionName;
-#if !OBSOLETE
         public InputActionReference action;
 
         public InputSystemItem(string actionName, InputActionReference action)
@@ -29,7 +31,6 @@ namespace Hertzole.GoldPlayer
             this.actionName = actionName;
             this.action = action;
         }
-#endif
 
         public override bool Equals(object obj)
         {
@@ -38,11 +39,7 @@ namespace Hertzole.GoldPlayer
 
         public bool Equals(InputSystemItem other)
         {
-#if !OBSOLETE
             return other.actionName == actionName && other.action == action;
-#else
-            return false;
-#endif
         }
 
         public override int GetHashCode()
@@ -59,7 +56,14 @@ namespace Hertzole.GoldPlayer
         {
             return !(left == right);
         }
+#else
+        public bool Equals(InputSystemItem other)
+        {
+            return false;
+        }
+#endif // !OBSOLETE
+
 #pragma warning restore CA2235 // Mark all non-serializable fields
     }
 }
-#endif
+#endif // !STRIP

@@ -2,9 +2,11 @@
 #define USE_UI_ELEMENTS
 #endif
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
+#if USE_UI_ELEMENTS
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+#endif
 
 namespace Hertzole.GoldPlayer.Editor
 {
