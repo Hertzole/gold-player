@@ -761,9 +761,12 @@ namespace Hertzole.GoldPlayer
             // Cache the value here to avoid calling natively to Time twice.
             float timeScale = Time.timeScale;
 
+            // Cache the value, mostly to minimize the code length. Might improve performance extremely slightly by not calling native code.
+            Vector3 velocity = CharacterController.velocity;
+
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
             // The velocity also needs to be multiplier with time scale or else it will become extremely large on lower time scales or low on high time scales.
-            isRunning = new Vector2(CharacterController.velocity.x * Time.timeScale, CharacterController.velocity.z * Time.timeScale).magnitude > walkingSpeeds.Max + 0.5f;
+            isRunning = new Vector2(velocity.x * timeScale, velocity.z * timeScale).magnitude > (walkingSpeeds.Max + 0.5f) * (unscaledTime ? 1 : timeScale);
 
             // Only set shouldRun if the player can move around.
             if (canMoveAround)

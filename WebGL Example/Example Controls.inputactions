@@ -9,15 +9,15 @@
                     "name": "Move",
                     "type": "Value",
                     "id": "f85cfb3b-2bc3-4e87-ad97-cb579ffc3b3b",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
                 {
                     "name": "Look",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "8b6bb957-5f78-40b6-adf3-c0ca449e44cc",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },

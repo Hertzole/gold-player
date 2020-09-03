@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 1771784234}
   - component: {fileID: 8917247259645491224}
   - component: {fileID: 1413103216}
+  - component: {fileID: 2038546060}
   m_Layer: 1
   m_Name: Gold Player
   m_TagString: Player
@@ -451,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d54dcacf068ab4691c871452b251be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera:
+  cam:
     canLookAround: 1
     shouldLockCursor: 1
     invertXAxis: 0
@@ -462,6 +463,7 @@ MonoBehaviour:
     maximumX: 90
     fieldOfViewKick:
       enableFOVKick: 1
+      unscaledTime: 0
       kickWhen: 0
       kickAmount: 15
       lerpTimeTo: 4
@@ -473,6 +475,7 @@ MonoBehaviour:
     input_MouseY: Mouse Y
   movement:
     canMoveAround: 1
+    unscaledTime: 0
     walkingSpeeds:
       forwardSpeed: 3
       sidewaysSpeed: 2.5
@@ -539,8 +542,9 @@ MonoBehaviour:
       enableStrafeTilting: 1
       strafeTilt: 3
       bobTarget: {fileID: 4910431633050106}
-  audio:
+  sounds:
     enableAudio: 1
+    unscaledTime: 0
     audioType: 0
     basedOnHeadBob: 1
     stepTime: 1.5
@@ -655,6 +659,7 @@ MonoBehaviour:
   animator: {fileID: 1919573548807532906}
   maxSpeed: 6
   valueSmoothTime: 1
+  unscaledSmooth: 0
   lookAngleHead: {fileID: 4766509410355108}
   moveX:
     index: 0
@@ -706,6 +711,26 @@ MonoBehaviour:
     - {fileID: 5906202168172278984}
     - {fileID: 5633844458634611528}
     originalRenderShadows: 03000000030000000300000003000000030000000300000003000000030000000300000003000000030000000300000003000000030000000300000003000000
+--- !u!114 &2038546060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221496511255106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd97a8e4ed1fe8e43949b305a4b8ab20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraHead: {fileID: 4766509410355108}
+  interactionRange: 2
+  interactionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  ignoreTriggers: 1
+  interactMessage: Press E to interact
+  interactInput: Interact
 --- !u!1 &1327509270473940
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,9 +952,9 @@ SkinnedMeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 3554192192197474058}
   m_PrefabAsset: {fileID: 0}
---- !u!137 &5095660956132606558 stripped
+--- !u!137 &7626291975203749058 stripped
 SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 8639146892157597012, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
+  m_CorrespondingSourceObject: {fileID: 6378520744494353352, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
     type: 3}
   m_PrefabInstance: {fileID: 3554192192197474058}
   m_PrefabAsset: {fileID: 0}
@@ -963,12 +988,6 @@ SkinnedMeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 3554192192197474058}
   m_PrefabAsset: {fileID: 0}
---- !u!137 &2036738652255447384 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -5976006274572362158, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-    type: 3}
-  m_PrefabInstance: {fileID: 3554192192197474058}
-  m_PrefabAsset: {fileID: 0}
 --- !u!137 &7330075674402974185 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6118894404039139043, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
@@ -981,15 +1000,15 @@ SkinnedMeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 3554192192197474058}
   m_PrefabAsset: {fileID: 0}
---- !u!137 &7626291975203749058 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 6378520744494353352, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-    type: 3}
-  m_PrefabInstance: {fileID: 3554192192197474058}
-  m_PrefabAsset: {fileID: 0}
 --- !u!137 &4856159845827337652 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8230202224423758526, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
+    type: 3}
+  m_PrefabInstance: {fileID: 3554192192197474058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2036738652255447384 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5976006274572362158, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
     type: 3}
   m_PrefabInstance: {fileID: 3554192192197474058}
   m_PrefabAsset: {fileID: 0}
@@ -1008,6 +1027,12 @@ SkinnedMeshRenderer:
 --- !u!137 &8106070064543688525 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4696565229736710215, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
+    type: 3}
+  m_PrefabInstance: {fileID: 3554192192197474058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5095660956132606558 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8639146892157597012, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
     type: 3}
   m_PrefabInstance: {fileID: 3554192192197474058}
   m_PrefabAsset: {fileID: 0}
