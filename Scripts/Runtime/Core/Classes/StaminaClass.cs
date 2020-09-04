@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -16,7 +16,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets when the stamina should be drained.")]
         [FormerlySerializedAs("m_DrainStaminaWhen")]
-        private RunAction drainStaminaWhen = RunAction.FasterThanRunSpeedAndPressingRun;
+        private RunAction drainStaminaWhen = RunAction.IsRunningAndPressingRun;
         [SerializeField]
         [Tooltip("The maximum amount of stamina.")]
         [FormerlySerializedAs("m_MaxStamina")]
@@ -26,9 +26,16 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_DrainRate")]
         private float drainRate = 1f;
         [SerializeField]
-        [Tooltip("How much stamina will regenerate per second.")]
+        [Tooltip("The threshold where it counts if the player is standing still.")]
+        private float stillThreshold = 0.2f;
+        [SerializeField]
+        [Tooltip("How much stamina will regenerate per second when standing still.")]
         [FormerlySerializedAs("m_RegenRate")]
-        private float regenRate = 0.8f;
+        [FormerlySerializedAs("regenRate")]
+        private float regenRateStill = 0.8f;
+        [SerializeField]
+        [Tooltip("How much stamina will regenerate per second when moving.")]
+        private float regenRateMoving = 0.5f;
         [SerializeField]
         [Tooltip("How long it will wait before starting to regenerate stamina.")]
         [FormerlySerializedAs("m_RegenWait")]
@@ -45,10 +52,14 @@ namespace Hertzole.GoldPlayer
         public RunAction DrainStaminaWhen { get { return drainStaminaWhen; } set { drainStaminaWhen = value; } }
         /// <summary> The maximum amount of stamina. </summary>
         public float MaxStamina { get { return maxStamina; } set { maxStamina = value; } }
+        /// <summary> The threshold where it counts if the player is standing still. </summary>
+        public float StillThreshold { get { return stillThreshold; } set { stillThreshold = value; } }
         /// <summary> How much stamina will be drained per second. </summary>
         public float DrainRate { get { return drainRate; } set { drainRate = value; } }
-        /// <summary> "How much stamina will regenerate per second. </summary>
-        public float RegenRate { get { return regenRate; } set { regenRate = value; } }
+        /// <summary> "How much stamina will regenerate per second when standing still. </summary>
+        public float RegenRateStill { get { return regenRateStill; } set { regenRateStill = value; } }
+        /// <summary> "How much stamina will regenerate per second when moving. </summary>
+        public float RegenRateMoving { get { return regenRateMoving; } set { regenRateMoving = value; } }
         /// <summary>How long it will wait before starting to regenerate stamina. </summary>
         public float RegenWait { get { return regenWait; } set { regenWait = value; } }
 
@@ -56,6 +67,13 @@ namespace Hertzole.GoldPlayer
         public float CurrentStamina { get { return currentStamina; } set { currentStamina = value; } }
         /// <summary> The current regen wait time. </summary>
         public float CurrentRegenWait { get { return currentRegenWait; } set { currentRegenWait = value; } }
+
+        #region Obsolete
+#if UNITY_EDITOR
+        [System.Obsolete("Use RegenRateStill or RegenRateMoving instead. This will be removed on build.", true)]
+        public float RegenRate { get { return regenRateStill; } set { regenRateStill = value; } }
+#endif
+        #endregion
 
         protected override void OnInitialize()
         {
@@ -90,7 +108,7 @@ namespace Hertzole.GoldPlayer
 
             // If we should drain stamina when move speed is above walk speed, drain stamina when 'isRunning' is true.
             // Else drain it when 'isRunning' is true and the run button is being held down.
-            if (drainStaminaWhen == RunAction.FasterThanRunSpeed)
+            if (drainStaminaWhen == RunAction.IsRunning)
             {
                 // If 'isRunning' is true, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
@@ -103,7 +121,7 @@ namespace Hertzole.GoldPlayer
                     RegenStamina(deltaTime);
                 }
             }
-            else if (drainStaminaWhen == RunAction.FasterThanRunSpeedAndPressingRun)
+            else if (drainStaminaWhen == RunAction.IsRunningAndPressingRun)
             {
                 // If 'isRunning' is true and the run button is being held down, drain the stamina.
                 // Else if the run button is not being held down, regen the stamina.
@@ -151,7 +169,9 @@ namespace Hertzole.GoldPlayer
             // increase the current stamina with regen rate.
             if (currentRegenWait >= regenWait && currentStamina < maxStamina)
             {
-                currentStamina += regenRate * deltaTime;
+                // Check if the controller velocity is below the still threshold. If it is, regen as if the player is standing still.
+                // Else regen as if the player is moving.
+                currentStamina += (CharacterController.velocity.magnitude <= stillThreshold ? regenRateStill : regenRateMoving) * deltaTime;
             }
         }
 

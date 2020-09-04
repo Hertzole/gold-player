@@ -2,8 +2,8 @@
 {
     public enum RunAction
     {
-        FasterThanRunSpeed = 0,
-        FasterThanRunSpeedAndPressingRun = 1
+        IsRunning = 0,
+        IsRunningAndPressingRun = 1
     }
 
     public enum AudioTypes

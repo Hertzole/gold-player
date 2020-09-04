@@ -6,6 +6,7 @@ namespace Hertzole.GoldPlayer
     [RequireComponent(typeof(CharacterController))]
     [DisallowMultipleComponent]
     [AddComponentMenu("Gold Player/Gold Player Controller", 0)]
+    [HelpURL("https://github.com/Hertzole/gold-player")]
     public class GoldPlayerController : MonoBehaviour
     {
         [SerializeField]
@@ -28,12 +29,6 @@ namespace Hertzole.GoldPlayer
 
         private IGoldInput playerInput;
         private CharacterController controller;
-
-#if UNITY_EDITOR
-        /// <summary> Has all the scripts be initialized? </summary>
-        [System.Obsolete("Use HasBeenFullyInitialized instead. This will be removed on build.", true)]
-        public bool HasBeenInitialized { get { return HasBeenFullyInitialized; } }
-#endif
 
         /// <summary> True if all the modules have been initialized. </summary>
         public bool HasBeenFullyInitialized
@@ -58,6 +53,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
         public PlayerAudio Audio { get { return sounds; } set { sounds = value; } }
 
+        #region Obsolete
 #if UNITY_EDITOR
         /// <summary> The main action map for the Input Actions. </summary>
         [System.Obsolete("No longer used. This will be removed on build.", true)]
@@ -77,7 +73,11 @@ namespace Hertzole.GoldPlayer
 #endif
             }
         }
-#endif
+        /// <summary> Has all the scripts be initialized? </summary>
+        [System.Obsolete("Use HasBeenFullyInitialized instead. This will be removed on build.", true)]
+        public bool HasBeenInitialized { get { return HasBeenFullyInitialized; } }
+#endif // UNITY_EDITOR
+        #endregion
 
         /// <summary> The input system for the player. </summary>
         public IGoldInput PlayerInput { get { return playerInput; } }

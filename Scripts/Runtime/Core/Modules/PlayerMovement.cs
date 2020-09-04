@@ -50,6 +50,15 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_CanJump")]
         private bool canJump = true;
         [SerializeField]
+        [Tooltip("If stamina is enabled and this is true, jumping will require some stamina.")]
+        private bool jumpingRequiresStamina = false;
+        [SerializeField]
+        [Tooltip("How much stamina that is required to jump.")]
+        private float jumpStaminaRequire = 1;
+        [SerializeField]
+        [Tooltip("How much stamina that jumping will take away.")]
+        private float jumpStaminaCost = 1;
+        [SerializeField]
         [Tooltip("The height the player can jump in Unity units.")]
         [FormerlySerializedAs("m_JumpHeight")]
         private float jumpHeight = 2f;
@@ -263,6 +272,12 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if the player can jump. </summary>
         public bool CanJump { get { return canJump; } set { canJump = value; } }
+        /// <summary> If stamina is enabled and this is true, jumping will require some stamina. </summary>
+        public bool JumpingRequiresStamina { get { return jumpingRequiresStamina; } set { jumpingRequiresStamina = value; } }
+        /// <summary> How much stamina that is required to jump. </summary>
+        public float JumpStaminaRequire { get { return jumpStaminaRequire; } set { jumpStaminaRequire = value; } }
+        /// <summary> How much stamina that jumping will take away. </summary>
+        public float JumpStaminaCost { get { return jumpStaminaCost; } set { jumpStaminaCost = value; } }
         /// <summary> The height the player can jump in Unity units. </summary>
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; realJumpHeight = CalculateJumpHeight(value * jumpHeightMultiplier); } }
         /// <summary> Determines if the player can jump for some time when falling. </summary>
@@ -618,6 +633,11 @@ namespace Hertzole.GoldPlayer
         /// <returns>True if the player should jump.</returns>
         protected virtual bool ShouldPlayerJump()
         {
+            if (jumpingRequiresStamina && stamina.EnableStamina && stamina.CurrentStamina < jumpStaminaRequire)
+            {
+                return false;
+            }
+
             if (isGrounded && !isJumping)
             {
                 return true;
@@ -692,6 +712,12 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         protected virtual void Jump()
         {
+            // If jumping requires stamina and stamina is enabled, remove the cost of the jump on the stamina.
+            if (jumpingRequiresStamina && stamina.EnableStamina)
+            {
+                stamina.CurrentStamina -= jumpStaminaCost;
+            }
+
             // Set 'isJumping' to true so the player tells everything we're jumping.
             isJumping = true;
             // The player should no longer jump.

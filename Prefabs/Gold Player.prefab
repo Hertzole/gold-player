@@ -468,6 +468,8 @@ MonoBehaviour:
       kickAmount: 15
       lerpTimeTo: 4
       lerpTimeFrom: 2.5
+      useCinemachine: 0
+      targetVirtualCamera: {fileID: 0}
       targetCamera: {fileID: 20764455326535260}
     cameraHead: {fileID: 4766509410355108}
     input_Look: Look
@@ -487,13 +489,16 @@ MonoBehaviour:
       sidewaysSpeed: 5.5
       backwardsSpeed: 5
     stamina:
-      enableStamina: 0
+      enableStamina: 1
       drainStaminaWhen: 1
       maxStamina: 10
       drainRate: 1
       regenRate: 0.8
       regenWait: 1
     canJump: 1
+    jumpingRequiresStamina: 1
+    jumpStaminaRequire: 1
+    jumpStaminaCost: 1
     jumpHeight: 2
     airJump: 1
     airJumpTime: 0.1

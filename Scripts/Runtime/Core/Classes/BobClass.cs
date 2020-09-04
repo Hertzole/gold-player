@@ -147,11 +147,6 @@ namespace Hertzole.GoldPlayer
 
         public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis)
         {
-            if (!enableBob || bobTarget == null)
-            {
-                return;
-            }
-
             velocity *= Time.timeScale;
 
             Vector3 velocityChange = velocity - previousVelocity;
@@ -184,6 +179,12 @@ namespace Hertzole.GoldPlayer
             float flatVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
             float strideLengthen = 1 + (flatVelocity * strideMultiplier);
             bobCycle += (flatVelocity / strideLengthen) * (deltaTime / bobFrequency);
+
+            // Stop here instead because if head bob is disabled it can mess up the step sounds cycle.
+            if (!enableBob || bobTarget == null)
+            {
+                return;
+            }
 
             float bobFactor = Mathf.Sin(bobCycle * Mathf.PI * 2);
             float bobSwayFactor = Mathf.Sin(bobCycle * Mathf.PI * 2 + Mathf.PI * .5f);
