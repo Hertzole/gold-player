@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,13 +13,42 @@ namespace Hertzole.GoldPlayer.Example
     public class MovingPlatform : MonoBehaviour
     {
         [System.Serializable]
-        public struct Waypoint
+        public struct Waypoint : IEquatable<Waypoint>
         {
             [FormerlySerializedAs("m_Position")]
             public Vector3 position;
             public Vector3 rotation;
             [FormerlySerializedAs("m_WaitTime")]
             public float waitTime;
+
+            public override bool Equals(object obj)
+            {
+                return obj is Waypoint waypoint && Equals(waypoint);
+            }
+
+            public bool Equals(Waypoint other)
+            {
+                return position.Equals(other.position) && rotation.Equals(other.rotation) && waitTime == other.waitTime;
+            }
+
+            public override int GetHashCode()
+            {
+                int hashCode = 2032512538;
+                hashCode = hashCode * -1521134295 + position.GetHashCode();
+                hashCode = hashCode * -1521134295 + rotation.GetHashCode();
+                hashCode = hashCode * -1521134295 + waitTime.GetHashCode();
+                return hashCode;
+            }
+
+            public static bool operator ==(Waypoint left, Waypoint right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(Waypoint left, Waypoint right)
+            {
+                return !(left == right);
+            }
         }
 
         [SerializeField]

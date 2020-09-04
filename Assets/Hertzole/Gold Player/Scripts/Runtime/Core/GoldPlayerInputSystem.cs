@@ -61,6 +61,11 @@ namespace Hertzole.GoldPlayer
         /// <summary> If true, all actions will be disabled on disable. </summary>
         public bool AutoDisableInput { get { return autoDisableInput; } set { autoDisableInput = value; } }
 
+#if !OBSOLETE
+        /// <summary> All the available actions. </summary>
+        public InputSystemItem[] Actions { get { return actions; } set { actions = value; } }
+#endif
+
         private void Start()
         {
 #if OBSOLETE
@@ -76,22 +81,24 @@ namespace Hertzole.GoldPlayer
         public void EnableInput()
         {
 #if !OBSOLETE
-            for (int i = 0; i < actions.Length; i++)
+            if (actions != null)
             {
-                // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
-#if DEBUG || UNITY_EDITOR
-                // If the action doesn't exist, complain.
-                if (actions[i].action == null)
+                for (int i = 0; i < actions.Length; i++)
                 {
-                    Debug.LogWarning("There's no action asset present on " + actions[i].actionName + ". It will not be enabled.", gameObject);
-                    continue;
+                    // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+                    // If the action doesn't exist, complain.
+                    if (actions[i].action == null)
+                    {
+                        Debug.LogWarning("There's no action asset present on " + actions[i].actionName + ". It will not be enabled.", gameObject);
+                        continue;
+                    }
+#endif
+                    actions[i].action.action.Enable();
                 }
-#endif
-                actions[i].action.action.Enable();
+                enabledInput = true;
             }
-
 #endif
-            enabledInput = true;
         }
 
         /// <summary>
@@ -100,21 +107,24 @@ namespace Hertzole.GoldPlayer
         public void DisableInput()
         {
 #if !OBSOLETE
-            for (int i = 0; i < actions.Length; i++)
+            if (actions != null)
             {
-                // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
-#if DEBUG || UNITY_EDITOR
-                // If the action doesn't exist, complain.
-                if (actions[i].action == null)
+                for (int i = 0; i < actions.Length; i++)
                 {
-                    Debug.LogWarning("There's no action asset present on " + actions[i].actionName + ". It will not be disabled.", gameObject);
-                    continue;
-                }
+                    // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
+#if DEBUG || UNITY_EDITOR
+                    // If the action doesn't exist, complain.
+                    if (actions[i].action == null)
+                    {
+                        Debug.LogWarning("There's no action asset present on " + actions[i].actionName + ". It will not be disabled.", gameObject);
+                        continue;
+                    }
 #endif
-                actions[i].action.action.Disable();
+                    actions[i].action.action.Disable();
+                }
+                enabledInput = false;
             }
 #endif
-            enabledInput = false;
         }
 
         /// <summary>
@@ -241,8 +251,13 @@ namespace Hertzole.GoldPlayer
         }
 
         // Add all actions to the actions dictionary.
-        private void UpdateActions()
+        public void UpdateActions()
         {
+            if (actions == null)
+            {
+                return;
+            }
+
             actionsDictionary = new Dictionary<string, InputAction>();
             for (int i = 0; i < actions.Length; i++)
             {
