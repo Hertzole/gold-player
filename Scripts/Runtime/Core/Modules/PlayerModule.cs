@@ -107,7 +107,7 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetAxisRaw(axisName);
         }
 
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT && UNITY_EDITOR
+#if (!ENABLE_INPUT_SYSTEM || !GOLD_PLAYER_NEW_INPUT) && UNITY_EDITOR
         [System.Obsolete("GetVector2Input does nothing with the Input Manager. This will be removed on build.", true)]
 #endif
 #if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT || UNITY_EDITOR

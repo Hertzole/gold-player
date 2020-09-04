@@ -94,7 +94,11 @@ namespace Hertzole.GoldPlayer
 #if DEBUG || UNITY_EDITOR
             if (playerInput == null)
             {
-                Debug.LogError(gameObject.name + " needs to have a input script derived from GoldInputSystem! Add the standard 'GoldPlayerInputSystem' to fix.");
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+                Debug.LogError(gameObject.name + " needs to have a input script derived from IGoldInput! Add the standard 'GoldPlayerInputSystem' to fix.");
+#else
+                Debug.LogError(gameObject.name + " needs to have a input script derived from IGoldInput! Add the standard 'GoldPlayerInput' to fix.");
+#endif
                 return;
             }
 #endif

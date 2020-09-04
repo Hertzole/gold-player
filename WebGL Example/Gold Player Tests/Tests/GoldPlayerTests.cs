@@ -1,5 +1,4 @@
 ﻿#if UNITY_2018_3_OR_NEWER
-//using Hertzole.GoldPlayer.Weapons;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
@@ -46,13 +45,17 @@ namespace Hertzole.GoldPlayer.Tests
             GoldPlayerController player = SetupPlayer();
             GameObject platform = new GameObject("Platform");
             platform.AddComponent<BoxCollider>();
-            platform.tag = "Respawn";
             player.transform.position = platform.transform.position + new Vector3(0, 0.5f, 0);
-            yield return null;
 
             yield return null;
-            platform.transform.position = new Vector3(10, 0, 10);
-            yield return null;
+
+            for (int i = 0; i <= 10; i++)
+            {
+                platform.transform.position = new Vector3(i, 0, i);
+                player.Movement.OnUpdate(Time.deltaTime);
+                yield return null;
+            }
+
             Assert.AreEqual(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(platform.transform.position.x, 0, platform.transform.position.z));
         }
 
@@ -72,17 +75,19 @@ namespace Hertzole.GoldPlayer.Tests
         public IEnumerator GoldPlayerUpdateGeneratesGarbage()
         {
             GoldPlayerController player = SetupPlayer();
+            player.Movement.MovingPlatforms.Enabled = false; // Moving platforms will generate garbage because Unity.
             WaitForEndOfFrame frameEnd = new WaitForEndOfFrame();
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 1000; i++)
             {
+                Assert.That(() =>
+                {
+                    player.Update();
+                    player.LateUpdate();
+                    player.FixedUpdate();
+                }, Is.Not.AllocatingGCMemory());
+
                 yield return frameEnd;
             }
-            Assert.That(() =>
-            {
-                player.Update();
-                player.LateUpdate();
-                player.FixedUpdate();
-            }, Is.Not.AllocatingGCMemory());
         }
 
         [UnityTest]
@@ -120,24 +125,40 @@ namespace Hertzole.GoldPlayer.Tests
 
         private GoldPlayerController SetupPlayer()
         {
-            GameObject playerGO = new GameObject("[TEST] Test Player");
-            GoldPlayerController playerController = playerGO.AddComponent<GoldPlayerController>();
+            GameObject playerGO = new GameObject("[TEST] Test Player", typeof(CharacterController));
             GameObject playerCameraHead = new GameObject("[TEST] Test Player Camera Head");
             Camera camera = playerCameraHead.AddComponent<Camera>();
 #if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             GoldPlayerInputSystem input = playerGO.AddComponent<GoldPlayerInputSystem>();
-            input.InputAsset = UnityEngine.InputSystem.InputActionAsset.FromJson(inputJson);
+            UnityEngine.InputSystem.InputActionAsset inputAsset = UnityEngine.InputSystem.InputActionAsset.FromJson(inputJson);
+            input.InputAsset = inputAsset;
+            input.Actions = new InputSystemItem[]
+            {
+                new InputSystemItem("Look", UnityEngine.InputSystem.InputActionReference.Create(inputAsset.FindAction("Player/Look"))),
+                new InputSystemItem("Move", UnityEngine.InputSystem.InputActionReference.Create(inputAsset.FindAction("Player/Move"))),
+                new InputSystemItem("Jump", UnityEngine.InputSystem.InputActionReference.Create(inputAsset.FindAction("Player/Jump"))),
+                new InputSystemItem("Run", UnityEngine.InputSystem.InputActionReference.Create(inputAsset.FindAction("Player/Run"))),
+                new InputSystemItem("Crouch", UnityEngine.InputSystem.InputActionReference.Create(inputAsset.FindAction("Player/Crouch"))),
+                new InputSystemItem("Interact", UnityEngine.InputSystem.InputActionReference.Create(inputAsset.FindAction("Player/Interact"))),
+            };
             input.EnableInput();
+            input.UpdateActions();
 #else
             GoldPlayerInput input = playerGO.AddComponent<GoldPlayerInput>();
 #endif
+            GoldPlayerController playerController = playerGO.AddComponent<GoldPlayerController>();
             playerController.GetComponent<CharacterController>().center = new Vector3(0, 1, 0);
             playerController.Camera.CameraHead = playerCameraHead.transform;
             playerController.Camera.FieldOfViewKick.EnableFOVKick = false;
             playerController.HeadBob.BobTarget = playerCameraHead.transform;
 
             playerController.Movement.MovingPlatforms.Enabled = true;
+            playerController.Movement.MovingPlatforms.MovePosition = true;
             playerController.Movement.MovingPlatforms.Initialize(playerController, input);
+
+            playerController.InitOnStart = false;
+            playerController.GetReferences();
+            playerController.Initialize();
 
             //GameObject raycastWeaponGO = new GameObject("[Test] Raycast Weapon");
             //GoldPlayerWeapon raycastWeapon = raycastWeaponGO.AddComponent<GoldPlayerWeapon>();
