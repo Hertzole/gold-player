@@ -17,11 +17,6 @@ namespace Hertzole.GoldPlayer
         /// <summary> Player controller shortcut. It is not certain that this actually exists on the player! </summary>
         public GoldPlayerController PlayerController { get { if (!playerController) { playerController = GetComponent<GoldPlayerController>(); } return playerController; } }
 
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'GetButton' without defaultKey parameter instead. This will be removed on build.", true)]
-        protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButton(buttonName); }
-#endif
-
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.
         /// </summary>
@@ -30,11 +25,6 @@ namespace Hertzole.GoldPlayer
         {
             return PlayerInput.GetButton(buttonName);
         }
-
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead. This will be removed on build.", true)]
-        protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonDown(buttonName); }
-#endif
 
         /// <summary>
         /// Equivalent to Input's GetButtonDown/GetKeyDown function.
@@ -45,11 +35,6 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetButtonDown(buttonName);
         }
 
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead. This will be removed on build.", true)]
-        protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonUp(buttonName); }
-#endif
-
         /// <summary>
         /// Equivalent to Input's GetButtonUp/GetKeyUp function.
         /// </summary>
@@ -59,11 +44,6 @@ namespace Hertzole.GoldPlayer
             return PlayerInput.GetButtonUp(buttonName);
         }
 
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead. This will be removed on build.", true)]
-        protected float GetAxis(string axisName, string defaultAxisName = "") { return GetAxis(axisName); }
-#endif
-
         /// <summary>
         /// Equivalent to Input's GetAxis function.
         /// </summary>
@@ -72,11 +52,6 @@ namespace Hertzole.GoldPlayer
         {
             return PlayerInput.GetAxis(axisName);
         }
-
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead. This will be removed on build.", true)]
-        protected float GetAxisRaw(string axisName, string defaultAxisName = "") { return GetAxisRaw(axisName); }
-#endif
 
         /// <summary>
         /// Equivalent to Input's GetAxisRaw function.
@@ -100,6 +75,25 @@ namespace Hertzole.GoldPlayer
             return Vector2.zero;
 #endif
         }
+
+        #region Obsolete
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'GetButton' without defaultKey parameter instead. This will be removed on build.", true)]
+        protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButton(buttonName); }
+
+        [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead. This will be removed on build.", true)]
+        protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonDown(buttonName); }
+
+        [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead. This will be removed on build.", true)]
+        protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonUp(buttonName); }
+
+        [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead. This will be removed on build.", true)]
+        protected float GetAxis(string axisName, string defaultAxisName = "") { return GetAxis(axisName); }
+
+        [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead. This will be removed on build.", true)]
+        protected float GetAxisRaw(string axisName, string defaultAxisName = "") { return GetAxisRaw(axisName); }
+#endif
+        #endregion
 #endif
     }
 }

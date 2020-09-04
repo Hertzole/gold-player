@@ -59,6 +59,11 @@ public static class ExportTool
                     continue;
                 }
 
+                if (allPaths[i].ToLower().Contains("prefabs"))
+                {
+                    continue;
+                }
+
                 validPaths.Add(allPaths[i]);
             }
         }

@@ -34,6 +34,13 @@ namespace Hertzole.GoldPlayer.Example
         public Slider SliderField { get { return sliderField; } set { sliderField = value; } }
 #endif
 
+        public void SetInteractable(bool interactable)
+        {
+            textField.interactable = interactable;
+            toggleField.interactable = interactable;
+            sliderField.interactable = interactable;
+        }
+
         public void SetupField(string label, Action<bool> valueChanged, bool defaultValue)
         {
 #if USE_GUI

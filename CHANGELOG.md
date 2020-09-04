@@ -2,21 +2,50 @@
 
 ### Added:
 - Added Gold Player Animator for easy and simple animation support.
-- Gold Player Input System editor for the new input changes.
+- Added Gold Player Graphics that can be used to easily control the graphics visibility on the player.
+- Added Gold Player Audio Animator (and Trigger) audio behaviour to allow animations to trigger audio events.
+- Added Gold Player Object Bob that allows you to assign multiple objects to bob as the player moves.
+- Added a custom editor for Gold Player Input System and Gold Player Input.
+- Added support for disabling certain components using scripting define symbols and also through project settings (2018.3+).
+- Added support for Cinemachine.
+- Added support for both Text and TextMeshProUGUI on Gold Player UI, no matter the version. (But TMP is still 2018.1+!). **WILL BREAK YOUR UI WHEN UPGRADING!**
+- Added new examples, both in Unity package and package manager version.
+- Added support for jumping to require stamina.
+- Added support for different stamina regen rates depending on if the player is moving or not.
 
 ### Improvements:
 - When creating a player through 'GameObject - 3D - Gold Player Controller', it now fills in audio clips if the standard ones are present.
+- Player Audio Behaviour can now handle audio by itself instead of it always being handled by Gold Player.
+- Unity 2019.3+ is no longer a requirement for the new input system to function. As long as it's enabled and present, Gold Player will adapt to it.
+- Now adapts classes better to uGUI and TextMeshPro.
+- Improved code stripping. It now strips out all obsolete methods and properties to minimize code size.
+- Added more safety checks and also make sure they get stripped out on release builds to improve performance.
 
 ### Changes:
+- **(BREAKING CHANGE)** Minimum supported version raised to 2018.4. Gold Player will still probably work on version below but issues with versions below 2018.4 may not be fixed or take longer to fix.
 - Made `MovementInput`, `SmoothedMovementInput`, `ShouldJump`, `ShouldRun`, and `ShouldCrouch` public to be able to control movement through code.
 - Input actions are now directly referenced instead of just using the whole input actions asset.
 - Changed folder structure to match the same structure of packages.
+- Removed all sub-menus (except for example scripts) for Gold Player scripts in the 'Add Component' menu.
 - (**BREAKING CHANGE**) Removed all sub-namespaces from scripts. All Gold Player scripts are now in `Hertzole.GoldPlayer`. Your code may break if you've referenced Gold Player in code but you mostly only need to remove old namespaces.
+- Changed mouse sensitivity to a Vector2 instead to allow control over each axis' sensitivity.
+- Changed wording on Run/Crouch Toggle modes. Off -> Hold, Permanent -> Toggle
+- Changed wording on running modes. Faster Than Run Speed -> Is Running.
+- Removed `GOLD_PLAYER_INTERACTION` script define. **It's now recommended you ONLY remove components using project settings/script defines**.
 
 ### Fixes:
 - Fixed head bob strafe tilt still being applied even when the player can't move.
+- Fixed mouse sensitivity being used twice when multiplying. **NOTE: May be a breaking change in user experience!**
+- Fixed character center warning not updating properly.
+- Fixed camera controls not working consistently depending on V-sync and timescale.
+- Fixed bob targets flying off if their Z position wasn't 0.
+- Fixed player not following along with really slow moving platforms.
 
 ---
+
+## 1.5.1
+### Fixes:
+- Fixed 'Can Move Around' not working with the normal input manager.
 
 ## 1.5
 ### Added:

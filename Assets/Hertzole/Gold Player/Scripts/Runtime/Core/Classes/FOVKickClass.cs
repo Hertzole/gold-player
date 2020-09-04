@@ -19,7 +19,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets whenever the FOV kick should kick in.")]
         [FormerlySerializedAs("m_KickWhen")]
-        private RunAction kickWhen = RunAction.FasterThanRunSpeed;
+        private RunAction kickWhen = RunAction.IsRunning;
         [SerializeField]
         [Tooltip("Sets how much the FOV will kick.")]
         [FormerlySerializedAs("m_KickAmount")]
@@ -181,12 +181,12 @@ namespace Hertzole.GoldPlayer
 
             // If the kick should be enabled only when move speed is above walk speed, do the FOV kick when 'isRunning' is true.
             // Else do it when 'isRunning' is true and the run button is being held down.
-            if (kickWhen == RunAction.FasterThanRunSpeed)
+            if (kickWhen == RunAction.IsRunning)
             {
                 // Do FOV kick if 'isRunning' is true.
                 DoFOV(PlayerController.Movement.IsRunning, deltaTime);
             }
-            else if (kickWhen == RunAction.FasterThanRunSpeedAndPressingRun)
+            else if (kickWhen == RunAction.IsRunningAndPressingRun)
             {
                 // Do FOV kick if 'isRunning' is true and the run button is being held down.
                 DoFOV(GetButton(PlayerController.Movement.RunInput) && PlayerController.Movement.IsRunning, deltaTime);

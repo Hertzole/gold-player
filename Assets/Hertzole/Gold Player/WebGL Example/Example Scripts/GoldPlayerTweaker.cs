@@ -80,6 +80,10 @@ namespace Hertzole.GoldPlayer.Example
         public InputAction ResetSceneAction { get { return resetSceneAction; } set { resetSceneAction = value; } }
 #endif
 
+        [SerializeField]
+        [HideInInspector]
+        private GoldPlayerUI ui = null;
+
 #if USE_GUI
         private bool showing = false;
         private bool previousCanLook = false;
@@ -132,10 +136,44 @@ namespace Hertzole.GoldPlayer.Example
         }
 #endif
 
+        private GoldPlayerTweakField kickAmount;
+        private GoldPlayerTweakField lerpTimeTo;
+        private GoldPlayerTweakField lerpTimeFrom;
+        private GoldPlayerTweakField maxStamina;
+        private GoldPlayerTweakField drainRate;
+        private GoldPlayerTweakField stillThreshold;
+        private GoldPlayerTweakField regenRateStill;
+        private GoldPlayerTweakField regenRateMoving;
+        private GoldPlayerTweakField regenWait;
+        private GoldPlayerTweakField jumpRequireStamina;
+        private GoldPlayerTweakField jumpStaminaRequire;
+        private GoldPlayerTweakField jumpStaminaCost;
+        private GoldPlayerTweakField jumpHeight;
+        private GoldPlayerTweakField airJump;
+        private GoldPlayerTweakField airJumpTime;
+        private GoldPlayerTweakField airJumpAmount;
+        private GoldPlayerTweakField allowAirJumpDirectionChange;
+        private GoldPlayerTweakField crouchJumping;
+        private GoldPlayerTweakField crouchHeight;
+        private GoldPlayerTweakField crouchHeadLerp;
+        private GoldPlayerTweakField groundStick;
+        private GoldPlayerTweakField bobFrequency;
+        private GoldPlayerTweakField bobHeight;
+        private GoldPlayerTweakField swayAngle;
+        private GoldPlayerTweakField sideMovement;
+        private GoldPlayerTweakField heightMultiplier;
+        private GoldPlayerTweakField strideMultiplier;
+        private GoldPlayerTweakField landMove;
+        private GoldPlayerTweakField landTilt;
+        private GoldPlayerTweakField enableStrafeTilt;
+        private GoldPlayerTweakField strafeTilt;
+
         private void SetupUI()
         {
             CreateHeader("Game");
             CreateTweaker("Timescale", x => { Time.timeScale = x / 10f; }, 10, true, 1, 20, 10f);
+            CreateTweaker("V-Sync", x => { QualitySettings.vSyncCount = x ? 1 : 0; }, QualitySettings.vSyncCount == 1);
+            CreateTweaker("Unscaled Movement", x => { targetPlayer.UnscaledTime = x; }, false);
 
             CreateHeader("Camera");
             CreateTweaker("Invert X Axis", x => { targetPlayer.Camera.InvertXAxis = x; }, targetPlayer.Camera.InvertXAxis);
@@ -144,45 +182,124 @@ namespace Hertzole.GoldPlayer.Example
             CreateTweaker("Mouse Damping", x => { targetPlayer.Camera.MouseDamping = x; }, targetPlayer.Camera.MouseDamping);
             CreateTweaker("Minimum X", x => { targetPlayer.Camera.MinimumX = x; }, targetPlayer.Camera.MinimumX);
             CreateTweaker("Maximum X", x => { targetPlayer.Camera.MaximumX = x; }, targetPlayer.Camera.MaximumX);
+
             CreateSubHeader("FOV Kick");
-            CreateTweaker("Enable FOV Kick", x => { targetPlayer.Camera.FieldOfViewKick.EnableFOVKick = x; }, targetPlayer.Camera.FieldOfViewKick.EnableFOVKick);
-            CreateTweaker("Kick Amount", x => { targetPlayer.Camera.FieldOfViewKick.KickAmount = x; }, targetPlayer.Camera.FieldOfViewKick.KickAmount);
-            CreateTweaker("Lerp Time To", x => { targetPlayer.Camera.FieldOfViewKick.LerpTimeTo = x; }, targetPlayer.Camera.FieldOfViewKick.LerpTimeTo);
-            CreateTweaker("Lerp Time From", x => { targetPlayer.Camera.FieldOfViewKick.LerpTimeFrom = x; }, targetPlayer.Camera.FieldOfViewKick.LerpTimeFrom);
+            CreateTweaker("Enable FOV Kick", x =>
+            {
+                targetPlayer.Camera.FieldOfViewKick.EnableFOVKick = x;
+                kickAmount.SetInteractable(x);
+                lerpTimeTo.SetInteractable(x);
+                lerpTimeFrom.SetInteractable(x);
+            }, targetPlayer.Camera.FieldOfViewKick.EnableFOVKick);
+            kickAmount = CreateTweaker("Kick Amount", x => { targetPlayer.Camera.FieldOfViewKick.KickAmount = x; }, targetPlayer.Camera.FieldOfViewKick.KickAmount);
+            lerpTimeTo = CreateTweaker("Lerp Time To", x => { targetPlayer.Camera.FieldOfViewKick.LerpTimeTo = x; }, targetPlayer.Camera.FieldOfViewKick.LerpTimeTo);
+            lerpTimeFrom = CreateTweaker("Lerp Time From", x => { targetPlayer.Camera.FieldOfViewKick.LerpTimeFrom = x; }, targetPlayer.Camera.FieldOfViewKick.LerpTimeFrom);
 
             CreateHeader("Movement");
             CreateSubHeader("Running");
-            CreateTweaker("Can Run", x => { targetPlayer.Movement.CanRun = x; }, targetPlayer.Movement.CanRun);
+            CreateTweaker("Can Run", x => { targetPlayer.Movement.CanRun = x; ui.AdaptSprintingUI(); }, targetPlayer.Movement.CanRun);
+            CreateSubHeader("Stamina");
+            CreateTweaker("Enable Stamina", x =>
+            {
+                targetPlayer.Movement.Stamina.EnableStamina = x;
+                maxStamina.SetInteractable(x);
+                drainRate.SetInteractable(x);
+                stillThreshold.SetInteractable(x);
+                regenRateStill.SetInteractable(x);
+                regenRateMoving.SetInteractable(x);
+                regenWait.SetInteractable(x);
+                ui.AdaptSprintingUI();
+
+                jumpRequireStamina.SetInteractable(x && targetPlayer.Movement.CanJump);
+                jumpStaminaRequire.SetInteractable(x && targetPlayer.Movement.CanJump);
+                jumpStaminaCost.SetInteractable(x && targetPlayer.Movement.CanJump);
+            }, targetPlayer.Movement.Stamina.EnableStamina);
+            maxStamina = CreateTweaker("Max Stamina", x => { targetPlayer.Movement.Stamina.MaxStamina = x; }, targetPlayer.Movement.Stamina.MaxStamina);
+            drainRate = CreateTweaker("Drain Rate", x => { targetPlayer.Movement.Stamina.DrainRate = x; }, targetPlayer.Movement.Stamina.DrainRate);
+            stillThreshold = CreateTweaker("Still Threshold", x => { targetPlayer.Movement.Stamina.StillThreshold = x; }, targetPlayer.Movement.Stamina.StillThreshold);
+            regenRateStill = CreateTweaker("Regen Rate Still", x => { targetPlayer.Movement.Stamina.RegenRateStill = x; }, targetPlayer.Movement.Stamina.RegenRateStill);
+            regenRateMoving = CreateTweaker("Regen Rate Moving", x => { targetPlayer.Movement.Stamina.RegenRateMoving = x; }, targetPlayer.Movement.Stamina.RegenRateMoving);
+            regenWait = CreateTweaker("Regen Wait", x => { targetPlayer.Movement.Stamina.RegenWait = x; }, targetPlayer.Movement.Stamina.RegenWait);
+
             CreateSubHeader("Jumping");
-            CreateTweaker("Can Jump", x => { targetPlayer.Movement.CanJump = x; }, targetPlayer.Movement.CanJump);
-            CreateTweaker("Jump Height", x => { targetPlayer.Movement.JumpHeight = x; }, targetPlayer.Movement.JumpHeight);
-            CreateTweaker("Air Jump", x => { targetPlayer.Movement.AirJump = x; }, targetPlayer.Movement.AirJump);
-            CreateTweaker("Air Jump Time", x => { targetPlayer.Movement.AirJumpTime = x; }, targetPlayer.Movement.AirJumpTime);
-            CreateTweaker("Air Jumps Amount", x => { targetPlayer.Movement.AirJumpsAmount = x; }, targetPlayer.Movement.AirJumpsAmount);
-            CreateTweaker("Allow Air Jump Direction Change", x => { targetPlayer.Movement.AllowAirJumpDirectionChange = x; }, targetPlayer.Movement.AllowAirJumpDirectionChange);
+            CreateTweaker("Can Jump", x =>
+            {
+                targetPlayer.Movement.CanJump = x;
+                jumpHeight.SetInteractable(x);
+                jumpRequireStamina.SetInteractable(x && targetPlayer.Movement.Stamina.EnableStamina);
+                jumpStaminaRequire.SetInteractable(x && targetPlayer.Movement.Stamina.EnableStamina);
+                jumpStaminaCost.SetInteractable(x && targetPlayer.Movement.Stamina.EnableStamina);
+                airJump.SetInteractable(x);
+                airJumpTime.SetInteractable(x && targetPlayer.Movement.AirJump);
+                airJumpAmount.SetInteractable(x && targetPlayer.Movement.AirJump);
+                allowAirJumpDirectionChange.SetInteractable(x && targetPlayer.Movement.AirJump);
+            }, targetPlayer.Movement.CanJump);
+            jumpRequireStamina = CreateTweaker("Jumping Requires Stamina", x => { targetPlayer.Movement.JumpingRequiresStamina = x; }, targetPlayer.Movement.JumpingRequiresStamina);
+            jumpStaminaRequire = CreateTweaker("Jump Stamina Require", x => { targetPlayer.Movement.JumpStaminaRequire = x; }, targetPlayer.Movement.JumpStaminaRequire);
+            jumpStaminaCost = CreateTweaker("Jump Stamina Cost", x => { targetPlayer.Movement.JumpStaminaCost = x; }, targetPlayer.Movement.JumpStaminaCost);
+            jumpHeight = CreateTweaker("Jump Height", x => { targetPlayer.Movement.JumpHeight = x; }, targetPlayer.Movement.JumpHeight);
+            airJump = CreateTweaker("Air Jump", x =>
+            {
+                targetPlayer.Movement.AirJump = x;
+                airJumpTime.SetInteractable(x && targetPlayer.Movement.CanJump);
+                airJumpAmount.SetInteractable(x && targetPlayer.Movement.CanJump);
+                allowAirJumpDirectionChange.SetInteractable(x && targetPlayer.Movement.CanJump);
+            }, targetPlayer.Movement.AirJump);
+            airJumpTime = CreateTweaker("Air Jump Time", x => { targetPlayer.Movement.AirJumpTime = x; }, targetPlayer.Movement.AirJumpTime);
+            airJumpAmount = CreateTweaker("Air Jumps Amount", x => { targetPlayer.Movement.AirJumpsAmount = x; }, targetPlayer.Movement.AirJumpsAmount);
+            allowAirJumpDirectionChange = CreateTweaker("Allow Air Jump Direction Change", x => { targetPlayer.Movement.AllowAirJumpDirectionChange = x; }, targetPlayer.Movement.AllowAirJumpDirectionChange);
+
             CreateSubHeader("Crouching");
-            CreateTweaker("Can Crouch", x => { targetPlayer.Movement.CanCrouch = x; }, targetPlayer.Movement.CanCrouch);
-            CreateTweaker("Crouch Jumping", x => { targetPlayer.Movement.CrouchJumping = x; }, targetPlayer.Movement.CrouchJumping);
-            CreateTweaker("Crouch Height", x => { targetPlayer.Movement.CrouchHeight = x; }, targetPlayer.Movement.CrouchHeight);
-            CreateTweaker("Crouch Head Lerp", x => { targetPlayer.Movement.CrouchHeadLerp = x; }, targetPlayer.Movement.CrouchHeadLerp);
+            CreateTweaker("Can Crouch", x =>
+            {
+                targetPlayer.Movement.CanCrouch = x;
+                crouchJumping.SetInteractable(x);
+                crouchHeight.SetInteractable(x);
+                crouchHeadLerp.SetInteractable(x);
+            }, targetPlayer.Movement.CanCrouch);
+            crouchJumping = CreateTweaker("Crouch Jumping", x => { targetPlayer.Movement.CrouchJumping = x; }, targetPlayer.Movement.CrouchJumping);
+            crouchHeight = CreateTweaker("Crouch Height", x => { targetPlayer.Movement.CrouchHeight = x; }, targetPlayer.Movement.CrouchHeight);
+            crouchHeadLerp = CreateTweaker("Crouch Head Lerp", x => { targetPlayer.Movement.CrouchHeadLerp = x; }, targetPlayer.Movement.CrouchHeadLerp);
             CreateSubHeader("Other");
             CreateTweaker("Acceleration", x => { targetPlayer.Movement.Acceleration = x; }, targetPlayer.Movement.Acceleration);
             CreateTweaker("Gravity", x => { targetPlayer.Movement.Gravity = x; }, targetPlayer.Movement.Gravity);
             CreateTweaker("Air Control", x => { targetPlayer.Movement.AirControl = x; }, targetPlayer.Movement.AirControl, true, 0, 1);
-            CreateTweaker("Enable Ground Stick", x => { targetPlayer.Movement.EnableGroundStick = x; }, targetPlayer.Movement.EnableGroundStick);
-            CreateTweaker("GroundStick", x => { targetPlayer.Movement.GroundStick = x; }, targetPlayer.Movement.GroundStick);
+            CreateTweaker("Enable Ground Stick", x =>
+            {
+                targetPlayer.Movement.EnableGroundStick = x;
+                groundStick.SetInteractable(x);
+            }, targetPlayer.Movement.EnableGroundStick);
+            groundStick = CreateTweaker("GroundStick", x => { targetPlayer.Movement.GroundStick = x; }, targetPlayer.Movement.GroundStick);
 
             CreateHeader("Head bob");
-            CreateTweaker("Enable Bob", x => { targetPlayer.HeadBob.EnableBob = x; }, targetPlayer.HeadBob.EnableBob);
-            CreateTweaker("Bob Frequency", x => { targetPlayer.HeadBob.BobFrequency = x; }, targetPlayer.HeadBob.BobFrequency);
-            CreateTweaker("Bob Height", x => { targetPlayer.HeadBob.BobHeight = x; }, targetPlayer.HeadBob.BobHeight);
-            CreateTweaker("Sway Angle", x => { targetPlayer.HeadBob.SwayAngle = x; }, targetPlayer.HeadBob.SwayAngle);
-            CreateTweaker("Side Movement", x => { targetPlayer.HeadBob.SideMovement = x; }, targetPlayer.HeadBob.SideMovement);
-            CreateTweaker("height Multiplier", x => { targetPlayer.HeadBob.HeightMultiplier = x; }, targetPlayer.HeadBob.HeightMultiplier);
-            CreateTweaker("Stride Multiplier", x => { targetPlayer.HeadBob.StrideMultiplier = x; }, targetPlayer.HeadBob.StrideMultiplier);
-            CreateTweaker("Land Move", x => { targetPlayer.HeadBob.LandMove = x; }, targetPlayer.HeadBob.LandMove);
-            CreateTweaker("Land Tilt", x => { targetPlayer.HeadBob.LandTilt = x; }, targetPlayer.HeadBob.LandTilt);
-            CreateTweaker("Strafe Tilt", x => { targetPlayer.HeadBob.StrafeTilt = x; }, targetPlayer.HeadBob.StrafeTilt);
+            CreateTweaker("Enable Bob", x =>
+            {
+                targetPlayer.HeadBob.EnableBob = x;
+                bobFrequency.SetInteractable(x);
+                bobHeight.SetInteractable(x);
+                swayAngle.SetInteractable(x);
+                sideMovement.SetInteractable(x);
+                heightMultiplier.SetInteractable(x);
+                strideMultiplier.SetInteractable(x);
+                landMove.SetInteractable(x);
+                landTilt.SetInteractable(x);
+                enableStrafeTilt.SetInteractable(x);
+                strafeTilt.SetInteractable(x && targetPlayer.HeadBob.EnableStrafeTilting);
+            }, targetPlayer.HeadBob.EnableBob);
+            bobFrequency = CreateTweaker("Bob Frequency", x => { targetPlayer.HeadBob.BobFrequency = x; }, targetPlayer.HeadBob.BobFrequency);
+            bobHeight = CreateTweaker("Bob Height", x => { targetPlayer.HeadBob.BobHeight = x; }, targetPlayer.HeadBob.BobHeight);
+            swayAngle = CreateTweaker("Sway Angle", x => { targetPlayer.HeadBob.SwayAngle = x; }, targetPlayer.HeadBob.SwayAngle);
+            sideMovement = CreateTweaker("Side Movement", x => { targetPlayer.HeadBob.SideMovement = x; }, targetPlayer.HeadBob.SideMovement);
+            heightMultiplier = CreateTweaker("Height Multiplier", x => { targetPlayer.HeadBob.HeightMultiplier = x; }, targetPlayer.HeadBob.HeightMultiplier);
+            strideMultiplier = CreateTweaker("Stride Multiplier", x => { targetPlayer.HeadBob.StrideMultiplier = x; }, targetPlayer.HeadBob.StrideMultiplier);
+            landMove = CreateTweaker("Land Move", x => { targetPlayer.HeadBob.LandMove = x; }, targetPlayer.HeadBob.LandMove);
+            landTilt = CreateTweaker("Land Tilt", x => { targetPlayer.HeadBob.LandTilt = x; }, targetPlayer.HeadBob.LandTilt);
+            enableStrafeTilt = CreateTweaker("Enable Strafe Tilt", x =>
+            {
+                targetPlayer.HeadBob.EnableStrafeTilting = x;
+                strafeTilt.SetInteractable(x && targetPlayer.HeadBob.EnableBob);
+            }, targetPlayer.HeadBob.EnableStrafeTilting);
+            strafeTilt = CreateTweaker("Strafe Tilt", x => { targetPlayer.HeadBob.StrafeTilt = x; }, targetPlayer.HeadBob.StrafeTilt);
         }
 
         public void CreateHeader(string text)
@@ -204,22 +321,28 @@ namespace Hertzole.GoldPlayer.Example
 #endif
         }
 
-        public void CreateTweaker(string label, Action<bool> onChanged, bool defaultValue)
+        public GoldPlayerTweakField CreateTweaker(string label, Action<bool> onChanged, bool defaultValue)
         {
             GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
             newField.SetupField(label, onChanged, defaultValue);
+
+            return newField;
         }
 
-        public void CreateTweaker(string label, Action<float> onChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1, float labelDivide = 1f)
+        public GoldPlayerTweakField CreateTweaker(string label, Action<float> onChanged, float defaultValue, bool slider = false, float minSlider = 0, float maxSlider = 1, float labelDivide = 1f)
         {
             GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
             newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider, labelDivide);
+
+            return newField;
         }
 
-        public void CreateTweaker(string label, Action<int> onChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1, float labelDivide = 1f)
+        public GoldPlayerTweakField CreateTweaker(string label, Action<int> onChanged, int defaultValue, bool slider = false, int minSlider = 0, int maxSlider = 1, float labelDivide = 1f)
         {
             GoldPlayerTweakField newField = Instantiate(tweakField, tweakField.transform.parent);
             newField.SetupField(label, onChanged, defaultValue, slider, minSlider, maxSlider, labelDivide);
+
+            return newField;
         }
 
 #if USE_GUI
@@ -274,5 +397,25 @@ namespace Hertzole.GoldPlayer.Example
             Panel.SetActive(showing);
 #endif
         }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            GetStandardComponents();
+        }
+
+        private void Reset()
+        {
+            GetStandardComponents();
+        }
+
+        private void GetStandardComponents()
+        {
+            if (ui == null)
+            {
+                ui = GetComponent<GoldPlayerUI>();
+            }
+        }
+#endif
     }
 }

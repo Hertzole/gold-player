@@ -35,12 +35,16 @@ namespace Hertzole.GoldPlayer
         [Tooltip("If true, the smoothing will use unscaled delta time.")]
         private bool unscaledSmooth = false;
 
+#if UNITY_EDITOR
         [Header("References")]
+#endif
         [SerializeField]
         [Tooltip("The transform to use for the look angle. If empty it will use Camera Head from Gold Player Controller.")]
         private Transform lookAngleHead = null;
 
+#if UNITY_EDITOR
         [Header("Parameters")]
+#endif
         [SerializeField]
         [Tooltip("The Move X parameter on your animator.")]
         private GoldPlayerAnimatorParameterInfo moveX = new GoldPlayerAnimatorParameterInfo(0, true);

@@ -1,3 +1,4 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,7 +8,7 @@ namespace Hertzole.GoldPlayer
     /// Used for easily playing audio clip(s) with parameters.
     /// </summary>
     [System.Serializable]
-    public struct AudioItem
+    public struct AudioItem : System.IEquatable<AudioItem>
     {
         [SerializeField]
         [Tooltip("Determines if this audio should be enabled.")]
@@ -204,6 +205,41 @@ namespace Hertzole.GoldPlayer
                     Debug.LogWarning("Tried to play audio on '" + audioSource.name + "' but no audio clips have been set!");
                 }
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AudioItem item && Equals(item);
+        }
+
+        public bool Equals(AudioItem other)
+        {
+            return enabled == other.enabled && randomPitch == other.randomPitch && changeVolume == other.changeVolume && pitch == other.pitch &&
+                   minPitch == other.minPitch && maxPitch == other.maxPitch && volume == other.volume && EqualityComparer<AudioClip[]>.Default.Equals(audioClips, other.audioClips);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1799565391;
+            hashCode = hashCode * -1521134295 + enabled.GetHashCode();
+            hashCode = hashCode * -1521134295 + randomPitch.GetHashCode();
+            hashCode = hashCode * -1521134295 + changeVolume.GetHashCode();
+            hashCode = hashCode * -1521134295 + pitch.GetHashCode();
+            hashCode = hashCode * -1521134295 + minPitch.GetHashCode();
+            hashCode = hashCode * -1521134295 + maxPitch.GetHashCode();
+            hashCode = hashCode * -1521134295 + volume.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<AudioClip[]>.Default.GetHashCode(audioClips);
+            return hashCode;
+        }
+
+        public static bool operator ==(AudioItem left, AudioItem right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(AudioItem left, AudioItem right)
+        {
+            return !(left == right);
         }
     }
 }

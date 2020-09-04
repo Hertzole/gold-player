@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
 {
     [Serializable]
-    public struct MovementSpeeds
+    public struct MovementSpeeds : IEquatable<MovementSpeeds>
     {
         [SerializeField]
         [Tooltip("The speed when moving forward.")]
@@ -60,13 +60,45 @@ namespace Hertzole.GoldPlayer
             Max = previousMax;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is MovementSpeeds speeds && Equals(speeds);
+        }
+
+        public bool Equals(MovementSpeeds other)
+        {
+            return forwardSpeed == other.forwardSpeed && sidewaysSpeed == other.sidewaysSpeed && backwardsSpeed == other.backwardsSpeed;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -949775398;
+            hashCode = hashCode * -1521134295 + forwardSpeed.GetHashCode();
+            hashCode = hashCode * -1521134295 + sidewaysSpeed.GetHashCode();
+            hashCode = hashCode * -1521134295 + backwardsSpeed.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator ==(MovementSpeeds left, MovementSpeeds right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(MovementSpeeds left, MovementSpeeds right)
+        {
+            return !(left == right);
+        }
+
 #if UNITY_EDITOR
         /// <summary>
         /// Only to be called in the Unity editor!
         /// </summary>
         public void OnValidate()
         {
-            CalculateMax();
+            if (Application.isPlaying)
+            {
+                CalculateMax();
+            }
         }
 #endif
     }

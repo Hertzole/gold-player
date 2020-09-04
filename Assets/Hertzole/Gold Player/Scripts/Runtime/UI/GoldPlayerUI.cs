@@ -229,7 +229,7 @@ namespace Hertzole.GoldPlayer
                         {
                             sprintingBarSlider.gameObject.SetActive(true);
                             sprintingBarSlider.minValue = 0;
-                            sprintingBarSlider.maxValue = Player.Movement.Stamina.MaxStamina;
+                            sprintingBarSlider.maxValue = 1;
                         }
                         break;
                     case ProgressBarType.Image:
@@ -286,7 +286,7 @@ namespace Hertzole.GoldPlayer
                     case ProgressBarType.Slider:
                         if (sprintingBarSlider != null)
                         {
-                            sprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina;
+                            sprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
                         }
 
                         break;
