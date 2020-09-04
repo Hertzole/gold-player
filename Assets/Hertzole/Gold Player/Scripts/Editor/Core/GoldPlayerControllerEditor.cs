@@ -166,6 +166,12 @@ namespace Hertzole.GoldPlayer.Editor
 
                 if (it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth >= 2)
                 {
+                    if (it.name == "bobTarget" && camera.FindPropertyRelative("cameraHead").objectReferenceValue == it.objectReferenceValue)
+                    {
+                        EditorGUILayout.HelpBox("You should not target the same object as your camera head. " +
+                            "It's recommended that you create a parent to this object that you can target your bobbing on.", MessageType.Warning);
+                    }
+
                     EditorGUILayout.PropertyField(it, true);
                 }
             }
