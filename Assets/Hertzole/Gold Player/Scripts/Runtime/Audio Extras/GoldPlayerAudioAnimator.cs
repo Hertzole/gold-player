@@ -29,7 +29,7 @@ namespace Hertzole.GoldPlayer
         }
 #endif
 
-        public override void PlayFoostepSound()
+        public override void PlayFootstepSound()
         {
             PlayerController.Audio.PlayFootstepSound();
         }

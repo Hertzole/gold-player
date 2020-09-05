@@ -20,6 +20,7 @@
 - Now adapts classes better to uGUI and TextMeshPro.
 - Improved code stripping. It now strips out all obsolete methods and properties to minimize code size.
 - Added more safety checks and also make sure they get stripped out on release builds to improve performance.
+- Several quality of life improvements.
 
 ### Changes:
 - **(BREAKING CHANGE)** Minimum supported version raised to 2018.4. Gold Player will still probably work on version below but issues with versions below 2018.4 may not be fixed or take longer to fix.
@@ -40,6 +41,8 @@
 - Fixed camera controls not working consistently depending on V-sync and timescale.
 - Fixed bob targets flying off if their Z position wasn't 0.
 - Fixed player not following along with really slow moving platforms.
+- Fixed typo in GoldPlayerAudioBehaviour. PlayFoostepSound -> PlayFootstepSound
+- Fixed the player continuing to run if running when CanRun is set to false.
 
 ---
 

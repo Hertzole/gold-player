@@ -78,6 +78,28 @@ namespace Hertzole.GoldPlayer.Editor
 
             actionList.DoLayoutList();
 
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Auto Assign"))
+            {
+                bool allNull = true;
+
+                for (int i = 0; i < actions.arraySize; i++)
+                {
+                    if (actions.GetArrayElementAtIndex(i).FindPropertyRelative("action").objectReferenceValue != null)
+                    {
+                        allNull = false;
+                        break;
+                    }
+                }
+
+                if (allNull || (!allNull && EditorUtility.DisplayDialog("Notice", "Your assigned input actions will be overwritten. Are you sure you want to do this?", "Yes", "No")))
+                {
+                    ReassignActions();
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+
             serializedObject.ApplyModifiedProperties();
 #else
             if(GUILayout.Button("Replace with Gold Player Input"))
