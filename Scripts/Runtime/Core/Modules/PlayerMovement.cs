@@ -262,7 +262,7 @@ namespace Hertzole.GoldPlayer
         public float JumpHeightMultiplier { get { return jumpHeightMultiplier; } set { jumpHeightMultiplier = value; CalculateJumpHeight(jumpHeight * value); } }
 
         /// <summary> Determines if the player can run. </summary>
-        public bool CanRun { get { return canRun; } set { canRun = value; } }
+        public bool CanRun { get { return canRun; } set { canRun = value; if (!value && IsRunning) { moveSpeed = walkingSpeeds; } } }
         /// <summary> Configuration of running as a toggle. </summary>
         public RunToggleMode RunToggleMode { get { return runToggleMode; } set { runToggleMode = value; } }
         /// <summary> The speeds when running. </summary>

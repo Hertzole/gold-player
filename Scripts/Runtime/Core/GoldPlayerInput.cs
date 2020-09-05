@@ -44,20 +44,6 @@ namespace Hertzole.GoldPlayer
 #if !GOLD_PLAYER_DISABLE_INTERACTION
             new InputItem("Interact", "Interact", KeyCode.E),
 #endif
-#if GOLD_PLAYER_WEAPONS
-            new InputItem("Primary Attack", "Primary Attack", KeyCode.Mouse0),
-            new InputItem("Secondary Attack", "Secondary Attack", KeyCode.Mouse1),
-            new InputItem("Change Weapon Scroll", "Mouse ScrollWheel", KeyCode.None),
-            new InputItem("Change Weapon 1", "Change Weapon 1", KeyCode.Alpha1),
-            new InputItem("Change Weapon 2", "Change Weapon 2", KeyCode.Alpha2),
-            new InputItem("Change Weapon 3", "Change Weapon 3", KeyCode.Alpha3),
-            new InputItem("Change Weapon 4", "Change Weapon 4", KeyCode.Alpha4),
-            new InputItem("Change Weapon 5", "Change Weapon 5", KeyCode.Alpha5),
-            new InputItem("Change Weapon 6", "Change Weapon 6", KeyCode.Alpha6),
-            new InputItem("Change Weapon 7", "Change Weapon 7", KeyCode.Alpha7),
-            new InputItem("Change Weapon 8", "Change Weapon 8", KeyCode.Alpha8),
-            new InputItem("Change Weapon 9", "Change Weapon 9", KeyCode.Alpha9),
-#endif
         };
 
         private Dictionary<string, InputItem> inputsDic;
@@ -93,12 +79,16 @@ namespace Hertzole.GoldPlayer
         /// <param name="buttonName">The button to check.</param>
         public bool GetButton(string buttonName)
         {
+#if !OBSOLETE
             if (inputsDic == null)
             {
                 UpdateInputs();
             }
 
             return useKeyCodes ? Input.GetKey(inputsDic[buttonName].Key) : Input.GetButton(inputsDic[buttonName].InputName);
+#else
+            return false;
+#endif
         }
 
         /// <summary>
@@ -107,12 +97,16 @@ namespace Hertzole.GoldPlayer
         /// <param name="buttonName">The button to check.</param>
         public bool GetButtonDown(string buttonName)
         {
+#if !OBSOLETE
             if (inputsDic == null)
             {
                 UpdateInputs();
             }
 
             return useKeyCodes ? Input.GetKeyDown(inputsDic[buttonName].Key) : Input.GetButtonDown(inputsDic[buttonName].InputName);
+#else
+            return false;
+#endif
         }
 
         /// <summary>
@@ -121,12 +115,16 @@ namespace Hertzole.GoldPlayer
         /// <param name="buttonName">The button to check.</param>
         public bool GetButtonUp(string buttonName)
         {
+#if !OBSOLETE
             if (inputsDic == null)
             {
                 UpdateInputs();
             }
 
             return useKeyCodes ? Input.GetKeyUp(inputsDic[buttonName].Key) : Input.GetButtonUp(inputsDic[buttonName].InputName);
+#else
+            return false;
+#endif
         }
 
         /// <summary>
@@ -135,12 +133,16 @@ namespace Hertzole.GoldPlayer
         /// <param name="axisName">The axis to check.</param>
         public float GetAxis(string axisName)
         {
+#if !OBSOLETE
             if (inputsDic == null)
             {
                 UpdateInputs();
             }
 
             return Input.GetAxis(inputsDic[axisName].InputName);
+#else
+            return 0;
+#endif
         }
 
         /// <summary>
@@ -149,12 +151,16 @@ namespace Hertzole.GoldPlayer
         /// <param name="axisName">The axis to check.</param>
         public float GetAxisRaw(string axisName)
         {
+#if !OBSOLETE
             if (inputsDic == null)
             {
                 UpdateInputs();
             }
 
             return Input.GetAxisRaw(inputsDic[axisName].InputName);
+#else
+            return 0;
+#endif
         }
 
         /// <summary>

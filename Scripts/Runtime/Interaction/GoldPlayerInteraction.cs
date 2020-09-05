@@ -182,6 +182,16 @@ namespace Hertzole.GoldPlayer
                 SetTriggerInteraction();
             }
         }
+
+        private void Reset()
+        {
+            // If the controller exists, default the camera head to the one provided on the controller.
+            GoldPlayerController controller = GetComponent<GoldPlayerController>();
+            if (controller != null)
+            {
+                cameraHead = controller.Camera.CameraHead;
+            }
+        }
 #endif
     }
 }

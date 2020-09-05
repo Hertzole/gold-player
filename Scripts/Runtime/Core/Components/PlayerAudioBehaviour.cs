@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Hertzole.GoldPlayer
 {
@@ -64,10 +64,15 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void OnLateUpdate(float deltaTime) { }
 
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'PlayFootstepSound' instead. This will be removed on build.", true)]
+        public virtual void PlayFoostepSound() { }
+#endif
+
         /// <summary>
         /// Called when a footstep should be played.
         /// </summary>
-        public abstract void PlayFoostepSound();
+        public abstract void PlayFootstepSound();
 
         /// <summary>
         /// Called when a jump sound should be played.

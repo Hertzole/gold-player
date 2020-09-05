@@ -125,7 +125,7 @@ namespace Hertzole.GoldPlayer
         }
 
         [SerializeField]
-        [Tooltip("Graphics are inivislbe for 'me' and visible for 'others'.")]
+        [Tooltip("Graphics are usually invisible for 'me' and visible for 'others'.")]
         private GraphicsOwner owner = GraphicsOwner.Me;
 
         [SerializeField]

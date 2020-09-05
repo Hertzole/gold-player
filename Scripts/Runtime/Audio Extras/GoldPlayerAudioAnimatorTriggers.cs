@@ -38,7 +38,7 @@ namespace Hertzole.GoldPlayer
         {
             if (audioTarget != null)
             {
-                audioTarget.PlayFoostepSound();
+                audioTarget.PlayFootstepSound();
             }
         }
 

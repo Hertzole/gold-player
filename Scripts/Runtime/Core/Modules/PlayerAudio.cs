@@ -277,7 +277,7 @@ namespace Hertzole.GoldPlayer
             }
             else if (audioType == AudioTypes.Custom && customBehaviour != null)
             {
-                customBehaviour.PlayFoostepSound();
+                customBehaviour.PlayFootstepSound();
             }
         }
 

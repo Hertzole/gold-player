@@ -493,7 +493,9 @@ MonoBehaviour:
       drainStaminaWhen: 1
       maxStamina: 10
       drainRate: 1
-      regenRate: 0.8
+      stillThreshold: 0.2
+      regenRateStill: 0.8
+      regenRateMoving: 0.5
       regenWait: 1
     canJump: 1
     jumpingRequiresStamina: 1
@@ -631,21 +633,22 @@ MonoBehaviour:
     type: 3}
   actions:
   - actionName: Look
-    action: {fileID: 6940538419726410420, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -1751491959069467807, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Move
-    action: {fileID: -1246895598473198080, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 3509778451805936107, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Jump
-    action: {fileID: 335763634227698153, guid: 0b5686141ac42094688c7771035dbff1, type: 3}
+    action: {fileID: -239634731036072923, guid: 0b5686141ac42094688c7771035dbff1,
+      type: 3}
   - actionName: Run
-    action: {fileID: 5190739044734946418, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -1886600523852151199, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Crouch
-    action: {fileID: 5064262545289094806, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -6511908450422008743, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Interact
-    action: {fileID: -5548793354506133487, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 1977937622231241960, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   autoEnableInput: 1
   autoDisableInput: 1

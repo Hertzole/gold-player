@@ -7,6 +7,7 @@ namespace Hertzole.GoldPlayer
     [DisallowMultipleComponent]
     [AddComponentMenu("Gold Player/Gold Player Controller", 0)]
     [HelpURL("https://github.com/Hertzole/gold-player")]
+    [SelectionBase]
     public class GoldPlayerController : MonoBehaviour
     {
         [SerializeField]

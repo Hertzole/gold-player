@@ -90,6 +90,7 @@ namespace Hertzole.GoldPlayer
         [Header("Interaction")]
 #endif
         [SerializeField]
+        [Tooltip("If true, the component will always attempt to find the interaction component.\nIf false, you will have to manually set the player.")]
         [FormerlySerializedAs("m_AutoFindInteraction")]
         private bool autoFindInteraction = true;
         [SerializeField]

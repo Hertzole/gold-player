@@ -53,11 +53,15 @@ namespace Hertzole.GoldPlayer.Editor
                 Undo.AddComponent<GoldPlayerInputSystem>(go);
             }
 #else
+            serializedObject.Update();
+
             EditorGUILayout.PropertyField(useKeyCodes);
 
             EditorGUILayout.Space();
 
             list.DoLayoutList();
+
+            serializedObject.ApplyModifiedProperties();
 #endif
         }
     }
