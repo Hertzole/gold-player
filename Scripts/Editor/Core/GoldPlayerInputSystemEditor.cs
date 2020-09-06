@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 using UnityEditorInternal;
+using System.IO;
 #endif
 
 namespace Hertzole.GoldPlayer.Editor
@@ -29,21 +30,23 @@ namespace Hertzole.GoldPlayer.Editor
         private InputActionReference[] availableActions;
         private string[] availableActionsNames;
 
-        private bool hasActionAsset;
-
         private void OnEnable()
+        {
+            GetProperties();
+
+            previousAsset = actionAsset.objectReferenceValue as InputActionAsset;
+
+            CreateActionList();
+
+            PopulateActions();
+        }
+
+        private void GetProperties()
         {
             actionAsset = serializedObject.FindProperty("inputAsset");
             autoEnableInput = serializedObject.FindProperty("autoEnableInput");
             autoDisableInput = serializedObject.FindProperty("autoDisableInput");
             actions = serializedObject.FindProperty("actions");
-
-            previousAsset = actionAsset.objectReferenceValue as InputActionAsset;
-            hasActionAsset = previousAsset != null;
-
-            CreateActionList();
-
-            PopulateActions();
         }
 #endif
 
@@ -58,8 +61,6 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 InputActionAsset actions = actionAsset.objectReferenceValue as InputActionAsset;
 
-                hasActionAsset = actions != null;
-
                 serializedObject.ApplyModifiedProperties();
                 PopulateActions();
                 serializedObject.Update();
@@ -70,6 +71,8 @@ namespace Hertzole.GoldPlayer.Editor
                     previousAsset = actions;
                 }
             }
+
+            DoCreateActions();
 
             EditorGUILayout.PropertyField(autoEnableInput);
             EditorGUILayout.PropertyField(autoDisableInput);
@@ -102,7 +105,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             serializedObject.ApplyModifiedProperties();
 #else
-            if(GUILayout.Button("Replace with Gold Player Input"))
+                        if(GUILayout.Button("Replace with Gold Player Input"))
             {
                 GameObject go = ((GoldPlayerInputSystem)target).gameObject;
 
@@ -113,6 +116,198 @@ namespace Hertzole.GoldPlayer.Editor
         }
 
 #if !OBSOLETE
+        private void DoCreateActions()
+        {
+            if (actionAsset.objectReferenceValue == null)
+            {
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Create Actions", GUILayout.Width(140)))
+                {
+                    string fileName = EditorUtility.SaveFilePanel("Create Input Actions Asset", "Assets", Application.productName, InputActionAsset.Extension);
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        if (!fileName.StartsWith(Application.dataPath))
+                        {
+                            Debug.LogError("Path must be located in Assets/ folder.");
+                            EditorGUILayout.EndHorizontal();
+                            return;
+                        }
+
+                        if (!fileName.EndsWith("." + InputActionAsset.Extension))
+                        {
+                            fileName += "." + InputActionAsset.Extension;
+                        }
+
+                        InputActionAsset actions = CreateInstance<InputActionAsset>();
+
+                        actions.name = Path.GetFileNameWithoutExtension(fileName);
+
+                        InputActionMap playerMap = new InputActionMap("Player");
+                        actions.AddActionMap(playerMap);
+
+                        playerMap.AddAction("Move", InputActionType.Value, expectedControlLayout: "Vector2");
+                        playerMap.AddAction("Look", InputActionType.Value, expectedControlLayout: "Vector2");
+                        playerMap.AddAction("Jump", InputActionType.Button);
+                        playerMap.AddAction("Crouch", InputActionType.Button);
+                        playerMap.AddAction("Run", InputActionType.Button);
+#if !GOLD_PLAYER_DISABLE_INTERACTION
+                        playerMap.AddAction("Interact", InputActionType.Button);
+#endif
+
+                        playerMap.AddBinding(new InputBinding("2DVector", "Move", null, null, null, "WASD") { isComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/w", "Move", "WASD", null, null, "up") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/s", "Move", "WASD", null, null, "down") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/a", "Move", "WASD", null, null, "left") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/d", "Move", "WASD", null, null, "right") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/leftStick", "Move", "Gamepad", null, null, null));
+
+                        playerMap.AddBinding(new InputBinding("<Mouse>/delta", "Look", "Keyboard", "ScaleVector2(x=0.1,y=0.1)", null, null));
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/rightStick", "Look", "Keyboard", "ScaleVector2(x=2,y=2)", null, null));
+
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/space", "Jump", "Keyboard", null, null, null));
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/buttonSouth", "Jump", "Gamepad", null, null, null));
+
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/c", "Crouch", "Keyboard", null, null, null));
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/leftStickPress", "Crouch", "Gamepad", null, null, null));
+
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/leftShift", "Run", "Keyboard", null, null, null));
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/rightTrigger", "Run", "Gamepad", null, null, null));
+
+#if !GOLD_PLAYER_DISABLE_INTERACTION
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/e", "Interact", "Keyboard", null, null, null));
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/buttonWest", "Interact", "Gamepad", null, null, null));
+#endif
+
+#if GOLD_PLAYER_UGUI
+                        InputActionMap uiMap = new InputActionMap("UI");
+                        actions.AddActionMap(uiMap);
+
+                        uiMap.AddAction("Navigate", InputActionType.Value, expectedControlLayout: "Vector2");
+                        uiMap.AddAction("Submit", InputActionType.Button);
+                        uiMap.AddAction("Cancel", InputActionType.Button);
+                        uiMap.AddAction("Point", InputActionType.Button);
+                        uiMap.AddAction("Click", InputActionType.Button);
+                        uiMap.AddAction("ScrollWheel", InputActionType.Value, expectedControlLayout: "Vector2");
+                        uiMap.AddAction("MiddleClick", InputActionType.Button);
+                        uiMap.AddAction("RightClick", InputActionType.Button);
+
+                        uiMap.AddBinding(new InputBinding("2DVector", "Navigate", null, null, null, "Gamepad") { isComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/leftStick/up", "Navigate", ";Gamepad", null, null, "up") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/rightStick/up", "Navigate", ";Gamepad", null, null, "up") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/leftStick/down", "Navigate", ";Gamepad", null, null, "down") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/rightStick/down", "Navigate", ";Gamepad", null, null, "down") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/leftStick/left", "Navigate", ";Gamepad", null, null, "left") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/rightStick/left", "Navigate", ";Gamepad", null, null, "left") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/leftStick/right", "Navigate", ";Gamepad", null, null, "right") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/rightStick/right", "Navigate", ";Gamepad", null, null, "right") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Gamepad>/dpad", "Navigate", ";Gamepad", null, null, null));
+                        uiMap.AddBinding(new InputBinding("2DVector", "Navigate", null, null, null, "Joystick") { isComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Joystick>/stick/up", "Navigate", "Joystick", null, null, "up") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Joystick>/stick/down", "Navigate", "Joystick", null, null, "down") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Joystick>/stick/left", "Navigate", "Joystick", null, null, "left") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Joystick>/stick/right", "Navigate", "Joystick", null, null, "right") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("2DVector", "Navigate", null, null, null, "Keyboard") { isComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/w", "Navigate", "Keyboard", null, null, "up") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/s", "Navigate", "Keyboard", null, null, "down") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/a", "Navigate", "Keyboard", null, null, "left") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/d", "Navigate", "Keyboard", null, null, "right") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/upArrow", "Navigate", "Keyboard", null, null, "up") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/downArrow", "Navigate", "Keyboard", null, null, "down") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/leftArrow", "Navigate", "Keyboard", null, null, "left") { isPartOfComposite = true });
+                        uiMap.AddBinding(new InputBinding("<Keyboard>/rightArrow", "Navigate", "Keyboard", null, null, "right") { isPartOfComposite = true });
+
+                        uiMap.AddBinding(new InputBinding("*/{Submit}", "Submit"));
+
+                        uiMap.AddBinding(new InputBinding("*/{Cancel}", "Cancel"));
+
+                        uiMap.AddBinding(new InputBinding("<Mouse>/position", "Point", "Keyboard"));
+                        uiMap.AddBinding(new InputBinding("<Pen>/position", "Point", "Keyboard"));
+                        uiMap.AddBinding(new InputBinding("<Touchscreen>/touch*/position", "Point", "Touch"));
+
+                        uiMap.AddBinding(new InputBinding("<Mouse>/leftButton", "Click", ";Keyboard"));
+                        uiMap.AddBinding(new InputBinding("<Pen>/tip", "Click", ";Keyboard"));
+                        uiMap.AddBinding(new InputBinding("<Touchscreen>/touch*/press", "Click", "Touch"));
+                        uiMap.AddBinding(new InputBinding("<XRController>/trigger", "Click", "XR"));
+
+                        uiMap.AddBinding(new InputBinding("<Mouse>/scroll", "ScrollWheel", ";Keyboard"));
+
+                        uiMap.AddBinding(new InputBinding("<Mouse>/middleButton", "MiddleClick", ";Keyboard"));
+
+                        uiMap.AddBinding(new InputBinding("<Mouse>/rightButton", "RightClick", ";Keyboard"));
+#endif
+
+                        InputControlScheme.DeviceRequirement[] keyboardDevice = new InputControlScheme.DeviceRequirement[]
+                        {
+                            new InputControlScheme.DeviceRequirement()
+                            {
+                                controlPath = "<Keyboard>",
+                                isOptional = false,
+                                isOR = false
+                            },
+                            new InputControlScheme.DeviceRequirement()
+                            {
+                                controlPath = "<Mouse>",
+                                isOptional = true,
+                                isOR = false
+                            }
+                        };
+                        InputControlScheme.DeviceRequirement[] gamepadDevice = new InputControlScheme.DeviceRequirement[]
+                        {
+                            new InputControlScheme.DeviceRequirement()
+                            {
+                                controlPath = "<Gamepad>",
+                                isOptional = false,
+                                isOR = false
+                            }
+                        };
+                        InputControlScheme.DeviceRequirement[] touchDevice = new InputControlScheme.DeviceRequirement[]
+                        {
+                            new InputControlScheme.DeviceRequirement()
+                            {
+                                controlPath = "<Touchscreen>",
+                                isOptional = false,
+                                isOR = false
+                            }
+                        };
+                        InputControlScheme.DeviceRequirement[] joystickDevice = new InputControlScheme.DeviceRequirement[]
+                        {
+                            new InputControlScheme.DeviceRequirement()
+                            {
+                                controlPath = "<Joystick>",
+                                isOptional = false,
+                                isOR = false
+                            }
+                        };
+
+                        actions.AddControlScheme(new InputControlScheme("Keyboard", keyboardDevice, "Keyboard"));
+                        actions.AddControlScheme(new InputControlScheme("Gamepad", gamepadDevice, "Gamepad"));
+                        actions.AddControlScheme(new InputControlScheme("Touch", touchDevice, "Touch"));
+                        actions.AddControlScheme(new InputControlScheme("Joystick", joystickDevice, "Joystick"));
+
+                        File.WriteAllText(fileName, actions.ToJson());
+                        AssetDatabase.Refresh();
+
+                        EditorApplication.delayCall += () =>
+                        {
+                            // Need to get the properties again or else we will get a "property is disposed" error.
+                            GetProperties();
+
+                            string relativePath = "Assets/" + fileName.Substring(Application.dataPath.Length + 1);
+                            InputActionAsset loadedActions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(relativePath);
+                            actionAsset.objectReferenceValue = loadedActions;
+                            serializedObject.ApplyModifiedProperties();
+                            serializedObject.Update();
+                            PopulateActions();
+                            serializedObject.Update();
+                            ReassignActions();
+                        };
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
         private void CreateActionList()
         {
             actionList = new ReorderableList(serializedObject, actions)
@@ -126,14 +321,20 @@ namespace Hertzole.GoldPlayer.Editor
                 },
                 drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
                 {
+                    if (availableActions == null)
+                    {
+                        PopulateActions();
+                    }
+
                     SerializedProperty element = actions.GetArrayElementAtIndex(index);
 
                     Rect nameRect = new Rect(rect.x, rect.y + 2, rect.width / 2 - 4, EditorGUIUtility.singleLineHeight);
                     Rect actionRect = new Rect(rect.x + (rect.width / 2 + 4), rect.y + 2, rect.width / 2 - 4, EditorGUIUtility.singleLineHeight);
                     EditorGUI.PropertyField(nameRect, actions.GetArrayElementAtIndex(index).FindPropertyRelative("actionName"), GUIContent.none);
 
-                    if (hasActionAsset)
+                    if (actionAsset.objectReferenceValue != null)
                     {
+                        Debug.Log(availableActions);
                         int popupIndex = Array.IndexOf(availableActions, element.FindPropertyRelative("action").objectReferenceValue) + 1;
                         EditorGUI.BeginChangeCheck();
                         popupIndex = EditorGUI.Popup(actionRect, string.Empty, popupIndex, availableActionsNames);

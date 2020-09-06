@@ -336,67 +336,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c874b859e4aa1b94ab1c1c1e998983cd, type: 3}
---- !u!1 &51215777
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 51215779}
-  - component: {fileID: 51215778}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &51215778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51215777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: 0}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: 
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!4 &51215779
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51215777}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4377298, y: 2.976252, z: -1.6594874}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &61158070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12378,7 +12317,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1200324340}
   m_HandleRect: {fileID: 1200324339}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -17143,32 +17082,32 @@ PrefabInstance:
     - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
       propertyPath: actions.Array.data[0].action
       value: 
-      objectReference: {fileID: -1751491959069467807, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[4].action
-      value: 
-      objectReference: {fileID: -6511908450422008743, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[3].action
-      value: 
-      objectReference: {fileID: -1886600523852151199, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[2].action
-      value: 
-      objectReference: {fileID: -239634731036072923, guid: 0b5686141ac42094688c7771035dbff1,
+      objectReference: {fileID: -2911009157714819484, guid: 0b5686141ac42094688c7771035dbff1,
         type: 3}
     - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
       propertyPath: actions.Array.data[1].action
       value: 
-      objectReference: {fileID: 3509778451805936107, guid: 0b5686141ac42094688c7771035dbff1,
+      objectReference: {fileID: 6228006781377513727, guid: 0b5686141ac42094688c7771035dbff1,
+        type: 3}
+    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: actions.Array.data[2].action
+      value: 
+      objectReference: {fileID: 2837801055328765847, guid: 0b5686141ac42094688c7771035dbff1,
+        type: 3}
+    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: actions.Array.data[3].action
+      value: 
+      objectReference: {fileID: 7499931120916548345, guid: 0b5686141ac42094688c7771035dbff1,
+        type: 3}
+    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
+      propertyPath: actions.Array.data[4].action
+      value: 
+      objectReference: {fileID: 3039052082105390073, guid: 0b5686141ac42094688c7771035dbff1,
         type: 3}
     - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
       propertyPath: actions.Array.data[5].action
       value: 
-      objectReference: {fileID: 1977937622231241960, guid: 0b5686141ac42094688c7771035dbff1,
+      objectReference: {fileID: -2412770888459627074, guid: 0b5686141ac42094688c7771035dbff1,
         type: 3}
     - target: {fileID: 1221496511255106, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
       propertyPath: m_Name
