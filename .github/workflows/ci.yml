@@ -44,6 +44,8 @@ jobs:
           git mv Scripts/Runtime.meta Runtime.meta
           git mv Scripts/Editor Editor
           git mv Scripts/Editor.meta Editor.meta
+          git rm -f -r Scripts/Tests
+          git rm -f Scripts/Tests.meta
           rm -f Scripts.meta
         fi
         git config --global user.name 'github-bot'
