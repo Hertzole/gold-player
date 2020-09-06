@@ -5,7 +5,6 @@
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using static UnityEditor.EditorGUIUtility;
 
 namespace Hertzole.GoldPlayer.Editor
 {
@@ -17,6 +16,9 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty objects;
 
         private ReorderableList list;
+
+        private float singleLineHeight { get { return EditorGUIUtility.singleLineHeight; } }
+        private float standardVerticalSpacing { get { return EditorGUIUtility.standardVerticalSpacing; } }
 
         private void OnEnable()
         {

@@ -1,58 +1,54 @@
 # Gold Player
-A first-person player controller for Unity, built with being user-friendly and developer friendly in mind.
+A first-person player controller for Unity, built with being user-friendly and developer-friendly in mind.
 
-## What?
-Gold Player aims to be an easy to use first person player controller for your Unity games. Its goal is to work with as many first-person games as possible without the need to modify much code if any. So be it if it's a horror game, puzzle game or first-person shooter; it should *just work*!
+## 🎇 Features
 
-## Why?
-I feel like the standard controllers provided by Unity is REALLY bad, like seriously bad. So I once set out to create a player controller that I could use in multiple projects without the need of editing the code for it. It worked fine at first but it was full of bad practices and bugs. So I used my new knowledge to create a new one and it went really good. It even got used in [a game I published](https://hertzole.itch.io/jumps)! But I once started a major refactor and I never finished it and I left it in a weird place. Half good, half really bad. And since that, my coding style has evolved even more. So I wanted to make "the ultimate controller" with all the knowledge I already have and fix stupid problems from the get-go. 
-
-## How do I get started?
-#### If you want to use it in a game:  
-**NEW PACKAGE VERSION!**  
-Starting with Unity 2018.3, you can use git as packages in the package manager! Go [here](https://github.com/Hertzole/gold-player/tree/package#package-installation) for installation instructions. If you don't want to use that, you can go the normal route...
-
-Go to [Releases](https://github.com/Hertzole/gold-player/releases) and get the latest release in the form of a Unity package. This will make sure you get a version that should work just fine without any problems. The player is *supported* from Unity 2018.1 and up but it should work fine to at least Unity 2017.1. You may just need to do some manual work on import (like taking care of assembly definitions) (Notice! If you want to use the provided UI component you NEED to use TextMesh Pro in 2018.1 and up and normal text in 2017.3 and down)  
-However, if you want to get the latest version (that might not work as intended!) you have to download the entire repository and extract the needed files from it. **NOTICE THAT THE PROJECT REQUIRES AT LEAST UNITY VERSION 2019.3!**
-#### If you want to contribute:
-Fork the project and start making your changes. Commit them in your own repository and then submit a pull request on this page. Keep in mind that if you want to contribute you should follow the coding style present in the other files. **NOTICE THAT THE PROJECT REQUIRES UNITY VERSION 2019.3!**
-
-## What do I get?
-When you use this player controller you will get the following:
-- A solid and performant player controller
-- Running and crouching
-- Head bob
-- Audio for footsteps, jumping, and landing
+- Good performance
+- Walking, running (with optional stamina!), crouching, and jumping
+- Head bob and audio for footsteps, jumping, and landing
 - Moving platforms support
 - Easy to use functions
-- Extendable classes
-- Documented code
-- Interaction component
-- Easy to use UI component
+- Very well documented code
+- Interaction component, UI component, graphics component, and animator component
+- Works with multiplayer
 - Support for [Unity's new Input System](https://github.com/Unity-Technologies/InputSystem/)
 
-## What can I expect later?
-I have several things I want to do with this player controller. Here are some thing I would like to do.
-- Extra components (stuff that could help you make your game and hooks into the player)
-- Performance improvements
-- More easy to use API
+## 📦 Installation
+**Minimum supported Unity version: 2018.4**
 
-Those are just some things I can think of right now. I will, of course, add more stuff as time goes on!
+### Package manager installation:
+1. Open the package manager in your project.
+2. Click the + button in the top left corner and click 'Add package from git'.
+3. Enter this URL: `https://github.com/Hertzole/gold-player#package`
 
-## Q&A
-Q: Why the name 'Gold Player'?  
-A: I'm a big fan of the player controller is [GoldSrc](https://en.wikipedia.org/wiki/GoldSrc) engine and I want to make a player controller that feels just as good, so I went with "Gold Player".
+or  
 
-Q: Why open source?  
-A: I had my other two player controllers closed source, but I treated them as open source with documentation and such, so I thought it would be fun to make it open source and it could help someone looking for a solid player controller!
+1. Open your `manifest.json` in `YourGameFolder/Packages/`.
+2. Add `"se.hertzole.gold-player": "https://github.com/Hertzole/gold-player.git#package"` to your dependencies list.
+3. Go back into Unity and it should resolve the packages and download Gold Player.
 
-Q: Can I use this for my project?  
-A: Yes! No restrictions! You can do whatever you want with it. The only thing you can't do is directly reselling my player controller. 
+### Unity package installation:
+1. Go to the [releases tab](https://github.com/Hertzole/gold-player/releases) and download the latest .unitypackage version.
+2. In Unity, import the package either by dragging it into your project or right-clicking in your project window - Import package - Custom package
+3. **Include all the files in the editor/runtime folder.** Components you don't want can be removed with script defines/project settings. You may remove examples if you want to.
 
-## Screenshots and testing
-The available editors.
+### Updating:
+**Package manager version:** Remove the package and add it again.  
+**Unity package version:** Remove the old project and reimport it.
+
+## 🔨 Getting Started
+After importing Gold Player into your project, the quickest way to get started is by creating the player using Create - 3D Object - Gold Player Controller. This will set up the player in a recommended way.  
+You can then explore all the options on the controller. You can also check out all the available components from the Add Component menu. They are under the Gold Player subcategory. You can also check out the examples that demonstrate specific features.
+
+## 📃 License
+Gold Player is licensed under MIT. You can do whatever you want with it, but I'm not liable if it causes any damages.
+
+## 🕹 Screenshots and Testing
+###[Play Example Level](https://hertzole.github.io/gold-player/docs/play)
+You can play around in an example scene that showcases most of the features while also allowing you to modify the player at runtime. 
+
+The available editors:
 ![Editor](https://raw.githubusercontent.com/Hertzole/gold-player/gh-pages/docs/screenshots/editor.png)
-You can also try out a web version of the player controller [here](http://hertzole.github.io/gold-player/docs/play). You can tweak almost all the settings at runtime.
 
 ##
 

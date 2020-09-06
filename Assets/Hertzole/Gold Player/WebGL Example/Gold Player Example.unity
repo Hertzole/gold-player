@@ -16298,12 +16298,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoFindPlayer: 1
   player: {fileID: 0}
-  sprintingBarType: 0
-  sprintingBarImage: {fileID: 0}
-  sprintingBarSlider: {fileID: 1827740603}
-  sprintingLabel: {fileID: 0}
-  sprintingLabelPro: {fileID: 579792541}
-  sprintingLabelDisplay: 1
+  staminaBarType: 0
+  staminaBarImage: {fileID: 0}
+  staminaBarSlider: {fileID: 1827740603}
+  staminaLabel: {fileID: 0}
+  staminaLabelPro: {fileID: 579792541}
+  staminaLabelDisplay: 1
+  staminaPercentageFormat: F0
+  staminaDirectValueFormat: F0
+  staminaDirectMaxFormat: F0
   autoFindInteraction: 1
   playerInteraction: {fileID: 0}
   interactionBox: {fileID: 1006520270}

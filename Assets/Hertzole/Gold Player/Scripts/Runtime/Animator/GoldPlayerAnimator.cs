@@ -349,7 +349,12 @@ namespace Hertzole.GoldPlayer
 
         public override bool Equals(object obj)
         {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             return obj is GoldPlayerAnimatorParameterInfo info && Equals(info);
+#else
+            return obj is GoldPlayerAnimatorParameterInfo && Equals((GoldPlayerAnimatorParameterInfo)obj);
+#endif
+
         }
 
         public bool Equals(GoldPlayerAnimatorParameterInfo other)

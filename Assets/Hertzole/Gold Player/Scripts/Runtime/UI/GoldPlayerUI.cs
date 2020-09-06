@@ -54,35 +54,49 @@ namespace Hertzole.GoldPlayer
         private GoldPlayerController player = null;
 
 #if UNITY_EDITOR
-        [Header("Sprinting")]
+        [Header("Stamina")]
 #endif
         [SerializeField]
         [Tooltip("The type of progress bar that will be used.")]
         [FormerlySerializedAs("m_SprintingBarType")]
-        private ProgressBarType sprintingBarType = ProgressBarType.Image;
+        [FormerlySerializedAs("sprintingBarType")]
+        private ProgressBarType staminaBarType = ProgressBarType.Image;
 #if USE_GUI
         [SerializeField]
         [Tooltip("The progress bar as an image.")]
         [FormerlySerializedAs("m_SprintingBarImage")]
-        private Image sprintingBarImage;
+        [FormerlySerializedAs("sprintingBarImage")]
+        private Image staminaBarImage;
         [SerializeField]
         [Tooltip("The progress bar as a slider.")]
         [FormerlySerializedAs("m_SprintingBarSlider")]
-        private Slider sprintingBarSlider;
+        [FormerlySerializedAs("sprintingBarSlider")]
+        private Slider staminaBarSlider;
         [SerializeField]
         [Tooltip("The label for showing player stamina.")]
         [FormerlySerializedAs("m_SprintingLabel")]
-        private Text sprintingLabel;
+        [FormerlySerializedAs("sprintingLabel")]
+        private Text staminaLabel;
 #if USE_TMP
         [SerializeField]
         [Tooltip("The TextMeshPro label for showing player stamina.")]
-        private TextMeshProUGUI sprintingLabelPro;
+        private TextMeshProUGUI staminaLabelPro;
 #endif
 #endif
         [SerializeField]
         [Tooltip("The type of display if there's a label.")]
         [FormerlySerializedAs("m_SprintingLabelDisplay")]
-        private LabelDisplayType sprintingLabelDisplay = LabelDisplayType.Percentage;
+        [FormerlySerializedAs("sprintingLabelDisplay")]
+        private LabelDisplayType staminaLabelDisplay = LabelDisplayType.Percentage;
+        [SerializeField]
+        [Tooltip("The format of the stamina percentage value.")]
+        private string staminaPercentageFormat = "F0";
+        [SerializeField]
+        [Tooltip("The format of the current stamina value.")]
+        private string staminaDirectValueFormat = "F0";
+        [SerializeField]
+        [Tooltip("The format of the max stamina value.")]
+        private string staminaDirectMaxFormat = "F0";
 
         // Only show if GoldPlayer interaction is enabled.
 #if !GOLD_PLAYER_DISABLE_INTERACTION
@@ -114,21 +128,28 @@ namespace Hertzole.GoldPlayer
 #endif
 
         /// <summary> The type of progress bar that will be used. </summary>
-        public ProgressBarType SprintingBarType { get { return sprintingBarType; } set { sprintingBarType = value; AdaptSprintingUI(); } }
+        public ProgressBarType StaminaBarType { get { return staminaBarType; } set { staminaBarType = value; AdaptSprintingUI(); } }
 #if USE_GUI
         /// <summary> The progress bar as an image. </summary>
-        public Image SprintingBarImage { get { return sprintingBarImage; } set { sprintingBarImage = value; } }
+        public Image StaminaBarImage { get { return staminaBarImage; } set { staminaBarImage = value; } }
         /// <summary> The progress bar as a slider. </summary>
-        public Slider SprintingBarSlider { get { return sprintingBarSlider; } set { sprintingBarSlider = value; } }
+        public Slider StaminaBarSlider { get { return staminaBarSlider; } set { staminaBarSlider = value; } }
         /// <summary> The label for showing player stamina. </summary>
-        public Text SprintingLabel { get { return sprintingLabel; } set { sprintingLabel = value; } }
+        public Text StaminaLabel { get { return staminaLabel; } set { staminaLabel = value; } }
 #if USE_TMP
         /// <summary> The TextMeshPro label for showing player stamina. </summary>
-        public TextMeshProUGUI SprintingLabelPro { get { return sprintingLabelPro; } set { sprintingLabelPro = value; } }
+        public TextMeshProUGUI StaminaLabelPro { get { return staminaLabelPro; } set { staminaLabelPro = value; } }
 #endif
 #endif
+        /// <summary> The format of the stamina percentage value. </summary>
+        public string PercentageFormat { get { return staminaPercentageFormat; } set { staminaPercentageFormat = value; } }
+        /// <summary> The format of the current stamina value. </summary>
+        public string DirectValueFormat { get { return staminaDirectValueFormat; } set { staminaDirectValueFormat = value; } }
+        /// <summary> The format of the max stamina value. </summary>
+        public string DirectMaxFormat { get { return staminaDirectMaxFormat; } set { staminaDirectMaxFormat = value; } }
+
         /// <summary> The type of display if there's a label. </summary>
-        public LabelDisplayType SprintingLabelDisplay { get { return sprintingLabelDisplay; } set { sprintingLabelDisplay = value; } }
+        public LabelDisplayType StaminaLabelDisplay { get { return staminaLabelDisplay; } set { staminaLabelDisplay = value; } }
 
 #if !GOLD_PLAYER_DISABLE_INTERACTION
         /// <summary> The box/label that should be toggled when the player can interact. </summary>
@@ -163,6 +184,23 @@ namespace Hertzole.GoldPlayer
             set { playerInteraction = value; }
         }
 #endif
+
+        #region Obsolete
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'StaminaBarType' instead. This will be removed on build.", true)]
+        public ProgressBarType SprintingBarType { get { return staminaBarType; } set { staminaBarType = value; AdaptSprintingUI(); } }
+#if USE_GUI
+        [System.Obsolete("Use 'StaminaBarImage' instead. This will be removed on build.", true)]
+        public Image SprintingBarImage { get { return staminaBarImage; } set { staminaBarImage = value; } }
+        [System.Obsolete("Use 'StaminaBarSlider' instead. This will be removed on build.", true)]
+        public Slider SprintingBarSlider { get { return staminaBarSlider; } set { staminaBarSlider = value; } }
+        [System.Obsolete("Use 'StaminaLabel' instead. This will be removed on build.", true)]
+        public Text SprintingLabel { get { return staminaLabel; } set { staminaLabel = value; } }
+#endif
+        [System.Obsolete("Use 'StaminaLabelDisplay' instead. This will be removed on build.", true)]
+        public LabelDisplayType SprintingLabelDisplay { get { return staminaLabelDisplay; } set { staminaLabelDisplay = value; } }
+#endif
+        #endregion
 
         private void Awake()
         {
@@ -200,53 +238,53 @@ namespace Hertzole.GoldPlayer
                 // If the player can't run or no stamina enabled, disable all elements.
                 if (!Player.Movement.CanRun || !Player.Movement.Stamina.EnableStamina)
                 {
-                    if (sprintingBarImage != null)
+                    if (staminaBarImage != null)
                     {
-                        sprintingBarImage.gameObject.SetActive(false);
+                        staminaBarImage.gameObject.SetActive(false);
                     }
 
-                    if (sprintingBarSlider != null)
+                    if (staminaBarSlider != null)
                     {
-                        sprintingBarSlider.gameObject.SetActive(false);
+                        staminaBarSlider.gameObject.SetActive(false);
                     }
 
-                    if (sprintingLabel != null)
+                    if (staminaLabel != null)
                     {
-                        sprintingLabel.gameObject.SetActive(false);
+                        staminaLabel.gameObject.SetActive(false);
                     }
 
                     return;
                 }
 
-                switch (sprintingBarType)
+                switch (staminaBarType)
                 {
                     case ProgressBarType.Slider:
-                        if (sprintingBarImage != null)
+                        if (staminaBarImage != null)
                         {
-                            sprintingBarImage.gameObject.SetActive(false);
+                            staminaBarImage.gameObject.SetActive(false);
                         }
 
-                        if (sprintingBarSlider != null)
+                        if (staminaBarSlider != null)
                         {
-                            sprintingBarSlider.gameObject.SetActive(true);
-                            sprintingBarSlider.minValue = 0;
-                            sprintingBarSlider.maxValue = 1;
+                            staminaBarSlider.gameObject.SetActive(true);
+                            staminaBarSlider.minValue = 0;
+                            staminaBarSlider.maxValue = 1;
                         }
                         break;
                     case ProgressBarType.Image:
-                        if (sprintingBarImage != null)
+                        if (staminaBarImage != null)
                         {
-                            sprintingBarImage.gameObject.SetActive(true);
+                            staminaBarImage.gameObject.SetActive(true);
                         }
 
-                        if (sprintingBarSlider != null)
+                        if (staminaBarSlider != null)
                         {
-                            sprintingBarSlider.gameObject.SetActive(false);
+                            staminaBarSlider.gameObject.SetActive(false);
                         }
 
                         break;
                     default:
-                        throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
+                        throw new System.NotImplementedException("There's no support for progress bar type '" + staminaBarType + "' in GoldPlayerUI!");
                 }
             }
 #else
@@ -282,37 +320,37 @@ namespace Hertzole.GoldPlayer
 #if USE_GUI
             if (Player && Player.Movement.CanRun && Player.Movement.Stamina.EnableStamina)
             {
-                switch (sprintingBarType)
+                switch (staminaBarType)
                 {
                     case ProgressBarType.Slider:
-                        if (sprintingBarSlider != null)
+                        if (staminaBarSlider != null)
                         {
-                            sprintingBarSlider.value = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
+                            staminaBarSlider.value = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
                         }
 
                         break;
                     case ProgressBarType.Image:
-                        if (sprintingBarImage != null)
+                        if (staminaBarImage != null)
                         {
-                            sprintingBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
+                            staminaBarImage.fillAmount = Player.Movement.Stamina.CurrentStamina / Player.Movement.Stamina.MaxStamina;
                         }
 
                         break;
                     default:
-                        throw new System.NotImplementedException("There's no support for progress bar type '" + sprintingBarType + "' in GoldPlayerUI!");
+                        throw new System.NotImplementedException("There's no support for progress bar type '" + staminaBarType + "' in GoldPlayerUI!");
                 }
 
-                string sprintString = GetLabel(sprintingLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina);
+                string sprintString = GetLabel(staminaLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina, staminaDirectValueFormat, staminaDirectMaxFormat, staminaPercentageFormat);
 
-                if (sprintingLabel != null)
+                if (staminaLabel != null)
                 {
-                    sprintingLabel.text = sprintString;
+                    staminaLabel.text = sprintString;
                 }
 
 #if USE_TMP
-                if (sprintingLabelPro != null)
+                if (staminaLabelPro != null)
                 {
-                    sprintingLabelPro.text = sprintString;
+                    staminaLabelPro.text = sprintString;
                 }
 #endif
             }
@@ -385,16 +423,16 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Returns a formatted label based on the display type.
         /// </summary>
-        protected virtual string GetLabel(LabelDisplayType displayType, float current, float max)
+        protected virtual string GetLabel(LabelDisplayType displayType, float current, float max, string directValueFormat, string directMaxFormat, string percentageFormat)
         {
             switch (displayType)
             {
                 case LabelDisplayType.Direct:
-                    return string.Format("{0}/{1}", current.ToString("F2"), max);
+                    return string.Format("{0}/{1}", current.ToString(directValueFormat), max.ToString(directMaxFormat));
                 case LabelDisplayType.Percentage:
-                    return string.Format("{0}%", ((current / max) * 100).ToString("F0"));
+                    return string.Format("{0}%", ((current / max) * 100).ToString(percentageFormat));
                 default:
-                    throw new System.NotImplementedException("There's no support for label display type '" + sprintingBarType + "' in GoldPlayerUI!");
+                    throw new System.NotImplementedException("There's no support for label display type '" + staminaBarType + "' in GoldPlayerUI!");
             }
         }
 

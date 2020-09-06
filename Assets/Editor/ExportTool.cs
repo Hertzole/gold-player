@@ -64,6 +64,11 @@ public static class ExportTool
                     continue;
                 }
 
+                if (allPaths[i].ToLower().Contains("scripts/tests"))
+                {
+                    continue;
+                }
+
                 validPaths.Add(allPaths[i]);
             }
         }
