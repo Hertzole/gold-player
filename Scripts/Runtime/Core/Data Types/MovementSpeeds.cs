@@ -62,7 +62,11 @@ namespace Hertzole.GoldPlayer
 
         public override bool Equals(object obj)
         {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             return obj is MovementSpeeds speeds && Equals(speeds);
+#else
+            return obj is MovementSpeeds && Equals((MovementSpeeds)obj);
+#endif
         }
 
         public bool Equals(MovementSpeeds other)

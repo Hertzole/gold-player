@@ -24,18 +24,25 @@ namespace Hertzole.GoldPlayer.Editor
 #if USE_GUI
         private SerializedProperty autoFindPlayer;
         private SerializedProperty player;
-        private SerializedProperty sprintingBarType;
-        private SerializedProperty sprintingBarImage;
-        private SerializedProperty sprintingBarSlider;
-        private SerializedProperty sprintingLabel;
-        private SerializedProperty sprintingLabelDisplay;
+        private SerializedProperty staminaBarType;
+        private SerializedProperty staminaBarImage;
+        private SerializedProperty staminaBarSlider;
+        private SerializedProperty staminaLabel;
+        private SerializedProperty staminaLabelDisplay;
+        private SerializedProperty staminaPercentageFormat;
+        private SerializedProperty staminaDirectValueFormat;
+        private SerializedProperty staminaDirectMaxFormat;
+#if !GOLD_PLAYER_DISABLE_INTERACTION
         private SerializedProperty autoFindInteraction;
         private SerializedProperty playerInteraction;
         private SerializedProperty interactionBox;
         private SerializedProperty interactionLabel;
+#endif
 #if USE_TMP
-        private SerializedProperty sprintingLabelPro;
+        private SerializedProperty staminaLabelPro;
+#if !GOLD_PLAYER_DISABLE_INTERACTION
         private SerializedProperty interactionLabelPro;
+#endif
 #endif
 
         // Get all the serialized properties from the target script.
@@ -43,18 +50,25 @@ namespace Hertzole.GoldPlayer.Editor
         {
             autoFindPlayer = serializedObject.FindProperty("autoFindPlayer");
             player = serializedObject.FindProperty("player");
-            sprintingBarType = serializedObject.FindProperty("sprintingBarType");
-            sprintingBarImage = serializedObject.FindProperty("sprintingBarImage");
-            sprintingBarSlider = serializedObject.FindProperty("sprintingBarSlider");
-            sprintingLabel = serializedObject.FindProperty("sprintingLabel");
-            sprintingLabelDisplay = serializedObject.FindProperty("sprintingLabelDisplay");
+            staminaBarType = serializedObject.FindProperty("staminaBarType");
+            staminaBarImage = serializedObject.FindProperty("staminaBarImage");
+            staminaBarSlider = serializedObject.FindProperty("staminaBarSlider");
+            staminaLabel = serializedObject.FindProperty("staminaLabel");
+#if USE_TMP
+            staminaLabelPro = serializedObject.FindProperty("staminaLabelPro");
+#endif
+            staminaLabelDisplay = serializedObject.FindProperty("staminaLabelDisplay");
+            staminaPercentageFormat = serializedObject.FindProperty("staminaPercentageFormat");
+            staminaDirectValueFormat = serializedObject.FindProperty("staminaDirectValueFormat");
+            staminaDirectMaxFormat = serializedObject.FindProperty("staminaDirectMaxFormat");
+#if !GOLD_PLAYER_DISABLE_INTERACTION
             autoFindInteraction = serializedObject.FindProperty("autoFindInteraction");
             playerInteraction = serializedObject.FindProperty("playerInteraction");
             interactionBox = serializedObject.FindProperty("interactionBox");
             interactionLabel = serializedObject.FindProperty("interactionLabel");
 #if USE_TMP
-            sprintingLabelPro = serializedObject.FindProperty("sprintingLabelPro");
             interactionLabelPro = serializedObject.FindProperty("interactionLabelPro");
+#endif
 #endif
         }
 
@@ -66,20 +80,41 @@ namespace Hertzole.GoldPlayer.Editor
 
             EditorGUILayout.PropertyField(autoFindPlayer, true);
             EditorGUILayout.PropertyField(player, true);
-            EditorGUILayout.PropertyField(sprintingBarType, true);
-            EditorGUILayout.PropertyField(sprintingBarImage, true);
-            EditorGUILayout.PropertyField(sprintingBarSlider, true);
-            EditorGUILayout.PropertyField(sprintingLabel, true);
+            EditorGUILayout.PropertyField(staminaBarType, true);
+            switch (staminaBarType.enumValueIndex)
+            {
+                case 0:
+                    EditorGUILayout.PropertyField(staminaBarSlider, true);
+                    break;
+                case 1:
+                    EditorGUILayout.PropertyField(staminaBarImage, true);
+                    break;
+            }
+            EditorGUILayout.PropertyField(staminaLabel, true);
 #if USE_TMP
-            EditorGUILayout.PropertyField(sprintingLabelPro, true);
+            EditorGUILayout.PropertyField(staminaLabelPro, true);
 #endif
-            EditorGUILayout.PropertyField(sprintingLabelDisplay, true);
+            EditorGUILayout.PropertyField(staminaLabelDisplay, true);
+            switch (staminaLabelDisplay.enumValueIndex)
+            {
+                case 0:
+                    EditorGUILayout.PropertyField(staminaDirectValueFormat);
+                    EditorGUILayout.PropertyField(staminaDirectMaxFormat);
+                    break;
+                case 1:
+                    EditorGUILayout.PropertyField(staminaPercentageFormat);
+                    break;
+                default:
+                    break;
+            }
+#if !GOLD_PLAYER_DISABLE_INTERACTION
             EditorGUILayout.PropertyField(autoFindInteraction, true);
             EditorGUILayout.PropertyField(playerInteraction, true);
             EditorGUILayout.PropertyField(interactionBox, true);
             EditorGUILayout.PropertyField(interactionLabel, true);
 #if USE_TMP
             EditorGUILayout.PropertyField(interactionLabelPro, true);
+#endif
 #endif
 
             serializedObject.ApplyModifiedProperties();

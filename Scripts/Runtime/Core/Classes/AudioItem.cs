@@ -209,7 +209,11 @@ namespace Hertzole.GoldPlayer
 
         public override bool Equals(object obj)
         {
+#if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
             return obj is AudioItem item && Equals(item);
+#else
+            return obj is AudioItem && Equals((AudioItem)obj);
+#endif
         }
 
         public bool Equals(AudioItem other)

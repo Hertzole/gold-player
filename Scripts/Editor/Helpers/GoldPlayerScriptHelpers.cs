@@ -61,7 +61,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             if (dirty)
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(",", newDefines));
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(",", newDefines.ToArray()));
             }
         }
 
@@ -78,7 +78,7 @@ namespace Hertzole.GoldPlayer.Editor
 
                 MemberInfo[] memberInfos = enumType.GetMember(target.ToString());
                 MemberInfo enumValueMemberInfo = memberInfos.FirstOrDefault(m => m.DeclaringType == enumType);
-                ObsoleteAttribute[] obsoleteAttributes = enumValueMemberInfo.GetCustomAttributes<ObsoleteAttribute>(false).ToArray();
+                ObsoleteAttribute[] obsoleteAttributes = (ObsoleteAttribute[])enumValueMemberInfo.GetCustomAttributes(typeof(ObsoleteAttribute), false);
 
                 if (obsoleteAttributes.Length > 0)
                 {
@@ -108,7 +108,7 @@ namespace Hertzole.GoldPlayer.Editor
 
                 if (dirty)
                 {
-                    PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(",", newDefines));
+                    PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(",", newDefines.ToArray()));
                 }
             }
         }
