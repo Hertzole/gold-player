@@ -44,7 +44,7 @@ You can then explore all the options on the controller. You can also check out a
 Gold Player is licensed under MIT. You can do whatever you want with it, but I'm not liable if it causes any damages.
 
 ## 🕹 Screenshots and Testing
-###[Play Example Level](https://hertzole.github.io/gold-player/docs/play)
+**[Play Example Level](https://hertzole.github.io/gold-player/docs/play)**  
 You can play around in an example scene that showcases most of the features while also allowing you to modify the player at runtime. 
 
 The available editors:
