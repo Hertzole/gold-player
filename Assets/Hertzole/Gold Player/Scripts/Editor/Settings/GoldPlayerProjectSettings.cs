@@ -18,6 +18,13 @@ namespace Hertzole.GoldPlayer.Editor
         public bool disableAudioExtras = false;
         public bool disableObjectBob = false;
 
+        [InitializeOnLoadMethod]
+        internal static void OnLoad()
+        {
+            // Adds back defines if they were manually removed.
+            ApplyDefines(GetOrCreate());
+        }
+
         internal static GoldPlayerProjectSettings GetOrCreate()
         {
             GoldPlayerProjectSettings settings = new GoldPlayerProjectSettings();
@@ -49,6 +56,68 @@ namespace Hertzole.GoldPlayer.Editor
             }
 
             File.WriteAllText(SETTINGS_LOCATION, JsonUtility.ToJson(settings, true));
+        }
+
+        internal static void ApplyDefines(GoldPlayerProjectSettings settings)
+        {
+            List<string> remove = new List<string>();
+            List<string> add = new List<string>();
+            if (settings.disableInteraction)
+            {
+                add.Add("GOLD_PLAYER_DISABLE_INTERACTION");
+            }
+            else
+            {
+                remove.Add("GOLD_PLAYER_DISABLE_INTERACTION");
+            }
+
+            if (settings.disableUI)
+            {
+                add.Add("GOLD_PLAYER_DISABLE_UI");
+            }
+            else
+            {
+                remove.Add("GOLD_PLAYER_DISABLE_UI");
+            }
+
+            if (settings.disableGraphics)
+            {
+                add.Add("GOLD_PLAYER_DISABLE_GRAPHICS");
+            }
+            else
+            {
+                remove.Add("GOLD_PLAYER_DISABLE_GRAPHICS");
+            }
+
+            if (settings.disableAnimator)
+            {
+                add.Add("GOLD_PLAYER_DISABLE_ANIMATOR");
+            }
+            else
+            {
+                remove.Add("GOLD_PLAYER_DISABLE_ANIMATOR");
+            }
+
+            if (settings.disableAudioExtras)
+            {
+                add.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
+            }
+            else
+            {
+                remove.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
+            }
+
+            if (settings.disableObjectBob)
+            {
+                add.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
+            }
+            else
+            {
+                remove.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
+            }
+
+            GoldPlayerScriptHelpers.AddAndRemove(add, remove);
+            Save(settings);
         }
     }
 
@@ -85,64 +154,7 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 if (EditorUtility.DisplayDialog("Notice", "This will add new script defines and trigger a script reload. Are you sure you want to do this?", "Yes", "No"))
                 {
-                    List<string> remove = new List<string>();
-                    List<string> add = new List<string>();
-                    if (settings.disableInteraction)
-                    {
-                        add.Add("GOLD_PLAYER_DISABLE_INTERACTION");
-                    }
-                    else
-                    {
-                        remove.Add("GOLD_PLAYER_DISABLE_INTERACTION");
-                    }
-
-                    if (settings.disableUI)
-                    {
-                        add.Add("GOLD_PLAYER_DISABLE_UI");
-                    }
-                    else
-                    {
-                        remove.Add("GOLD_PLAYER_DISABLE_UI");
-                    }
-
-                    if (settings.disableGraphics)
-                    {
-                        add.Add("GOLD_PLAYER_DISABLE_GRAPHICS");
-                    }
-                    else
-                    {
-                        remove.Add("GOLD_PLAYER_DISABLE_GRAPHICS");
-                    }
-
-                    if (settings.disableAnimator)
-                    {
-                        add.Add("GOLD_PLAYER_DISABLE_ANIMATOR");
-                    }
-                    else
-                    {
-                        remove.Add("GOLD_PLAYER_DISABLE_ANIMATOR");
-                    }
-
-                    if (settings.disableAudioExtras)
-                    {
-                        add.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
-                    }
-                    else
-                    {
-                        remove.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
-                    }
-
-                    if (settings.disableObjectBob)
-                    {
-                        add.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
-                    }
-                    else
-                    {
-                        remove.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
-                    }
-
-                    GoldPlayerScriptHelpers.AddAndRemove(add, remove);
-                    GoldPlayerProjectSettings.Save(settings);
+                    GoldPlayerProjectSettings.ApplyDefines(settings);
                 }
                 else
                 {

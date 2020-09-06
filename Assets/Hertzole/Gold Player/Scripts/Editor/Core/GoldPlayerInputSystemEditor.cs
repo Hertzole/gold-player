@@ -334,7 +334,6 @@ namespace Hertzole.GoldPlayer.Editor
 
                     if (actionAsset.objectReferenceValue != null)
                     {
-                        Debug.Log(availableActions);
                         int popupIndex = Array.IndexOf(availableActions, element.FindPropertyRelative("action").objectReferenceValue) + 1;
                         EditorGUI.BeginChangeCheck();
                         popupIndex = EditorGUI.Popup(actionRect, string.Empty, popupIndex, availableActionsNames);
