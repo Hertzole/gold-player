@@ -2,13 +2,14 @@
 
 namespace Hertzole.GoldPlayer.Tests
 {
-    public class GoldPlayerTestInput : MonoBehaviour, IGoldInput
+    internal class GoldPlayerTestInput : MonoBehaviour, IGoldInput
     {
         public Vector2 moveDirection;
         public Vector2 mouseInput;
         public bool isRunning;
         public bool isJumping;
         public bool isCrouching;
+        public bool isInteracting;
 
         public float GetAxis(string axis)
         {
@@ -64,6 +65,10 @@ namespace Hertzole.GoldPlayer.Tests
                 case "Jump":
                     bool r = isJumping;
                     isJumping = false;
+                    return r;
+                case "Interact":
+                    r = isInteracting;
+                    isInteracting = false;
                     return r;
                 default:
                     return false;

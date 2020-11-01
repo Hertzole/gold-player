@@ -4,7 +4,8 @@
         "Hertzole.GoldPlayer",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.PerformanceTesting"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -22,6 +23,11 @@
             "name": "com.unity.inputsystem",
             "expression": "",
             "define": "GOLD_PLAYER_NEW_INPUT"
+        },
+        {
+            "name": "com.unity.test-framework.performance",
+            "expression": "",
+            "define": "PERFORMANCE_TEST"
         }
     ],
     "noEngineReferences": false
