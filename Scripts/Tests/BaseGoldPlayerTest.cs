@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace Hertzole.GoldPlayer.Tests
 {
-    public class BaseGoldPlayerTest
+    internal class BaseGoldPlayerTest
     {
         protected GoldPlayerController player;
         protected GoldPlayerTestInput input;
@@ -19,7 +19,11 @@ namespace Hertzole.GoldPlayer.Tests
             player = SetupPlayer();
             CreateTestScene();
 
+#if UNITY_EDITOR
             yield return new EnterPlayMode();
+#else
+            yield return null;
+#endif
         }
 
         [UnityTearDown]
@@ -33,10 +37,14 @@ namespace Hertzole.GoldPlayer.Tests
 
             sceneObjects.Clear();
 
+#if UNITY_EDITOR
             yield return new ExitPlayMode();
+#else
+            yield return null;
+#endif
         }
 
-        private GoldPlayerController SetupPlayer()
+        protected virtual GoldPlayerController SetupPlayer()
         {
             GameObject playerGO = new GameObject("[TEST] Test Player", typeof(CharacterController));
             playerGO.transform.position = new Vector3(0, 0.08f, 0);
@@ -71,7 +79,7 @@ namespace Hertzole.GoldPlayer.Tests
             return playerController;
         }
 
-        private void CreateTestScene()
+        protected virtual void CreateTestScene()
         {
             GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Quad);
             plane.transform.eulerAngles = new Vector3(90, 0, 0);

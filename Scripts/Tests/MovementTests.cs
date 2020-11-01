@@ -5,7 +5,7 @@ using UnityEngine.TestTools;
 
 namespace Hertzole.GoldPlayer.Tests
 {
-    public class MovementTests : BaseGoldPlayerTest
+    internal class MovementTests : BaseGoldPlayerTest
     {
         /// <summary>
         /// Used to test if the player stops running when CanRun is set to false while running.

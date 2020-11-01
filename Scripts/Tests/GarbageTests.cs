@@ -7,7 +7,7 @@ using Is = UnityEngine.TestTools.Constraints.Is;
 
 namespace Hertzole.GoldPlayer.Tests
 {
-    public class GarbageTests : BaseGoldPlayerTest
+    internal class GarbageTests : BaseGoldPlayerTest
     {
         /// <summary>
         /// Used to test if PlayerCamera generates garbage on initialize.
