@@ -17,14 +17,19 @@ namespace Hertzole.GoldPlayer
 #endif
     public interface IGoldPlayerInteractable
     {
+        /// <summary> Determines if the interactable should use a custom message. </summary>
         bool UseCustomMessage { get; }
 
+        /// <summary> The custom message to display. </summary>
         string CustomMessage { get; }
 
+        /// <summary> Determines if the object can be interacted with. </summary>
         bool CanInteract { get; }
 
+        /// <summary> Determines if a interactable prompt should show up. </summary>
         bool IsHidden { get; }
 
+        /// <summary> Invokes the interact event. </summary>
         void Interact();
     }
 }

@@ -3,7 +3,7 @@
 #endif
 
 #if UNITY_2019_1_OR_NEWER
-#define USE_UI_ELEMENTS
+//#define USE_UI_ELEMENTS
 #endif
 
 using UnityEditor;
@@ -21,25 +21,38 @@ namespace Hertzole.GoldPlayer.Editor
     [CustomEditor(typeof(GoldPlayerInteractable))]
     internal class GoldPlayerInteractableEditor : UnityEditor.Editor
     {
-        private SerializedProperty canInteract;
+#if !OBSOLETE
+        private SerializedProperty isInteractable;
         private SerializedProperty isHidden;
         private SerializedProperty useCustomMessage;
         private SerializedProperty customMessage;
+        private SerializedProperty limitedInteractions;
+        private SerializedProperty maxInteractions;
         private SerializedProperty onInteract;
+        private SerializedProperty onReachedMaxInteraction;
+
+        private GoldPlayerInteractable interactable;
+#endif
 
 #if USE_UI_ELEMENTS
         private VisualElement useCustomMessageElement;
         private VisualElement customMessageElement;
+        private VisualElement maxInteractionsElement;
 #endif
 
         private void OnEnable()
         {
 #if !OBSOLETE
-            canInteract = serializedObject.FindProperty("canInteract");
+            isInteractable = serializedObject.FindProperty("isInteractable");
             isHidden = serializedObject.FindProperty("isHidden");
             useCustomMessage = serializedObject.FindProperty("useCustomMessage");
             customMessage = serializedObject.FindProperty("customMessage");
+            limitedInteractions = serializedObject.FindProperty("limitedInteractions");
+            maxInteractions = serializedObject.FindProperty("maxInteractions");
             onInteract = serializedObject.FindProperty("onInteract");
+            onReachedMaxInteraction = serializedObject.FindProperty("onReachedMaxInteractions");
+
+            interactable = (GoldPlayerInteractable)target;
 #endif
         }
 
@@ -48,15 +61,34 @@ namespace Hertzole.GoldPlayer.Editor
 #if !OBSOLETE
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(canInteract);
+            EditorGUILayout.PropertyField(isInteractable);
             EditorGUILayout.PropertyField(isHidden);
 
             EditorGUILayout.PropertyField(useCustomMessage);
+            bool oldEnabled = GUI.enabled;
             GUI.enabled = useCustomMessage.boolValue;
             EditorGUILayout.PropertyField(customMessage);
-            GUI.enabled = true;
+            GUI.enabled = oldEnabled;
+
+            EditorGUILayout.PropertyField(limitedInteractions);
+            oldEnabled = GUI.enabled;
+            GUI.enabled = limitedInteractions.boolValue;
+            EditorGUILayout.PropertyField(maxInteractions);
+            GUI.enabled = oldEnabled;
+
+            oldEnabled = GUI.enabled;
+            if (Application.isPlaying && limitedInteractions.boolValue)
+            {
+                GUI.enabled = false;
+                EditorGUILayout.LabelField("Interactions: " + interactable.Interactions);
+            }
+            GUI.enabled = oldEnabled;
 
             EditorGUILayout.PropertyField(onInteract);
+            if (limitedInteractions.boolValue)
+            {
+                EditorGUILayout.PropertyField(onReachedMaxInteraction);
+            }
 
             serializedObject.ApplyModifiedProperties();
 #else
@@ -73,7 +105,7 @@ namespace Hertzole.GoldPlayer.Editor
             VisualElement root = new VisualElement();
 
 #if !OBSOLETE
-            root.Add(new PropertyField(canInteract));
+            root.Add(new PropertyField(isInteractable));
             root.Add(new PropertyField(isHidden));
 
             root.Add(GoldPlayerUIHelper.GetSpace());
@@ -87,6 +119,8 @@ namespace Hertzole.GoldPlayer.Editor
 
             root.Add(useCustomMessageElement);
             root.Add(customMessageElement);
+
+
 
             root.Add(new PropertyField(onInteract));
 #else
