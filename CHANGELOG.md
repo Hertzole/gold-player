@@ -7,6 +7,7 @@
 
 ### Changes:
 - Revamped how Gold Player project settings are saved. Old settings will be upgraded.
+- Changed Drain Stamina When and Kick When to flags instead for better control. Will most likely not upgrade very well if you've used these values.
 
 ---
 

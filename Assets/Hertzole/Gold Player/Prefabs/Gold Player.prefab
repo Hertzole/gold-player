@@ -464,7 +464,7 @@ MonoBehaviour:
     fieldOfViewKick:
       enableFOVKick: 1
       unscaledTime: 0
-      kickWhen: 0
+      kickWhen: 1
       kickAmount: 15
       lerpTimeTo: 4
       lerpTimeFrom: 2.5
@@ -490,7 +490,7 @@ MonoBehaviour:
       backwardsSpeed: 5
     stamina:
       enableStamina: 1
-      drainStaminaWhen: 1
+      drainStaminaWhen: -1
       maxStamina: 10
       drainRate: 1
       stillThreshold: 0.2

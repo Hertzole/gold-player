@@ -179,18 +179,33 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            // If the kick should be enabled only when move speed is above walk speed, do the FOV kick when 'isRunning' is true.
-            // Else do it when 'isRunning' is true and the run button is being held down.
-            if (kickWhen == RunAction.IsRunning)
+            bool kick = true;
+            // We need to set it to false here or else the player will just kick by standing still.
+            if (kickWhen == RunAction.None)
             {
-                // Do FOV kick if 'isRunning' is true.
-                DoFOV(PlayerController.Movement.IsRunning, deltaTime);
+                kick = false;
             }
-            else if (kickWhen == RunAction.IsRunningAndPressingRun)
+
+            // Only check if we need to kick if we're still kicking.
+            if (kick)
             {
-                // Do FOV kick if 'isRunning' is true and the run button is being held down.
-                DoFOV(GetButton(PlayerController.Movement.RunInput) && PlayerController.Movement.IsRunning, deltaTime);
+                // Check if the IsRunning flag is set and if the player isn't running, then we're not kicking.
+                if ((kickWhen & RunAction.IsRunning) == RunAction.IsRunning && !PlayerController.Movement.IsRunning)
+                {
+                    kick = false;
+                }
             }
+
+            if (kick)
+            {
+                // Check if the PressingRun flag is set and if the button isn't pressed, then we're not kicking.
+                if ((kickWhen & RunAction.PressingRun) == RunAction.PressingRun && !GetButton(PlayerController.Movement.RunInput))
+                {
+                    kick = false;
+                }
+            }
+
+            DoFOV(kick, deltaTime);
         }
 
         /// <summary>

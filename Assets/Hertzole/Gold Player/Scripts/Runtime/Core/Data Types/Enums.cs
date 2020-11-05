@@ -1,4 +1,6 @@
-﻿namespace Hertzole.GoldPlayer
+﻿using System;
+
+namespace Hertzole.GoldPlayer
 {
     public enum GroundCheckType
     {
@@ -6,10 +8,12 @@
         Raycast = 1
     }
 
+    [Flags]
     public enum RunAction
     {
-        IsRunning = 0,
-        IsRunningAndPressingRun = 1
+        None = 0,
+        IsRunning = 1 << 0,
+        PressingRun = 1 << 1
     }
 
     public enum AudioTypes
