@@ -283,58 +283,6 @@ namespace Hertzole.GoldPlayer
             headBob.OnValidate();
             sounds.OnValidate();
         }
-
-        private void OnDrawGizmosSelected()
-        {
-            Color oColor = Gizmos.color;
-
-            float radius = GetComponent<CharacterController>().radius;
-
-            if (movement.GroundCheck == GroundCheckType.Raycast)
-            {
-                Vector3[] rays = new Vector3[movement.RayAmount + 1];
-                movement.CreateGroundCheckRayCircle(ref rays, transform.position, radius);
-
-                for (int i = 0; i < rays.Length; i++)
-                {
-                    if (Application.isPlaying)
-                    {
-                        bool hit = Physics.Raycast(rays[i], Vector3.down, movement.RayLength, movement.GroundLayer, QueryTriggerInteraction.Ignore);
-                        Gizmos.color = hit ? new Color(0f, 1f, 0f, 1f) : new Color(1f, 0f, 0f, 1f);
-                    }
-                    else
-                    {
-                        Gizmos.color = Color.white;
-                    }
-
-                    Gizmos.DrawLine(rays[i], new Vector3(rays[i].x, rays[i].y - movement.RayLength, rays[i].z));
-                }
-            }
-            else if (movement.GroundCheck == GroundCheckType.Sphere)
-            {
-                Vector3 pos = new Vector3(transform.position.x, transform.position.y + radius - 0.1f, transform.position.z);
-                if (Application.isPlaying)
-                {
-                    Gizmos.color = movement.IsGrounded ? new Color(0f, 1f, 0f, 0.25f) : new Color(1f, 0f, 0f, 0.25f);
-                }
-                else
-                {
-                    Gizmos.color = new Color(0f, 1f, 0f, 0.25f);
-                }
-                Gizmos.DrawSphere(pos, radius);
-                if (Application.isPlaying)
-                {
-                    Gizmos.color = movement.IsGrounded ? new Color(0f, 1f, 0f, 1f) : new Color(1f, 0f, 0f, 1f);
-                }
-                else
-                {
-                    Gizmos.color = new Color(0f, 1f, 0f, 1f);
-                }
-                Gizmos.DrawWireSphere(pos, radius);
-            }
-
-            Gizmos.color = oColor;
-        }
 #endif
     }
 }

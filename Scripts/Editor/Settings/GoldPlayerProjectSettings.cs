@@ -1,4 +1,5 @@
 ﻿#if UNITY_2018_3_OR_NEWER
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -6,17 +7,60 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Editor
 {
-    [System.Serializable]
-    public class GoldPlayerProjectSettings
+    [Serializable]
+    public class GoldPlayerProjectSettings : ScriptableObject
     {
-        internal const string SETTINGS_LOCATION = "ProjectSettings/Packages/se.hertzole.goldplayer/GoldPlayerSettings.json";
+        private class OldJsonSettings
+        {
+            public bool disableInteraction = false;
+            public bool disableUI = false;
+            public bool disableGraphics = false;
+            public bool disableAnimator = false;
+            public bool disableAudioExtras = false;
+            public bool disableObjectBob = false;
+        }
 
-        public bool disableInteraction = false;
-        public bool disableUI = false;
-        public bool disableGraphics = false;
-        public bool disableAnimator = false;
-        public bool disableAudioExtras = false;
-        public bool disableObjectBob = false;
+        private const string DIRECTORY = "ProjectSettings/Packages/se.hertzole.goldplayer";
+        private const string PATH = DIRECTORY + "/GoldPlayerSettings.asset";
+
+        [SerializeField]
+        private bool showGroundCheckGizmos = true;
+        [SerializeField]
+        private bool disableInteraction = false;
+        [SerializeField]
+        private bool disableUI = false;
+        [SerializeField]
+        private bool disableGraphics = false;
+        [SerializeField]
+        private bool disableAnimator = false;
+        [SerializeField]
+        private bool disableAudioExtras = false;
+        [SerializeField]
+        private bool disableObjectBob = false;
+
+        public bool ShowGroundCheckGizmos { get { return showGroundCheckGizmos; } set { showGroundCheckGizmos = value; Save(); } }
+
+        public bool DisableInteraction { get { return disableInteraction; } set { disableInteraction = value; } }
+        public bool DisableUI { get { return disableUI; } set { disableUI = value; } }
+        public bool DisableGraphics { get { return disableGraphics; } set { disableGraphics = value; } }
+        public bool DisableAnimator { get { return disableAnimator; } set { disableAnimator = value; } }
+        public bool DisableAudioExtras { get { return disableAudioExtras; } set { disableAudioExtras = value; } }
+        public bool DisableObjectBob { get { return disableObjectBob; } set { disableObjectBob = value; } }
+
+        private static GoldPlayerProjectSettings instance;
+        public static GoldPlayerProjectSettings Instance
+        {
+            get
+            {
+                if (instance != null)
+                {
+                    return instance;
+                }
+
+                instance = GetOrCreate();
+                return instance;
+            }
+        }
 
         [InitializeOnLoadMethod]
         internal static void OnLoad()
@@ -25,40 +69,96 @@ namespace Hertzole.GoldPlayer.Editor
             ApplyDefines(GetOrCreate());
         }
 
-        internal static GoldPlayerProjectSettings GetOrCreate()
+        public static GoldPlayerProjectSettings GetOrCreate()
         {
-            GoldPlayerProjectSettings settings = new GoldPlayerProjectSettings();
+            GoldPlayerProjectSettings settings;
 
-            if (File.Exists(SETTINGS_LOCATION))
+            string oldLocation = DIRECTORY + "/GoldPlayerSettings.json";
+
+            // Backwards compatibility.
+            if (File.Exists(oldLocation))
             {
-                settings = JsonUtility.FromJson<GoldPlayerProjectSettings>(File.ReadAllText(SETTINGS_LOCATION));
+                OldJsonSettings oldSettings = JsonUtility.FromJson<OldJsonSettings>(File.ReadAllText(oldLocation));
+                settings = CreateNewSettings();
+                settings.disableInteraction = oldSettings.disableInteraction;
+                settings.disableUI = oldSettings.disableUI;
+                settings.disableGraphics = oldSettings.disableGraphics;
+                settings.disableAnimator = oldSettings.disableAnimator;
+                settings.disableAudioExtras = oldSettings.disableAudioExtras;
+                settings.disableObjectBob = oldSettings.disableObjectBob;
+                RemoveFile(oldLocation);
+                SaveInstance(settings);
+                Debug.Log("Gold Player :: Found old settings. Upgrading your settings.");
+                return settings;
+            }
+
+            if (!File.Exists(PATH))
+            {
+                settings = CreateNewSettings();
             }
             else
             {
-                settings.disableInteraction = false;
-                settings.disableUI = false;
-                settings.disableGraphics = false;
-                settings.disableAnimator = false;
-                settings.disableAudioExtras = false;
-                settings.disableObjectBob = false;
+                settings = LoadSettings();
 
-                Save(settings);
+                if (settings == null)
+                {
+                    RemoveFile(PATH);
+                    settings = CreateNewSettings();
+                }
+            }
+
+            settings.hideFlags = HideFlags.HideAndDontSave;
+
+            return settings;
+        }
+
+        private static GoldPlayerProjectSettings CreateNewSettings()
+        {
+            GoldPlayerProjectSettings settings = CreateInstance<GoldPlayerProjectSettings>();
+            SaveInstance(settings);
+            return settings;
+        }
+
+        private static GoldPlayerProjectSettings LoadSettings()
+        {
+            GoldPlayerProjectSettings settings;
+
+            try
+            {
+                settings = (GoldPlayerProjectSettings)UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(PATH)[0];
+            }
+            catch (Exception)
+            {
+                Debug.Log("Could not load Gold Player settings. Settings will be reset.");
+                settings = null;
             }
 
             return settings;
         }
 
-        internal static void Save(GoldPlayerProjectSettings settings)
+        public static void Save()
         {
-            if (!Directory.Exists("ProjectSettings/Packages/se.hertzole.goldplayer"))
-            {
-                Directory.CreateDirectory("ProjectSettings/Packages/se.hertzole.goldplayer");
-            }
-
-            File.WriteAllText(SETTINGS_LOCATION, JsonUtility.ToJson(settings, true));
+            SaveInstance(Instance);
         }
 
-        internal static void ApplyDefines(GoldPlayerProjectSettings settings)
+        private static void SaveInstance(GoldPlayerProjectSettings settings)
+        {
+            if (!Directory.Exists(DIRECTORY))
+            {
+                Directory.CreateDirectory(DIRECTORY);
+            }
+
+            try
+            {
+                UnityEditorInternal.InternalEditorUtility.SaveToSerializedFileAndForget(new UnityEngine.Object[] { settings }, PATH, true);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Can't save Gold Player settings!\n" + ex);
+            }
+        }
+
+        public static void ApplyDefines(GoldPlayerProjectSettings settings)
         {
             List<string> remove = new List<string>();
             List<string> add = new List<string>();
@@ -116,51 +216,24 @@ namespace Hertzole.GoldPlayer.Editor
                 remove.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
             }
 
-            GoldPlayerScriptHelpers.AddAndRemove(add, remove);
-            Save(settings);
-        }
-    }
-
-    internal class GoldPlayerSettingsProvider : SettingsProvider
-    {
-        private GoldPlayerProjectSettings settings;
-
-        private GoldPlayerSettingsProvider(string path, SettingsScope scopes) : base(path, scopes)
-        {
-            label = "Gold Player";
-            settings = GoldPlayerProjectSettings.GetOrCreate();
+            GoldPlayerScriptHelpers.AddAndRemoveDefines(add, remove);
+            Save();
         }
 
-        [SettingsProvider]
-        public static SettingsProvider CreateSettingsProvider()
+        private static void RemoveFile(string path)
         {
-            return new GoldPlayerSettingsProvider("Project/Gold Player", SettingsScope.Project);
-        }
-
-        public override void OnGUI(string searchContext)
-        {
-            EditorGUILayout.HelpBox("Disabling components strips them out of your game. This is much more recommended than outright removing script files.", MessageType.Info);
-
-            settings.disableInteraction = EditorGUILayout.Toggle("Disable Interaction", settings.disableInteraction);
-            settings.disableUI = EditorGUILayout.Toggle("Disable uGUI", settings.disableUI);
-            settings.disableGraphics = EditorGUILayout.Toggle("Disable Graphics", settings.disableGraphics);
-            settings.disableAnimator = EditorGUILayout.Toggle("Disable Animator", settings.disableAnimator);
-            settings.disableAudioExtras = EditorGUILayout.Toggle("Disable Audio Extras", settings.disableAudioExtras);
-            settings.disableObjectBob = EditorGUILayout.Toggle("Disable Object Bob", settings.disableObjectBob);
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Apply", GUILayout.Width(EditorGUIUtility.fieldWidth)))
+            if (!File.Exists(path))
             {
-                if (EditorUtility.DisplayDialog("Notice", "This will add new script defines and trigger a script reload. Are you sure you want to do this?", "Yes", "No"))
-                {
-                    GoldPlayerProjectSettings.ApplyDefines(settings);
-                }
-                else
-                {
-                    settings = GoldPlayerProjectSettings.GetOrCreate();
-                }
+                return;
             }
+
+            FileAttributes attributes = File.GetAttributes(path);
+            if (attributes.HasFlag(FileAttributes.ReadOnly))
+            {
+                File.SetAttributes(path, attributes & ~FileAttributes.ReadOnly);
+            }
+
+            File.Delete(path);
         }
     }
 }
