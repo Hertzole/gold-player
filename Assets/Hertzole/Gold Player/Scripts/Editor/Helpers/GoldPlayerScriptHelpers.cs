@@ -45,7 +45,7 @@ namespace Hertzole.GoldPlayer.Editor
             }
         }
 
-        public static void AddMultiple(params string[] defines)
+        public static void AddMultipleDefines(params string[] defines)
         {
             string[] scriptDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup).Split(';');
             List<string> newDefines = new List<string>(scriptDefines);
@@ -61,11 +61,11 @@ namespace Hertzole.GoldPlayer.Editor
 
             if (dirty)
             {
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(",", newDefines.ToArray()));
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", newDefines.ToArray()));
             }
         }
 
-        public static void AddAndRemove(List<string> add, List<string> remove)
+        public static void AddAndRemoveDefines(List<string> add, List<string> remove)
         {
             Type enumType = typeof(BuildTargetGroup);
 
@@ -108,7 +108,7 @@ namespace Hertzole.GoldPlayer.Editor
 
                 if (dirty)
                 {
-                    PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(",", newDefines.ToArray()));
+                    PlayerSettings.SetScriptingDefineSymbolsForGroup(target, string.Join(";", newDefines.ToArray()));
                 }
             }
         }

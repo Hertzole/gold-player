@@ -1,3 +1,15 @@
+## 1.7
+
+### Added:
+- Added raycast ground check as an alternative to sphere ground check.
+- Added gizmos in the scene view for ground checks.
+- Added interaction limits on Gold Player Interactable, along with a On Reached Max Interactions event.
+
+### Changes:
+- Revamped how Gold Player project settings are saved. Old settings will be upgraded.
+
+---
+
 ## 1.6
 
 ### Added:

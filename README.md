@@ -35,8 +35,10 @@ or
 
 ### Development branch:
 There's a development branch you can use to get the latest features in package manager format. **This branch may be unstable and features are not production ready!**  
-In the package manager, enter `https://github.com/Hertzole/gold-player.git#dev-package` instead.  
-In your manifest, enter `"se.hertzole.gold-player": "https://github.com/Hertzole/gold-player.git#dev-package"` instead.
+In the package manager, enter  
+`https://github.com/Hertzole/gold-player.git#dev-package` instead.  
+In your manifest, enter  
+`"se.hertzole.gold-player": "https://github.com/Hertzole/gold-player.git#dev-package"` instead.
 
 ### Updating:
 **Package manager version:** Remove the package and add it again.  
