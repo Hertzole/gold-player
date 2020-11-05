@@ -16,7 +16,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets when the stamina should be drained.")]
         [FormerlySerializedAs("m_DrainStaminaWhen")]
-        private RunAction drainStaminaWhen = RunAction.IsRunningAndPressingRun;
+        private RunAction drainStaminaWhen = RunAction.IsRunning | RunAction.PressingRun;
         [SerializeField]
         [Tooltip("The maximum amount of stamina.")]
         [FormerlySerializedAs("m_MaxStamina")]
@@ -106,33 +106,39 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            // If we should drain stamina when move speed is above walk speed, drain stamina when 'isRunning' is true.
-            // Else drain it when 'isRunning' is true and the run button is being held down.
-            if (drainStaminaWhen == RunAction.IsRunning)
+            bool drainStamina = true;
+            // We need to set it to false here or else the player will just lose stamina by standing still.
+            if (drainStaminaWhen == RunAction.None)
             {
-                // If 'isRunning' is true, drain the stamina.
-                // Else if the run button is not being held down, regen the stamina.
-                if (PlayerController.Movement.IsRunning)
+                drainStamina = false;
+            }
+
+            // Only check if we need to drain stamina if we're still draining stamina.
+            if (drainStamina)
+            {
+                // Check if the IsRunning flag is set and if the player isn't running, then we're not draining stamina.
+                if ((drainStaminaWhen & RunAction.IsRunning) == RunAction.IsRunning && !PlayerController.Movement.IsRunning)
                 {
-                    DrainStamina(deltaTime);
-                }
-                else if (!GetButton(PlayerController.Movement.RunInput))
-                {
-                    RegenStamina(deltaTime);
+                    drainStamina = false;
                 }
             }
-            else if (drainStaminaWhen == RunAction.IsRunningAndPressingRun)
+
+            if (drainStamina)
             {
-                // If 'isRunning' is true and the run button is being held down, drain the stamina.
-                // Else if the run button is not being held down, regen the stamina.
-                if (PlayerController.Movement.IsRunning && GetButton(PlayerController.Movement.RunInput))
+                // Check if the PressingRun flag is set and if the button isn't pressed, then we're not draining stamina.
+                if ((drainStaminaWhen & RunAction.PressingRun) == RunAction.PressingRun && !GetButton(PlayerController.Movement.RunInput))
                 {
-                    DrainStamina(deltaTime);
+                    drainStamina = false;
                 }
-                else if (!GetButton(PlayerController.Movement.RunInput))
-                {
-                    RegenStamina(deltaTime);
-                }
+            }
+
+            if (drainStamina)
+            {
+                DrainStamina(deltaTime);
+            }
+            else
+            {
+                RegenStamina(deltaTime);
             }
 
             // Clamps the values so they stay within range.
