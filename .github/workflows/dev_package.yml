@@ -1,21 +1,21 @@
-name: UPM
+name: Dev Package
 on:
-  release:
-    types:
-    - published
+  push:
+    branches:
+    - master
 jobs:
   release:
-    name: Create Package
+    name: Create dev package
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Create package branch
+    - name: Create dev package branch
       run: |
-        git branch -d package &> /dev/null || echo package branch not found
-        git subtree split -P "$PKG_ROOT" -b package
-        git checkout package
+        git branch -d dev-package &> /dev/null || echo dev-package branch not found
+        git subtree split -P "$PKG_ROOT" -b dev-package
+        git checkout dev-package
         if [[ -d "Examples" ]]; then
           git mv Examples Samples~
           rm -f Examples.meta
@@ -40,6 +40,6 @@ jobs:
         git config --global user.name 'github-bot'
         git config --global user.email 'github-bot@users.noreply.github.com'
         git commit -am "Packaged project"
-        git push -f -u origin package
+        git push -f -u origin dev-package
       env:
         PKG_ROOT: Assets/Hertzole/Gold Player

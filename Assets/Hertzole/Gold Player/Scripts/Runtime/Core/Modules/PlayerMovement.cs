@@ -134,6 +134,18 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_GroundStick")]
         private float groundStick = 10;
         [SerializeField]
+        [Tooltip("The way the player will check if it's grounded.")]
+        private GroundCheckType groundCheck = GroundCheckType.Sphere;
+        [SerializeField]
+        [Tooltip("The amount of rays to use for ground checking.")]
+        private int rayAmount = 8;
+        [SerializeField]
+        [Tooltip("How high up the rays will be when using ray ground checking.")]
+        private float rayHeight = 0.3f;
+        [SerializeField]
+        [Tooltip("How far down the rays will reach when using ray ground checking.")]
+        private float rayLength = 0.4f;
+        [SerializeField]
         [Tooltip("Everything related to moving platforms.")]
         [FormerlySerializedAs("m_MovingPlatforms")]
         private MovingPlatformsClass movingPlatforms = new MovingPlatformsClass();
@@ -244,6 +256,8 @@ namespace Hertzole.GoldPlayer
         protected Vector3 jumpPosition = Vector3.zero;
         // The impact of the applied force.
         protected Vector3 forceImpact = Vector3.zero;
+        // The rays used for raycast ground check.
+        private Vector3[] groundCheckRays;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         protected MovementSpeeds moveSpeed = new MovementSpeeds();
@@ -314,6 +328,43 @@ namespace Hertzole.GoldPlayer
         public bool EnableGroundStick { get { return enableGroundStick; } set { enableGroundStick = value; } }
         /// <summary> Sets how much the player will stick to the ground. </summary>
         public float GroundStick { get { return groundStick; } set { float v = value; if (v < 0) { v = -v; } groundStick = v; } }
+        /// <summary> The way the player will check if it's grounded. </summary>
+        public GroundCheckType GroundCheck
+        {
+            get { return groundCheck; }
+            set
+            {
+                if (groundCheck != value)
+                {
+                    groundCheck = value;
+                    // If the ground check is set to raycast and the ground check rays haven't been initialized, create them.
+                    if (value == GroundCheckType.Raycast && (groundCheckRays == null || groundCheckRays.Length != rayAmount + 1))
+                    {
+                        groundCheckRays = new Vector3[rayAmount + 1];
+                    }
+                }
+            }
+        }
+        /// <summary> The amount of rays to use for ground checking. </summary>
+        public int RayAmount
+        {
+            get { return rayAmount; }
+            set
+            {
+                if (rayAmount != value)
+                {
+                    rayAmount = value;
+                    if (groundCheckRays == null || groundCheckRays.Length != value + 1)
+                    {
+                        groundCheckRays = new Vector3[value + 1];
+                    }
+                }
+            }
+        }
+        /// <summary> How high up the rays will be when using ray ground checking. </summary>
+        public float RayHeight { get { return rayHeight; } set { rayHeight = value; } }
+        /// <summary> How far down the rays will reach when using ray ground checking. </summary>
+        public float RayLength { get { return rayLength; } set { rayLength = value; } }
         /// <summary> Everything related to moving platforms. </summary>
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
@@ -413,6 +464,12 @@ namespace Hertzole.GoldPlayer
             crouchCameraPosition = PlayerController.Camera.CameraHead.localPosition.y - (CharacterController.height - crouchHeight);
             // Set the current crouch camera position to the original camera position.
             currentCrouchCameraPosition = originalCameraPosition;
+
+            if (groundCheck == GroundCheckType.Raycast)
+            {
+                // Add one extra because we use a center ray too.
+                groundCheckRays = new Vector3[rayAmount + 1];
+            }
         }
 
         /// <summary>
@@ -431,8 +488,55 @@ namespace Hertzole.GoldPlayer
         /// <returns>Is the player grounded?</returns>
         public bool CheckGrounded()
         {
-            // Check using a sphere at the player's feet.
-            return Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, groundLayer, QueryTriggerInteraction.Ignore);
+            switch (groundCheck)
+            {
+                case GroundCheckType.Raycast:
+                    // Create the ray.
+                    Ray ray = new Ray(Vector3.zero, Vector3.down);
+
+                    // Update the circle of rays.
+                    CreateGroundCheckRayCircle(ref groundCheckRays, PlayerTransform.position, CharacterController.radius);
+                    // Go through each ray.
+                    for (int i = 0; i < groundCheckRays.Length; i++)
+                    {
+                        // Set the origin on the ray to the new position.
+                        ray.origin = groundCheckRays[i];
+                        // If we hit something, we're grounded.
+                        if (Physics.Raycast(ray, rayLength, groundLayer, QueryTriggerInteraction.Ignore))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                default: // Sphere
+                    // Check using a sphere at the player's feet.
+                    return Physics.CheckSphere(new Vector3(PlayerTransform.position.x, PlayerTransform.position.y + CharacterController.radius - 0.1f, PlayerTransform.position.z), CharacterController.radius, groundLayer, QueryTriggerInteraction.Ignore);
+            }
+        }
+
+        /// <summary>
+        /// Creates a circle of ray positions around the player's base.
+        /// </summary>
+        /// <param name="rays">The array to fill.</param>
+        /// <param name="origin">The origin point to create the circle around.</param>
+        /// <param name="radius">The radius of the circle.</param>
+        public void CreateGroundCheckRayCircle(ref Vector3[] rays, Vector3 origin, float radius)
+        {
+#if DEBUG
+            if (rays.Length != rayAmount + 1)
+            {
+                throw new System.ArgumentException("The provided array needs to be the same as Ray Amount + 1 (" + rayAmount + 1 + ")");
+            }
+#endif
+
+            rays[0] = new Vector3(origin.x, origin.y + rayHeight, origin.z);
+
+            for (int i = 0; i < rayAmount; i++)
+            {
+                float angle = i * Mathf.PI * 2 / rayAmount;
+                rays[i + 1] = new Vector3(origin.x + (Mathf.Cos(angle) * radius), origin.y + rayHeight, origin.z + (Mathf.Sin(angle) * radius));
+            }
         }
 
         /// <summary>
@@ -1084,6 +1188,11 @@ namespace Hertzole.GoldPlayer
                 if (!canMoveAround)
                 {
                     ResetMovementInput();
+                }
+
+                if (groundCheck == GroundCheckType.Raycast)
+                {
+                    groundCheckRays = new Vector3[rayAmount + 1];
                 }
             }
 

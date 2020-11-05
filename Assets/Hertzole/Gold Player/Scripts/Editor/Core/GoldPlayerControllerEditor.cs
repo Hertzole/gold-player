@@ -140,6 +140,11 @@ namespace Hertzole.GoldPlayer.Editor
                         continue;
                     }
 
+                    if (movement.FindPropertyRelative("groundCheck").enumValueIndex == 0 && (it.name == "rayAmount" || it.name == "rayHeight" || it.name == "rayLength"))
+                    {
+                        continue;
+                    }
+
                     EditorGUILayout.PropertyField(it, true);
                     if (it.name.Equals("crouchHeight") && it.floatValue < 0.8f)
                     {

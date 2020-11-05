@@ -11,7 +11,8 @@ A first-person player controller for Unity, built with being user-friendly and d
 - Very well documented code
 - Interaction component, UI component, graphics component, and animator component
 - Works with multiplayer
-- Support for [Unity's new Input System](https://github.com/Unity-Technologies/InputSystem/)
+- Support for [Unity's new Input System](http://docs.unity3d.com/Packages/com.unity.inputsystem@latest/)
+- Works with IL2CPP and fast enter play mode settings
 
 ## 📦 Installation
 **Minimum supported Unity version: 2018.4**
@@ -19,7 +20,7 @@ A first-person player controller for Unity, built with being user-friendly and d
 ### Package manager installation:
 1. Open the package manager in your project.
 2. Click the + button in the top left corner and click 'Add package from git'.
-3. Enter this URL: `https://github.com/Hertzole/gold-player#package`
+3. Enter this URL: `https://github.com/Hertzole/gold-player.git#package`
 
 or  
 
@@ -31,6 +32,11 @@ or
 1. Go to the [releases tab](https://github.com/Hertzole/gold-player/releases) and download the latest .unitypackage version.
 2. In Unity, import the package either by dragging it into your project or right-clicking in your project window - Import package - Custom package
 3. **Include all the files in the editor/runtime folder.** Components you don't want can be removed with script defines/project settings. You may remove examples if you want to.
+
+### Development branch:
+There's a development branch you can use to get the latest features in package manager format. **This branch may be unstable and features are not production ready!**  
+In the package manager, enter `https://github.com/Hertzole/gold-player.git#dev-package` instead.  
+In your manifest, enter `"se.hertzole.gold-player": "https://github.com/Hertzole/gold-player.git#dev-package"` instead.
 
 ### Updating:
 **Package manager version:** Remove the package and add it again.  
