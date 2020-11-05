@@ -1,5 +1,11 @@
 ﻿namespace Hertzole.GoldPlayer
 {
+    public enum GroundCheckType
+    {
+        Sphere = 0,
+        Raycast = 1
+    }
+
     public enum RunAction
     {
         IsRunning = 0,

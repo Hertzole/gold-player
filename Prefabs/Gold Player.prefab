@@ -523,6 +523,10 @@ MonoBehaviour:
     airControl: 0.5
     enableGroundStick: 1
     groundStick: 10
+    groundCheck: 0
+    rayAmount: 8
+    rayHeight: 0.3
+    rayLength: 0.4
     movingPlatforms:
       enabled: 1
       movePosition: 1
