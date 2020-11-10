@@ -18,14 +18,12 @@ namespace Hertzole.GoldPlayer
         private bool unscaledTime = false;
 
         //////// WALKING
-        [Header("Walking")]
         [SerializeField]
         [Tooltip("The movement speeds when walking.")]
         [FormerlySerializedAs("m_WalkingSpeeds")]
         private MovementSpeeds walkingSpeeds = new MovementSpeeds(3f, 2.5f, 2f);
 
         //////// RUNNING
-        [Header("Running")]
         [SerializeField]
         [Tooltip("Determines if the player can run.")]
         [FormerlySerializedAs("m_CanRun")]
@@ -44,7 +42,6 @@ namespace Hertzole.GoldPlayer
         private StaminaClass stamina = new StaminaClass();
 
         //////// JUMPING
-        [Header("Jumping")]
         [SerializeField]
         [Tooltip("Determines if the player can jump.")]
         [FormerlySerializedAs("m_CanJump")]
@@ -80,7 +77,6 @@ namespace Hertzole.GoldPlayer
         private bool allowAirJumpDirectionChange = true;
 
         //////// CROUCHING
-        [Header("Crouching")]
         [SerializeField]
         [Tooltip("Determines if the player can crouch.")]
         [FormerlySerializedAs("m_CanCrouch")]
@@ -107,7 +103,6 @@ namespace Hertzole.GoldPlayer
         private float crouchHeadLerp = 10;
 
         //////// OTHER
-        [Header("Other")]
         [SerializeField]
         [Tooltip("The layers the player will treat as ground. SHOULD NOT INCLUDE THE LAYER THE PLAYER IS ON!")]
         [FormerlySerializedAs("m_GroundLayer")]

@@ -53,7 +53,7 @@ namespace Hertzole.GoldPlayer.Editor
             // Set the field rect height to the line height.
             fieldRect.height = lineHeight;
             // The property foldout.
-            EditorGUI.PropertyField(fieldRect, property, false);
+            EditorGUI.PropertyField(fieldRect, property, label, false);
             // Only draw the rest if the property is expanded.
             if (property.isExpanded)
             {
@@ -64,69 +64,82 @@ namespace Hertzole.GoldPlayer.Editor
                 // The 'Enabled' field.
                 EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("enabled"));
 
-                bool oldEnabled = GUI.enabled;
-
-                GUI.enabled = property.FindPropertyRelative("enabled").boolValue;
-
-                // Add to the rect.
-                AddToRect();
-                // The 'Random Pitch' field.
-                EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("randomPitch"));
-                // Add to the rect.
-                AddToRect();
-                // If random pitch is enabled, draw min max fields.
-                // Else just draw one field.
-                if (property.FindPropertyRelative("randomPitch").boolValue)
-                {
-                    // The 'Pitch' label.
-                    EditorGUI.LabelField(new Rect(fieldRect.x, fieldRect.y, EditorGUIUtility.labelWidth, fieldRect.height), "Pitch", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Normal });
-                    // Remove the indent to stop some weird GUI behaviour.
-                    EditorGUI.indentLevel--;
-                    // Draw 'Min' label.
-                    EditorGUI.LabelField(new Rect(fieldRect.x + EditorGUIUtility.labelWidth, fieldRect.y, 30, fieldRect.height), new GUIContent("Min", property.FindPropertyRelative("minPitch").tooltip), new GUIStyle(GUI.skin.label) { fontStyle = property.FindPropertyRelative("minPitch").prefabOverride ? FontStyle.Bold : FontStyle.Normal });
-                    // The 'Min Pitch' field.
-                    EditorGUI.PropertyField(new Rect(fieldRect.x + EditorGUIUtility.labelWidth + 30, fieldRect.y, ((fieldRect.width - EditorGUIUtility.labelWidth) / 2) - 32, fieldRect.height), property.FindPropertyRelative("minPitch"), GUIContent.none);
-                    // Draw 'Max' label.
-                    EditorGUI.LabelField(new Rect(fieldRect.x + EditorGUIUtility.labelWidth + ((fieldRect.width - EditorGUIUtility.labelWidth) / 2) + 2, fieldRect.y, 30, fieldRect.height), new GUIContent("Max", property.FindPropertyRelative("maxPitch").tooltip), new GUIStyle(GUI.skin.label) { fontStyle = property.FindPropertyRelative("maxPitch").prefabOverride ? FontStyle.Bold : FontStyle.Normal });
-                    // The 'Max Pitch' field.
-                    EditorGUI.PropertyField(new Rect(fieldRect.x + EditorGUIUtility.labelWidth + ((fieldRect.width - EditorGUIUtility.labelWidth) / 2) + 33, fieldRect.y, ((fieldRect.width - EditorGUIUtility.labelWidth) / 2) - 33, fieldRect.height), property.FindPropertyRelative("maxPitch"), GUIContent.none);
-                    // Add the indent again.
-                    EditorGUI.indentLevel++;
-                }
-                else
-                {
-                    // The 'Pitch' field.
-                    EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("pitch"));
-                }
-                // Add to the rect.
-                AddToRect();
-                // The 'Change Volume' field.
-                EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("changeVolume"));
-                // If change volume is true, draw the volume field.
-                if (property.FindPropertyRelative("changeVolume").boolValue)
+                GoldPlayerUIHelper.DrawElementsConditional(property.FindPropertyRelative("enabled"), () =>
                 {
                     // Add to the rect.
                     AddToRect();
-                    // The volume slider field.
-                    EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("volume"));
-                }
-                // Add to the rect.
-                AddToRect();
-                // The audio clips array.
-                EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("audioClips"), true);
-                // If the audio clips array is expanded, add to the rect to make sure everything is shown.
-                if (property.FindPropertyRelative("audioClips").isExpanded)
-                {
-                    // Add a rect for the size field.
+                    // The 'Random Pitch' field.
+                    EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("randomPitch"));
+                    // Add to the rect.
                     AddToRect();
-                    // For every clip, add a size for every field.
-                    for (int i = 0; i < property.FindPropertyRelative("audioClips").arraySize; i++)
+                    // If random pitch is enabled, draw min max fields.
+                    // Else just draw one field.
+                    if (property.FindPropertyRelative("randomPitch").boolValue)
                     {
-                        AddToRect();
-                    }
-                }
+                        // The 'Pitch' label.
+                        EditorGUI.PrefixLabel(new Rect(fieldRect.x, fieldRect.y, EditorGUIUtility.labelWidth, fieldRect.height), new GUIContent("Pitch"));
+                        // Remove the indent to stop some weird GUI behaviour.
+                        EditorGUI.indentLevel--;
 
-                GUI.enabled = oldEnabled;
+                        // Cache the original label width.
+                        float oWidth = EditorGUIUtility.labelWidth;
+                        // Set the label width to something smaller to make the label fit and still connect to the property field.
+                        EditorGUIUtility.labelWidth = 30;
+
+                        Rect minMaxRect = new Rect()
+                        {
+                            x = fieldRect.x + oWidth,
+                            y = fieldRect.y,
+                            width = ((fieldRect.width - oWidth) / 2) - 2,
+                            height = fieldRect.height
+                        };
+
+                        // The 'Min Pitch' field.
+                        EditorGUI.PropertyField(minMaxRect, property.FindPropertyRelative("minPitch"), new GUIContent("Min"));
+
+                        // Add the half width to move the next element over.
+                        minMaxRect.x += ((fieldRect.width - oWidth) / 2) + 2;
+
+                        // The 'Max Pitch' field.
+                        EditorGUI.PropertyField(minMaxRect, property.FindPropertyRelative("maxPitch"), new GUIContent("Max"));
+                        // Reset the label width to the original width.
+                        EditorGUIUtility.labelWidth = oWidth;
+                        // Add the indent again.
+                        EditorGUI.indentLevel++;
+                    }
+                    else
+                    {
+                        // The 'Pitch' field.
+                        EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("pitch"));
+                    }
+                    // Add to the rect.
+                    AddToRect();
+                    // The 'Change Volume' field.
+                    EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("changeVolume"));
+                    // If change volume is true, draw the volume field.
+                    GoldPlayerUIHelper.DrawElementsConditional(property.FindPropertyRelative("changeVolume"), () =>
+                    {
+                        // Add to the rect.
+                        AddToRect();
+                        // The volume slider field.
+                        EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("volume"));
+                    });
+                    // Add to the rect.
+                    AddToRect();
+                    // The audio clips array.
+                    EditorGUI.PropertyField(fieldRect, property.FindPropertyRelative("audioClips"), true);
+                    // If the audio clips array is expanded, add to the rect to make sure everything is shown.
+                    if (property.FindPropertyRelative("audioClips").isExpanded)
+                    {
+                        // Add a rect for the size field.
+                        AddToRect();
+                        // For every clip, add a size for every field.
+                        for (int i = 0; i < property.FindPropertyRelative("audioClips").arraySize; i++)
+                        {
+                            AddToRect();
+                        }
+                    }
+                });
 
                 // Remove the indent.
                 EditorGUI.indentLevel--;

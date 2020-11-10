@@ -511,6 +511,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 68155637}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &68155635
@@ -934,6 +935,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 107935414}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &107935412
@@ -9659,6 +9661,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &579792539
 GameObject:
   m_ObjectHideFlags: 0
@@ -10850,6 +10854,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 770707174}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &770707173
@@ -12901,6 +12906,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1055536133}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &1055536131
@@ -13725,6 +13731,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1114388657}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &1114388655
@@ -14231,6 +14238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1001 &1177196535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17651,6 +17660,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1762429433}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &1762429432
@@ -17943,36 +17953,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[0].action
-      value: 
-      objectReference: {fileID: -2911009157714819484, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[1].action
-      value: 
-      objectReference: {fileID: 6228006781377513727, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[2].action
-      value: 
-      objectReference: {fileID: 2837801055328765847, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[3].action
-      value: 
-      objectReference: {fileID: 7499931120916548345, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[4].action
-      value: 
-      objectReference: {fileID: 3039052082105390073, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
-    - target: {fileID: 1771784234, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
-      propertyPath: actions.Array.data[5].action
-      value: 
-      objectReference: {fileID: -2412770888459627074, guid: 0b5686141ac42094688c7771035dbff1,
-        type: 3}
     - target: {fileID: 1221496511255106, guid: 53c43a8ca1f02a4468880d3cecf7c6bb, type: 3}
       propertyPath: m_Name
       value: Gold Player
@@ -25429,6 +25409,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2075369837}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &2075369835

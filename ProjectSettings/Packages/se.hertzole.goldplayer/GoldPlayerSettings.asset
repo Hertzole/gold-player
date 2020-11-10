@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ff031a7756e1b49bffadd16cebe393, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guiAdapation: 2
   showGroundCheckGizmos: 1
   disableInteraction: 0
   disableUI: 0

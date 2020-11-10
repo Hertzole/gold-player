@@ -457,8 +457,8 @@ MonoBehaviour:
     shouldLockCursor: 1
     invertXAxis: 0
     invertYAxis: 0
-    mouseSensitivity: {x: 2, y: 2}
-    mouseDamping: 0
+    lookSensitivity: {x: 2, y: 2}
+    lookDamping: 0
     minimumX: -90
     maximumX: 90
     fieldOfViewKick:
@@ -637,22 +637,22 @@ MonoBehaviour:
     type: 3}
   actions:
   - actionName: Look
-    action: {fileID: -1751491959069467807, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -2911009157714819484, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Move
-    action: {fileID: 3509778451805936107, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 6228006781377513727, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Jump
-    action: {fileID: -239634731036072923, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 2837801055328765847, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Run
-    action: {fileID: -1886600523852151199, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 7499931120916548345, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Crouch
-    action: {fileID: -6511908450422008743, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 3039052082105390073, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Interact
-    action: {fileID: 1977937622231241960, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -2412770888459627074, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   autoEnableInput: 1
   autoDisableInput: 1

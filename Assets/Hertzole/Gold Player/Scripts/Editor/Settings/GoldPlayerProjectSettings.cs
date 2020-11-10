@@ -7,9 +7,12 @@ using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Editor
 {
+    public enum EditorGUIAdaption { AlwaysShow, HideUnused, DisableUnused };
+
     [Serializable]
     public class GoldPlayerProjectSettings : ScriptableObject
     {
+
         private class OldJsonSettings
         {
             public bool disableInteraction = false;
@@ -24,6 +27,8 @@ namespace Hertzole.GoldPlayer.Editor
         private const string PATH = DIRECTORY + "/GoldPlayerSettings.asset";
 
         [SerializeField]
+        private EditorGUIAdaption guiAdapation = EditorGUIAdaption.HideUnused;
+        [SerializeField]
         private bool showGroundCheckGizmos = true;
         [SerializeField]
         private bool disableInteraction = false;
@@ -37,6 +42,8 @@ namespace Hertzole.GoldPlayer.Editor
         private bool disableAudioExtras = false;
         [SerializeField]
         private bool disableObjectBob = false;
+
+        public EditorGUIAdaption GUIAdapation { get { return guiAdapation; } set { guiAdapation = value; Save(); } }
 
         public bool ShowGroundCheckGizmos { get { return showGroundCheckGizmos; } set { showGroundCheckGizmos = value; Save(); } }
 

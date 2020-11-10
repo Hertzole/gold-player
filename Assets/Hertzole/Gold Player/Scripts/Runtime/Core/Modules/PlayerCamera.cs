@@ -18,7 +18,6 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_ShouldLockCursor")]
         private bool shouldLockCursor = true;
 
-        [Space]
         [SerializeField]
         [Tooltip("Determines if the X axis should be inverted.")]
         [FormerlySerializedAs("m_InvertXAxis")]
@@ -28,15 +27,15 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_InvertYAxis")]
         private bool invertYAxis = false;
 
-        [Space]
-
         [SerializeField]
         [Tooltip("How fast the camera head should move when looking around.")]
-        private Vector2 mouseSensitivity = new Vector2(2f, 2f);
+        [FormerlySerializedAs("mouseSensitivity")]
+        private Vector2 lookSensitivity = new Vector2(2f, 2f);
         [SerializeField]
         [Tooltip("Sets how smooth the movement should be.")]
         [FormerlySerializedAs("m_MouseDamping")]
-        private float mouseDamping = 0f;
+        [FormerlySerializedAs("mouseDamping")]
+        private float lookDamping = 0f;
         [SerializeField]
         [Tooltip("Sets how far down the player can look.")]
         [FormerlySerializedAs("m_MinimumX")]
@@ -46,14 +45,10 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_MaximumX")]
         private float maximumX = 90f;
 
-        [Space]
-
         [SerializeField]
         [Tooltip("Settings related to field of view kick.")]
         [FormerlySerializedAs("m_FOVKick")]
         private FOVKickClass fieldOfViewKick = new FOVKickClass();
-
-        [Space]
 
         [SerializeField]
         [Tooltip("The camera head that should be moved around.")]
@@ -145,16 +140,16 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if the player can look around. </summary>
         public bool CanLookAround { get { return canLookAround; } set { canLookAround = value; } }
-        /// <summary> Determines if the cursor should be locked. </summary>
-        public bool ShouldLockCursor { get { return shouldLockCursor; } set { shouldLockCursor = value; } }
+        /// <summary> Determines if the cursor should be locked. Setting this will also (un)lock the cursor. </summary>
+        public bool ShouldLockCursor { get { return shouldLockCursor; } set { shouldLockCursor = value; LockCursor(value); } }
         /// <summary> Determines if the X axis should be inverted. </summary>
         public bool InvertXAxis { get { return invertXAxis; } set { invertXAxis = value; } }
         /// <summary> Determines if the Y axis should be inverted. </summary>
         public bool InvertYAxis { get { return invertYAxis; } set { invertYAxis = value; } }
         /// <summary> How fast the camera head should move when looking around. </summary>
-        public Vector2 MouseSensitivity { get { return mouseSensitivity; } set { mouseSensitivity = value; } }
+        public Vector2 MouseSensitivity { get { return lookSensitivity; } set { lookSensitivity = value; } }
         /// <summary> Sets how smooth the movement should be. </summary>
-        public float MouseDamping { get { return mouseDamping; } set { mouseDamping = value; } }
+        public float MouseDamping { get { return lookDamping; } set { lookDamping = value; } }
         /// <summary> Sets how far down the player can look. </summary>
         public float MinimumX { get { return minimumX; } set { minimumX = value; } }
         /// <summary> Sets how far up the player can look. </summary>
@@ -291,15 +286,15 @@ namespace Hertzole.GoldPlayer
             if (!forceLooking)
             {
                 // Apply the input and mouse sensitivity.
-                targetHeadAngles.x -= mouseInput.y * mouseSensitivity.y;
-                targetBodyAngles.y += mouseInput.x * mouseSensitivity.x;
+                targetHeadAngles.x -= mouseInput.y * lookSensitivity.y;
+                targetBodyAngles.y += mouseInput.x * lookSensitivity.x;
 
                 // Clamp the head angle.
                 targetHeadAngles.x = Mathf.Clamp(targetHeadAngles.x, minimumX, maximumX);
 
                 // Smooth the movement.
-                followHeadAngles = Vector3.SmoothDamp(followHeadAngles, targetHeadAngles, ref followHeadVelocity, mouseDamping, Mathf.Infinity, Time.unscaledDeltaTime);
-                followBodyAngles = Vector3.SmoothDamp(followBodyAngles, targetBodyAngles, ref followBodyVelocity, mouseDamping, Mathf.Infinity, Time.unscaledDeltaTime);
+                followHeadAngles = Vector3.SmoothDamp(followHeadAngles, targetHeadAngles, ref followHeadVelocity, lookDamping, Mathf.Infinity, Time.unscaledDeltaTime);
+                followBodyAngles = Vector3.SmoothDamp(followBodyAngles, targetBodyAngles, ref followBodyVelocity, lookDamping, Mathf.Infinity, Time.unscaledDeltaTime);
 
                 // Set the rotation on the camera head and player.
                 targetHeadRotation = originalHeadRotation * Quaternion.Euler(followHeadAngles.x + (-recoil), 0, 0);
