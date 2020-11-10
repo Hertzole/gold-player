@@ -21,10 +21,6 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_UnscaledTime")]
         private bool unscaledTime = false;
 
-#if UNITY_EDITOR
-        [Space]
-#endif
-
         [SerializeField]
         [Tooltip("Sets how frequent the bob happens.")]
         [FormerlySerializedAs("m_BobFrequency")]
@@ -50,10 +46,6 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_StrideMultiplier")]
         private float strideMultiplier = 0.3f;
 
-#if UNITY_EDITOR
-        [Space]
-#endif
-
         [SerializeField]
         [Tooltip("How much the target will move when landing.")]
         [FormerlySerializedAs("m_LandMove")]
@@ -63,10 +55,6 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_LandTilt")]
         private float landTilt = 20f;
 
-#if UNITY_EDITOR
-        [Space]
-#endif
-
         [SerializeField]
         [Tooltip("If enabled, the target will tilt when strafing.")]
         private bool enableStrafeTilting = true;
@@ -74,10 +62,6 @@ namespace Hertzole.GoldPlayer
         [Tooltip("How much the target will tilt when strafing.")]
         [FormerlySerializedAs("m_StrafeTilt")]
         private float strafeTilt = 3f;
-
-#if UNITY_EDITOR
-        [Space]
-#endif
 
         [SerializeField]
         [Tooltip("The object to bob.")]
@@ -140,12 +124,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public void DoBob(Vector3 velocity, float deltaTime)
-        {
-            DoBob(velocity, deltaTime, 0);
-        }
-
-        public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis)
+        public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis = 0)
         {
             velocity *= Time.timeScale;
 

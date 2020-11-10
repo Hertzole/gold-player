@@ -8,6 +8,9 @@ namespace Hertzole.GoldPlayer.Editor
     {
         private GoldPlayerProjectSettings settings;
 
+        private readonly GUIContent uiAdapationContent = new GUIContent("GUI Adaption", "Determines how the editor GUI should adapt in the inspector.");
+        private readonly GUIContent showGroundGizmosContent = new GUIContent("Show Ground Gizmos", "If true, the ground check gizmos will be visible when the player is selected.");
+
         public GoldPlayerProjectSettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         {
         }
@@ -25,11 +28,23 @@ namespace Hertzole.GoldPlayer.Editor
 
                 using (new GUILayout.VerticalScope())
                 {
+                    EditorGUILayout.LabelField("Editor", EditorStyles.boldLabel);
+
+                    EditorGUIAdaption uiAdapation = settings.GUIAdapation;
+                    EditorGUI.BeginChangeCheck();
+                    uiAdapation = (EditorGUIAdaption)EditorGUILayout.EnumPopup(uiAdapationContent, uiAdapation);
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        settings.GUIAdapation = uiAdapation;
+                    }
+
+                    GUILayout.Space(16f);
+
                     EditorGUILayout.LabelField("Scene View", EditorStyles.boldLabel);
 
                     bool showGizmos = settings.ShowGroundCheckGizmos;
                     EditorGUI.BeginChangeCheck();
-                    showGizmos = EditorGUILayout.Toggle(new GUIContent("Show Ground Gizmos", "If true, the ground check gizmos will be visible when the player is selected."), showGizmos);
+                    showGizmos = EditorGUILayout.Toggle(showGroundGizmosContent, showGizmos);
                     if (EditorGUI.EndChangeCheck())
                     {
                         settings.ShowGroundCheckGizmos = showGizmos;

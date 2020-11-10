@@ -8,8 +8,8 @@ using UnityEngine;
 #if USE_UI_ELEMENTS
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
 #endif
+using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
 
 namespace Hertzole.GoldPlayer.Editor
 {
@@ -28,6 +28,113 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty movement;
         private SerializedProperty headBob;
         private SerializedProperty audio;
+
+        // Camera properties
+        private SerializedProperty canLookAround;
+        private SerializedProperty shoudLockCursor;
+        private SerializedProperty invertXAxis;
+        private SerializedProperty invertYAxis;
+        private SerializedProperty lookSensitivity;
+        private SerializedProperty lookDamping;
+        private SerializedProperty minimumX;
+        private SerializedProperty maximumX;
+        private SerializedProperty cameraHead;
+        private SerializedProperty fieldOfViewKick;
+
+        private SerializedProperty fovEnable;
+        private SerializedProperty fovUnscaledTime;
+        private SerializedProperty fovKickWhen;
+        private SerializedProperty fovKickAmount;
+        private SerializedProperty fovTimeTo;
+        private SerializedProperty fovTimeFrom;
+#if GOLD_PLAYER_CINEMACHINE
+        private SerializedProperty useCinemachine;
+        private SerializedProperty targetVirtualCamera;
+#endif
+        private SerializedProperty targetCamera;
+
+        // Movement properties
+        private SerializedProperty canMoveAround;
+        private SerializedProperty moveUnscaledTime;
+
+        private SerializedProperty walkingSpeed;
+
+        private SerializedProperty canRun;
+        private SerializedProperty runToggleMode;
+        private SerializedProperty runSpeeds;
+        private SerializedProperty stamina;
+        private SerializedProperty enableStamina;
+        private SerializedProperty drainStaminaWhen;
+        private SerializedProperty maxStamina;
+        private SerializedProperty drainRate;
+        private SerializedProperty stillThreshold;
+        private SerializedProperty regenRateStill;
+        private SerializedProperty regenRateMoving;
+        private SerializedProperty regenWait;
+
+        private SerializedProperty canCrouch;
+        private SerializedProperty crouchToggleMode;
+        private SerializedProperty crouchSpeeds;
+        private SerializedProperty crouchJumping;
+        private SerializedProperty crouchHeight;
+        private SerializedProperty crouchHeadLerp;
+
+        private SerializedProperty canJump;
+        private SerializedProperty jumpingRequiresStamina;
+        private SerializedProperty jumpStaminaRequire;
+        private SerializedProperty jumpStaminaCost;
+        private SerializedProperty jumpHeight;
+        private SerializedProperty airJump;
+        private SerializedProperty airJumpTime;
+        private SerializedProperty airJumpsAmount;
+        private SerializedProperty allowAirJumpDirectionChange;
+
+        private SerializedProperty movingPlatforms;
+        private SerializedProperty movingPlatformsEnabled;
+        private SerializedProperty movingPlatformsPosition;
+        private SerializedProperty movingPlatformsRotation;
+        private SerializedProperty movingPlatformsMaxAngle;
+
+        private SerializedProperty groundLayer;
+        private SerializedProperty acceleration;
+        private SerializedProperty gravity;
+        private SerializedProperty airControl;
+        private SerializedProperty enableGroundStick;
+        private SerializedProperty groundStick;
+        private SerializedProperty groundCheck;
+        private SerializedProperty rayAmount;
+        private SerializedProperty rayHeight;
+        private SerializedProperty rayLength;
+
+        // Head bob properties
+        private SerializedProperty enableBob;
+        private SerializedProperty bobUnscaledTime;
+        private SerializedProperty bobFrequency;
+        private SerializedProperty bobHeight;
+        private SerializedProperty swayAngle;
+        private SerializedProperty sideMovement;
+        private SerializedProperty heightMultiplier;
+        private SerializedProperty strideMultiplier;
+        private SerializedProperty landMove;
+        private SerializedProperty landTilt;
+        private SerializedProperty enableStrafeTilting;
+        private SerializedProperty strafeTilt;
+        private SerializedProperty bobTarget;
+
+        // Audio properties
+        private SerializedProperty enableAudio;
+        private SerializedProperty audioUnscaledTime;
+        private SerializedProperty audioType;
+        private SerializedProperty basedOnHeadBob;
+        private SerializedProperty stepTime;
+        private SerializedProperty walkFootsteps;
+        private SerializedProperty runFootsteps;
+        private SerializedProperty crouchFootsteps;
+        private SerializedProperty jumpingSteps;
+        private SerializedProperty landingSteps;
+        private SerializedProperty footstepsSource;
+        private SerializedProperty jumpSource;
+        private SerializedProperty landSource;
 
 #if USE_UI_ELEMENTS
         private VisualElement root;
@@ -62,6 +169,109 @@ namespace Hertzole.GoldPlayer.Editor
             movement = serializedObject.FindProperty("movement");
             headBob = serializedObject.FindProperty("headBob");
             audio = serializedObject.FindProperty("sounds");
+
+            canLookAround = camera.FindPropertyRelative("canLookAround");
+            shoudLockCursor = camera.FindPropertyRelative("shouldLockCursor");
+            invertXAxis = camera.FindPropertyRelative("invertXAxis");
+            invertYAxis = camera.FindPropertyRelative("invertYAxis");
+            lookSensitivity = camera.FindPropertyRelative("lookSensitivity");
+            lookDamping = camera.FindPropertyRelative("lookDamping");
+            minimumX = camera.FindPropertyRelative("minimumX");
+            maximumX = camera.FindPropertyRelative("maximumX");
+            cameraHead = camera.FindPropertyRelative("cameraHead");
+            fieldOfViewKick = camera.FindPropertyRelative("fieldOfViewKick");
+
+            fovEnable = fieldOfViewKick.FindPropertyRelative("enableFOVKick");
+            fovUnscaledTime = fieldOfViewKick.FindPropertyRelative("unscaledTime");
+            fovKickWhen = fieldOfViewKick.FindPropertyRelative("kickWhen");
+            fovKickAmount = fieldOfViewKick.FindPropertyRelative("kickAmount");
+            fovTimeTo = fieldOfViewKick.FindPropertyRelative("lerpTimeTo");
+            fovTimeFrom = fieldOfViewKick.FindPropertyRelative("lerpTimeFrom");
+#if GOLD_PLAYER_CINEMACHINE
+            useCinemachine = fieldOfViewKick.FindPropertyRelative("useCinemachine");
+            targetVirtualCamera = fieldOfViewKick.FindPropertyRelative("targetVirtualCamera");
+#endif
+            targetCamera = fieldOfViewKick.FindPropertyRelative("targetCamera");
+
+            canMoveAround = movement.FindPropertyRelative("canMoveAround");
+            moveUnscaledTime = movement.FindPropertyRelative("unscaledTime");
+
+            walkingSpeed = movement.FindPropertyRelative("walkingSpeeds");
+
+            canRun = movement.FindPropertyRelative("canRun");
+            runToggleMode = movement.FindPropertyRelative("runToggleMode");
+            runSpeeds = movement.FindPropertyRelative("runSpeeds");
+            stamina = movement.FindPropertyRelative("stamina");
+            enableStamina = stamina.FindPropertyRelative("enableStamina");
+            drainStaminaWhen = stamina.FindPropertyRelative("drainStaminaWhen");
+            maxStamina = stamina.FindPropertyRelative("maxStamina");
+            drainRate = stamina.FindPropertyRelative("drainRate");
+            stillThreshold = stamina.FindPropertyRelative("stillThreshold");
+            regenRateStill = stamina.FindPropertyRelative("regenRateStill");
+            regenRateMoving = stamina.FindPropertyRelative("regenRateMoving");
+            regenWait = stamina.FindPropertyRelative("regenWait");
+
+            canCrouch = movement.FindPropertyRelative("canCrouch");
+            crouchToggleMode = movement.FindPropertyRelative("crouchToggleMode");
+            crouchSpeeds = movement.FindPropertyRelative("crouchSpeeds");
+            crouchJumping = movement.FindPropertyRelative("crouchJumping");
+            crouchHeight = movement.FindPropertyRelative("crouchHeight");
+            crouchHeadLerp = movement.FindPropertyRelative("crouchHeadLerp");
+
+            canJump = movement.FindPropertyRelative("canJump");
+            jumpingRequiresStamina = movement.FindPropertyRelative("jumpingRequiresStamina");
+            jumpStaminaRequire = movement.FindPropertyRelative("jumpStaminaRequire");
+            jumpStaminaCost = movement.FindPropertyRelative("jumpStaminaCost");
+            jumpHeight = movement.FindPropertyRelative("jumpHeight");
+            airJump = movement.FindPropertyRelative("airJump");
+            airJumpTime = movement.FindPropertyRelative("airJumpTime");
+            airJumpsAmount = movement.FindPropertyRelative("airJumpsAmount");
+            allowAirJumpDirectionChange = movement.FindPropertyRelative("allowAirJumpDirectionChange");
+
+            movingPlatforms = movement.FindPropertyRelative("movingPlatforms");
+            movingPlatformsEnabled = movingPlatforms.FindPropertyRelative("enabled");
+            movingPlatformsPosition = movingPlatforms.FindPropertyRelative("movePosition");
+            movingPlatformsRotation = movingPlatforms.FindPropertyRelative("moveRotation");
+            movingPlatformsMaxAngle = movingPlatforms.FindPropertyRelative("maxAngle");
+
+            groundLayer = movement.FindPropertyRelative("groundLayer");
+            acceleration = movement.FindPropertyRelative("acceleration");
+            gravity = movement.FindPropertyRelative("gravity");
+            airControl = movement.FindPropertyRelative("airControl");
+            enableGroundStick = movement.FindPropertyRelative("enableGroundStick");
+            groundStick = movement.FindPropertyRelative("groundStick");
+            groundCheck = movement.FindPropertyRelative("groundCheck");
+            rayAmount = movement.FindPropertyRelative("rayAmount");
+            rayHeight = movement.FindPropertyRelative("rayHeight");
+            rayLength = movement.FindPropertyRelative("rayLength");
+
+            enableBob = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("enableBob");
+            bobUnscaledTime = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("unscaledTime");
+            bobFrequency = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("bobFrequency");
+            bobHeight = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("bobHeight");
+            swayAngle = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("swayAngle");
+            sideMovement = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("sideMovement");
+            heightMultiplier = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("heightMultiplier");
+            strideMultiplier = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("strideMultiplier");
+            landMove = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("landMove");
+            landTilt = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("landTilt");
+            enableStrafeTilting = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("enableStrafeTilting");
+            strafeTilt = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("strafeTilt");
+            bobTarget = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("bobTarget");
+
+            enableAudio = audio.FindPropertyRelative("enableAudio");
+            audioUnscaledTime = audio.FindPropertyRelative("unscaledTime");
+            audioType = audio.FindPropertyRelative("audioType");
+            basedOnHeadBob = audio.FindPropertyRelative("basedOnHeadBob");
+            stepTime = audio.FindPropertyRelative("stepTime");
+            walkFootsteps = audio.FindPropertyRelative("walkFootsteps");
+            runFootsteps = audio.FindPropertyRelative("runFootsteps");
+            crouchFootsteps = audio.FindPropertyRelative("crouchFootsteps");
+            jumpingSteps = audio.FindPropertyRelative("jumping");
+            landingSteps = audio.FindPropertyRelative("landing");
+            footstepsSource = audio.FindPropertyRelative("footstepsSource");
+            jumpSource = audio.FindPropertyRelative("jumpSource");
+            landSource = audio.FindPropertyRelative("landSource");
 
             goldPlayer = (GoldPlayerController)target;
             characterController = goldPlayer.GetComponent<CharacterController>();
@@ -113,85 +323,243 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void DoCameraGUI()
         {
-            SerializedProperty it = camera.Copy();
-            while (it.NextVisible(true))
-            {
-                if (it.propertyPath.StartsWith(camera.name) && it.depth < 2)
-                {
-                    if (it.name.StartsWith("input_"))
-                    {
-                        continue;
-                    }
+            EditorGUILayout.PropertyField(canLookAround);
+            EditorGUILayout.PropertyField(shoudLockCursor);
 
-                    EditorGUILayout.PropertyField(it, true);
-                }
-            }
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(invertXAxis);
+            EditorGUILayout.PropertyField(invertYAxis);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(lookSensitivity);
+            EditorGUILayout.PropertyField(lookDamping);
+            EditorGUILayout.PropertyField(minimumX);
+            EditorGUILayout.PropertyField(maximumX);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(cameraHead);
+
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(fieldOfViewKick, "Field of View Kick", true, () =>
+            {
+                EditorGUILayout.PropertyField(fovEnable);
+                DrawElementsConditional(fovEnable, () =>
+                {
+                    EditorGUILayout.PropertyField(moveUnscaledTime);
+                    EditorGUILayout.PropertyField(fovKickWhen);
+                    EditorGUILayout.PropertyField(fovKickAmount);
+                    EditorGUILayout.PropertyField(fovTimeTo);
+                    EditorGUILayout.PropertyField(fovTimeFrom);
+
+                    EditorGUILayout.Space();
+
+#if GOLD_PLAYER_CINEMACHINE
+                    EditorGUILayout.PropertyField(useCinemachine);
+                    if (useCinemachine.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(targetVirtualCamera);
+                    }
+                    else
+#endif
+                        EditorGUILayout.PropertyField(targetCamera);
+                });
+            });
         }
 
         private void DoMovementGUI()
         {
-            SerializedProperty it = movement.Copy();
-            while (it.NextVisible(true))
+            EditorGUILayout.PropertyField(canMoveAround);
+            EditorGUILayout.PropertyField(moveUnscaledTime);
+
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(walkingSpeed, "Walking", false, () => EditorGUILayout.PropertyField(walkingSpeed));
+
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(canRun, "Running", false, () =>
             {
-                if (it.propertyPath.StartsWith(movement.name) && it.depth < 2)
+                EditorGUILayout.PropertyField(canRun);
+
+                DrawElementsConditional(canRun, () =>
                 {
-                    if (it.name.StartsWith("input_"))
+                    EditorGUILayout.PropertyField(runToggleMode);
+                    EditorGUILayout.PropertyField(runSpeeds);
+                    EditorGUILayout.PropertyField(stamina, false);
+                    if (stamina.isExpanded)
                     {
-                        continue;
-                    }
+                        EditorGUI.indentLevel++;
 
-                    if (movement.FindPropertyRelative("groundCheck").enumValueIndex == 0 && (it.name == "rayAmount" || it.name == "rayHeight" || it.name == "rayLength"))
-                    {
-                        continue;
+                        EditorGUILayout.PropertyField(enableStamina);
+                        DrawElementsConditional(enableStamina, () =>
+                        {
+                            EditorGUILayout.PropertyField(drainStaminaWhen);
+                            EditorGUILayout.PropertyField(maxStamina);
+                            EditorGUILayout.PropertyField(drainRate);
+                            EditorGUILayout.PropertyField(stillThreshold);
+                            EditorGUILayout.PropertyField(regenRateStill);
+                            EditorGUILayout.PropertyField(regenRateMoving);
+                            EditorGUILayout.PropertyField(regenWait);
+                        });
+                        EditorGUI.indentLevel--;
                     }
+                });
+            });
 
-                    EditorGUILayout.PropertyField(it, true);
-                    if (it.name.Equals("crouchHeight") && it.floatValue < 0.8f)
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(canCrouch, "Crouching", false, () =>
+            {
+                EditorGUILayout.PropertyField(canCrouch);
+                DrawElementsConditional(canCrouch, () =>
+                {
+                    EditorGUILayout.PropertyField(crouchToggleMode);
+                    EditorGUILayout.PropertyField(crouchSpeeds);
+                    EditorGUILayout.PropertyField(crouchJumping);
+                    if (crouchHeight.floatValue < 0.8f)
                     {
                         EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
                     }
+                    EditorGUILayout.PropertyField(crouchHeight);
+                    EditorGUILayout.PropertyField(crouchHeadLerp);
+                });
+            });
 
-                    if (it.name.Equals("groundLayer") && it.intValue == (it.intValue | (1 << goldPlayer.gameObject.layer)))
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(canJump, "Jumping", false, () =>
+            {
+                EditorGUILayout.PropertyField(canJump);
+                DrawElementsConditional(canJump, () =>
+                {
+                    DrawElementsConditional(enableStamina, () =>
                     {
-                        EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
-                    }
+                        EditorGUILayout.PropertyField(jumpingRequiresStamina);
+                        DrawElementsConditional(jumpingRequiresStamina, () =>
+                        {
+                            EditorGUILayout.PropertyField(jumpStaminaRequire);
+                            EditorGUILayout.PropertyField(jumpStaminaCost);
+                        });
+                    });
+
+                    EditorGUILayout.PropertyField(jumpHeight);
+                    EditorGUILayout.PropertyField(airJump);
+
+                    DrawElementsConditional(airJump, () =>
+                    {
+                        EditorGUILayout.PropertyField(airJumpTime);
+                        EditorGUILayout.PropertyField(airJumpsAmount);
+                        EditorGUILayout.PropertyField(allowAirJumpDirectionChange);
+                    });
+                });
+            });
+
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(movingPlatforms, "Moving Platforms", false, () =>
+            {
+                EditorGUILayout.PropertyField(movingPlatformsEnabled);
+                DrawElementsConditional(movingPlatformsEnabled, () =>
+                {
+                    EditorGUILayout.PropertyField(movingPlatformsPosition);
+                    EditorGUILayout.PropertyField(movingPlatformsRotation);
+                    EditorGUILayout.PropertyField(movingPlatformsMaxAngle);
+                });
+            });
+
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(acceleration, "Miscellaneous", false, () =>
+            {
+                if (groundLayer.intValue == (groundLayer.intValue | 1 << goldPlayer.gameObject.layer))
+                {
+                    EditorGUILayout.HelpBox("The player layer should not be included as a Ground Layer!", MessageType.Warning);
                 }
-            }
+                EditorGUILayout.PropertyField(groundLayer);
+                EditorGUILayout.PropertyField(acceleration);
+                EditorGUILayout.PropertyField(gravity);
+                EditorGUILayout.PropertyField(airControl);
+                EditorGUILayout.PropertyField(enableGroundStick);
+                DrawElementsConditional(enableGroundStick, () => EditorGUILayout.PropertyField(groundStick));
+                EditorGUILayout.PropertyField(groundCheck);
+                if (groundCheck.intValue == 1)
+                {
+                    EditorGUILayout.PropertyField(rayAmount);
+                    EditorGUILayout.PropertyField(rayHeight);
+                    EditorGUILayout.PropertyField(rayLength);
+                }
+            });
         }
 
         private void DoHeadBobGUI()
         {
-            SerializedProperty it = headBob.Copy();
-            while (it.NextVisible(true))
+            EditorGUILayout.PropertyField(enableBob);
+            DrawElementsConditional(enableBob, () =>
             {
-                if (it.propertyPath.StartsWith(headBob.name) && !it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth < 2)
-                {
-                    EditorGUILayout.PropertyField(it, true);
-                }
+                EditorGUILayout.PropertyField(bobUnscaledTime);
 
-                if (it.propertyPath.StartsWith(headBob.name + ".bobClass") && it.depth >= 2)
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(bobFrequency);
+                EditorGUILayout.PropertyField(bobHeight);
+                EditorGUILayout.PropertyField(swayAngle);
+                EditorGUILayout.PropertyField(sideMovement);
+                EditorGUILayout.PropertyField(heightMultiplier);
+                EditorGUILayout.PropertyField(strideMultiplier);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(landMove);
+                EditorGUILayout.PropertyField(landTilt);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(enableStrafeTilting);
+                DrawElementsConditional(enableStrafeTilting, () => EditorGUILayout.PropertyField(strafeTilt));
+
+                EditorGUILayout.Space();
+
+                if (cameraHead.objectReferenceValue == bobTarget.objectReferenceValue)
                 {
-                    if (it.name == "bobTarget" && camera.FindPropertyRelative("cameraHead").objectReferenceValue == it.objectReferenceValue)
-                    {
-                        EditorGUILayout.HelpBox("You should not target the same object as your camera head. " +
+                    EditorGUILayout.HelpBox("You should not target the same object as your camera head. " +
                             "It's recommended that you create a parent to this object that you can target your bobbing on.", MessageType.Warning);
-                    }
-
-                    EditorGUILayout.PropertyField(it, true);
                 }
-            }
+
+                EditorGUILayout.PropertyField(bobTarget);
+            });
         }
 
         private void DoAudioGUI()
         {
-            SerializedProperty it = audio.Copy();
-            while (it.NextVisible(true))
+            EditorGUILayout.PropertyField(enableAudio);
+            DrawElementsConditional(enableAudio, () =>
             {
-                if (it.propertyPath.StartsWith(audio.name) && it.depth < 2)
-                {
-                    EditorGUILayout.PropertyField(it, true);
-                }
-            }
+                EditorGUILayout.PropertyField(audioUnscaledTime);
+                EditorGUILayout.PropertyField(audioType);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(basedOnHeadBob);
+                DrawElementsConditional(basedOnHeadBob, () => EditorGUILayout.PropertyField(stepTime));
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(walkFootsteps, true);
+                EditorGUILayout.PropertyField(runFootsteps);
+                EditorGUILayout.PropertyField(crouchFootsteps);
+                EditorGUILayout.PropertyField(jumpingSteps);
+                EditorGUILayout.PropertyField(landingSteps);
+
+                EditorGUILayout.Space();
+
+                EditorGUILayout.PropertyField(footstepsSource);
+                EditorGUILayout.PropertyField(jumpSource);
+                EditorGUILayout.PropertyField(landSource);
+            });
         }
 
         private void DoInputGUI()

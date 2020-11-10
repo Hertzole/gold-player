@@ -21,8 +21,6 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_AudioType")]
         private AudioTypes audioType = AudioTypes.Standard;
 
-        [Space]
-
         [SerializeField]
         [Tooltip("Determines if the audio should be based on head bob.")]
         [FormerlySerializedAs("m_BasedOnHeadBob")]
@@ -31,8 +29,6 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Sets how frequent the footsteps are.")]
         [FormerlySerializedAs("m_StepTime")]
         private float stepTime = 1.5f;
-
-        [Space]
 
         [SerializeField]
         [Tooltip("All the audio settings that plays when walking.")]
@@ -54,8 +50,6 @@ namespace Hertzole.GoldPlayer
         [Tooltip("All the audio settings that plays when landing.")]
         [FormerlySerializedAs("m_Landing")]
         private AudioItem landing = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
-
-        [Space]
 
         [SerializeField]
         [Tooltip("The audio source where all the footsteps sounds will be played.")]
