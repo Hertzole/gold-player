@@ -127,11 +127,16 @@ namespace Hertzole.GoldPlayer.Editor
 
         public static void DrawElementsConditional(SerializedProperty property, Action drawCallback)
         {
-            if (ShouldShowElements(property))
+            DrawElementsConditional(property.boolValue, drawCallback);
+        }
+
+        public static void DrawElementsConditional(bool show, Action drawCallback)
+        {
+            if (ShouldShowElements(show))
             {
                 bool oEnabled = GUI.enabled;
 
-                if (ShouldDisableElements(property))
+                if (ShouldDisableElements(show))
                 {
                     GUI.enabled = false;
                 }
