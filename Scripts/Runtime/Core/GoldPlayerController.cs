@@ -25,19 +25,15 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("audio")]
         private PlayerAudio sounds = new PlayerAudio();
 
-        private bool initOnStart = true;
-        protected bool hasBeenInitialized = false;
-
-        private IGoldInput playerInput;
-        private CharacterController controller;
+        [SerializeField]
+        [HideInInspector]
+        private CharacterController controller = null;
 
         /// <summary> True if all the modules have been initialized. </summary>
         public bool HasBeenFullyInitialized
         {
             get { return cam.HasBeenInitialized && movement.HasBeenInitialized && headBob.HasBeenInitialized && sounds.HasBeenInitialized; }
         }
-        /// <summary> If false, 'Initialize()' will not be called on Start and will only be called once another script calls it. </summary>
-        public bool InitOnStart { get { return initOnStart; } set { initOnStart = value; } }
         /// <summary> If true, Gold Player will use unscaled delta time. </summary>
         public bool UnscaledTime
         {
@@ -53,6 +49,15 @@ namespace Hertzole.GoldPlayer
         public PlayerBob HeadBob { get { return headBob; } set { headBob = value; } }
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
         public PlayerAudio Audio { get { return sounds; } set { sounds = value; } }
+
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
+        private bool initOnStart = true;
+        /// <summary> If false, 'Initialize()' will not be called on Start and will only be called once another script calls it. </summary>
+        public bool InitOnStart { get { return initOnStart; } set { initOnStart = value; } }
+#else
+        [System.NonSerialized]
+        public bool InitOnStart = true;
+#endif
 
         #region Obsolete
 #if UNITY_EDITOR
@@ -80,10 +85,15 @@ namespace Hertzole.GoldPlayer
 #endif // UNITY_EDITOR
         #endregion
 
-        /// <summary> The input system for the player. </summary>
-        public IGoldInput PlayerInput { get { return playerInput; } }
         /// <summary> The character controller on the player. </summary>
         public CharacterController Controller { get { return controller; } }
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
+        /// <summary> The input system for the player. </summary>
+        public IGoldInput PlayerInput { get; set; }
+#else
+        [System.NonSerialized]
+        public IGoldInput PlayerInput;
+#endif
 
         private void Awake()
         {
@@ -93,7 +103,7 @@ namespace Hertzole.GoldPlayer
             // Complain if there's no input present.
             // Only do this in development builds and the Unity editor. We save a small amount of performance by removing it.
 #if DEBUG || UNITY_EDITOR
-            if (playerInput == null)
+            if (PlayerInput == null)
             {
 #if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
                 Debug.LogError(gameObject.name + " needs to have a input script derived from IGoldInput! Add the standard 'GoldPlayerInputSystem' to fix.");
@@ -201,7 +211,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void GetReferences()
         {
-            playerInput = gameObject.GetComponent<IGoldInput>();
+            PlayerInput = gameObject.GetComponent<IGoldInput>();
             controller = gameObject.GetComponent<CharacterController>();
         }
 
@@ -276,12 +286,27 @@ namespace Hertzole.GoldPlayer
         }
 
 #if UNITY_EDITOR
+        private void Reset()
+        {
+            GetController();
+        }
+
         private void OnValidate()
         {
+            GetController();
+
             movement.OnValidate();
             cam.OnValidate();
             headBob.OnValidate();
             sounds.OnValidate();
+        }
+
+        private void GetController()
+        {
+            if (controller == null)
+            {
+                controller = GetComponent<CharacterController>();
+            }
         }
 #endif
     }

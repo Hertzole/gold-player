@@ -13,6 +13,7 @@ namespace Hertzole.GoldPlayer
         [Tooltip("If true, this will handle all the audio handling. Else the Player Audio module will handle it.")]
         private bool independentAudioHandling = false;
 
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         /// <summary> The player controller. </summary>
         protected GoldPlayerController PlayerController { get; private set; }
         /// <summary> The player input. </summary>
@@ -24,6 +25,13 @@ namespace Hertzole.GoldPlayer
         protected AudioSource JumpSource { get; private set; }
         /// <summary> The audio source where all the land sounds will be played. </summary>
         protected AudioSource LandSource { get; private set; }
+#else
+        protected GoldPlayerController PlayerController;
+        protected IGoldInput PlayerInput;
+        protected AudioSource FootstepsSource;
+        protected AudioSource JumpSource;
+        protected AudioSource LandSource;
+#endif
 
         /// <summary> If true, this will handle all the audio handling. Else the Player Audio module will handle it. </summary>
         public virtual bool IndependentAudioHandling { get { return independentAudioHandling; } set { independentAudioHandling = value; } }

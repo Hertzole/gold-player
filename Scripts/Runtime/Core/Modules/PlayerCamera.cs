@@ -7,7 +7,7 @@ namespace Hertzole.GoldPlayer
     /// Used to move a player camera around.
     /// </summary>
     [System.Serializable]
-    public class PlayerCamera : PlayerModule
+    public sealed class PlayerCamera : PlayerModule
     {
         [SerializeField]
         [Tooltip("Determines if the player can look around.")]
@@ -236,7 +236,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Does all the mouse work for looking around.
         /// </summary>
-        protected virtual void MouseHandler(float deltaTime)
+        private void MouseHandler(float deltaTime)
         {
             // If the camera head field is null, stop here.
             if (cameraHead == null)
@@ -328,7 +328,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Handles all the camera shake code.
         /// </summary>
-        protected virtual void ShakeHandler(float deltaTime)
+        private void ShakeHandler(float deltaTime)
         {
             // Only run the code if doShake is true.
             if (doShake)
@@ -370,7 +370,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        protected virtual void ForceLookHandler()
+        private void ForceLookHandler()
         {
             // Only run if the player is looking at something.
             if (forceLooking)
@@ -426,7 +426,7 @@ namespace Hertzole.GoldPlayer
         /// <param name="frequency">The frequency of the camera shake.</param>
         /// <param name="magnitude">The magnitude of the camera shake.</param>
         /// <param name="duration">The duration of the camera shake.</param>
-        public virtual void CameraShake(float frequency, float magnitude, float duration)
+        public void CameraShake(float frequency, float magnitude, float duration)
         {
             doShake = true;
             shakeFrequency = frequency;
@@ -447,7 +447,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Stops the camera shake.
         /// </summary>
-        public virtual void StopCameraShake()
+        public void StopCameraShake()
         {
             doShake = false;
         }
@@ -457,7 +457,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="recoilAmount">The amount of recoil.</param>
         /// <param name="recoilTime">The amount of time to "fade out" takes.</param>
-        public virtual void ApplyRecoil(float recoilAmount, float recoilTime)
+        public void ApplyRecoil(float recoilAmount, float recoilTime)
         {
             this.recoilTime = recoilTime;
             recoil = recoilAmount;

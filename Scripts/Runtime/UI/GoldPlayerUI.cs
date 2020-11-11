@@ -432,7 +432,11 @@ namespace Hertzole.GoldPlayer
                 case LabelDisplayType.Percentage:
                     return string.Format("{0}%", ((current / max) * 100).ToString(percentageFormat));
                 default:
+#if DEBUG || UNITY_EDITOR
                     throw new System.NotImplementedException("There's no support for label display type '" + staminaBarType + "' in GoldPlayerUI!");
+#else
+                    return string.Empty;
+#endif
             }
         }
 

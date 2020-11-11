@@ -7,7 +7,7 @@ namespace Hertzole.GoldPlayer
     /// Used for movement related calculations.
     /// </summary>
     [System.Serializable]
-    public class PlayerMovement : PlayerModule
+    public sealed class PlayerMovement : PlayerModule
     {
         [SerializeField]
         [Tooltip("Determines if the player can move at all.")]
@@ -175,87 +175,87 @@ namespace Hertzole.GoldPlayer
         private string input_Crouch = "Crouch";
 
         // The real calculated jump height.
-        protected float realJumpHeight = 0;
+        private float realJumpHeight = 0;
         // The original character controller height.
-        protected float originalControllerHeight = 0;
+        private float originalControllerHeight = 0;
         // The original camera position.
-        protected float originalCameraPosition = 0;
+        private float originalCameraPosition = 0;
         // The character controller center set when the player is crouching.
-        protected float controllerCrouchCenter = 0;
+        private float controllerCrouchCenter = 0;
         // The current camera position, related to crouching.
-        protected float currentCrouchCameraPosition = 0;
+        private float currentCrouchCameraPosition = 0;
         // The position to set the camera to when crouching.
-        protected float crouchCameraPosition = 0;
+        private float crouchCameraPosition = 0;
         // Just used in Input smoothing.
-        protected float forwardSpeedVelocity = 0;
+        private float forwardSpeedVelocity = 0;
         // Just used in Input smoothing.
-        protected float sidewaysSpeedVelocity = 0;
+        private float sidewaysSpeedVelocity = 0;
         // The current air time of the player.
-        protected float currentAirTime = 0;
+        private float currentAirTime = 0;
         // The current move speed multiplier.
-        protected float moveSpeedMultiplier = 1;
+        private float moveSpeedMultiplier = 1;
         // The current jump height multiplier,
-        protected float jumpHeightMultiplier = 1;
+        private float jumpHeightMultiplier = 1;
 
         // The current amount of times an air jump has been performed.
-        protected int currentJumps = 0;
+        private int currentJumps = 0;
 
         // Is the player grounded?
-        protected bool isGrounded = false;
+        private bool isGrounded = false;
         // Is the player moving at all?
-        protected bool isMoving = false;
+        private bool isMoving = false;
         // Does the player want to be running?
-        protected bool shouldRun = false;
+        private bool shouldRun = false;
         // Is the player running?
-        protected bool isRunning = false;
+        private bool isRunning = false;
         // Did the player run at all since their last break in move input?
         private bool didRunSinceLastBreakInMovement;
         // Is the player jumping?
-        protected bool isJumping = false;
+        private bool isJumping = false;
         // Is the player falling?
-        protected bool isFalling = false;
+        private bool isFalling = false;
         // Does the player want to be crouching?
-        protected bool shouldCrouch = false;
+        private bool shouldCrouch = false;
         // Is the player crouching?
-        protected bool isCrouching = false;
+        private bool isCrouching = false;
         // Can the player stand up while crouching?
-        protected bool canStandUp = false;
+        private bool canStandUp = false;
         // Was the player previously grounded?
-        protected bool previouslyGrounded = false;
+        private bool previouslyGrounded = false;
         // Was the player previously crouched?
-        protected bool previouslyCrouched = false;
+        private bool previouslyCrouched = false;
         // Was the player previously running?
-        protected bool previouslyRunning = false;
+        private bool previouslyRunning = false;
         // Determines if the player should jump.
-        protected bool shouldJump = false;
+        private bool shouldJump = false;
         // Checking if the jump button is pressed.
-        protected bool pressedJump = false;
+        private bool pressedJump = false;
 
         // Raw input values for movement on the X and Z axis.
-        protected Vector2 movementInput = Vector2.zero;
+        private Vector2 movementInput = Vector2.zero;
         // Input values for movement on the X and Z axis, automatically dampened for smoothing.
-        protected Vector2 smoothedMovementInput = Vector2.zero;
+        private Vector2 smoothedMovementInput = Vector2.zero;
         // Whether or not the player registered movement input this frame. This can be false while
         // movementInput is non-zero due to the smoothing applied to movementInput.
-        protected bool hasUserInput = false;
+        private bool hasUserInput = false;
 
         // The original character controller center.
-        protected Vector3 originalControllerCenter = Vector3.zero;
+        private Vector3 originalControllerCenter = Vector3.zero;
         // The direction the player is moving in.
-        protected Vector3 moveDirection = Vector3.zero;
+        private Vector3 moveDirection = Vector3.zero;
         // The current ground velocity.
-        protected Vector3 groundVelocity = Vector3.zero;
+        private Vector3 groundVelocity = Vector3.zero;
         // The velocity while the player is in the air.
-        protected Vector3 airVelocity = Vector3.zero;
+        private Vector3 airVelocity = Vector3.zero;
         // The position the player was at when jumping.
-        protected Vector3 jumpPosition = Vector3.zero;
+        private Vector3 jumpPosition = Vector3.zero;
         // The impact of the applied force.
-        protected Vector3 forceImpact = Vector3.zero;
+        private Vector3 forceImpact = Vector3.zero;
         // The rays used for raycast ground check.
         private Vector3[] groundCheckRays;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
-        protected MovementSpeeds moveSpeed = new MovementSpeeds();
+        private MovementSpeeds moveSpeed = new MovementSpeeds();
 
         /// <summary> Determines if the player can move at all. </summary>
         public bool CanMoveAround { get { return canMoveAround; } set { canMoveAround = value; if (!value) { ResetMovementInput(); } } }
@@ -613,7 +613,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Handles the basic movement, like walking and jumping.
         /// </summary>
-        protected virtual void BasicMovement(float deltaTime)
+        private void BasicMovement(float deltaTime)
         {
             // Only run if air jump is enabled.
             if (airJump)
@@ -730,7 +730,7 @@ namespace Hertzole.GoldPlayer
         /// Determines if the player should jump.
         /// </summary>
         /// <returns>True if the player should jump.</returns>
-        protected virtual bool ShouldPlayerJump()
+        private bool ShouldPlayerJump()
         {
             if (jumpingRequiresStamina && stamina.EnableStamina && stamina.CurrentStamina < jumpStaminaRequire)
             {
@@ -756,7 +756,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Controls the movement direction and applying the correct speeds.
         /// </summary>
-        protected virtual void HandleMovementDirection()
+        private void HandleMovementDirection()
         {
             if (isGrounded)
             {
@@ -809,7 +809,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Makes the player jump.
         /// </summary>
-        protected virtual void Jump()
+        private void Jump()
         {
             // If jumping requires stamina and stamina is enabled, remove the cost of the jump on the stamina.
             if (jumpingRequiresStamina && stamina.EnableStamina)
@@ -875,7 +875,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Handles running.
         /// </summary>
-        protected virtual void Running()
+        private void Running()
         {
             // If the player can't run, just stop here.
             if (!canRun)
@@ -998,7 +998,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Handles crouching.
         /// </summary>
-        protected virtual void Crouching(float deltaTime)
+        private void Crouching(float deltaTime)
         {
             // Only run the code if we can crouch. If we can't, always set 'isCrouching' to false.
             if (canCrouch)
@@ -1101,7 +1101,7 @@ namespace Hertzole.GoldPlayer
         /// Checks if there's anything above the player that could stop the player from standing up.
         /// </summary>
         /// <returns></returns>
-        protected virtual bool CheckCanStandUp()
+        private bool CheckCanStandUp()
         {
             // Check if we can stand up using a capsule from the player bottom to the player top.
             return !Physics.CheckCapsule(PlayerTransform.position + Vector3.up * CharacterController.radius, PlayerTransform.position + (Vector3.up * originalControllerHeight) - (Vector3.up * CharacterController.radius), CharacterController.radius, groundLayer, QueryTriggerInteraction.Ignore);
@@ -1110,7 +1110,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Do updates related to force.
         /// </summary>
-        protected virtual void ForceUpdate(float deltaTime)
+        private void ForceUpdate(float deltaTime)
         {
             // If the force impact is over 0.2, apply the force impact to the move direction.
             if (forceImpact.magnitude > 0.2f)
@@ -1127,7 +1127,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         /// <param name="direction">The direction of the force.</param>
         /// <param name="force">Force multiplier.</param>
-        public virtual void AddForce(Vector3 direction, float force)
+        public void AddForce(Vector3 direction, float force)
         {
             // Normalize the direction.
             direction.Normalize();
@@ -1157,7 +1157,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Resets all movmenet related input.
         /// </summary>
-        protected virtual void ResetMovementInput()
+        private void ResetMovementInput()
         {
             movementInput = Vector2.zero;
             pressedJump = false;

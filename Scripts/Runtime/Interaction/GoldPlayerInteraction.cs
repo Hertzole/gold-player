@@ -71,8 +71,13 @@ namespace Hertzole.GoldPlayer
         // The raycast hit.
         private RaycastHit interactableHit;
 
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         /// <summary> True if the player can currently interact. </summary>
         public bool CanInteract { get; private set; }
+#else
+        [System.NonSerialized]
+        public bool CanInteract;
+#endif
 
         /// <summary> The player camera head. </summary>
         public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
@@ -86,8 +91,14 @@ namespace Hertzole.GoldPlayer
         public string InteractMessage { get { return interactMessage; } set { interactMessage = value; } }
         /// <summary> The input name for interaction to use. </summary>
         public string InteractInput { get { return interactInput; } set { interactInput = value; } }
+
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         /// <summary> The current hit interactable. </summary>
         public IGoldPlayerInteractable CurrentHitInteractable { get; private set; }
+#else
+        [System.NonSerialized]
+        public IGoldPlayerInteractable CurrentHitInteractable;
+#endif
 
         protected virtual void Awake()
         {

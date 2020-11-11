@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 namespace Hertzole.GoldPlayer
 {
     [System.Serializable]
-    public class PlayerBob : PlayerModule
+    public sealed class PlayerBob : PlayerModule
     {
         [SerializeField]
         [FormerlySerializedAs("m_BobClass")]
@@ -55,7 +55,7 @@ namespace Hertzole.GoldPlayer
             BobHandler(deltaTime);
         }
 
-        protected virtual void BobHandler(float deltaTime)
+        private void BobHandler(float deltaTime)
         {
             bobClass.DoBob(CharacterController.velocity, deltaTime, PlayerController.Movement.MovementInput.x);
         }
