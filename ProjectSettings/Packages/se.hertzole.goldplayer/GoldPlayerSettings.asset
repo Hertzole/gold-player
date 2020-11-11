@@ -20,3 +20,4 @@ MonoBehaviour:
   disableAnimator: 0
   disableAudioExtras: 0
   disableObjectBob: 0
+  disableOptimizations: 0

@@ -26,8 +26,14 @@ namespace Hertzole.GoldPlayer
         public float SidewaysSpeed { get { return sidewaysSpeed; } set { sidewaysSpeed = value; CalculateMax(); } }
         /// <summary> The speed when moving backwards. </summary>
         public float BackwardsSpeed { get { return backwardsSpeed; } set { backwardsSpeed = value; CalculateMax(); } }
+
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         /// <summary> The max speed out of all values. </summary>
         public float Max { get; private set; }
+#else
+        [System.NonSerialized]
+        public float Max;
+#endif
 
         public MovementSpeeds(float forwardSpeed, float sidewaysSpeed, float backwardsSpeed)
         {

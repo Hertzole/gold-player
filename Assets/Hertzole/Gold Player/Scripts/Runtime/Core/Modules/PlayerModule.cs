@@ -4,19 +4,31 @@ namespace Hertzole.GoldPlayer
 {
     public class PlayerModule
     {
-        private GoldPlayerController playerController;
-        protected GoldPlayerController PlayerController { get { return playerController; } }
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
+        protected GoldPlayerController PlayerController { get; private set; }
+#else
+        [System.NonSerialized]
+        protected GoldPlayerController PlayerController;
+#endif
 
-        protected CharacterController CharacterController { get { return playerController.Controller; } }
+        protected CharacterController CharacterController { get { return PlayerController.Controller; } }
 
         private Transform playerTransform;
-        protected Transform PlayerTransform { get { if (playerTransform == null) { playerTransform = playerController.transform; } return playerTransform; } }
+        protected Transform PlayerTransform { get { if (playerTransform == null) { playerTransform = PlayerController.transform; } return playerTransform; } }
 
-        private IGoldInput playerInput;
-        protected IGoldInput PlayerInput { get { return playerInput; } }
+#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
+        protected IGoldInput PlayerInput { get; private set; }
 
         /// <summary> True if the module has been initialized. </summary>
         public bool HasBeenInitialized { get; private set; }
+#else
+        [System.NonSerialized]
+        protected IGoldInput PlayerInput;
+        [System.NonSerialized]
+        public bool HasBeenInitialized;
+#endif
+
+
 
         /// <summary>
         /// Initialize the module.
@@ -31,10 +43,10 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            playerController = player;
+            PlayerController = player;
             if (input != null)
             {
-                playerInput = input;
+                PlayerInput = input;
             }
 
             OnInitialize();

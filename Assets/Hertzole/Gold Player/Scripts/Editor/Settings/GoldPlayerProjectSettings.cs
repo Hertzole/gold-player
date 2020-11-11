@@ -26,6 +26,14 @@ namespace Hertzole.GoldPlayer.Editor
         private const string DIRECTORY = "ProjectSettings/Packages/se.hertzole.goldplayer";
         private const string PATH = DIRECTORY + "/GoldPlayerSettings.asset";
 
+        private const string DISABLE_INTERACTION = "GOLD_PLAYER_DISABLE_INTERACTION";
+        private const string DISABLE_UI = "GOLD_PLAYER_DISABLE_UI";
+        private const string DISABLE_GRAPHICS = "GOLD_PLAYER_DISABLE_GRAPHICS";
+        private const string DISABLE_ANIMATOR = "GOLD_PLAYER_DISABLE_ANIMATOR";
+        private const string DISABLE_AUDIO_EXTRAS = "GOLD_PLAYER_DISABLE_AUDIO_EXTRAS";
+        private const string DISABLE_OBJECT_BOB = "GOLD_PLAYER_DISABLE_OBJECT_BOB";
+        private const string DISABLE_OPTIMIZATIONS = "GOLD_PLAYER_DISABLE_OPTIMIZATIONS";
+
         [SerializeField]
         private EditorGUIAdaption guiAdapation = EditorGUIAdaption.HideUnused;
         [SerializeField]
@@ -42,6 +50,8 @@ namespace Hertzole.GoldPlayer.Editor
         private bool disableAudioExtras = false;
         [SerializeField]
         private bool disableObjectBob = false;
+        [SerializeField]
+        private bool disableOptimizations = false;
 
         public EditorGUIAdaption GUIAdapation { get { return guiAdapation; } set { guiAdapation = value; Save(); } }
 
@@ -53,6 +63,7 @@ namespace Hertzole.GoldPlayer.Editor
         public bool DisableAnimator { get { return disableAnimator; } set { disableAnimator = value; } }
         public bool DisableAudioExtras { get { return disableAudioExtras; } set { disableAudioExtras = value; } }
         public bool DisableObjectBob { get { return disableObjectBob; } set { disableObjectBob = value; } }
+        public bool DisableOptimizations { get { return disableOptimizations; } set { disableOptimizations = value; } }
 
         private static GoldPlayerProjectSettings instance;
         public static GoldPlayerProjectSettings Instance
@@ -171,56 +182,65 @@ namespace Hertzole.GoldPlayer.Editor
             List<string> add = new List<string>();
             if (settings.disableInteraction)
             {
-                add.Add("GOLD_PLAYER_DISABLE_INTERACTION");
+                add.Add(DISABLE_INTERACTION);
             }
             else
             {
-                remove.Add("GOLD_PLAYER_DISABLE_INTERACTION");
+                remove.Add(DISABLE_INTERACTION);
             }
 
             if (settings.disableUI)
             {
-                add.Add("GOLD_PLAYER_DISABLE_UI");
+                add.Add(DISABLE_UI);
             }
             else
             {
-                remove.Add("GOLD_PLAYER_DISABLE_UI");
+                remove.Add(DISABLE_UI);
             }
 
             if (settings.disableGraphics)
             {
-                add.Add("GOLD_PLAYER_DISABLE_GRAPHICS");
+                add.Add(DISABLE_GRAPHICS);
             }
             else
             {
-                remove.Add("GOLD_PLAYER_DISABLE_GRAPHICS");
+                remove.Add(DISABLE_GRAPHICS);
             }
 
             if (settings.disableAnimator)
             {
-                add.Add("GOLD_PLAYER_DISABLE_ANIMATOR");
+                add.Add(DISABLE_ANIMATOR);
             }
             else
             {
-                remove.Add("GOLD_PLAYER_DISABLE_ANIMATOR");
+                remove.Add(DISABLE_ANIMATOR);
             }
 
             if (settings.disableAudioExtras)
             {
-                add.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
+                add.Add(DISABLE_AUDIO_EXTRAS);
             }
             else
             {
-                remove.Add("GOLD_PLAYER_DISABLE_AUDIO_EXTRAS");
+                remove.Add(DISABLE_AUDIO_EXTRAS);
             }
 
             if (settings.disableObjectBob)
             {
-                add.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
+                add.Add(DISABLE_OBJECT_BOB);
             }
             else
             {
-                remove.Add("GOLD_PLAYER_DISABLE_OBJECT_BOB");
+                remove.Add(DISABLE_OBJECT_BOB);
+            }
+
+            if (settings.disableOptimizations)
+            {
+                add.Add(DISABLE_OPTIMIZATIONS);
+            }
+            else
+            {
+                remove.Add(DISABLE_OPTIMIZATIONS);
             }
 
             GoldPlayerScriptHelpers.AddAndRemoveDefines(add, remove);

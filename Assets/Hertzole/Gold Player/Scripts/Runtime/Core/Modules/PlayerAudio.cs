@@ -7,7 +7,7 @@ namespace Hertzole.GoldPlayer
     /// Used to apply audio to Gold Player.
     /// </summary>
     [System.Serializable]
-    public class PlayerAudio : PlayerModule
+    public sealed class PlayerAudio : PlayerModule
     {
         [SerializeField]
         [Tooltip("Determines if any audio should be played.")]
@@ -65,12 +65,12 @@ namespace Hertzole.GoldPlayer
         private AudioSource landSource = null;
 
         // When the next step sound should occur.
-        protected float nextStepTime = 0;
+        private float nextStepTime = 0;
         // Where in the cycle the steps are.
-        protected float stepCycle = 0;
+        private float stepCycle = 0;
 
         // Check if the player was previously grounded.
-        protected bool previouslyGrounded = true;
+        private bool previouslyGrounded = true;
 
         // A custom audio behaviour, if the type is set to Custom.
         private PlayerAudioBehaviour customBehaviour;
@@ -174,7 +174,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Handles the step cycle logic.
         /// </summary>
-        protected virtual void DoStepCycle(float deltaTime)
+        private void DoStepCycle(float deltaTime)
         {
             // If the step cycle should be based on head bob, get it from there.
             // Else do it by itself.
@@ -203,7 +203,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Calculates the step cycle.
         /// </summary>
-        protected virtual void DoStepCycleMath(float deltaTime)
+        private void DoStepCycleMath(float deltaTime)
         {
             if (CharacterController == null)
             {
@@ -221,7 +221,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Handles all the audio features.
         /// </summary>
-        protected virtual void AudioHandler()
+        private void AudioHandler()
         {
             // Only run if the audio feature is enabled.
             if (enableAudio)
@@ -302,7 +302,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Plays a random footstep sound that adapts to sprinting and crouching.
         /// </summary>
-        public virtual void PlayFootstepSound()
+        public void PlayFootstepSound()
         {
             // Only run if the audio feature is enabled.
             if (enableAudio)
@@ -331,7 +331,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Plays a random jump sound.
         /// </summary>
-        public virtual void PlayJumpSound()
+        public void PlayJumpSound()
         {
             // Only play if the audio feature is enabled and the jump sound is enabled.
             if (enableAudio && jumping.Enabled)
@@ -343,7 +343,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Plays a random land sound.
         /// </summary>
-        public virtual void PlayLandSound()
+        public void PlayLandSound()
         {
             // Only play if the audio feature is enabled and the landing sound is enabled.
             if (enableAudio && landing.Enabled)

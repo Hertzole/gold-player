@@ -3,7 +3,7 @@ A first-person player controller for Unity, built with being user-friendly and d
 
 ## 🎇 Features
 
-- Good performance
+- Optimized for speed and size
 - Walking, running (with optional stamina!), crouching, and jumping
 - Head bob and audio for footsteps, jumping, and landing
 - Moving platforms support
