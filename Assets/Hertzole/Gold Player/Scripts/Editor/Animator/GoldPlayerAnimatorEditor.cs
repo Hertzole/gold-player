@@ -284,7 +284,15 @@ namespace Hertzole.GoldPlayer.Editor
             rect.width = EditorGUIUtility.currentViewWidth - EditorGUIUtility.labelWidth - (EditorGUIUtility.singleLineHeight * 2) - 5;
             rect.x = EditorGUIUtility.labelWidth + (EditorGUIUtility.singleLineHeight * 2);
 
+            bool oEnabled = GUI.enabled;
+
+            if (GoldPlayerUIHelper.ShouldDisableElements(property.FindPropertyRelative("enabled")))
+            {
+                GUI.enabled = false;
+            }
+
             EditorGUI.IntPopup(rect, property.FindPropertyRelative("index"), parameters, optionValues, GUIContent.none);
+            GUI.enabled = oEnabled;
         }
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif

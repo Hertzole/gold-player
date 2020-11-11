@@ -14,6 +14,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 #endif
 #endif
+using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
 
 namespace Hertzole.GoldPlayer.Editor
 {
@@ -64,19 +65,16 @@ namespace Hertzole.GoldPlayer.Editor
             EditorGUILayout.PropertyField(isInteractable);
             EditorGUILayout.PropertyField(isHidden);
 
-            EditorGUILayout.PropertyField(useCustomMessage);
-            bool oldEnabled = GUI.enabled;
-            GUI.enabled = useCustomMessage.boolValue;
-            EditorGUILayout.PropertyField(customMessage);
-            GUI.enabled = oldEnabled;
+            DrawElementsConditional(!isHidden.boolValue, () =>
+            {
+                EditorGUILayout.PropertyField(useCustomMessage);
+                DrawElementsConditional(useCustomMessage, () => EditorGUILayout.PropertyField(customMessage));
+            });
 
             EditorGUILayout.PropertyField(limitedInteractions);
-            oldEnabled = GUI.enabled;
-            GUI.enabled = limitedInteractions.boolValue;
-            EditorGUILayout.PropertyField(maxInteractions);
-            GUI.enabled = oldEnabled;
+            DrawElementsConditional(limitedInteractions, () => EditorGUILayout.PropertyField(maxInteractions));
 
-            oldEnabled = GUI.enabled;
+            bool oldEnabled = GUI.enabled;
             if (Application.isPlaying && limitedInteractions.boolValue)
             {
                 GUI.enabled = false;
@@ -85,10 +83,7 @@ namespace Hertzole.GoldPlayer.Editor
             GUI.enabled = oldEnabled;
 
             EditorGUILayout.PropertyField(onInteract);
-            if (limitedInteractions.boolValue)
-            {
-                EditorGUILayout.PropertyField(onReachedMaxInteraction);
-            }
+            DrawElementsConditional(limitedInteractions, () => EditorGUILayout.PropertyField(onReachedMaxInteraction));
 
             serializedObject.ApplyModifiedProperties();
 #else
