@@ -32,6 +32,7 @@ namespace Hertzole.GoldPlayer.Editor
         // Camera properties
         private SerializedProperty canLookAround;
         private SerializedProperty shoudLockCursor;
+        private SerializedProperty rotateCameraOnly;
         private SerializedProperty invertXAxis;
         private SerializedProperty invertYAxis;
         private SerializedProperty lookSensitivity;
@@ -172,6 +173,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             canLookAround = camera.FindPropertyRelative("canLookAround");
             shoudLockCursor = camera.FindPropertyRelative("shouldLockCursor");
+            rotateCameraOnly = camera.FindPropertyRelative("rotateCameraOnly");
             invertXAxis = camera.FindPropertyRelative("invertXAxis");
             invertYAxis = camera.FindPropertyRelative("invertYAxis");
             lookSensitivity = camera.FindPropertyRelative("lookSensitivity");
@@ -325,6 +327,7 @@ namespace Hertzole.GoldPlayer.Editor
         {
             EditorGUILayout.PropertyField(canLookAround);
             EditorGUILayout.PropertyField(shoudLockCursor);
+            EditorGUILayout.PropertyField(rotateCameraOnly);
 
             EditorGUILayout.Space();
 
@@ -595,11 +598,6 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void OnSceneGUI()
         {
-            if (!GoldPlayerProjectSettings.Instance.ShowGroundCheckGizmos)
-            {
-                return;
-            }
-
             GoldPlayerController controller = target as GoldPlayerController;
 
             if (controller == null)
@@ -609,52 +607,61 @@ namespace Hertzole.GoldPlayer.Editor
 
             Color oColor = Handles.color;
 
-            float radius = controller.GetComponent<CharacterController>().radius;
+            Handles.color = Color.blue;
 
-            if (controller.Movement.GroundCheck == GroundCheckType.Raycast)
+            Vector3 origin = controller.transform.position + controller.Controller.center;
+
+            Handles.DrawLine(origin, origin + controller.Camera.BodyForward);
+
+            if (GoldPlayerProjectSettings.Instance.ShowGroundCheckGizmos)
             {
-                Vector3[] rays = new Vector3[controller.Movement.RayAmount + 1];
-                controller.Movement.CreateGroundCheckRayCircle(ref rays, controller.transform.position, radius);
+                float radius = controller.GetComponent<CharacterController>().radius;
 
-                for (int i = 0; i < rays.Length; i++)
+                if (controller.Movement.GroundCheck == GroundCheckType.Raycast)
                 {
+                    Vector3[] rays = new Vector3[controller.Movement.RayAmount + 1];
+                    controller.Movement.CreateGroundCheckRayCircle(ref rays, controller.transform.position, radius);
+
+                    for (int i = 0; i < rays.Length; i++)
+                    {
+                        if (Application.isPlaying)
+                        {
+                            bool hit = Physics.Raycast(rays[i], Vector3.down, controller.Movement.RayLength, controller.Movement.GroundLayer, QueryTriggerInteraction.Ignore);
+                            Handles.color = hit ? new Color(0f, 1f, 0f, 1f) : new Color(1f, 0f, 0f, 1f);
+                        }
+                        else
+                        {
+                            Handles.color = Color.white;
+                        }
+
+                        Handles.DrawLine(rays[i], new Vector3(rays[i].x, rays[i].y - controller.Movement.RayLength, rays[i].z));
+                    }
+                }
+                else if (controller.Movement.GroundCheck == GroundCheckType.Sphere)
+                {
+                    Vector3 pos = new Vector3(controller.transform.position.x, controller.transform.position.y + radius - 0.1f, controller.transform.position.z);
                     if (Application.isPlaying)
                     {
-                        bool hit = Physics.Raycast(rays[i], Vector3.down, controller.Movement.RayLength, controller.Movement.GroundLayer, QueryTriggerInteraction.Ignore);
-                        Handles.color = hit ? new Color(0f, 1f, 0f, 1f) : new Color(1f, 0f, 0f, 1f);
+                        Handles.color = controller.Movement.IsGrounded ? new Color(0f, 1f, 0f, 0.25f) : new Color(1f, 0f, 0f, 0.25f);
                     }
                     else
                     {
-                        Handles.color = Color.white;
+                        Handles.color = new Color(0f, 1f, 0f, 0.25f);
                     }
+                    Handles.SphereHandleCap(0, pos, Quaternion.identity, radius * 2, EventType.Repaint);
+                    if (Application.isPlaying)
+                    {
+                        Handles.color = controller.Movement.IsGrounded ? new Color(0f, 1f, 0f, 1f) : new Color(1f, 0f, 0f, 1f);
+                    }
+                    else
+                    {
+                        Handles.color = new Color(0f, 1f, 0f, 1f);
+                    }
+                    //Handles.DrawWireSphere(pos, radius);
+                    Handles.RadiusHandle(Quaternion.identity, pos, radius, false);
+                }
 
-                    Handles.DrawLine(rays[i], new Vector3(rays[i].x, rays[i].y - controller.Movement.RayLength, rays[i].z));
-                }
             }
-            else if (controller.Movement.GroundCheck == GroundCheckType.Sphere)
-            {
-                Vector3 pos = new Vector3(controller.transform.position.x, controller.transform.position.y + radius - 0.1f, controller.transform.position.z);
-                if (Application.isPlaying)
-                {
-                    Handles.color = controller.Movement.IsGrounded ? new Color(0f, 1f, 0f, 0.25f) : new Color(1f, 0f, 0f, 0.25f);
-                }
-                else
-                {
-                    Handles.color = new Color(0f, 1f, 0f, 0.25f);
-                }
-                Handles.SphereHandleCap(0, pos, Quaternion.identity, radius * 2, EventType.Repaint);
-                if (Application.isPlaying)
-                {
-                    Handles.color = controller.Movement.IsGrounded ? new Color(0f, 1f, 0f, 1f) : new Color(1f, 0f, 0f, 1f);
-                }
-                else
-                {
-                    Handles.color = new Color(0f, 1f, 0f, 1f);
-                }
-                //Handles.DrawWireSphere(pos, radius);
-                Handles.RadiusHandle(Quaternion.identity, pos, radius, false);
-            }
-
             Handles.color = oColor;
         }
 

@@ -802,8 +802,8 @@ namespace Hertzole.GoldPlayer
                 moveDirection = airVelocity;
             }
 
-            // Make sure we're moving in the direction the transform is facing.
-            moveDirection = PlayerTransform.TransformDirection(moveDirection);
+            // Make sure we're moving in the player's forward direction.
+            moveDirection = Quaternion.LookRotation(PlayerController.Camera.BodyForward, PlayerTransform.up) * moveDirection;
         }
 
         /// <summary>
