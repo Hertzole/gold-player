@@ -17,6 +17,9 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Determines if the cursor should be locked.")]
         [FormerlySerializedAs("m_ShouldLockCursor")]
         private bool shouldLockCursor = true;
+        [SerializeField]
+        [Tooltip("If true, the transform Y will not rotate and only the camera will rotate.")]
+        private bool rotateCameraOnly = false;
 
         [SerializeField]
         [Tooltip("Determines if the X axis should be inverted.")]
@@ -103,6 +106,8 @@ namespace Hertzole.GoldPlayer
         private float currentRecoilTime = 0;
         // The smoothing intensity when force looking.
         private float lookAtStrength;
+        // The rotation of the body.
+        private float bodyAngle = 0;
 
         // The current input from the mouse.
         private Vector2 mouseInput = Vector2.zero;
@@ -142,6 +147,8 @@ namespace Hertzole.GoldPlayer
         public bool CanLookAround { get { return canLookAround; } set { canLookAround = value; } }
         /// <summary> Determines if the cursor should be locked. Setting this will also (un)lock the cursor. </summary>
         public bool ShouldLockCursor { get { return shouldLockCursor; } set { shouldLockCursor = value; LockCursor(value); } }
+        /// <summary> If true, the transform Y will not rotate and only the camera will rotate. </summary>
+        public bool RotateCameraOnly { get { return rotateCameraOnly; } set { rotateCameraOnly = value; } }
         /// <summary> Determines if the X axis should be inverted. </summary>
         public bool InvertXAxis { get { return invertXAxis; } set { invertXAxis = value; } }
         /// <summary> Determines if the Y axis should be inverted. </summary>
@@ -175,6 +182,15 @@ namespace Hertzole.GoldPlayer
         public Vector3 FollowHeadAngles { get { return followHeadAngles; } }
         /// <summary> Where the body should be looking, smoothed. </summary>
         public Vector3 FollowBodyAngles { get { return followBodyAngles; } }
+
+        /// <summary> The forward direction of the player. </summary>
+        public Vector3 BodyForward
+        {
+            get
+            {
+                return rotateCameraOnly ? new Quaternion(0, cameraHead.localRotation.y, 0, cameraHead.localRotation.w) * Vector3.forward : PlayerTransform.forward;
+            }
+        }
 
         /// <summary> Is the camera currently shaking from a camera shake? </summary>
         public bool IsCameraShaking { get { return doShake; } }
@@ -296,9 +312,17 @@ namespace Hertzole.GoldPlayer
                 followHeadAngles = Vector3.SmoothDamp(followHeadAngles, targetHeadAngles, ref followHeadVelocity, lookDamping, Mathf.Infinity, Time.unscaledDeltaTime);
                 followBodyAngles = Vector3.SmoothDamp(followBodyAngles, targetBodyAngles, ref followBodyVelocity, lookDamping, Mathf.Infinity, Time.unscaledDeltaTime);
 
+                if (rotateCameraOnly)
+                {
+                    bodyAngle += followBodyAngles.y;
+                }
+
                 // Set the rotation on the camera head and player.
-                targetHeadRotation = originalHeadRotation * Quaternion.Euler(followHeadAngles.x + (-recoil), 0, 0);
-                PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-followBodyAngles.x, followBodyAngles.y, 0);
+                targetHeadRotation = originalHeadRotation * Quaternion.Euler(followHeadAngles.x + (-recoil), rotateCameraOnly ? bodyAngle : 0, 0);
+                if (!rotateCameraOnly)
+                {
+                    PlayerTransform.rotation = PlayerTransform.rotation * Quaternion.Euler(-followBodyAngles.x, followBodyAngles.y, 0);
+                }
             }
 
             // If recoil is above 0, decrease it. If not, just set it to 0.

@@ -40,20 +40,28 @@ namespace Hertzole.GoldPlayer.Editor
                 Object.DestroyImmediate(graphicsCollider);
             }
 
-            // Create the bob target and set the position.
-            GameObject bobTarget = CreateChild("Bob Target", root);
-            bobTarget.transform.localPosition = new Vector3(0f, 1.6f, 0f);
-
             // Create the camera head.
-            GameObject cameraHead = CreateChild("Camera Head", bobTarget);
+            GameObject cameraHead = CreateChild("Camera Head", root);
+            cameraHead.transform.localPosition = new Vector3(0f, 1.6f, 0f);
+
+            // Create the bob target and set the position.
+            GameObject bobTarget = CreateChild("Bob Target", cameraHead);
 
             // Create the player camera.
-            GameObject playerCameraGo = CreateChild("Player Camera", cameraHead);
+            GameObject playerCameraGo = CreateChild("Player Camera", bobTarget);
+#if GOLD_PLAYER_CINEMACHINE
+            Cinemachine.CinemachineVirtualCamera playerCamera = playerCameraGo.AddComponent<Cinemachine.CinemachineVirtualCamera>();
+            playerCamera.m_Lens.FieldOfView = 80;
+            playerCamera.m_Lens.NearClipPlane = 0.01f;
+            playerCamera.m_Lens.FarClipPlane = 1000f;
+#else
             Camera playerCamera = playerCameraGo.AddComponent<Camera>();
             playerCamera.clearFlags = CameraClearFlags.Skybox;
             playerCamera.fieldOfView = 80;
             playerCamera.nearClipPlane = 0.01f;
             playerCamera.farClipPlane = 1000f;
+            playerCamera.tag = "MainCamera";
+#endif
 
             playerCameraGo.AddComponent<FlareLayer>();
             playerCameraGo.AddComponent<AudioListener>();
@@ -75,7 +83,12 @@ namespace Hertzole.GoldPlayer.Editor
             GoldPlayerController goldController = root.AddComponent<GoldPlayerController>();
 
             goldController.Camera.CameraHead = cameraHead.transform;
+#if GOLD_PLAYER_CINEMACHINE
+            goldController.Camera.FieldOfViewKick.UseCinemachine = true;
+            goldController.Camera.FieldOfViewKick.TargetVirtualCamera = playerCamera;
+#else
             goldController.Camera.FieldOfViewKick.TargetCamera = playerCamera;
+#endif
 
             goldController.Movement.GroundLayer = 1;
 

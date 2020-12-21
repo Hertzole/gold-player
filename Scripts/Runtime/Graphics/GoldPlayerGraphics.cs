@@ -7,6 +7,7 @@
 #endif
 
 #if !STRIP
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -24,8 +25,8 @@ namespace Hertzole.GoldPlayer
 #endif
     public class GoldPlayerGraphics : MonoBehaviour
     {
-        [System.Serializable]
-        public struct GraphicsObject
+        [Serializable]
+        public struct GraphicsObject : IEquatable<GraphicsObject>
         {
             [SerializeField]
             [Tooltip("The target object to modify.")]
@@ -41,10 +42,8 @@ namespace Hertzole.GoldPlayer
             private HandleGraphics whenOtherGraphics;
 
             [SerializeField]
-            [HideInInspector]
             internal Renderer[] renderers;
             [SerializeField]
-            [HideInInspector]
             internal ShadowCastingMode[] originalRenderShadows;
 
             /// <summary> The target object to modify. </summary>
@@ -70,38 +69,13 @@ namespace Hertzole.GoldPlayer
                 // If it is a parent, get all the child renderers.
                 if (isParent)
                 {
-                    // Get the old renderers to compare.
-                    Renderer[] oldRenderers = renderers;
-
                     // Get all the new renderers.
                     renderers = target.GetComponentsInChildren<Renderer>();
 
-                    bool different = false;
-                    // If the old renderers are null or the sizes are different, it's already different.
-                    // Else go through each renderer to check if it's the same.
-                    if (oldRenderers == null || oldRenderers.Length != renderers.Length)
+                    originalRenderShadows = new ShadowCastingMode[renderers.Length];
+                    for (int i = 0; i < renderers.Length; i++)
                     {
-                        different = true;
-                    }
-                    else
-                    {
-                        for (int i = 0; i < renderers.Length; i++)
-                        {
-                            if (renderers[i] != oldRenderers[i])
-                            {
-                                different = true;
-                            }
-                        }
-                    }
-
-                    // If it's different, cache the shadow casting mode.
-                    if (different)
-                    {
-                        originalRenderShadows = new ShadowCastingMode[renderers.Length];
-                        for (int i = 0; i < renderers.Length; i++)
-                        {
-                            originalRenderShadows[i] = renderers[i].shadowCastingMode;
-                        }
+                        originalRenderShadows[i] = renderers[i].shadowCastingMode;
                     }
                 }
                 else
@@ -121,6 +95,35 @@ namespace Hertzole.GoldPlayer
                         originalRenderShadows = null;
                     }
                 }
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is GraphicsObject @object && Equals(@object);
+            }
+
+            public bool Equals(GraphicsObject other)
+            {
+                return isParent == other.isParent && whenMyGraphics == other.whenMyGraphics && whenOtherGraphics == other.whenOtherGraphics;
+            }
+
+            public override int GetHashCode()
+            {
+                int hashCode = -1262564165;
+                hashCode = hashCode * -1521134295 + isParent.GetHashCode();
+                hashCode = hashCode * -1521134295 + whenMyGraphics.GetHashCode();
+                hashCode = hashCode * -1521134295 + whenOtherGraphics.GetHashCode();
+                return hashCode;
+            }
+
+            public static bool operator ==(GraphicsObject left, GraphicsObject right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(GraphicsObject left, GraphicsObject right)
+            {
+                return !(left == right);
             }
         }
 

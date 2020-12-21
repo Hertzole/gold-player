@@ -2,7 +2,8 @@
     "name": "Hertzole.GoldPlayer.Editor",
     "references": [
         "Hertzole.GoldPlayer",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Cinemachine"
     ],
     "includePlatforms": [
         "Editor"
