@@ -231,7 +231,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeMovement()
         {
-            movement.Initialize(this, PlayerInput);
+            movement.Initialize(PlayerInput);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeCamera()
         {
-            cam.Initialize(this, PlayerInput);
+            cam.Initialize(PlayerInput);
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeHeadBob()
         {
-            headBob.Initialize(this, PlayerInput);
+            headBob.Initialize(PlayerInput);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeAudio()
         {
-            sounds.Initialize(this, PlayerInput);
+            sounds.Initialize(PlayerInput);
         }
 
         /// <summary>
@@ -288,12 +288,12 @@ namespace Hertzole.GoldPlayer
 #if UNITY_EDITOR
         private void Reset()
         {
-            GetController();
+            GetComponents();
         }
 
         private void OnValidate()
         {
-            GetController();
+            GetComponents();
 
             movement.OnValidate();
             cam.OnValidate();
@@ -301,8 +301,28 @@ namespace Hertzole.GoldPlayer
             sounds.OnValidate();
         }
 
-        private void GetController()
+        private void GetComponents()
         {
+            if (cam.PlayerController == null)
+            {
+                cam.PlayerController = this;
+            }
+
+            if (movement.PlayerController == null)
+            {
+                movement.PlayerController = this;
+            }
+
+            if (headBob.PlayerController == null)
+            {
+                headBob.PlayerController = this;
+            }
+
+            if (Audio.PlayerController == null)
+            {
+                Audio.PlayerController = this;
+            }
+
             if (controller == null)
             {
                 controller = GetComponent<CharacterController>();

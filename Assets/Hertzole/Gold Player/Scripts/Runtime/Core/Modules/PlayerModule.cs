@@ -4,17 +4,12 @@ namespace Hertzole.GoldPlayer
 {
     public class PlayerModule
     {
-#if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
-        protected GoldPlayerController PlayerController { get; private set; }
-#else
-        [System.NonSerialized]
-        protected GoldPlayerController PlayerController;
-#endif
+        [SerializeField]
+        private GoldPlayerController playerController = null;
 
-        protected CharacterController CharacterController { get { return PlayerController.Controller; } }
-
-        private Transform playerTransform;
-        protected Transform PlayerTransform { get { if (playerTransform == null) { playerTransform = PlayerController.transform; } return playerTransform; } }
+        public GoldPlayerController PlayerController { get { return playerController; } set { playerController = value; } }
+        public CharacterController CharacterController { get { return PlayerController.Controller; } }
+        public Transform PlayerTransform { get { return PlayerController.transform; } }
 
 #if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         protected IGoldInput PlayerInput { get; private set; }
@@ -28,14 +23,19 @@ namespace Hertzole.GoldPlayer
         public bool HasBeenInitialized;
 #endif
 
-
+        #region Obsolete
+#if UNITY_EDITOR
+        [System.Obsolete("Use 'Initialize(IGoldInput input)' instead. This will be removed on build.", true)]
+        public void Initialize(GoldPlayerController player, IGoldInput input) { }
+#endif
+        #endregion
 
         /// <summary>
         /// Initialize the module.
         /// </summary>
         /// <param name="player">The player controller itself.</param>
         /// <param name="input">Input, if available.</param>
-        public void Initialize(GoldPlayerController player, IGoldInput input)
+        public void Initialize(IGoldInput input)
         {
             // If the module has already been initialized, stop here.
             if (HasBeenInitialized)
@@ -43,7 +43,6 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            PlayerController = player;
             if (input != null)
             {
                 PlayerInput = input;

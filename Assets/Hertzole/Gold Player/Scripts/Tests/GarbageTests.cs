@@ -1,6 +1,7 @@
 ﻿#if UNITY_2018_3_OR_NEWER
 using NUnit.Framework;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.TestTools.Constraints;
 using Is = UnityEngine.TestTools.Constraints.Is;
@@ -20,11 +21,13 @@ namespace Hertzole.GoldPlayer.Tests
             {
                 CameraHead = player.Camera.CameraHead,
             };
+            camera.PlayerController = player;
+            camera.FieldOfViewKick.PlayerController = player;
             camera.FieldOfViewKick.EnableFOVKick = true;
             camera.FieldOfViewKick.TargetCamera = player.Camera.FieldOfViewKick.TargetCamera;
             Assert.That(() =>
             {
-                camera.Initialize(player, input);
+                camera.Initialize(input);
             }, Is.Not.AllocatingGCMemory());
             yield return null;
         }
@@ -58,9 +61,10 @@ namespace Hertzole.GoldPlayer.Tests
             {
                 BobTarget = player.HeadBob.BobTarget
             };
+            bob.PlayerController = player;
             Assert.That(() =>
             {
-                bob.Initialize(player, input);
+                bob.Initialize(input);
             }, Is.Not.AllocatingGCMemory());
             yield return null;
         }
@@ -73,9 +77,10 @@ namespace Hertzole.GoldPlayer.Tests
         public IEnumerator AudioInitializeNoGC()
         {
             PlayerAudio audio = new PlayerAudio();
+            audio.PlayerController = player;
             Assert.That(() =>
             {
-                audio.Initialize(player, input);
+                audio.Initialize(input);
             }, Is.Not.AllocatingGCMemory());
             yield return null;
         }
