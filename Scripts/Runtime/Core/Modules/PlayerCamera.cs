@@ -223,7 +223,7 @@ namespace Hertzole.GoldPlayer
             originalHeadRotation = cameraHead.localRotation;
 
             // Initialize the FOV kick module.
-            fieldOfViewKick.Initialize(PlayerController, PlayerInput);
+            fieldOfViewKick.Initialize(PlayerInput);
         }
 
         /// <summary>
@@ -563,6 +563,11 @@ namespace Hertzole.GoldPlayer
         public override void OnValidate()
         {
             fieldOfViewKick.OnValidate();
+
+            if (fieldOfViewKick.PlayerController == null)
+            {
+                fieldOfViewKick.PlayerController = PlayerController;
+            }
         }
 #endif
     }

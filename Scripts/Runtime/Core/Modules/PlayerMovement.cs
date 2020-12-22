@@ -423,9 +423,9 @@ namespace Hertzole.GoldPlayer
             crouchSpeeds.CalculateMax();
 
             // Initialize the stamina module.
-            stamina.Initialize(PlayerController, PlayerInput);
+            stamina.Initialize(PlayerInput);
             // Initialize the moving platforms module.
-            movingPlatforms.Initialize(PlayerController, PlayerInput);
+            movingPlatforms.Initialize(PlayerInput);
 
             // Make the gravity + if needed.
             if (gravity < 0)
@@ -1168,6 +1168,16 @@ namespace Hertzole.GoldPlayer
 #if UNITY_EDITOR
         public override void OnValidate()
         {
+            if (stamina.PlayerController == null)
+            {
+                stamina.PlayerController = PlayerController;
+            }
+
+            if (movingPlatforms.PlayerController == null)
+            {
+                movingPlatforms.PlayerController = PlayerController;
+            }
+
             // Update the values if they have been changed during play-mode.
             if (Application.isPlaying)
             {
