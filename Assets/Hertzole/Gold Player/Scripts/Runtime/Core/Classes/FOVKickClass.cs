@@ -242,17 +242,19 @@ namespace Hertzole.GoldPlayer
 
             // If active is true, lerp the target camera field of view to the new FOV.
             // Else lerp it to the original FOV.
-            float targetFOV = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
 #if GOLD_PLAYER_CINEMACHINE
             if (useCinemachine)
             {
+                float targetFOV = Mathf.Lerp(targetVirtualCamera.m_Lens.FieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
                 targetVirtualCamera.m_Lens.FieldOfView = targetFOV;
             }
             else
             {
+                float targetFOV = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
                 targetCamera.fieldOfView = targetFOV;
             }
 #else
+            float targetFOV = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
             targetCamera.fieldOfView = targetFOV;
 #endif
         }
