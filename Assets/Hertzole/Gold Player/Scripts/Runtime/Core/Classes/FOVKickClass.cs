@@ -82,16 +82,26 @@ namespace Hertzole.GoldPlayer
             if (enableFOVKick)
             {
 #if GOLD_PLAYER_CINEMACHINE
-                if (useCinemachine && targetVirtualCamera == null)
+                if (useCinemachine)
                 {
-                    throw new System.NullReferenceException("There's no Target Virtual Camera set!");
+                    if (targetVirtualCamera == null)
+                    {
+                        throw new System.NullReferenceException("There's no Target Virtual Camera set!");
+                    }
                 }
                 else
-#endif
+                {
                     if (targetCamera == null)
+                    {
+                        throw new System.NullReferenceException("There's no Target Camera set!");
+                    }
+                }
+#else
+                if (targetCamera == null)
                 {
                     throw new System.NullReferenceException("There's no Target Camera set!");
                 }
+#endif
             }
 
             // Set hasBeenInitialized to true.
