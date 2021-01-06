@@ -79,9 +79,19 @@ namespace Hertzole.GoldPlayer
         protected override void OnInitialize()
         {
             // If FOV kick is enabled and there's no target camera, complain.
-            if (enableFOVKick && !targetCamera)
+            if (enableFOVKick)
             {
-                throw new System.NullReferenceException("There's no Target Camera set!");
+#if GOLD_PLAYER_CINEMACHINE
+                if (useCinemachine && targetVirtualCamera == null)
+                {
+                    throw new System.NullReferenceException("There's no Target Virtual Camera set!");
+                }
+                else
+#endif
+                    if (targetCamera == null)
+                {
+                    throw new System.NullReferenceException("There's no Target Camera set!");
+                }
             }
 
             // Set hasBeenInitialized to true.
