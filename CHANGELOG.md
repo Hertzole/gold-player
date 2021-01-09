@@ -4,10 +4,22 @@
 - Added raycast ground check as an alternative to sphere ground check.
 - Added gizmos in the scene view for ground checks.
 - Added interaction limits on Gold Player Interactable, along with a On Reached Max Interactions event.
+- Added new editor GUI for several components. They are now more uniform and adapts to what values are enabled.
+- Added option to only rotate the camera without rotating the root transform.
 
 ### Changes:
 - Revamped how Gold Player project settings are saved. Old settings will be upgraded.
 - Changed Drain Stamina When and Kick When to flags instead for better control. Will most likely not upgrade very well if you've used these values.
+- Mouse Sensitivity and Mouse Damping have been renamed to Look Sensitivity and Look Damping.
+- All virtual methods and protected fields have been turned private.
+- Bob target is now a child of camera head by default due to the change regarding only rotating the camera.
+- When Cinemachine is enabled, the newly created player object will have a virtual camera instead of a normal camera.
+
+### Fixed:
+- Fixed head bob not working on time scale 0.
+- Fixed some head bob issues with NaN values.
+- Fixed graphics component not updating shadows properly.
+- Fixed issue with only having a cinemachine camera assigned.
 
 ---
 

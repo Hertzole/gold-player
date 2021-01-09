@@ -251,6 +251,10 @@ namespace Hertzole.GoldPlayer
         private Vector3 jumpPosition = Vector3.zero;
         // The impact of the applied force.
         private Vector3 forceImpact = Vector3.zero;
+        // The previous player position.
+        private Vector3 previousPosition = Vector3.zero;
+        // The current velocity.
+        private Vector3 velocity = Vector3.zero;
         // The rays used for raycast ground check.
         private Vector3[] groundCheckRays;
 
@@ -401,6 +405,9 @@ namespace Hertzole.GoldPlayer
         public Vector2 MovementInput { get { return movementInput; } set { movementInput = value; } }
         /// <summary> Input values for movement on the X and Z axis, automatically dampened for smoothing. </summary>
         public Vector2 SmoothedMovementInput { get { return smoothedMovementInput; } set { smoothedMovementInput = value; } }
+
+        /// <summary> The current velocity of the player. </summary>
+        public Vector3 Velocity { get { return velocity; } }
 
         /// <summary> Fires when the player jumps. </summary>
         public event GoldPlayerDelegates.JumpEvent OnJump;
@@ -587,6 +594,8 @@ namespace Hertzole.GoldPlayer
                 deltaTime = Time.unscaledDeltaTime;
             }
 
+            previousPosition = PlayerTransform.position;
+
             // Call update on the stamina module.
             stamina.OnUpdate(deltaTime);
             // Call update on the moving platforms module.
@@ -608,6 +617,8 @@ namespace Hertzole.GoldPlayer
 
             // Move the player using the character controller.
             CharacterController.Move(moveDirection * deltaTime);
+
+            velocity = (previousPosition - PlayerTransform.position) / deltaTime;
         }
 
         /// <summary>
