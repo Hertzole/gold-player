@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
+#if UNITY_EDITOR
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Hertzole.GoldPlayer.Tests")]
+#endif
 namespace Hertzole.GoldPlayer
 {
     [RequireComponent(typeof(CharacterController))]
@@ -49,6 +52,8 @@ namespace Hertzole.GoldPlayer
         public PlayerBob HeadBob { get { return headBob; } set { headBob = value; } }
         /// <summary> Everything related to audio (footsteps, landing and jumping). </summary>
         public PlayerAudio Audio { get { return sounds; } set { sounds = value; } }
+
+        public Vector3 Velocity { get { return movement.Velocity; } }
 
 #if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         private bool initOnStart = true;

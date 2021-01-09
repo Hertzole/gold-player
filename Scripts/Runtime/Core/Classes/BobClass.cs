@@ -126,8 +126,6 @@ namespace Hertzole.GoldPlayer
 
         public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis = 0)
         {
-            velocity *= Time.timeScale;
-
             Vector3 velocityChange = velocity - previousVelocity;
             previousVelocity = velocity;
 
@@ -188,8 +186,19 @@ namespace Hertzole.GoldPlayer
             float xTilt = -springPos * landTilt;
             float zTilt = bobSwayFactor * swayAngle * bobFade + this.zTilt * strafeTilt;
 
-            bobTarget.localPosition = originalHeadLocalPosition + new Vector3(xPos, yPos, 0);
-            bobTarget.localRotation = Quaternion.Euler(xTilt, bobTarget.localRotation.y, bobTarget.localRotation.z + zTilt);
+            Vector3 targetPosition = originalHeadLocalPosition + new Vector3(xPos, yPos, 0);
+
+            if (!targetPosition.IsNaN())
+            {
+                bobTarget.localPosition = targetPosition;
+            }
+
+            Quaternion targetRotation = Quaternion.Euler(xTilt, bobTarget.localRotation.y, bobTarget.localRotation.z + zTilt);
+
+            if (!targetRotation.IsNaN())
+            {
+                bobTarget.localRotation = targetRotation;
+            }
         }
     }
 }
