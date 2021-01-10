@@ -28,6 +28,9 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [HideInInspector]
         private CharacterController controller = null;
+        [SerializeField]
+        [HideInInspector]
+        private GoldPlayerController playerController = null;
 
         public BobClass[] Targets { get { return targets; } set { targets = value; } }
 
@@ -48,7 +51,8 @@ namespace Hertzole.GoldPlayer
         private void Update()
         {
             // Cache the velocity to avoid doing native calls for each object.
-            Vector3 velocity = controller.velocity;
+            // If there's a player controller present, use the velocity from there.
+            Vector3 velocity = playerController != null ? playerController.Velocity : controller.velocity;
             // Cache the tilt. Clamp it at -1 to 1 to avoid it going further than expected.
             float tilt = Mathf.Clamp(transform.InverseTransformDirection(controller.velocity).x, -1f, 1f);
             // Cache the delta time to avoid native calls.
@@ -79,6 +83,11 @@ namespace Hertzole.GoldPlayer
             if (controller == null)
             {
                 controller = GetComponent<CharacterController>();
+            }
+
+            if (playerController == null)
+            {
+                playerController = GetComponent<GoldPlayerController>();
             }
         }
 #endif
