@@ -24,7 +24,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("The player camera head.")]
         [FormerlySerializedAs("m_CameraHead")]
-        private Transform cameraHead;
+        internal Transform cameraHead;
 
 #if UNITY_EDITOR
         [Space]
@@ -33,15 +33,15 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets how far the interaction reach is.")]
         [FormerlySerializedAs("m_InteractionRange")]
-        private float interactionRange = 2f;
+        internal float interactionRange = 2f;
         [SerializeField]
         [Tooltip("Sets the layers that the player can interact with.")]
         [FormerlySerializedAs("m_InteractionLayer")]
-        private LayerMask interactionLayer = 1;
+        internal LayerMask interactionLayer = 1;
         [SerializeField]
         [Tooltip("Determines if colliders marked as triggers should be detected.")]
         [FormerlySerializedAs("m_IgnoreTriggers")]
-        private bool ignoreTriggers = true;
+        internal bool ignoreTriggers = true;
 
 #if UNITY_EDITOR
         [Header("UI")]
@@ -49,7 +49,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("A default message for UI elements to show when the player can interact.")]
         [FormerlySerializedAs("m_InteractMessage")]
-        private string interactMessage = "Press E to interact";
+        internal string interactMessage = "Press E to interact";
 
 #if UNITY_EDITOR
         [Header("Input")]
@@ -57,10 +57,10 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("The input name for interaction to use.")]
         [FormerlySerializedAs("m_InteractInput")]
-        private string interactInput = "Interact";
+        internal string interactInput = "Interact";
 
         // Flag to determine if we have checked for a interactable.
-        private bool haveCheckedInteractable = false;
+        internal bool haveCheckedInteractable = false;
 
         // How it should behave with triggers.
         private QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.Ignore;
@@ -135,44 +135,7 @@ namespace Hertzole.GoldPlayer
                 interactionLayer,
                 triggerInteraction))
             {
-                // If there's no hit transform, stop here.
-                if (interactableHit.collider == null)
-                {
-                    return;
-                }
-
-                // If there's no current hit or the hits doesn't match, update it and
-                // the player need to check for a interactable again.
-                if (currentHit == null || currentHit != interactableHit.collider)
-                {
-                    currentHit = interactableHit.collider;
-                    haveCheckedInteractable = false;
-                }
-
-                // If the player hasn't checked for an interactable, do so ONCE.
-                // We don't want to call GetComponent every frame, you know!
-                if (!haveCheckedInteractable)
-                {
-                    // Prefer interactables on the collider itself, but if the collider doesn't
-                    // have one, then look on the rigidbody.
-                    CurrentHitInteractable = interactableHit.collider.GetComponent<IGoldPlayerInteractable>();
-                    if (CurrentHitInteractable == null && interactableHit.rigidbody != null)
-                    {
-                        interactableHit.rigidbody.GetComponent<IGoldPlayerInteractable>();
-                    }
-
-                    haveCheckedInteractable = true;
-                }
-
-                // Set Can Interact depending on if the player has a interactable object
-                // and it can be interacted with.
-                CanInteract = CurrentHitInteractable != null && CurrentHitInteractable.CanInteract;
-
-                // If the player presses the interact key and it can react, call interact.
-                if (GetButtonDown(interactInput) && CanInteract)
-                {
-                    CurrentHitInteractable.Interact();
-                }
+                HitInteraction(interactableHit);
             }
             else
             {
@@ -183,7 +146,50 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+        internal void HitInteraction(RaycastHit hit)
+        {
+            // If there's no hit transform, stop here.
+            if (hit.collider == null)
+            {
+                return;
+            }
+
+            // If there's no current hit or the hits doesn't match, update it and
+            // the player need to check for a interactable again.
+            if (currentHit == null || currentHit != hit.collider)
+            {
+                currentHit = hit.collider;
+                haveCheckedInteractable = false;
+            }
+
+            // If the player hasn't checked for an interactable, do so ONCE.
+            // We don't want to call GetComponent every frame, you know!
+            if (!haveCheckedInteractable)
+            {
+                // Prefer interactables on the collider itself, but if the collider doesn't
+                // have one, then look on the rigidbody.
+                CurrentHitInteractable = hit.collider.GetComponent<IGoldPlayerInteractable>();
+                if (CurrentHitInteractable == null && hit.rigidbody != null)
+                {
+                    CurrentHitInteractable = hit.rigidbody.GetComponent<IGoldPlayerInteractable>();
+                }
+
+                haveCheckedInteractable = true;
+            }
+
+            // Set Can Interact depending on if the player has a interactable object
+            // and it can be interacted with.
+            CanInteract = CurrentHitInteractable != null && CurrentHitInteractable.CanInteract;
+
+            // If the player presses the interact key and it can react, call interact.
+            if (GetButtonDown(interactInput) && CanInteract)
+            {
+                CurrentHitInteractable.Interact();
+            }
+        }
+
 #if UNITY_EDITOR
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         private void OnValidate()
         {
             // If we change "Ignore Triggers" at runtime and in the editor,
@@ -194,11 +200,11 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        private void Reset()
+        internal void Reset()
         {
             // If the controller exists, default the camera head to the one provided on the controller.
             GoldPlayerController controller = GetComponent<GoldPlayerController>();
-            if (controller != null)
+            if (controller != null && cameraHead == null)
             {
                 cameraHead = controller.Camera.CameraHead;
             }

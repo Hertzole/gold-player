@@ -7,6 +7,8 @@ namespace Hertzole.GoldPlayer.Tests
 {
     internal class MovementTests : BaseGoldPlayerTest
     {
+        private MovingPlatformsClass Platforms { get { return player.Movement.MovingPlatforms; } }
+
         /// <summary>
         /// Used to test if the player stops running when CanRun is set to false while running.
         /// </summary>
@@ -530,6 +532,271 @@ namespace Hertzole.GoldPlayer.Tests
             yield return null;
 
             Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+        }
+
+        [UnityTest]
+        public IEnumerator MovingPlatformsMaxAngle()
+        {
+            player.Movement.MovingPlatforms.MovePosition = true;
+
+            yield return null;
+            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
+            yield return null;
+
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+            }
+
+            yield return null;
+
+            AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
+
+            yield return null;
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                Vector3 rot = sceneObjects[i].transform.eulerAngles;
+                rot.x -= Platforms.MaxAngle - 1;
+                sceneObjects[i].transform.eulerAngles = rot;
+            }
+            yield return null;
+
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                sceneObjects[i].transform.position -= new Vector3(200, 0, 200);
+            }
+
+            yield return null;
+            yield return null;
+
+            AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
+
+            for (int i = 0; i < 20; i++)
+            {
+                yield return null;
+            }
+
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                Vector3 rot = sceneObjects[i].transform.eulerAngles;
+                rot.x -= 5;
+                sceneObjects[i].transform.eulerAngles = rot;
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                yield return null;
+            }
+
+            for (int i = 0; i < sceneObjects.Count; i++)
+            {
+                sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+            }
+
+            yield return null;
+            yield return null;
+
+            AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator MovingPlatformsNoHeadBob()
+        {
+            player.HeadBob.EnableBob = true;
+
+            for (int i = 0; i < 600; i++)
+            {
+                for (int j = 0; j < sceneObjects.Count; j++)
+                {
+                    sceneObjects[j].transform.position = Vector3.MoveTowards(sceneObjects[j].transform.position, sceneObjects[j].transform.position + Vector3.forward, 2 * Time.deltaTime);
+                }
+
+                Assert.AreEqual(0, player.HeadBob.BobCycle);
+
+                yield return null;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator MovingPlatformsSmallMovement()
+        {
+            for (int i = 0; i < 2000; i++)
+            {
+                for (int j = 0; j < sceneObjects.Count; j++)
+                {
+                    sceneObjects[j].transform.position += Vector3.forward * Time.deltaTime * 0.00099f;
+                }
+
+                yield return null;
+            }
+
+            Assert.AreNotEqual(0, player.transform.position.z);
+        }
+
+        [UnityTest]
+        public IEnumerator MultiplierTests()
+        {
+            input.moveDirection = new Vector2(0, -1);
+
+            for (int i = 0; i < 300; i++)
+            {
+                yield return null;
+            }
+
+            AreApproximatelyEqualVector3(new Vector3(0, 0, 2), player.Velocity, 0.1f);
+
+            player.Movement.MoveSpeedMultiplier = 2f;
+
+            for (int i = 0; i < 300; i++)
+            {
+                yield return null;
+            }
+
+            AreApproximatelyEqualVector3(new Vector3(0, 0, 4), player.Velocity, 0.1f);
+
+            input.moveDirection = new Vector2(0, 0);
+
+            for (int i = 0; i < 100; i++)
+            {
+                yield return null;
+            }
+
+            player.SetPosition(Vector3.zero);
+
+            yield return null;
+            yield return null;
+
+            input.isJumping = true;
+
+            float highest = 0;
+
+            yield return null;
+            yield return null;
+
+            while (!player.Movement.IsGrounded)
+            {
+                if (player.transform.position.y > highest)
+                {
+                    highest = player.transform.position.y;
+                }
+
+                yield return null;
+            }
+
+            Assert.AreApproximatelyEqual(2f, highest, 0.1f);
+
+            yield return null;
+            yield return null;
+
+            player.Movement.JumpHeightMultiplier = 2;
+            input.isJumping = true;
+            highest = 0;
+
+            yield return null;
+            yield return null;
+
+            while (!player.Movement.IsGrounded)
+            {
+                if (player.transform.position.y > highest)
+                {
+                    highest = player.transform.position.y;
+                }
+
+                yield return null;
+            }
+
+            Assert.AreApproximatelyEqual(4f, highest, 0.1f);
+        }
+
+        [UnityTest]
+        public IEnumerator ValidateGravity()
+        {
+            player.Movement.gravity = -10;
+            player.Movement.ForceInitialize(null);
+            Assert.AreEqual(player.Movement.Gravity, 10);
+
+            player.Movement.Gravity = -10;
+            Assert.AreEqual(player.Movement.Gravity, 10);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ValidateGroundStick()
+        {
+            player.Movement.groundStick = -10;
+            player.Movement.ForceInitialize(null);
+            Assert.AreEqual(player.Movement.GroundStick, 10);
+
+            player.Movement.GroundStick = -10;
+            Assert.AreEqual(player.Movement.GroundStick, 10);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ValidateGroundCheckRays()
+        {
+            player.Movement.RayAmount = 0;
+            player.Movement.GroundCheck = GroundCheckType.Raycast;
+            player.Movement.RayAmount = 10;
+            player.Movement.ForceInitialize(null);
+            Assert.AreEqual(player.Movement.groundCheckRays.Length, player.Movement.RayAmount + 1);
+
+            Vector3[] rays = new Vector3[0];
+            LogAssert.Expect(LogType.Error, "The provided array needs to be the same as Ray Amount + 1 (11)");
+            player.Movement.CreateGroundCheckRayCircle(ref rays, Vector3.zero, 0f);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ValidateSmoothedMovementInput()
+        {
+            input.moveDirection = new Vector2(0, 1);
+            for (int i = 0; i < 100; i++)
+            {
+                yield return null;
+            }
+
+            AreApproximatelyEqualVector2(new Vector2(0, 1), player.Movement.SmoothedMovementInput, 0.1f);
+            input.moveDirection = new Vector2(1, 1);
+
+            for (int i = 0; i < 100; i++)
+            {
+                yield return null;
+            }
+
+            AreApproximatelyEqualVector2(new Vector2(0.7f, 0.7f), player.Movement.SmoothedMovementInput, 0.1f);
+        }
+
+        [UnityTest]
+        public IEnumerator HitHeadOnCeiling()
+        {
+            GameObject prim = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            prim.transform.position = new Vector3(0, 5, 0);
+            sceneObjects.Add(prim);
+            player.Movement.JumpHeightMultiplier = 10;
+
+            input.isJumping = true;
+
+            yield return null;
+            yield return null;
+
+            int framesStuck = 0;
+
+            while (!player.Movement.IsGrounded)
+            {
+                if (player.transform.position.y > 2.35f)
+                {
+                    framesStuck++;
+                }
+
+                Assert.IsFalse(framesStuck > 10);
+                yield return null;
+            }
         }
     }
 }

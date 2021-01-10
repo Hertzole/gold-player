@@ -39,6 +39,10 @@ namespace Hertzole.GoldPlayer
 
         public float BobCycle { get { return bobClass.BobCycle; } }
 
+#if UNITY_EDITOR
+        internal BobClass BobClass { get { return bobClass; } }
+#endif
+
         protected override void OnInitialize()
         {
             if (bobClass.EnableBob && bobClass.BobTarget == null)

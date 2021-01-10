@@ -68,6 +68,47 @@ namespace Hertzole.GoldPlayer
         public float LerpTimeFrom { get { return lerpTimeFrom; } set { lerpTimeFrom = value; } }
         /// <summary> The camera that the FOV kick should be applied to. </summary>
         public Camera TargetCamera { get { return targetCamera; } set { targetCamera = value; } }
+        /// <summary> The new field of view with the original field of view with kick amount added. </summary>
+        public float TargetFieldOfView { get { return newFOV; } }
+
+        private float CameraFieldOfView
+        {
+            get
+            {
+#if GOLD_PLAYER_CINEMACHINE
+                return useCinemachine ? targetVirtualCamera.m_Lens.FieldOfView : targetCamera.fieldOfView;
+#else
+                return targetCamera.fieldOfView;
+#endif
+            }
+            set
+            {
+#if GOLD_PLAYER_CINEMACHINE
+                if (useCinemachine)
+                {
+                    targetVirtualCamera.m_Lens.FieldOfView = value;
+                }
+                else
+                {
+                    targetCamera.fieldOfView = value;
+                }
+#else
+                targetCamera.fieldOfView = value;
+#endif
+            }
+        }
+
+        private bool IsCameraNull
+        {
+            get
+            {
+#if GOLD_PLAYER_CINEMACHINE
+                return useCinemachine ? targetVirtualCamera == null : targetCamera == null;
+#else
+                return targetCamera == null;
+#endif
+            }
+        }
 
 #if GOLD_PLAYER_CINEMACHINE
         /// <summary> Allows you to use Cinemachine virtual camera instead of a direct reference to a camera. </summary>
@@ -79,29 +120,10 @@ namespace Hertzole.GoldPlayer
         protected override void OnInitialize()
         {
             // If FOV kick is enabled and there's no target camera, complain.
-            if (enableFOVKick)
+            if (enableFOVKick && IsCameraNull)
             {
-#if GOLD_PLAYER_CINEMACHINE
-                if (useCinemachine)
-                {
-                    if (targetVirtualCamera == null)
-                    {
-                        throw new System.NullReferenceException("There's no Target Virtual Camera set!");
-                    }
-                }
-                else
-                {
-                    if (targetCamera == null)
-                    {
-                        throw new System.NullReferenceException("There's no Target Camera set!");
-                    }
-                }
-#else
-                if (targetCamera == null)
-                {
-                    throw new System.NullReferenceException("There's no Target Camera set!");
-                }
-#endif
+                Debug.LogError("There's no camera set on field of view kick!", PlayerTransform.gameObject);
+                return;
             }
 
             // Set hasBeenInitialized to true.
@@ -110,36 +132,8 @@ namespace Hertzole.GoldPlayer
             // Only call code if it's enabled.
             if (enableFOVKick)
             {
-#if GOLD_PLAYER_CINEMACHINE
-                // If use cinemachine, assign the original FOV to the FOV of the virtual camera.
-                if (useCinemachine)
-                {
-                    if (targetVirtualCamera != null)
-                    {
-                        originalFOV = targetVirtualCamera.m_Lens.FieldOfView;
-                    }
-#if DEBUG // Put in debug define to discard it in release builds.
-                    else
-                    {
-                        Debug.LogWarning("There's no virtual camera assigned on the field of view kick on " + PlayerTransform.gameObject.name + ".", PlayerTransform.gameObject);
-                    }
-#endif
-                }
-                else
-#endif
-                {
-                    if (targetCamera != null)
-                    {
-                        // Get the original FOV from the target camera.
-                        originalFOV = targetCamera.fieldOfView;
-                    }
-#if DEBUG // Put in debug define to discard it in release builds.
-                    else
-                    {
-                        Debug.LogWarning("There's no target camera assigned on the field of view kick on " + PlayerTransform.gameObject.name + ".", PlayerTransform.gameObject);
-                    }
-#endif
-                }
+                // Get the original FOV from the target camera.
+                originalFOV = CameraFieldOfView;
                 // Update the new FOV.
                 UpdateNewFOV();
             }
@@ -151,24 +145,13 @@ namespace Hertzole.GoldPlayer
         private void UpdateNewFOV()
         {
             // If there's no target camera, stop here.
-            if (targetCamera == null)
+            if (IsCameraNull)
             {
                 return;
             }
 
-#if GOLD_PLAYER_CINEMACHINE
-            if (useCinemachine)
-            {
-                newFOV = targetVirtualCamera.m_Lens.FieldOfView + kickAmount;
-            }
-            else
-            {
-                newFOV = targetCamera.fieldOfView + kickAmount;
-            }
-#else
             // Create the new FOV by taking the original FOV and adding kick amount.
-            newFOV = targetCamera.fieldOfView + kickAmount;
-#endif
+            newFOV = CameraFieldOfView + kickAmount;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -228,6 +211,17 @@ namespace Hertzole.GoldPlayer
             DoFOV(kick, deltaTime);
         }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// Used for tests.
+        /// </summary>
+        /// <param name="activate"></param>
+        internal void ForceFOV(bool activate)
+        {
+            DoFOV(activate, Time.deltaTime);
+        }
+#endif
+
         /// <summary>
         /// DOes the FOV kick.
         /// </summary>
@@ -242,44 +236,20 @@ namespace Hertzole.GoldPlayer
 
             // If active is true, lerp the target camera field of view to the new FOV.
             // Else lerp it to the original FOV.
-#if GOLD_PLAYER_CINEMACHINE
-            if (useCinemachine)
-            {
-                float targetFOV = Mathf.Lerp(targetVirtualCamera.m_Lens.FieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
-                targetVirtualCamera.m_Lens.FieldOfView = targetFOV;
-            }
-            else
-            {
-                float targetFOV = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
-                targetCamera.fieldOfView = targetFOV;
-            }
-#else
-            float targetFOV = Mathf.Lerp(targetCamera.fieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
-            targetCamera.fieldOfView = targetFOV;
-#endif
+            float targetFOV = Mathf.Lerp(CameraFieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
+            CameraFieldOfView = targetFOV;
         }
 
 #if UNITY_EDITOR
         public override void OnValidate()
         {
-            if (Application.isPlaying)
+            if (Application.isPlaying && enableFOVKick)
             {
-#if GOLD_PLAYER_CINEMACHINE
-                if (useCinemachine && targetVirtualCamera != null)
+                if (!IsCameraNull)
                 {
-                    newFOV = targetVirtualCamera.m_Lens.FieldOfView + kickAmount;
+                    // Create the new FOV by taking the original FOV and adding kick amount.
+                    newFOV = CameraFieldOfView + kickAmount;
                 }
-                else if (targetCamera != null)
-                {
-                    newFOV = targetCamera.fieldOfView + kickAmount;
-                }
-#else
-                // Create the new FOV by taking the original FOV and adding kick amount.
-                if (targetCamera != null)
-                {
-                    newFOV = targetCamera.fieldOfView + kickAmount;
-                }
-#endif
             }
         }
 #endif

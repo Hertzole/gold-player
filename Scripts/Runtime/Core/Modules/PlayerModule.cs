@@ -53,6 +53,20 @@ namespace Hertzole.GoldPlayer
             HasBeenInitialized = true;
         }
 
+#if UNITY_EDITOR
+        internal void ForceInitialize(IGoldInput input)
+        {
+            if (input != null)
+            {
+                PlayerInput = input;
+            }
+
+            OnInitialize();
+
+            HasBeenInitialized = true;
+        }
+#endif
+
         /// <summary>
         /// Called when the module is initialized.
         /// </summary>

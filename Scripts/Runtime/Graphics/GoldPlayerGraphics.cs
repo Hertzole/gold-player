@@ -99,12 +99,12 @@ namespace Hertzole.GoldPlayer
 
             public override bool Equals(object obj)
             {
-                return obj is GraphicsObject @object && Equals(@object);
+                return obj is GraphicsObject graphics && Equals(graphics);
             }
 
             public bool Equals(GraphicsObject other)
             {
-                return isParent == other.isParent && whenMyGraphics == other.whenMyGraphics && whenOtherGraphics == other.whenOtherGraphics;
+                return isParent == other.isParent && whenMyGraphics == other.whenMyGraphics && whenOtherGraphics == other.whenOtherGraphics && target == other.target;
             }
 
             public override int GetHashCode()
@@ -113,6 +113,7 @@ namespace Hertzole.GoldPlayer
                 hashCode = hashCode * -1521134295 + isParent.GetHashCode();
                 hashCode = hashCode * -1521134295 + whenMyGraphics.GetHashCode();
                 hashCode = hashCode * -1521134295 + whenOtherGraphics.GetHashCode();
+                hashCode = hashCode * -1521134295 + target.GetHashCode();
                 return hashCode;
             }
 
@@ -243,12 +244,12 @@ namespace Hertzole.GoldPlayer
             GetStandardComponents();
         }
 
-        private void Reset()
+        internal void Reset()
         {
             GetStandardComponents();
         }
 
-        private void GetStandardComponents()
+        internal void GetStandardComponents()
         {
             // If there are any objects, fill their renderers.
             if (objects != null && objects.Length > 0)

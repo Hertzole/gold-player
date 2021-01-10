@@ -16,6 +16,8 @@ namespace Hertzole.GoldPlayer.Tests
         [UnitySetUp]
         public IEnumerator SetupScene()
         {
+            Time.timeScale = 1;
+
             player = SetupPlayer();
             CreateTestScene();
 
@@ -79,6 +81,11 @@ namespace Hertzole.GoldPlayer.Tests
             return playerController;
         }
 
+        protected void ArePropertyAndFieldSame(object property, object field)
+        {
+            Assert.AreEqual(property, field);
+        }
+
         protected virtual void CreateTestScene()
         {
             GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -88,11 +95,28 @@ namespace Hertzole.GoldPlayer.Tests
             sceneObjects.Add(plane);
         }
 
+        protected static void AreApproximatelyEqualVector2(Vector2 expected, Vector2 actual, float tolerance = 0.001f)
+        {
+            Assert.AreApproximatelyEqual(expected.x, actual.x, tolerance);
+            Assert.AreApproximatelyEqual(expected.y, actual.y, tolerance);
+        }
+
         protected static void AreApproximatelyEqualVector3(Vector3 expected, Vector3 actual, float tolerance = 0.001f)
         {
             Assert.AreApproximatelyEqual(expected.x, actual.x, tolerance);
             Assert.AreApproximatelyEqual(expected.y, actual.y, tolerance);
             Assert.AreApproximatelyEqual(expected.z, actual.z, tolerance);
+        }
+
+        protected static void AreApproximatelyEqualQuaternion(Quaternion expected, Quaternion actual, bool includeW, float tolerance = 0.001f)
+        {
+            Assert.AreApproximatelyEqual(expected.x, actual.x, tolerance);
+            Assert.AreApproximatelyEqual(expected.y, actual.y, tolerance);
+            Assert.AreApproximatelyEqual(expected.z, actual.z, tolerance);
+            if (includeW)
+            {
+                Assert.AreApproximatelyEqual(expected.w, actual.w, tolerance);
+            }
         }
     }
 }
