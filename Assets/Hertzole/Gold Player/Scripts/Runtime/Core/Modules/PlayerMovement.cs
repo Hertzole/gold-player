@@ -114,7 +114,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets the gravity of the player.")]
         [FormerlySerializedAs("m_Gravity")]
-        private float gravity = 20;
+        internal float gravity = 20;
         [SerializeField]
         [Range(0f, 1f)]
         [Tooltip("How much control the player will have in the air.")]
@@ -127,7 +127,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets how much the player will stick to the ground.")]
         [FormerlySerializedAs("m_GroundStick")]
-        private float groundStick = 10;
+        internal float groundStick = 10;
         [SerializeField]
         [Tooltip("The way the player will check if it's grounded.")]
         private GroundCheckType groundCheck = GroundCheckType.Sphere;
@@ -256,7 +256,7 @@ namespace Hertzole.GoldPlayer
         // The current velocity.
         private Vector3 velocity = Vector3.zero;
         // The rays used for raycast ground check.
-        private Vector3[] groundCheckRays;
+        internal Vector3[] groundCheckRays;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
         private MovementSpeeds moveSpeed = new MovementSpeeds();
@@ -272,7 +272,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> Multiplies the current move speed. </summary>
         public float MoveSpeedMultiplier { get { return moveSpeedMultiplier; } set { moveSpeedMultiplier = value; } }
         /// <summary> Multiplies the current jump height. </summary>
-        public float JumpHeightMultiplier { get { return jumpHeightMultiplier; } set { jumpHeightMultiplier = value; CalculateJumpHeight(jumpHeight * value); } }
+        public float JumpHeightMultiplier { get { return jumpHeightMultiplier; } set { jumpHeightMultiplier = value; realJumpHeight = CalculateJumpHeight(jumpHeight * value); } }
 
         /// <summary> Determines if the player can run. </summary>
         public bool CanRun { get { return canRun; } set { canRun = value; if (!value && IsRunning) { moveSpeed = walkingSpeeds; } } }
@@ -528,7 +528,8 @@ namespace Hertzole.GoldPlayer
 #if DEBUG
             if (rays.Length != rayAmount + 1)
             {
-                throw new System.ArgumentException("The provided array needs to be the same as Ray Amount + 1 (" + rayAmount + 1 + ")");
+                Debug.LogError("The provided array needs to be the same as Ray Amount + 1 (" + (rayAmount + 1).ToString() + ")");
+                return;
             }
 #endif
 

@@ -64,32 +64,6 @@ namespace Hertzole.GoldPlayer
         public bool InitOnStart = true;
 #endif
 
-        #region Obsolete
-#if UNITY_EDITOR
-        /// <summary> The main action map for the Input Actions. </summary>
-        [System.Obsolete("No longer used. This will be removed on build.", true)]
-        public string ActionMap
-        {
-            get
-            {
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-                Debug.LogWarning("GoldPlayerController.ActionMap is useless when not using the new Input System.");
-#endif
-                return string.Empty;
-            }
-            set
-            {
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-                Debug.LogWarning("GoldPlayerController.ActionMap is useless when not using the new Input System.");
-#endif
-            }
-        }
-        /// <summary> Has all the scripts be initialized? </summary>
-        [System.Obsolete("Use HasBeenFullyInitialized instead. This will be removed on build.", true)]
-        public bool HasBeenInitialized { get { return HasBeenFullyInitialized; } }
-#endif // UNITY_EDITOR
-        #endregion
-
         /// <summary> The character controller on the player. </summary>
         public CharacterController Controller { get { return controller; } }
 #if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
@@ -100,7 +74,7 @@ namespace Hertzole.GoldPlayer
         public IGoldInput PlayerInput;
 #endif
 
-        private void Awake()
+        internal void Awake()
         {
             // Get all the references as soon as possible.
             GetReferences();
@@ -291,11 +265,13 @@ namespace Hertzole.GoldPlayer
         }
 
 #if UNITY_EDITOR
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         private void Reset()
         {
             GetComponents();
         }
 
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         private void OnValidate()
         {
             GetComponents();
@@ -306,6 +282,7 @@ namespace Hertzole.GoldPlayer
             sounds.OnValidate();
         }
 
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         private void GetComponents()
         {
             if (cam.PlayerController == null)

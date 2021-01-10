@@ -9,6 +9,7 @@ namespace Hertzole.GoldPlayer.Tests
     internal class InteractionTests : BaseGoldPlayerTest
     {
         private GoldPlayerInteractable interactableCube;
+        private GoldPlayerInteraction interaction;
 
         protected override void CreateTestScene()
         {
@@ -19,6 +20,9 @@ namespace Hertzole.GoldPlayer.Tests
             cube.transform.position = new Vector3(0f, 1.6f, 2f);
 
             interactableCube = cube.AddComponent<GoldPlayerInteractable>();
+            interactableCube.IsInteractable = true;
+            interactableCube.IsHidden = true;
+            interactableCube.UseCustomMessage = false;
 
             sceneObjects.Add(cube);
         }
@@ -27,8 +31,10 @@ namespace Hertzole.GoldPlayer.Tests
         {
             GoldPlayerController player = base.SetupPlayer();
 
-            GoldPlayerInteraction interaction = player.gameObject.AddComponent<GoldPlayerInteraction>();
+            interaction = player.gameObject.AddComponent<GoldPlayerInteraction>();
             interaction.CameraHead = player.Camera.CameraHead;
+            interaction.InteractInput = "Interact";
+            interaction.InteractionLayer = 1;
 
             return player;
         }
@@ -172,6 +178,75 @@ namespace Hertzole.GoldPlayer.Tests
 
             Assert.IsFalse(interacted);
             Assert.IsTrue(reachedEnd);
+
+            interacted = false;
+            interactableCube.Interact();
+
+            yield return null;
+
+            Assert.IsFalse(interacted);
+        }
+
+        [UnityTest]
+        public IEnumerator TestBypass()
+        {
+            interactableCube.LimitedInteractions = true;
+            interactableCube.MaxInteractions = 1;
+            interactableCube.IsInteractable = false;
+            bool interacted = false;
+            interactableCube.OnInteract.AddListener(() => interacted = true);
+
+            interactableCube.Interact();
+            Assert.IsFalse(interacted);
+            interactableCube.Interact(true, true);
+            Assert.IsTrue(interacted);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestNullCollider()
+        {
+            interaction.haveCheckedInteractable = false;
+
+            RaycastHit empty = new RaycastHit();
+            interaction.HitInteraction(empty);
+
+            Assert.IsFalse(interaction.haveCheckedInteractable);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestRigidbodyGet()
+        {
+            GameObject go = new GameObject();
+            go.AddComponent<BoxCollider>();
+            go.transform.position = new Vector3(0, 1.6f, 1.5f);
+            go.transform.SetParent(interactableCube.transform);
+
+            sceneObjects.Add(go);
+            Rigidbody rig = interactableCube.gameObject.AddComponent<Rigidbody>();
+            rig.isKinematic = true;
+
+            input.isInteracting = true;
+            yield return null;
+            yield return null;
+
+            Assert.IsNotNull(((GoldPlayerInteractable)interaction.CurrentHitInteractable).GetComponent<Rigidbody>());
+        }
+
+        [UnityTest]
+        public IEnumerator TestReset()
+        {
+            interaction.CameraHead = null;
+            Assert.IsNull(interaction.CameraHead);
+
+            interaction.Reset();
+            Assert.IsNotNull(interaction.CameraHead);
+            Assert.AreEqual(interaction.CameraHead, player.Camera.CameraHead);
+
+            yield return null;
         }
     }
 }

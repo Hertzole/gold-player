@@ -22,6 +22,12 @@ namespace Hertzole.GoldPlayer.Tests
             GameObject graphicsCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             graphicsCube.transform.SetParent(graphicsParent.transform);
             graphicsCube.GetComponent<Renderer>().shadowCastingMode = ShadowCastingMode.TwoSided;
+
+            GameObject emptyParent = new GameObject();
+            GameObject newCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            emptyParent.transform.SetParent(graphicsParent.transform);
+            newCube.transform.SetParent(emptyParent.transform);
+
             graphics.Objects = new GoldPlayerGraphics.GraphicsObject[]
             {
                 new GoldPlayerGraphics.GraphicsObject()
@@ -30,6 +36,13 @@ namespace Hertzole.GoldPlayer.Tests
                     IsParent = false,
                     WhenMyGraphics = HandleGraphics.DisableTarget,
                     WhenOtherGraphics = HandleGraphics.EnableTarget
+                },
+                new GoldPlayerGraphics.GraphicsObject()
+                {
+                    IsParent = true,
+                    Target = emptyParent.transform,
+                    WhenMyGraphics = HandleGraphics.DisableRenderers,
+                    WhenOtherGraphics = HandleGraphics.EnableRenderers
                 }
             };
 
@@ -102,6 +115,80 @@ namespace Hertzole.GoldPlayer.Tests
             graphics.Objects[0].WhenMyGraphics = HandleGraphics.EnableTarget;
             graphics.Owner = GraphicsOwner.Me;
             TestObject(graphics.Objects[0].Target, true, true, ShadowCastingMode.TwoSided);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestNullTarget()
+        {
+            Assert.IsNotNull(graphics.Objects[0].renderers);
+            yield return null;
+            graphics.Objects[0].Target = null;
+            Assert.IsNull(graphics.Objects[0].renderers);
+        }
+
+        [UnityTest]
+        public IEnumerator TestIsParent()
+        {
+            Assert.IsNotNull(graphics.Objects[1].renderers);
+            Assert.AreEqual(graphics.Objects[1].renderers.Length, 1);
+            Assert.AreEqual(graphics.Objects[1].renderers[0], graphics.Objects[1].Target.GetChild(0).GetComponent<Renderer>());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestTargetNulLRenderer()
+        {
+            GameObject temp = new GameObject();
+            graphics.Objects[0].Target = temp.transform;
+
+            sceneObjects.Add(temp);
+
+            Assert.IsNull(graphics.Objects[0].renderers);
+            Assert.IsNull(graphics.Objects[0].originalRenderShadows);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator EqualsCheck()
+        {
+            GameObject tempObject = new GameObject();
+
+            sceneObjects.Add(tempObject);
+
+            GoldPlayerGraphics.GraphicsObject a = new GoldPlayerGraphics.GraphicsObject()
+            {
+                IsParent = false,
+                WhenMyGraphics = HandleGraphics.DisableRenderers,
+                WhenOtherGraphics = HandleGraphics.EnableRenderers,
+                Target = tempObject.transform
+            };
+            GoldPlayerGraphics.GraphicsObject b = new GoldPlayerGraphics.GraphicsObject()
+            {
+                IsParent = false,
+                WhenMyGraphics = HandleGraphics.DisableRenderers,
+                WhenOtherGraphics = HandleGraphics.EnableRenderers,
+                Target = tempObject.transform
+            };
+
+            Assert.IsTrue(a == b);
+            Assert.IsFalse(a.Equals(tempObject));
+            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
+
+            b.IsParent = true;
+            Assert.IsTrue(a != b);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestResetComponent()
+        {
+            graphics.Reset();
+
+            Assert.AreEqual(graphics.Objects.Length, 2);
+            Assert.IsNotNull(graphics.Objects[0].renderers);
+
             yield return null;
         }
 
