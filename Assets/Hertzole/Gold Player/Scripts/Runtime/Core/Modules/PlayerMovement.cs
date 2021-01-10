@@ -618,7 +618,14 @@ namespace Hertzole.GoldPlayer
             // Move the player using the character controller.
             CharacterController.Move(moveDirection * deltaTime);
 
-            velocity = (previousPosition - PlayerTransform.position) / deltaTime;
+            if (!movingPlatforms.IsMoving || movementInput != Vector2.zero)
+            {
+                velocity = (previousPosition - PlayerTransform.position) / deltaTime;
+            }
+            else
+            {
+                velocity = Vector3.zero;
+            }
         }
 
         /// <summary>

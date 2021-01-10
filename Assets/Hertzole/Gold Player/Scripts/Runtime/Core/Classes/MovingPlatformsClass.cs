@@ -29,7 +29,9 @@ namespace Hertzole.GoldPlayer
         /// <summary> Sets the max angle of the platforms the player can stand on. </summary>
         public float MaxAngle { get { return maxAngle; } set { maxAngle = value; } }
 
-        private bool DidPlatformMove { get { return currentPlatform != null && currentPlatformLastPosition != currentPlatform.position; } }
+        public bool DidPlatformMove { get { return currentPlatform != null && currentPlatformLastPosition != currentPlatform.position; } }
+
+        public bool IsMoving { get; private set; }
 
         private float minNormalY;
         private const float CHECK_DISTANCE = 0.2f;
@@ -76,6 +78,7 @@ namespace Hertzole.GoldPlayer
         {
             if (currentPlatform == null || recordedPlatform == null)
             {
+                IsMoving = false;
                 return;
             }
 
@@ -103,7 +106,17 @@ namespace Hertzole.GoldPlayer
                     {
                         CharacterController.Move(moveDistance);
                     }
+
+                    IsMoving = true;
                 }
+                else
+                {
+                    IsMoving = false;
+                }
+            }
+            else
+            {
+                IsMoving = false;
             }
 
             if (moveRotation)
