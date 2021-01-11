@@ -15,7 +15,10 @@ jobs:
       run: |
         git branch -d package &> /dev/null || echo package branch not found
         git subtree split -P "$PKG_ROOT" -b package
+        mv README.md /tmp/README.md
         git checkout package
+        mv /tmp/README.md README.md
+        git add README.md
         if [[ -d "Examples" ]]; then
           git mv Examples Samples~
           rm -f Examples.meta
