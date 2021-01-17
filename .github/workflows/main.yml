@@ -17,6 +17,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         lfs: true
+        persist-credentials: false
 
     # Cache
     - uses: actions/cache@v1.1.0
@@ -38,5 +39,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages # The branch the action should deploy to.
         FOLDER: build/WebGL/WebGL # The folder the action should deploy.
-        TARGET_FOLDER: docs/play
+        TARGET_FOLDER: play
         CLEAN: true
