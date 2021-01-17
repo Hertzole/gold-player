@@ -11,6 +11,26 @@ namespace Hertzole.GoldPlayer.Tests
         public bool isCrouching;
         public bool isInteracting;
 
+        public void DisableAction(string action)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DisableInput()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void EnableAction(string action)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void EnableInput()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public float GetAxis(string axis)
         {
             switch (axis)

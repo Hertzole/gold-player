@@ -5,6 +5,28 @@ namespace Hertzole.GoldPlayer
     public interface IGoldInput
     {
         /// <summary>
+        /// Enables all actions.
+        /// </summary>
+        void EnableInput();
+
+        /// <summary>
+        /// Disables all actions.
+        /// </summary>
+        void DisableInput();
+
+        /// <summary>
+        /// Enable a specific action.
+        /// </summary>
+        /// <param name="action">The action to enable.</param>
+        void EnableAction(string action);
+
+        /// <summary>
+        /// Disables a specific action.
+        /// </summary>
+        /// <param name="action">The action to disable.</param>
+        void DisableAction(string action);
+
+        /// <summary>
         /// Returns true if the button is being pressed.
         /// </summary>
         bool GetButton(string buttonName);
