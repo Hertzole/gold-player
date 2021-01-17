@@ -118,5 +118,19 @@ namespace Hertzole.GoldPlayer.Tests
                 Assert.AreApproximatelyEqual(expected.w, actual.w, tolerance);
             }
         }
+
+        protected IEnumerator RunTimeScaleTest(IEnumerator normalScaleTest, IEnumerator frozenScaleTest)
+        {
+            player.UnscaledTime = false;
+            Time.timeScale = 1;
+
+            yield return normalScaleTest;
+
+            player.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            player.UnscaledTime = true;
+            Time.timeScale = 0;
+
+            yield return frozenScaleTest;
+        }
     }
 }

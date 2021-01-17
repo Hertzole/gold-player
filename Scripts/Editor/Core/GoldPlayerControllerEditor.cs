@@ -547,7 +547,7 @@ namespace Hertzole.GoldPlayer.Editor
                 EditorGUILayout.Space();
 
                 EditorGUILayout.PropertyField(basedOnHeadBob);
-                DrawElementsConditional(basedOnHeadBob, () => EditorGUILayout.PropertyField(stepTime));
+                DrawElementsConditional(!basedOnHeadBob.boolValue, () => EditorGUILayout.PropertyField(stepTime));
 
                 EditorGUILayout.Space();
 

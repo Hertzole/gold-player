@@ -177,7 +177,7 @@ namespace Hertzole.GoldPlayer
             {
                 // Check if the controller velocity is below the still threshold. If it is, regen as if the player is standing still.
                 // Else regen as if the player is moving.
-                currentStamina += (CharacterController.velocity.magnitude <= stillThreshold ? regenRateStill : regenRateMoving) * deltaTime;
+                currentStamina += (PlayerController.Velocity.magnitude <= stillThreshold ? regenRateStill : regenRateMoving) * deltaTime;
             }
         }
 

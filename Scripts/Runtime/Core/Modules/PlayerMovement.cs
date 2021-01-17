@@ -196,6 +196,10 @@ namespace Hertzole.GoldPlayer
         private float moveSpeedMultiplier = 1;
         // The current jump height multiplier,
         private float jumpHeightMultiplier = 1;
+        // The start position of the player when they jump.
+        private float jumpStartYPosition = 0;
+        // The max height the player reached in their jump.
+        private float maxAirHeight = 0;
 
         // The current amount of times an air jump has been performed.
         private int currentJumps = 0;
@@ -490,6 +494,18 @@ namespace Hertzole.GoldPlayer
         /// <returns>Is the player grounded?</returns>
         public bool CheckGrounded()
         {
+            // If the player is jumping, not falling, and is within their "jump grace height", just return false.
+            // This allows the player to jump even on really low time scales where they don't get off the ground
+            // quickly enough before IsGrounded is true again.
+            if (isJumping && !isFalling)
+            {
+                float difference = PlayerTransform.position.y - jumpStartYPosition;
+                if (difference < 0.1f)
+                {
+                    return false;
+                }
+            }
+
             switch (groundCheck)
             {
                 case GroundCheckType.Raycast:
@@ -654,6 +670,11 @@ namespace Hertzole.GoldPlayer
             // Else apply the ground stick so the player sticks to the ground.
             if (!isGrounded)
             {
+                if (PlayerTransform.position.y > maxAirHeight)
+                {
+                    maxAirHeight = PlayerTransform.position.y;
+                }
+
                 // If the player was just grounded, set the jump position.
                 // The player probably just jumped or started falling.
                 if (previouslyGrounded)
@@ -691,6 +712,12 @@ namespace Hertzole.GoldPlayer
                     moveDirection.y = 0;
                 }
 
+                // If we're below the max air height, we're falling.
+                if (!isFalling && PlayerTransform.position.y < maxAirHeight)
+                {
+                    isFalling = true;
+                }
+
                 // Apply gravity to the Y axis.
                 moveDirection.y -= gravity * deltaTime;
             }
@@ -717,6 +744,7 @@ namespace Hertzole.GoldPlayer
                 // The player is on the ground so it is not falling or jumping.
                 isFalling = false;
                 isJumping = false;
+                maxAirHeight = 0;
                 // The player was previously grounded.
                 previouslyGrounded = true;
 
@@ -842,6 +870,7 @@ namespace Hertzole.GoldPlayer
             shouldJump = false;
             // Reset the current air time.
             currentAirTime = 0;
+            jumpStartYPosition = PlayerTransform.position.y;
 
             // If the player is crouching when trying to jump, check if the player can jump while crouched.
             // If the player isn't crouching, just jump.
@@ -902,15 +931,8 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            // Cache the value here to avoid calling natively to Time twice.
-            float timeScale = Time.timeScale;
-
-            // Cache the value, mostly to minimize the code length. Might improve performance extremely slightly by not calling native code.
-            Vector3 velocity = CharacterController.velocity;
-
             // Set 'isRunning' to true if the player velocity is above the walking speed max.
-            // The velocity also needs to be multiplier with time scale or else it will become extremely large on lower time scales or low on high time scales.
-            isRunning = new Vector2(velocity.x * timeScale, velocity.z * timeScale).magnitude > (walkingSpeeds.Max + 0.5f) * (unscaledTime ? 1 : timeScale);
+            isRunning = new Vector2(velocity.x, velocity.z).magnitude > (walkingSpeeds.Max + 0.5f);
 
             // Only set shouldRun if the player can move around.
             if (canMoveAround)
