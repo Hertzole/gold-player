@@ -10,7 +10,7 @@ A first-person player controller for Unity, built with being user-friendly and d
 - Easy to use functions
 - Very well documented code
 - Interaction component, UI component, graphics component, and animator component
-- Works with multiplayer
+- Easy to integrate into multiplayer
 - Support for [Unity's new Input System](http://docs.unity3d.com/Packages/com.unity.inputsystem@latest/)
 - Works with IL2CPP and fast enter play mode settings
 

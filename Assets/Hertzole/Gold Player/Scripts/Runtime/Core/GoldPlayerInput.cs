@@ -26,6 +26,9 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Determines if the input should be based around KeyCodes. If false, Input Manager will be used.")]
         [FormerlySerializedAs("m_UseKeyCodes")]
         private bool useKeyCodes = true;
+        [SerializeField]
+        [Tooltip("If true, all actions will be enabled on start.")]
+        private bool autoEnableInput = true;
 
         [Space]
 
@@ -47,9 +50,12 @@ namespace Hertzole.GoldPlayer
         };
 
         private Dictionary<string, InputItem> inputsDic;
+        private Dictionary<string, bool> enabledInputs;
 
         /// <summary> Determines if the input should be based around KeyCodes. If false, Input Manager will be used. </summary>
         public bool UseKeyCodes { get { return useKeyCodes; } set { useKeyCodes = value; } }
+        /// <summary> If true, all actions will be enabled on start. </summary>
+        public bool AutoEnableInput { get { return autoEnableInput; } set { autoEnableInput = value; } }
         /// <summary> All the available inputs. </summary>
         public InputItem[] Inputs { get { return inputs; } set { inputs = value; UpdateInputs(); } }
 
@@ -59,6 +65,10 @@ namespace Hertzole.GoldPlayer
             Debug.LogError(gameObject.name + " has GoldPlayerInput attached. It does not work when the new input system is enabled.");
 #else
             UpdateInputs();
+            if (autoEnableInput)
+            {
+                EnableInput();
+            }
 #endif
         }
 
@@ -66,11 +76,67 @@ namespace Hertzole.GoldPlayer
         {
             inputsDic = new Dictionary<string, InputItem>();
             inputsDic.Clear();
+            enabledInputs = new Dictionary<string, bool>();
 
             for (int i = 0; i < inputs.Length; i++)
             {
                 inputsDic.Add(inputs[i].ButtonName, inputs[i]);
+                enabledInputs.Add(inputs[i].ButtonName, false);
             }
+        }
+
+        public void EnableInput()
+        {
+#if !OBSOLETE
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                EnableAction(inputs[i].ButtonName);
+            }
+#else
+            Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
+#endif
+        }
+
+        public void DisableInput()
+        {
+#if !OBSOLETE
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                DisableAction(inputs[i].ButtonName);
+            }
+#else
+            Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
+#endif
+        }
+
+        public void EnableAction(string action)
+        {
+#if !OBSOLETE
+            if (!enabledInputs.ContainsKey(action))
+            {
+                Debug.LogError("There's no action called '" + action + "' on " + gameObject.name + ".");
+                return;
+            }
+
+            enabledInputs[action] = true;
+#else
+            Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
+#endif
+        }
+
+        public void DisableAction(string action)
+        {
+#if !OBSOLETE
+            if (!enabledInputs.ContainsKey(action))
+            {
+                Debug.LogError("There's no action called '" + action + "' on " + gameObject.name + ".");
+                return;
+            }
+
+            enabledInputs[action] = false;
+#else
+            Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
+#endif
         }
 
         /// <summary>
