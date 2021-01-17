@@ -55,7 +55,7 @@
         },
         "template": [
             "default",
-			"material/material"
+			"templates/material"
         ],
         "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
         "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],

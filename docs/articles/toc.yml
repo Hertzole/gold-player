@@ -1,3 +1,6 @@
 - name: General
   href: General/toc.yml
   topicHref: General/
+- name: Components
+  href: Components/toc.yml
+  topicHref: Components/

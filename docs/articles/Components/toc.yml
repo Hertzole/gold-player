@@ -1,0 +1,6 @@
+- name: Gold Player Controller
+  href: index.md
+- name: Gold Player Input
+  href: input.md
+- name: Gold Player Input System
+  href: input_system.md
