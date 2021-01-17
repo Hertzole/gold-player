@@ -91,6 +91,13 @@ namespace Hertzole.GoldPlayer.Example
         private bool previousLockCursor = false;
 #endif
 
+#if !UNITY_EDITOR && UNITY_WEBGL
+        private void Awake()
+        {
+            WebGLInput.captureAllKeyboardInput = true;
+        }
+#endif
+
         // Use this for initialization
         void Start()
         {

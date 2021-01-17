@@ -20,6 +20,10 @@
 - Fixed some head bob issues with NaN values.
 - Fixed graphics component not updating shadows properly.
 - Fixed issue with only having a cinemachine camera assigned.
+- Fixed jump height not changing with jump height multiplier.
+- Fixed player not setting `IsRunning` to true when time scale is 0.
+- Fixed player not being able to jump on low time scales.
+- Fixed head bob throwing errors when time scale is 0.
 
 ---
 

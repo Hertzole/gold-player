@@ -755,6 +755,11 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator ValidateSmoothedMovementInput()
         {
+            yield return RunTimeScaleTest(ValidateSmoohtedMovementInputRoutine(), ValidateSmoohtedMovementInputRoutine());
+        }
+
+        private IEnumerator ValidateSmoohtedMovementInputRoutine()
+        {
             input.moveDirection = new Vector2(0, 1);
             for (int i = 0; i < 100; i++)
             {
@@ -780,6 +785,11 @@ namespace Hertzole.GoldPlayer.Tests
             sceneObjects.Add(prim);
             player.Movement.JumpHeightMultiplier = 10;
 
+            yield return RunTimeScaleTest(HitHeadOnCeilingRoutine(), HitHeadOnCeilingRoutine());
+        }
+
+        private IEnumerator HitHeadOnCeilingRoutine()
+        {
             input.isJumping = true;
 
             yield return null;
@@ -793,10 +803,28 @@ namespace Hertzole.GoldPlayer.Tests
                 {
                     framesStuck++;
                 }
-
                 Assert.IsFalse(framesStuck > 10);
                 yield return null;
             }
+        }
+
+        [UnityTest]
+        public IEnumerator CheckIsRunning()
+        {
+            yield return RunTimeScaleTest(CheckIsRunningRoutine(), CheckIsRunningRoutine());
+        }
+
+        private IEnumerator CheckIsRunningRoutine()
+        {
+            input.moveDirection = new Vector2(0, -1);
+            input.isRunning = true;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(player.Movement.IsRunning);
         }
     }
 }

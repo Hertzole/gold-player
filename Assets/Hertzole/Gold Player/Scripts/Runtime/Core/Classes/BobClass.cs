@@ -72,6 +72,7 @@ namespace Hertzole.GoldPlayer
         private Vector3 originalHeadLocalPosition = Vector3.zero;
 
         protected float bobCycle = 0f;
+        private float bobCycleBackup = 0;
         protected float bobFade = 0f;
         protected float springPos = 0f;
         protected float springVelocity = 0f;
@@ -142,6 +143,17 @@ namespace Hertzole.GoldPlayer
                 deltaTime = Time.unscaledDeltaTime;
             }
 
+            // Make sure to reset the values so bobbing can recover from an unstable state.
+            if (springVelocity.IsNaN())
+            {
+                springVelocity = 0;
+            }
+
+            if (springPos.IsNaN())
+            {
+                springPos = 0;
+            }
+
             // Vertical head position "spring simulation" for jumping/landing impacts.
             // Input to spring from change in character Y velocity.
             springVelocity -= velocityChange.y;
@@ -152,7 +164,7 @@ namespace Hertzole.GoldPlayer
             // Output to head Y position.
             springPos += springVelocity * deltaTime;
             // Clamp spring distance.
-            springPos = Mathf.Clamp(springPos, -.3f, .3f);
+            springPos = Mathf.Clamp(springPos, -0.3f, 0.3f);
 
             if (Mathf.Abs(springVelocity) < springVelocityThreshold && Mathf.Abs(springPos) < springPositionThreshold)
             {
@@ -160,9 +172,18 @@ namespace Hertzole.GoldPlayer
                 springPos = 0;
             }
 
+            if (bobCycle.IsNaN())
+            {
+                bobCycle = bobCycleBackup;
+            }
+
             float flatVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
             float strideLengthen = 1 + (flatVelocity * strideMultiplier);
             bobCycle += (flatVelocity / strideLengthen) * (deltaTime / bobFrequency);
+            if (!bobCycle.IsNaN())
+            {
+                bobCycleBackup = bobCycle;
+            }
 
             // Stop here instead because if head bob is disabled it can mess up the step sounds cycle.
             if (!enableBob || bobTarget == null)
@@ -198,6 +219,16 @@ namespace Hertzole.GoldPlayer
             if (!targetPosition.IsNaN())
             {
                 bobTarget.localPosition = targetPosition;
+            }
+
+            if (xTilt.IsNaN())
+            {
+                xTilt = 0;
+            }
+
+            if (zTilt.IsNaN())
+            {
+                zTilt = 0;
             }
 
             Quaternion targetRotation = Quaternion.Euler(xTilt, bobTarget.localRotation.y, bobTarget.localRotation.z + zTilt);
