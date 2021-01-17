@@ -219,15 +219,30 @@
     "title": "Class StaminaClass | Gold Player",
     "keywords": "Class StaminaClass Used to calculate stamina/limited running. Inheritance Object PlayerModule StaminaClass Inherited Members PlayerModule.PlayerController PlayerModule.CharacterController PlayerModule.PlayerTransform PlayerModule.PlayerInput PlayerModule.HasBeenInitialized PlayerModule.Initialize(IGoldInput) PlayerModule.OnFixedUpdate(Single) PlayerModule.OnLateUpdate(Single) PlayerModule.GetButton(String) PlayerModule.GetButtonDown(String) PlayerModule.GetButtonUp(String) PlayerModule.GetAxis(String) PlayerModule.GetAxisRaw(String) Object.Equals(Object) Object.Equals(Object, Object) Object.GetHashCode() Object.GetType() Object.MemberwiseClone() Object.ReferenceEquals(Object, Object) Object.ToString() Namespace : Hertzole.GoldPlayer Assembly : Hertzole.GoldPlayer.dll Syntax [Serializable] public class StaminaClass : PlayerModule Properties | Improve this Doc View Source CurrentRegenWait The current regen wait time. Declaration public float CurrentRegenWait { get; set; } Property Value Type Description Single | Improve this Doc View Source CurrentStamina The current amount of stamina. Declaration public float CurrentStamina { get; set; } Property Value Type Description Single | Improve this Doc View Source DrainRate How much stamina will be drained per second. Declaration public float DrainRate { get; set; } Property Value Type Description Single | Improve this Doc View Source DrainStaminaWhen Sets when the stamina should be drained. Declaration public RunAction DrainStaminaWhen { get; set; } Property Value Type Description RunAction | Improve this Doc View Source EnableStamina Determines if stamina should be enabled. Declaration public bool EnableStamina { get; set; } Property Value Type Description Boolean | Improve this Doc View Source MaxStamina The maximum amount of stamina. Declaration public float MaxStamina { get; set; } Property Value Type Description Single | Improve this Doc View Source RegenRateMoving \"How much stamina will regenerate per second when moving. Declaration public float RegenRateMoving { get; set; } Property Value Type Description Single | Improve this Doc View Source RegenRateStill \"How much stamina will regenerate per second when standing still. Declaration public float RegenRateStill { get; set; } Property Value Type Description Single | Improve this Doc View Source RegenWait How long it will wait before starting to regenerate stamina. Declaration public float RegenWait { get; set; } Property Value Type Description Single | Improve this Doc View Source StillThreshold The threshold where it counts if the player is standing still. Declaration public float StillThreshold { get; set; } Property Value Type Description Single Methods | Improve this Doc View Source ClampValues() Clamps current stamina and current regen wait. Declaration protected virtual void ClampValues() | Improve this Doc View Source DrainStamina(Single) Drains the stamina. Declaration protected virtual void DrainStamina(float deltaTime) Parameters Type Name Description Single deltaTime | Improve this Doc View Source HandleStamina(Single) Handles all the stamina logic. Declaration protected virtual void HandleStamina(float deltaTime) Parameters Type Name Description Single deltaTime | Improve this Doc View Source OnInitialize() Declaration protected override void OnInitialize() Overrides PlayerModule.OnInitialize() | Improve this Doc View Source OnUpdate(Single) Declaration public override void OnUpdate(float deltaTime) Parameters Type Name Description Single deltaTime Overrides PlayerModule.OnUpdate(Single) | Improve this Doc View Source RegenStamina(Single) Does the stamina regeneration logic. Declaration protected virtual void RegenStamina(float deltaTime) Parameters Type Name Description Single deltaTime"
   },
+  "articles/Components/index.html": {
+    "href": "articles/Components/index.html",
+    "title": "Gold Player Controller | Gold Player",
+    "keywords": "Gold Player Controller TODO"
+  },
+  "articles/Components/input.html": {
+    "href": "articles/Components/input.html",
+    "title": "Gold Player Input | Gold Player",
+    "keywords": "Gold Player Input TODO"
+  },
+  "articles/Components/input_system.html": {
+    "href": "articles/Components/input_system.html",
+    "title": "Gold Player Input System | Gold Player",
+    "keywords": "Gold Player Input System TODO"
+  },
   "articles/General/index.html": {
     "href": "articles/General/index.html",
     "title": "General | Gold Player",
     "keywords": "General"
   },
-  "articles/index.html": {
-    "href": "articles/index.html",
-    "title": "Articles | Gold Player",
-    "keywords": "Articles"
+  "articles/General/multiplayer.html": {
+    "href": "articles/General/multiplayer.html",
+    "title": "Multiplayer | Gold Player",
+    "keywords": "Multiplayer"
   },
   "index.html": {
     "href": "index.html",
