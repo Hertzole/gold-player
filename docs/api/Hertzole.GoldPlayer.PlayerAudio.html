@@ -1,0 +1,839 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PlayerAudio
+   | Gold Player </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PlayerAudio
+   | Gold Player ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Hertzole.GoldPlayer.PlayerAudio">
+  
+  
+  <h1 id="Hertzole_GoldPlayer_PlayerAudio" data-uid="Hertzole.GoldPlayer.PlayerAudio" class="text-break">Class PlayerAudio
+  </h1>
+  <div class="markdown level0 summary"><p>Used to apply audio to Gold Player.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html">PlayerModule</a></div>
+    <div class="level2"><span class="xref">PlayerAudio</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_PlayerController">PlayerModule.PlayerController</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_CharacterController">PlayerModule.CharacterController</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_PlayerTransform">PlayerModule.PlayerTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_PlayerInput">PlayerModule.PlayerInput</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_HasBeenInitialized">PlayerModule.HasBeenInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_Initialize_Hertzole_GoldPlayer_IGoldInput_">PlayerModule.Initialize(IGoldInput)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButton_System_String_">PlayerModule.GetButton(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_String_">PlayerModule.GetButtonDown(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_String_">PlayerModule.GetButtonUp(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxis_System_String_">PlayerModule.GetAxis(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_String_">PlayerModule.GetAxisRaw(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Hertzole.GoldPlayer.html">Hertzole.GoldPlayer</a></h6>
+  <h6><strong>Assembly</strong>: Hertzole.GoldPlayer.dll</h6>
+  <h5 id="Hertzole_GoldPlayer_PlayerAudio_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public sealed class PlayerAudio : PlayerModule</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_AudioType.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.AudioType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L83">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_AudioType_" data-uid="Hertzole.GoldPlayer.PlayerAudio.AudioType*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_AudioType" data-uid="Hertzole.GoldPlayer.PlayerAudio.AudioType">AudioType</h4>
+  <div class="markdown level1 summary"><p>Sets how the audio will work. Custom will require a PlayerAudioBehaviour attached to the player. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioTypes AudioType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.AudioTypes.html">AudioTypes</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_BasedOnHeadBob.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.BasedOnHeadBob%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L85">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_BasedOnHeadBob_" data-uid="Hertzole.GoldPlayer.PlayerAudio.BasedOnHeadBob*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_BasedOnHeadBob" data-uid="Hertzole.GoldPlayer.PlayerAudio.BasedOnHeadBob">BasedOnHeadBob</h4>
+  <div class="markdown level1 summary"><p>Determines if the audio should be based on head bob. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool BasedOnHeadBob { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_CrouchFootsteps.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.CrouchFootsteps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L94">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_CrouchFootsteps_" data-uid="Hertzole.GoldPlayer.PlayerAudio.CrouchFootsteps*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_CrouchFootsteps" data-uid="Hertzole.GoldPlayer.PlayerAudio.CrouchFootsteps">CrouchFootsteps</h4>
+  <div class="markdown level1 summary"><p>All the audio settings that plays when crouching. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioItem CrouchFootsteps { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.AudioItem.html">AudioItem</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_EnableAudio.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.EnableAudio%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L79">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_EnableAudio_" data-uid="Hertzole.GoldPlayer.PlayerAudio.EnableAudio*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_EnableAudio" data-uid="Hertzole.GoldPlayer.PlayerAudio.EnableAudio">EnableAudio</h4>
+  <div class="markdown level1 summary"><p>Determines if any audio should be played. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool EnableAudio { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_FootstepsSource.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.FootstepsSource%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L101">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_FootstepsSource_" data-uid="Hertzole.GoldPlayer.PlayerAudio.FootstepsSource*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_FootstepsSource" data-uid="Hertzole.GoldPlayer.PlayerAudio.FootstepsSource">FootstepsSource</h4>
+  <div class="markdown level1 summary"><p>The audio source where all the footsteps sounds will be played. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioSource FootstepsSource { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">AudioSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_Jumping.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.Jumping%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L96">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_Jumping_" data-uid="Hertzole.GoldPlayer.PlayerAudio.Jumping*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_Jumping" data-uid="Hertzole.GoldPlayer.PlayerAudio.Jumping">Jumping</h4>
+  <div class="markdown level1 summary"><p>All the audio settings that plays when jumping. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioItem Jumping { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.AudioItem.html">AudioItem</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_JumpSource.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.JumpSource%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L103">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_JumpSource_" data-uid="Hertzole.GoldPlayer.PlayerAudio.JumpSource*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_JumpSource" data-uid="Hertzole.GoldPlayer.PlayerAudio.JumpSource">JumpSource</h4>
+  <div class="markdown level1 summary"><p>The audio source where all the jump sounds will be played. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioSource JumpSource { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">AudioSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_Landing.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.Landing%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L98">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_Landing_" data-uid="Hertzole.GoldPlayer.PlayerAudio.Landing*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_Landing" data-uid="Hertzole.GoldPlayer.PlayerAudio.Landing">Landing</h4>
+  <div class="markdown level1 summary"><p>All the audio settings that plays when landing. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioItem Landing { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.AudioItem.html">AudioItem</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_LandSource.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.LandSource%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L105">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_LandSource_" data-uid="Hertzole.GoldPlayer.PlayerAudio.LandSource*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_LandSource" data-uid="Hertzole.GoldPlayer.PlayerAudio.LandSource">LandSource</h4>
+  <div class="markdown level1 summary"><p>The audio source where all the land sounds will be played. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioSource LandSource { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">AudioSource</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_RunFootsteps.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.RunFootsteps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L92">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_RunFootsteps_" data-uid="Hertzole.GoldPlayer.PlayerAudio.RunFootsteps*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_RunFootsteps" data-uid="Hertzole.GoldPlayer.PlayerAudio.RunFootsteps">RunFootsteps</h4>
+  <div class="markdown level1 summary"><p>All the audio settings that plays when running. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioItem RunFootsteps { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.AudioItem.html">AudioItem</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_StepTime.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.StepTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L87">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_StepTime_" data-uid="Hertzole.GoldPlayer.PlayerAudio.StepTime*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_StepTime" data-uid="Hertzole.GoldPlayer.PlayerAudio.StepTime">StepTime</h4>
+  <div class="markdown level1 summary"><p>Sets how frequent the footsteps are. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float StepTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_UnscaledTime.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.UnscaledTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L81">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_UnscaledTime_" data-uid="Hertzole.GoldPlayer.PlayerAudio.UnscaledTime*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_UnscaledTime" data-uid="Hertzole.GoldPlayer.PlayerAudio.UnscaledTime">UnscaledTime</h4>
+  <div class="markdown level1 summary"><p>If true, audio will use unscaled delta time. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UnscaledTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_WalkFootsteps.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.WalkFootsteps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L90">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_WalkFootsteps_" data-uid="Hertzole.GoldPlayer.PlayerAudio.WalkFootsteps*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_WalkFootsteps" data-uid="Hertzole.GoldPlayer.PlayerAudio.WalkFootsteps">WalkFootsteps</h4>
+  <div class="markdown level1 summary"><p>All the audio settings that plays when walking. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AudioItem WalkFootsteps { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.AudioItem.html">AudioItem</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_OnFixedUpdate_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L148">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_OnFixedUpdate_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_OnFixedUpdate_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single)">OnFixedUpdate(Single)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnFixedUpdate(float fixedDeltaTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fixedDeltaTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnFixedUpdate_System_Single_">PlayerModule.OnFixedUpdate(Single)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_OnInitialize.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.OnInitialize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L107">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_OnInitialize_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnInitialize*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_OnInitialize" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnInitialize">OnInitialize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnInitialize()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnInitialize">PlayerModule.OnInitialize()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_OnLateUpdate_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L161">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_OnLateUpdate_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_OnLateUpdate_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single)">OnLateUpdate(Single)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnLateUpdate(float deltaTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnLateUpdate_System_Single_">PlayerModule.OnLateUpdate(Single)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_OnUpdate_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L129">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_OnUpdate_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnUpdate*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_OnUpdate_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single)">OnUpdate(Single)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnUpdate(float deltaTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnUpdate_System_Single_">PlayerModule.OnUpdate(Single)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_PlayFootstepSound.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.PlayFootstepSound%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L305">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_PlayFootstepSound_" data-uid="Hertzole.GoldPlayer.PlayerAudio.PlayFootstepSound*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_PlayFootstepSound" data-uid="Hertzole.GoldPlayer.PlayerAudio.PlayFootstepSound">PlayFootstepSound()</h4>
+  <div class="markdown level1 summary"><p>Plays a random footstep sound that adapts to sprinting and crouching.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PlayFootstepSound()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_PlayJumpSound.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.PlayJumpSound%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L334">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_PlayJumpSound_" data-uid="Hertzole.GoldPlayer.PlayerAudio.PlayJumpSound*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_PlayJumpSound" data-uid="Hertzole.GoldPlayer.PlayerAudio.PlayJumpSound">PlayJumpSound()</h4>
+  <div class="markdown level1 summary"><p>Plays a random jump sound.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PlayJumpSound()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_PlayLandSound.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.PlayLandSound%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L346">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_PlayLandSound_" data-uid="Hertzole.GoldPlayer.PlayerAudio.PlayLandSound*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_PlayLandSound" data-uid="Hertzole.GoldPlayer.PlayerAudio.PlayLandSound">PlayLandSound()</h4>
+  <div class="markdown level1 summary"><p>Plays a random land sound.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PlayLandSound()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_StopAllSounds.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.StopAllSounds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L388">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_StopAllSounds_" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopAllSounds*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_StopAllSounds" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopAllSounds">StopAllSounds()</h4>
+  <div class="markdown level1 summary"><p>Stops all sounds from playing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopAllSounds()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_StopFootstepSound.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.StopFootstepSound%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L361">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_StopFootstepSound_" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopFootstepSound*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_StopFootstepSound" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopFootstepSound">StopFootstepSound()</h4>
+  <div class="markdown level1 summary"><p>Stops the current footstep sound for playing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopFootstepSound()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_StopJumpSound.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.StopJumpSound%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L370">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_StopJumpSound_" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopJumpSound*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_StopJumpSound" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopJumpSound">StopJumpSound()</h4>
+  <div class="markdown level1 summary"><p>Stops the current jump sound from playing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopJumpSound()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio_StopLandSound.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio.StopLandSound%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L379">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerAudio_StopLandSound_" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopLandSound*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerAudio_StopLandSound" data-uid="Hertzole.GoldPlayer.PlayerAudio.StopLandSound">StopLandSound()</h4>
+  <div class="markdown level1 summary"><p>Stops the current land sound from playing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopLandSound()</code></pre>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerAudio.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerAudio%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerAudio.cs/#L9" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Gold Player
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

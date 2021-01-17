@@ -1,0 +1,1176 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PlayerCamera
+   | Gold Player </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PlayerCamera
+   | Gold Player ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Hertzole.GoldPlayer.PlayerCamera">
+  
+  
+  <h1 id="Hertzole_GoldPlayer_PlayerCamera" data-uid="Hertzole.GoldPlayer.PlayerCamera" class="text-break">Class PlayerCamera
+  </h1>
+  <div class="markdown level0 summary"><p>Used to move a player camera around.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html">PlayerModule</a></div>
+    <div class="level2"><span class="xref">PlayerCamera</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_PlayerController">PlayerModule.PlayerController</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_CharacterController">PlayerModule.CharacterController</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_PlayerTransform">PlayerModule.PlayerTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_PlayerInput">PlayerModule.PlayerInput</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_HasBeenInitialized">PlayerModule.HasBeenInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_Initialize_Hertzole_GoldPlayer_IGoldInput_">PlayerModule.Initialize(IGoldInput)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnFixedUpdate_System_Single_">PlayerModule.OnFixedUpdate(Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnLateUpdate_System_Single_">PlayerModule.OnLateUpdate(Single)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButton_System_String_">PlayerModule.GetButton(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_String_">PlayerModule.GetButtonDown(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_String_">PlayerModule.GetButtonUp(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxis_System_String_">PlayerModule.GetAxis(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_String_">PlayerModule.GetAxisRaw(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Hertzole.GoldPlayer.html">Hertzole.GoldPlayer</a></h6>
+  <h6><strong>Assembly</strong>: Hertzole.GoldPlayer.dll</h6>
+  <h5 id="Hertzole_GoldPlayer_PlayerCamera_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public sealed class PlayerCamera : PlayerModule</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_BodyForward.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.BodyForward%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L187">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_BodyForward_" data-uid="Hertzole.GoldPlayer.PlayerCamera.BodyForward*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_BodyForward" data-uid="Hertzole.GoldPlayer.PlayerCamera.BodyForward">BodyForward</h4>
+  <div class="markdown level1 summary"><p>The forward direction of the player. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 BodyForward { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_CameraHead.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.CameraHead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L168">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_CameraHead_" data-uid="Hertzole.GoldPlayer.PlayerCamera.CameraHead*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_CameraHead" data-uid="Hertzole.GoldPlayer.PlayerCamera.CameraHead">CameraHead</h4>
+  <div class="markdown level1 summary"><p>The camera head that should be moved around. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform CameraHead { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_CanLookAround.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.CanLookAround%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L147">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_CanLookAround_" data-uid="Hertzole.GoldPlayer.PlayerCamera.CanLookAround*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_CanLookAround" data-uid="Hertzole.GoldPlayer.PlayerCamera.CanLookAround">CanLookAround</h4>
+  <div class="markdown level1 summary"><p>Determines if the player can look around. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanLookAround { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_FieldOfViewKick.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.FieldOfViewKick%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L165">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_FieldOfViewKick_" data-uid="Hertzole.GoldPlayer.PlayerCamera.FieldOfViewKick*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_FieldOfViewKick" data-uid="Hertzole.GoldPlayer.PlayerCamera.FieldOfViewKick">FieldOfViewKick</h4>
+  <div class="markdown level1 summary"><p>Settings related to field of view kick. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FOVKickClass FieldOfViewKick { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.FOVKickClass.html">FOVKickClass</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_FollowBodyAngles.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.FollowBodyAngles%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L184">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_FollowBodyAngles_" data-uid="Hertzole.GoldPlayer.PlayerCamera.FollowBodyAngles*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_FollowBodyAngles" data-uid="Hertzole.GoldPlayer.PlayerCamera.FollowBodyAngles">FollowBodyAngles</h4>
+  <div class="markdown level1 summary"><p>Where the body should be looking, smoothed. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 FollowBodyAngles { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_FollowHeadAngles.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.FollowHeadAngles%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L182">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_FollowHeadAngles_" data-uid="Hertzole.GoldPlayer.PlayerCamera.FollowHeadAngles*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_FollowHeadAngles" data-uid="Hertzole.GoldPlayer.PlayerCamera.FollowHeadAngles">FollowHeadAngles</h4>
+  <div class="markdown level1 summary"><p>Where the head should be looking, smoothed. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 FollowHeadAngles { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_InvertXAxis.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.InvertXAxis%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L153">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_InvertXAxis_" data-uid="Hertzole.GoldPlayer.PlayerCamera.InvertXAxis*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_InvertXAxis" data-uid="Hertzole.GoldPlayer.PlayerCamera.InvertXAxis">InvertXAxis</h4>
+  <div class="markdown level1 summary"><p>Determines if the X axis should be inverted. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InvertXAxis { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_InvertYAxis.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.InvertYAxis%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L155">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_InvertYAxis_" data-uid="Hertzole.GoldPlayer.PlayerCamera.InvertYAxis*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_InvertYAxis" data-uid="Hertzole.GoldPlayer.PlayerCamera.InvertYAxis">InvertYAxis</h4>
+  <div class="markdown level1 summary"><p>Determines if the Y axis should be inverted. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InvertYAxis { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_IsCameraShaking.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.IsCameraShaking%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L196">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_IsCameraShaking_" data-uid="Hertzole.GoldPlayer.PlayerCamera.IsCameraShaking*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_IsCameraShaking" data-uid="Hertzole.GoldPlayer.PlayerCamera.IsCameraShaking">IsCameraShaking</h4>
+  <div class="markdown level1 summary"><p>Is the camera currently shaking from a camera shake? </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCameraShaking { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_LookInput.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.LookInput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L171">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_LookInput_" data-uid="Hertzole.GoldPlayer.PlayerCamera.LookInput*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_LookInput" data-uid="Hertzole.GoldPlayer.PlayerCamera.LookInput">LookInput</h4>
+  <div class="markdown level1 summary"><p>Look action for the new Input System. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string LookInput { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_MaximumX.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.MaximumX%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L163">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_MaximumX_" data-uid="Hertzole.GoldPlayer.PlayerCamera.MaximumX*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_MaximumX" data-uid="Hertzole.GoldPlayer.PlayerCamera.MaximumX">MaximumX</h4>
+  <div class="markdown level1 summary"><p>Sets how far up the player can look. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaximumX { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_MinimumX.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.MinimumX%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L161">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_MinimumX_" data-uid="Hertzole.GoldPlayer.PlayerCamera.MinimumX*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_MinimumX" data-uid="Hertzole.GoldPlayer.PlayerCamera.MinimumX">MinimumX</h4>
+  <div class="markdown level1 summary"><p>Sets how far down the player can look. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinimumX { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_MouseDamping.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.MouseDamping%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L159">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_MouseDamping_" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseDamping*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_MouseDamping" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseDamping">MouseDamping</h4>
+  <div class="markdown level1 summary"><p>Sets how smooth the movement should be. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MouseDamping { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_MouseSensitivity.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.MouseSensitivity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L157">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_MouseSensitivity_" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseSensitivity*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_MouseSensitivity" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseSensitivity">MouseSensitivity</h4>
+  <div class="markdown level1 summary"><p>How fast the camera head should move when looking around. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2 MouseSensitivity { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_MouseX.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.MouseX%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L173">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_MouseX_" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseX*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_MouseX" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseX">MouseX</h4>
+  <div class="markdown level1 summary"><p>Mouse X axis for the old Input Manager. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string MouseX { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_MouseY.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.MouseY%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L175">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_MouseY_" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseY*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_MouseY" data-uid="Hertzole.GoldPlayer.PlayerCamera.MouseY">MouseY</h4>
+  <div class="markdown level1 summary"><p>Mouse Y axis for the old Input Manager. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string MouseY { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_RotateCameraOnly.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.RotateCameraOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L151">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_RotateCameraOnly_" data-uid="Hertzole.GoldPlayer.PlayerCamera.RotateCameraOnly*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_RotateCameraOnly" data-uid="Hertzole.GoldPlayer.PlayerCamera.RotateCameraOnly">RotateCameraOnly</h4>
+  <div class="markdown level1 summary"><p>If true, the transform Y will not rotate and only the camera will rotate. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RotateCameraOnly { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_ShouldLockCursor.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.ShouldLockCursor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L149">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_ShouldLockCursor_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ShouldLockCursor*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_ShouldLockCursor" data-uid="Hertzole.GoldPlayer.PlayerCamera.ShouldLockCursor">ShouldLockCursor</h4>
+  <div class="markdown level1 summary"><p>Determines if the cursor should be locked. Setting this will also (un)lock the cursor. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ShouldLockCursor { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_TargetBodyAngles.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.TargetBodyAngles%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L180">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_TargetBodyAngles_" data-uid="Hertzole.GoldPlayer.PlayerCamera.TargetBodyAngles*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_TargetBodyAngles" data-uid="Hertzole.GoldPlayer.PlayerCamera.TargetBodyAngles">TargetBodyAngles</h4>
+  <div class="markdown level1 summary"><p>Where the body should be looking. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 TargetBodyAngles { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_TargetHeadAngles.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.TargetHeadAngles%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L178">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_TargetHeadAngles_" data-uid="Hertzole.GoldPlayer.PlayerCamera.TargetHeadAngles*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_TargetHeadAngles" data-uid="Hertzole.GoldPlayer.PlayerCamera.TargetHeadAngles">TargetHeadAngles</h4>
+  <div class="markdown level1 summary"><p>Where the head should be looking. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 TargetHeadAngles { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_ApplyRecoil_System_Single_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.ApplyRecoil(System.Single%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L484">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_ApplyRecoil_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ApplyRecoil*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_ApplyRecoil_System_Single_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ApplyRecoil(System.Single,System.Single)">ApplyRecoil(Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Applies a upward recoil to the camera and slowly moves it down.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ApplyRecoil(float recoilAmount, float recoilTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">recoilAmount</span></td>
+        <td><p>The amount of recoil.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">recoilTime</span></td>
+        <td><p>The amount of time to &quot;fade out&quot; takes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_CameraShake_System_Single_System_Single_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.CameraShake(System.Single%2CSystem.Single%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L453">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_CameraShake_" data-uid="Hertzole.GoldPlayer.PlayerCamera.CameraShake*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_CameraShake_System_Single_System_Single_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerCamera.CameraShake(System.Single,System.Single,System.Single)">CameraShake(Single, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Starts a camera shake.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CameraShake(float frequency, float magnitude, float duration)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">frequency</span></td>
+        <td><p>The frequency of the camera shake.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">magnitude</span></td>
+        <td><p>The magnitude of the camera shake.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">duration</span></td>
+        <td><p>The duration of the camera shake.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_ForceLook_Transform_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.ForceLook(Transform%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L497">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_ForceLook_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ForceLook*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_ForceLook_Transform_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ForceLook(Transform,System.Single)">ForceLook(Transform, Single)</h4>
+  <div class="markdown level1 summary"><p>Forces the player to look at a target. With a target assigned, it will move with the target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ForceLook(Transform target, float strength = 10F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>The target to look at.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">strength</span></td>
+        <td><p>The strength of the look. Set to 0 for instant.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_ForceLook_Vector3_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.ForceLook(Vector3%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L516">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_ForceLook_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ForceLook*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_ForceLook_Vector3_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerCamera.ForceLook(Vector3,System.Single)">ForceLook(Vector3, Single)</h4>
+  <div class="markdown level1 summary"><p>Forces the player to look at a position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ForceLook(Vector3 point, float strength = 10F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point</span></td>
+        <td><p>The position to look at.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">strength</span></td>
+        <td><p>The strength of the look. Set to 0 for instant.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_LockCursor_System_Boolean_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.LockCursor(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L233">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_LockCursor_" data-uid="Hertzole.GoldPlayer.PlayerCamera.LockCursor*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_LockCursor_System_Boolean_" data-uid="Hertzole.GoldPlayer.PlayerCamera.LockCursor(System.Boolean)">LockCursor(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Locks/unlocks the cursor and makes it invisible/visible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LockCursor(bool lockCursor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">lockCursor</span></td>
+        <td><p>Should the cursor be locked?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_OnInitialize.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.OnInitialize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L210">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_OnInitialize_" data-uid="Hertzole.GoldPlayer.PlayerCamera.OnInitialize*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_OnInitialize" data-uid="Hertzole.GoldPlayer.PlayerCamera.OnInitialize">OnInitialize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnInitialize()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnInitialize">PlayerModule.OnInitialize()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_OnUpdate_System_Single_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L241">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_OnUpdate_" data-uid="Hertzole.GoldPlayer.PlayerCamera.OnUpdate*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_OnUpdate_System_Single_" data-uid="Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single)">OnUpdate(Single)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void OnUpdate(float deltaTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnUpdate_System_Single_">PlayerModule.OnUpdate(Single)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_StopCameraShake.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.StopCameraShake%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L474">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_StopCameraShake_" data-uid="Hertzole.GoldPlayer.PlayerCamera.StopCameraShake*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_StopCameraShake" data-uid="Hertzole.GoldPlayer.PlayerCamera.StopCameraShake">StopCameraShake()</h4>
+  <div class="markdown level1 summary"><p>Stops the camera shake.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopCameraShake()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_StopForceLooking.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.StopForceLooking%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L527">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerCamera_StopForceLooking_" data-uid="Hertzole.GoldPlayer.PlayerCamera.StopForceLooking*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_StopForceLooking" data-uid="Hertzole.GoldPlayer.PlayerCamera.StopForceLooking">StopForceLooking()</h4>
+  <div class="markdown level1 summary"><p>Stops the player from force looking.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StopForceLooking()</code></pre>
+  </div>
+  <h3 id="events">Events
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_OnBeginCameraShake.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L199">View Source</a>
+  </span>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_OnBeginCameraShake" data-uid="Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake">OnBeginCameraShake</h4>
+  <div class="markdown level1 summary"><p>Fires when the camera shake begins. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event GoldPlayerDelegates.PlayerEvent OnBeginCameraShake</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.GoldPlayerDelegates.PlayerEvent.html">GoldPlayerDelegates.PlayerEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera_OnEndCameraShake.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera.OnEndCameraShake%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L201">View Source</a>
+  </span>
+  <h4 id="Hertzole_GoldPlayer_PlayerCamera_OnEndCameraShake" data-uid="Hertzole.GoldPlayer.PlayerCamera.OnEndCameraShake">OnEndCameraShake</h4>
+  <div class="markdown level1 summary"><p>Fires when the camera shake ends. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event GoldPlayerDelegates.PlayerEvent OnEndCameraShake</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Hertzole.GoldPlayer.GoldPlayerDelegates.PlayerEvent.html">GoldPlayerDelegates.PlayerEvent</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerCamera.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerCamera%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerCamera.cs/#L9" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Gold Player
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
