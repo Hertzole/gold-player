@@ -50,6 +50,8 @@ namespace Hertzole.GoldPlayer
             FootstepsSource = footstepsSource;
             JumpSource = jumpSource;
             LandSource = landSource;
+            
+            OnInitialized();
         }
 
         /// <summary>
