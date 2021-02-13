@@ -336,29 +336,19 @@ namespace Hertzole.GoldPlayer
                 return 0;
             }
 
-            return ((AxisControl)actionsDictionary[axisName].activeControl).ReadValue();
+            return actionsDictionary[axisName].ReadValue<float>();
 #else
             return 0;
 #endif
         }
 
         /// <summary>
-        /// Returns the value of an action axis with no processing applied.
+        /// Does the same as GetAxis when using the input system.
         /// </summary>
         /// <param name="axisName">The action to check.</param>
         public float GetAxisRaw(string axisName)
         {
-#if !OBSOLETE
-            // Make sure the action exists.
-            if (!DoesActionExist(axisName, true))
-            {
-                return 0;
-            }
-
-            return ((AxisControl)actionsDictionary[axisName].activeControl).ReadUnprocessedValue();
-#else
-            return 0;
-#endif
+            return GetAxis(axisName);
         }
 
         /// <summary>
@@ -412,7 +402,14 @@ namespace Hertzole.GoldPlayer
                 Debug.LogError("There's no action assigned on '" + action + "'.", gameObject);
                 return false;
             }
+#endif
 
+            if (actionsDictionary[action].activeControl == null)
+            {
+                return false;
+            }
+
+#if DEBUG || UNITY_EDITOR
             // If it's an axis action, make sure the type is an axis.
             if (axis)
             {
@@ -423,7 +420,6 @@ namespace Hertzole.GoldPlayer
                 }
             }
 #endif
-
             return true;
         }
 #endif // !OBSOLETE
