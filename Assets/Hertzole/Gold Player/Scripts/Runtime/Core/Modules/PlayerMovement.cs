@@ -147,23 +147,8 @@ namespace Hertzole.GoldPlayer
 
         //////// INPUT
         [SerializeField]
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-        [HideInInspector]
-#endif
         [Tooltip("Move action for the new Input System.")]
         private string input_Move = "Move";
-        [SerializeField]
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-        [HideInInspector]
-#endif
-        [Tooltip("Horizontal move axis for the old Input Manager.")]
-        private string input_HorizontalAxis = "Horizontal";
-        [SerializeField]
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
-        [HideInInspector]
-#endif
-        [Tooltip("Vertical move axis for the old Input Manager.")]
-        private string input_VerticalAxis = "Vertical";
         [SerializeField]
         [Tooltip("Jump input action.")]
         private string input_Jump = "Jump";
@@ -373,10 +358,6 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Move action for the new Input System. </summary>
         public string MoveInput { get { return input_Move; } set { input_Move = value; } }
-        /// <summary> Horizontal move axis for the old Input Manager. </summary>
-        public string HorizontalAxis { get { return input_HorizontalAxis; } set { input_HorizontalAxis = value; } }
-        /// <summary> Vertical move axis for the old Input Manager. </summary>
-        public string VerticalAxis { get { return input_VerticalAxis; } set { input_VerticalAxis = value; } }
         /// <summary> Jump input action. </summary>
         public string JumpInput { get { return input_Jump; } set { input_Jump = value; } }
         /// <summary> Run input action. </summary>
@@ -425,6 +406,17 @@ namespace Hertzole.GoldPlayer
         public event GoldPlayerDelegates.PlayerEvent OnBeginRun;
         /// <summary> Fires when the player stops running. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndRun;
+
+        #region Obsolete
+#if UNITY_EDITOR
+        /// <summary> Horizontal move axis for the old Input Manager. </summary>
+        [System.Obsolete("Use 'MoveInput' instead along with GetVector2. This will be removed on build.", true)]
+        public string HorizontalAxis { get { return null; } set { } }
+        /// <summary> Vertical move axis for the old Input Manager. </summary>
+        [System.Obsolete("Use 'MoveInput' instead along with GetVector2. This will be removed on build.", true)]
+        public string VerticalAxis { get { return null; } set { } }
+#endif
+        #endregion
 
         protected override void OnInitialize()
         {
@@ -564,20 +556,12 @@ namespace Hertzole.GoldPlayer
         /// <returns></returns>
         public Vector2 GetInput(float deltaTime)
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
             Vector2 input = GetVector2Input(input_Move);
             if (canMoveAround)
             {
                 movementInput.x = input.x;
                 movementInput.y = input.y;
             }
-#else
-            if (canMoveAround)
-            {
-                movementInput.x = GetAxisRaw(input_HorizontalAxis);
-                movementInput.y = GetAxisRaw(input_VerticalAxis);
-            }
-#endif
 
             hasUserInput = movementInput.x != 0 || movementInput.y != 0;
 

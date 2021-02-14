@@ -6,6 +6,8 @@
 - Added interaction limits on Gold Player Interactable, along with a On Reached Max Interactions event.
 - Added new editor GUI for several components. They are now more uniform and adapts to what values are enabled.
 - Added option to only rotate the camera without rotating the root transform.
+- Added support for using Vector2 with legacy input manager.
+- Added support for using legacy Gold Player Input component with Gold Player Input System if 'Both' is set in input backend.
 
 ### Changes:
 - Revamped how Gold Player project settings are saved. Old settings will be upgraded.

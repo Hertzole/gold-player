@@ -166,6 +166,51 @@ namespace Hertzole.GoldPlayer.Editor
         {
             return !enabled && GUIAdaption == EditorGUIAdaption.DisableUnused;
         }
+
+        public static void DrawCustomVector2Field(SerializedProperty x, SerializedProperty y, float labelWidth, GUIContent label, bool hasIndent, GUIContent xLabel = null, GUIContent yLabel = null)
+        {
+            DrawCustomVector2Field(EditorGUILayout.GetControlRect(), x, y, labelWidth, label, hasIndent, xLabel, yLabel);
+        }
+
+        public static void DrawCustomVector2Field(Rect rect, SerializedProperty x, SerializedProperty y, float labelWidth, GUIContent label, bool hasIndent, GUIContent xLabel = null, GUIContent yLabel = null)
+        {
+            // The label.
+            EditorGUI.PrefixLabel(new Rect(rect.x, rect.y, EditorGUIUtility.labelWidth, rect.height), label);
+            if (hasIndent)
+            {
+                // Remove the indent to stop some weird GUI behaviour.
+                EditorGUI.indentLevel--;
+            }
+
+            // Cache the original label width.
+            float oWidth = EditorGUIUtility.labelWidth;
+            // Set the label width to something smaller to make the label fit and still connect to the property field.
+            EditorGUIUtility.labelWidth = labelWidth;
+
+            Rect fieldRect = new Rect()
+            {
+                x = rect.x + oWidth,
+                y = rect.y,
+                width = ((rect.width - oWidth) / 2) - 2,
+                height = EditorGUIUtility.singleLineHeight
+            };
+
+            // The "X" field.
+            EditorGUI.PropertyField(fieldRect, x, xLabel);
+
+            // Add the half width to move the next element over.
+            fieldRect.x += ((rect.width - oWidth) / 2) + 2;
+
+            // The "Y" field.
+            EditorGUI.PropertyField(fieldRect, y, yLabel);
+            // Reset the label width to the original width.
+            EditorGUIUtility.labelWidth = oWidth;
+            if (hasIndent)
+            {
+                // Add the indent again.
+                EditorGUI.indentLevel++;
+            }
+        }
     }
 }
 #endif
