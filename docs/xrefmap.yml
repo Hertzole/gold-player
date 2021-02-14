@@ -2718,12 +2718,24 @@ references:
   commentId: T:Hertzole.GoldPlayer.InputItem
   fullName: Hertzole.GoldPlayer.InputItem
   nameWithType: InputItem
+- uid: Hertzole.GoldPlayer.InputItem.#ctor(System.String,Hertzole.GoldPlayer.InputItem.InputType,System.String,System.String,KeyCode)
+  name: InputItem(String, InputItem.InputType, String, String, KeyCode)
+  href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem__ctor_System_String_Hertzole_GoldPlayer_InputItem_InputType_System_String_System_String_KeyCode_
+  commentId: M:Hertzole.GoldPlayer.InputItem.#ctor(System.String,Hertzole.GoldPlayer.InputItem.InputType,System.String,System.String,KeyCode)
+  fullName: Hertzole.GoldPlayer.InputItem.InputItem(System.String, Hertzole.GoldPlayer.InputItem.InputType, System.String, System.String, KeyCode)
+  nameWithType: InputItem.InputItem(String, InputItem.InputType, String, String, KeyCode)
 - uid: Hertzole.GoldPlayer.InputItem.#ctor(System.String,System.String,KeyCode)
   name: InputItem(String, String, KeyCode)
   href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem__ctor_System_String_System_String_KeyCode_
   commentId: M:Hertzole.GoldPlayer.InputItem.#ctor(System.String,System.String,KeyCode)
   fullName: Hertzole.GoldPlayer.InputItem.InputItem(System.String, System.String, KeyCode)
   nameWithType: InputItem.InputItem(String, String, KeyCode)
+- uid: Hertzole.GoldPlayer.InputItem.#ctor(System.String,System.String,System.String)
+  name: InputItem(String, String, String)
+  href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem__ctor_System_String_System_String_System_String_
+  commentId: M:Hertzole.GoldPlayer.InputItem.#ctor(System.String,System.String,System.String)
+  fullName: Hertzole.GoldPlayer.InputItem.InputItem(System.String, System.String, System.String)
+  nameWithType: InputItem.InputItem(String, String, String)
 - uid: Hertzole.GoldPlayer.InputItem.#ctor*
   name: InputItem
   href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem__ctor_
@@ -2789,6 +2801,43 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.InputItem.InputName
   nameWithType: InputItem.InputName
+- uid: Hertzole.GoldPlayer.InputItem.InputNameSecondary
+  name: InputNameSecondary
+  href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem_InputNameSecondary
+  commentId: P:Hertzole.GoldPlayer.InputItem.InputNameSecondary
+  fullName: Hertzole.GoldPlayer.InputItem.InputNameSecondary
+  nameWithType: InputItem.InputNameSecondary
+- uid: Hertzole.GoldPlayer.InputItem.InputNameSecondary*
+  name: InputNameSecondary
+  href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem_InputNameSecondary_
+  commentId: Overload:Hertzole.GoldPlayer.InputItem.InputNameSecondary
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.InputItem.InputNameSecondary
+  nameWithType: InputItem.InputNameSecondary
+- uid: Hertzole.GoldPlayer.InputItem.InputType
+  name: InputItem.InputType
+  href: api/Hertzole.GoldPlayer.InputItem.InputType.html
+  commentId: T:Hertzole.GoldPlayer.InputItem.InputType
+  fullName: Hertzole.GoldPlayer.InputItem.InputType
+  nameWithType: InputItem.InputType
+- uid: Hertzole.GoldPlayer.InputItem.InputType.Axis
+  name: Axis
+  href: api/Hertzole.GoldPlayer.InputItem.InputType.html#Hertzole_GoldPlayer_InputItem_InputType_Axis
+  commentId: F:Hertzole.GoldPlayer.InputItem.InputType.Axis
+  fullName: Hertzole.GoldPlayer.InputItem.InputType.Axis
+  nameWithType: InputItem.InputType.Axis
+- uid: Hertzole.GoldPlayer.InputItem.InputType.Button
+  name: Button
+  href: api/Hertzole.GoldPlayer.InputItem.InputType.html#Hertzole_GoldPlayer_InputItem_InputType_Button
+  commentId: F:Hertzole.GoldPlayer.InputItem.InputType.Button
+  fullName: Hertzole.GoldPlayer.InputItem.InputType.Button
+  nameWithType: InputItem.InputType.Button
+- uid: Hertzole.GoldPlayer.InputItem.InputType.Vector2
+  name: Vector2
+  href: api/Hertzole.GoldPlayer.InputItem.InputType.html#Hertzole_GoldPlayer_InputItem_InputType_Vector2
+  commentId: F:Hertzole.GoldPlayer.InputItem.InputType.Vector2
+  fullName: Hertzole.GoldPlayer.InputItem.InputType.Vector2
+  nameWithType: InputItem.InputType.Vector2
 - uid: Hertzole.GoldPlayer.InputItem.Key
   name: Key
   href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem_Key
@@ -2828,6 +2877,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.InputItem.Inequality
   nameWithType: InputItem.Inequality
+- uid: Hertzole.GoldPlayer.InputItem.Type
+  name: Type
+  href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem_Type
+  commentId: P:Hertzole.GoldPlayer.InputItem.Type
+  fullName: Hertzole.GoldPlayer.InputItem.Type
+  nameWithType: InputItem.Type
+- uid: Hertzole.GoldPlayer.InputItem.Type*
+  name: Type
+  href: api/Hertzole.GoldPlayer.InputItem.html#Hertzole_GoldPlayer_InputItem_Type_
+  commentId: Overload:Hertzole.GoldPlayer.InputItem.Type
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.InputItem.Type
+  nameWithType: InputItem.Type
 - uid: Hertzole.GoldPlayer.MovementSpeeds
   name: MovementSpeeds
   href: api/Hertzole.GoldPlayer.MovementSpeeds.html
@@ -4114,32 +4176,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.MouseSensitivity
   nameWithType: PlayerCamera.MouseSensitivity
-- uid: Hertzole.GoldPlayer.PlayerCamera.MouseX
-  name: MouseX
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_MouseX
-  commentId: P:Hertzole.GoldPlayer.PlayerCamera.MouseX
-  fullName: Hertzole.GoldPlayer.PlayerCamera.MouseX
-  nameWithType: PlayerCamera.MouseX
-- uid: Hertzole.GoldPlayer.PlayerCamera.MouseX*
-  name: MouseX
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_MouseX_
-  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.MouseX
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.PlayerCamera.MouseX
-  nameWithType: PlayerCamera.MouseX
-- uid: Hertzole.GoldPlayer.PlayerCamera.MouseY
-  name: MouseY
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_MouseY
-  commentId: P:Hertzole.GoldPlayer.PlayerCamera.MouseY
-  fullName: Hertzole.GoldPlayer.PlayerCamera.MouseY
-  nameWithType: PlayerCamera.MouseY
-- uid: Hertzole.GoldPlayer.PlayerCamera.MouseY*
-  name: MouseY
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_MouseY_
-  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.MouseY
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.PlayerCamera.MouseY
-  nameWithType: PlayerCamera.MouseY
 - uid: Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake
   name: OnBeginCameraShake
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnBeginCameraShake
@@ -4340,6 +4376,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.GetButtonUp
   nameWithType: PlayerModule.GetButtonUp
+- uid: Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.String)
+  name: GetVector2Input(String)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_String_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.String)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.String)
+  nameWithType: PlayerModule.GetVector2Input(String)
+- uid: Hertzole.GoldPlayer.PlayerModule.GetVector2Input*
+  name: GetVector2Input
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetVector2Input_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerModule.GetVector2Input
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetVector2Input
+  nameWithType: PlayerModule.GetVector2Input
 - uid: Hertzole.GoldPlayer.PlayerModule.HasBeenInitialized
   name: HasBeenInitialized
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_HasBeenInitialized
@@ -4790,19 +4839,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerMovement.GroundStick
   nameWithType: PlayerMovement.GroundStick
-- uid: Hertzole.GoldPlayer.PlayerMovement.HorizontalAxis
-  name: HorizontalAxis
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_HorizontalAxis
-  commentId: P:Hertzole.GoldPlayer.PlayerMovement.HorizontalAxis
-  fullName: Hertzole.GoldPlayer.PlayerMovement.HorizontalAxis
-  nameWithType: PlayerMovement.HorizontalAxis
-- uid: Hertzole.GoldPlayer.PlayerMovement.HorizontalAxis*
-  name: HorizontalAxis
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_HorizontalAxis_
-  commentId: Overload:Hertzole.GoldPlayer.PlayerMovement.HorizontalAxis
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.PlayerMovement.HorizontalAxis
-  nameWithType: PlayerMovement.HorizontalAxis
 - uid: Hertzole.GoldPlayer.PlayerMovement.IsCrouching
   name: IsCrouching
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_IsCrouching
@@ -5242,19 +5278,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerMovement.Velocity
   nameWithType: PlayerMovement.Velocity
-- uid: Hertzole.GoldPlayer.PlayerMovement.VerticalAxis
-  name: VerticalAxis
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_VerticalAxis
-  commentId: P:Hertzole.GoldPlayer.PlayerMovement.VerticalAxis
-  fullName: Hertzole.GoldPlayer.PlayerMovement.VerticalAxis
-  nameWithType: PlayerMovement.VerticalAxis
-- uid: Hertzole.GoldPlayer.PlayerMovement.VerticalAxis*
-  name: VerticalAxis
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_VerticalAxis_
-  commentId: Overload:Hertzole.GoldPlayer.PlayerMovement.VerticalAxis
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.PlayerMovement.VerticalAxis
-  nameWithType: PlayerMovement.VerticalAxis
 - uid: Hertzole.GoldPlayer.PlayerMovement.WalkingSpeeds
   name: WalkingSpeeds
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_WalkingSpeeds

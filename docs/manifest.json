@@ -76,7 +76,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.FOVKickClass.html",
-          "hash": "QCJKCwPSI+TBY9x9xL92hA=="
+          "hash": "M+7Z0e/irSFT8e0E+6zfQw=="
         }
       },
       "is_incremental": false,
@@ -232,7 +232,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.GoldPlayerInput.html",
-          "hash": "Bd1Dk0Ry2jNyZ25caT9Ozw=="
+          "hash": "jlgkVpiKE3eBQGwtEA9lyQ=="
         }
       },
       "is_incremental": false,
@@ -384,11 +384,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Hertzole.GoldPlayer.InputItem.InputType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Hertzole.GoldPlayer.InputItem.InputType.html",
+          "hash": "9QTP6KA/MM9a+CU7dX4eJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Hertzole.GoldPlayer.InputItem.yml",
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.InputItem.html",
-          "hash": "gmjpqDG/Hntb2L27r7cjBQ=="
+          "hash": "SGxgjeThFWX/TIMUvWWE9A=="
         }
       },
       "is_incremental": false,
@@ -412,7 +424,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.MovingPlatformsClass.html",
-          "hash": "O0aayspJJ9Xs5jum1Gj1sw=="
+          "hash": "GPls109TDYh/8A62aAl30A=="
         }
       },
       "is_incremental": false,
@@ -424,7 +436,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.PlayerAudio.html",
-          "hash": "+nR0Sf/iGQfUs9Z9z17uvg=="
+          "hash": "prKkF+yZLuTAIWkH6pSy3g=="
         }
       },
       "is_incremental": false,
@@ -460,7 +472,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.PlayerBob.html",
-          "hash": "jIR4KMw5sDOqarveuJziHA=="
+          "hash": "9Q8pGghdbIitfQQ3w5Otyw=="
         }
       },
       "is_incremental": false,
@@ -472,7 +484,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.PlayerCamera.html",
-          "hash": "1AlC2TbkVFw2y4JqXDXgSw=="
+          "hash": "J0RBizSu93CZqOkzK701CQ=="
         }
       },
       "is_incremental": false,
@@ -484,7 +496,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.PlayerModule.html",
-          "hash": "OQC5gtvtPcRNkpBA0W9gbQ=="
+          "hash": "lVcbjEqJVHQRq/OD2nVIDw=="
         }
       },
       "is_incremental": false,
@@ -496,7 +508,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.PlayerMovement.html",
-          "hash": "iCaNlRCHYadYPyvBV8hONg=="
+          "hash": "5o1cioAuqNyAWemeRLzOGA=="
         }
       },
       "is_incremental": false,
@@ -532,7 +544,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.StaminaClass.html",
-          "hash": "CZe05VemYevl0+lgVL+zKA=="
+          "hash": "1Ftv5LkWxm60rJ6tBf85Lw=="
         }
       },
       "is_incremental": false,
@@ -544,7 +556,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Hertzole.GoldPlayer.html",
-          "hash": "9pyWLj5AF7nyZIMrpiVHgw=="
+          "hash": "By6CIQaWvDBNWSCB3TrCBA=="
         }
       },
       "is_incremental": false,
@@ -556,7 +568,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "DmK831zY3M6LhTiCtQVxzg=="
+          "hash": "UcIr1yYCL1jkLbRwivusfQ=="
         }
       },
       "is_incremental": false,
@@ -679,7 +691,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 44,
+          "total_file_count": 45,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
