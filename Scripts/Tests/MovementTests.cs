@@ -687,7 +687,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
             }
 
-            Assert.AreApproximatelyEqual(2f, highest, 0.1f);
+            Assert.AreApproximatelyEqual(2f, highest, 0.25f);
 
             yield return null;
             yield return null;
@@ -709,7 +709,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
             }
 
-            Assert.AreApproximatelyEqual(4f, highest, 0.1f);
+            Assert.AreApproximatelyEqual(4f, highest, 0.25f);
         }
 
         [UnityTest]
@@ -827,6 +827,32 @@ namespace Hertzole.GoldPlayer.Tests
             }
 
             Assert.IsTrue(player.Movement.IsRunning);
+        }
+
+        [UnityTest]
+        public IEnumerator CameraOnlyRotateTest()
+        {
+            yield return RunTimeScaleTest(CameraOnlyRotateTestRoutine(), CameraOnlyRotateTestRoutine());
+        }
+
+        private IEnumerator CameraOnlyRotateTestRoutine()
+        {
+            player.Camera.BodyAngle = -180;
+            input.moveDirection = new Vector2(0, -1);
+            input.mouseInput = new Vector2(0, -100);
+
+            yield return null;
+
+            player.Camera.RotateCameraOnly = true;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(player.transform.position.z > 0);
+            Assert.IsTrue(player.transform.position.x < 0.5f);
+            Assert.IsTrue(player.transform.position.x > -0.5f);
         }
     }
 }

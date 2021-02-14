@@ -126,7 +126,7 @@ namespace Hertzole.GoldPlayer.Tests
 
             yield return normalScaleTest;
 
-            player.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            player.SetPositionAndRotation(Vector3.zero, 0);
             player.UnscaledTime = true;
             Time.timeScale = 0;
 

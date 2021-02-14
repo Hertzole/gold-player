@@ -155,6 +155,9 @@ namespace Hertzole.GoldPlayer
         /// <summary> Look action for the new Input System. </summary>
         public string LookInput { get { return input_Look; } set { input_Look = value; } }
 
+        /// <summary> The rotation of the body. </summary>
+        public float BodyAngle { get { return bodyAngle; } set { bodyAngle = value; } }
+
         /// <summary> Where the head should be looking. </summary>
         public Vector3 TargetHeadAngles { get { return targetHeadAngles; } }
         /// <summary> Where the body should be looking. </summary>
@@ -169,7 +172,7 @@ namespace Hertzole.GoldPlayer
         {
             get
             {
-                return rotateCameraOnly ? new Quaternion(0, cameraHead.localRotation.y, 0, cameraHead.localRotation.w) * Vector3.forward : PlayerTransform.forward;
+                return rotateCameraOnly ? Quaternion.Euler(0, cameraHead.localEulerAngles.y, 0) * Vector3.forward : PlayerTransform.forward;
             }
         }
 
