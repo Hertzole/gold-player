@@ -1,9 +1,13 @@
-﻿#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT // Mark this as obsolete if the new input system is enabled.
+﻿#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT && !ENABLE_LEGACY_INPUT_MANAGER  // Mark this as obsolete if the new input system is enabled.
 #define OBSOLETE
 #endif
 
 #if OBSOLETE && !UNITY_EDITOR // If it's obsolete and not in the editor, remove it.
 #define STRIP
+#endif
+
+#if DEBUG || UNITY_EDITOR || !GOLD_PLAYER_STRIP_SAFETY
+#define USE_SAFETY
 #endif
 
 #if !STRIP
@@ -27,8 +31,11 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_UseKeyCodes")]
         private bool useKeyCodes = true;
         [SerializeField]
-        [Tooltip("If true, all actions will be enabled on start.")]
+        [Tooltip("If true, all actions will be enabled in OnEnable.")]
         private bool autoEnableInput = true;
+        [SerializeField]
+        [Tooltip("If true, all actions will be disabled in OnDisable.")]
+        private bool autoDisableInput = true;
 
         [Space]
 
@@ -37,10 +44,8 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_Inputs")]
         private InputItem[] inputs = new InputItem[]
         {
-            new InputItem("Horizontal", "Horizontal", KeyCode.None),
-            new InputItem("Vertical", "Vertical", KeyCode.None),
-            new InputItem("Mouse X", "Mouse X", KeyCode.None),
-            new InputItem("Mouse Y" , "Mouse Y" , KeyCode.None),
+            new InputItem("Move", "Horizontal", "Vertical"),
+            new InputItem("Look", "Mouse X", "Mouse Y"),
             new InputItem("Jump", "Jump", KeyCode.Space),
             new InputItem("Crouch", "Crouch", KeyCode.C),
             new InputItem("Run", "Run", KeyCode.LeftShift),
@@ -65,12 +70,27 @@ namespace Hertzole.GoldPlayer
             Debug.LogError(gameObject.name + " has GoldPlayerInput attached. It does not work when the new input system is enabled.");
 #else
             UpdateInputs();
+
+#endif
+        }
+
+#if !OBSOLETE
+        private void OnEnable()
+        {
             if (autoEnableInput)
             {
                 EnableInput();
             }
-#endif
         }
+
+        private void OnDisable()
+        {
+            if (autoDisableInput)
+            {
+                DisableInput();
+            }
+        }
+#endif
 
         public void UpdateInputs()
         {
@@ -88,6 +108,11 @@ namespace Hertzole.GoldPlayer
         public void EnableInput()
         {
 #if !OBSOLETE
+            if (inputsDic == null)
+            {
+                UpdateInputs();
+            }
+
             for (int i = 0; i < inputs.Length; i++)
             {
                 EnableAction(inputs[i].ButtonName);
@@ -100,6 +125,11 @@ namespace Hertzole.GoldPlayer
         public void DisableInput()
         {
 #if !OBSOLETE
+            if (inputsDic == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < inputs.Length; i++)
             {
                 DisableAction(inputs[i].ButtonName);
@@ -151,6 +181,13 @@ namespace Hertzole.GoldPlayer
                 UpdateInputs();
             }
 
+#if USE_SAFETY
+            if (!IsValidInput(buttonName, InputItem.InputType.Button))
+            {
+                return false;
+            }
+#endif
+
             return useKeyCodes ? Input.GetKey(inputsDic[buttonName].Key) : Input.GetButton(inputsDic[buttonName].InputName);
 #else
             return false;
@@ -168,6 +205,13 @@ namespace Hertzole.GoldPlayer
             {
                 UpdateInputs();
             }
+
+#if USE_SAFETY
+            if (!IsValidInput(buttonName, InputItem.InputType.Button))
+            {
+                return false;
+            }
+#endif
 
             return useKeyCodes ? Input.GetKeyDown(inputsDic[buttonName].Key) : Input.GetButtonDown(inputsDic[buttonName].InputName);
 #else
@@ -187,6 +231,13 @@ namespace Hertzole.GoldPlayer
                 UpdateInputs();
             }
 
+#if USE_SAFETY
+            if (!IsValidInput(buttonName, InputItem.InputType.Button))
+            {
+                return false;
+            }
+#endif
+
             return useKeyCodes ? Input.GetKeyUp(inputsDic[buttonName].Key) : Input.GetButtonUp(inputsDic[buttonName].InputName);
 #else
             return false;
@@ -204,6 +255,13 @@ namespace Hertzole.GoldPlayer
             {
                 UpdateInputs();
             }
+
+#if USE_SAFETY
+            if (!IsValidInput(axisName, InputItem.InputType.Axis))
+            {
+                return 0;
+            }
+#endif
 
             return Input.GetAxis(inputsDic[axisName].InputName);
 #else
@@ -223,6 +281,13 @@ namespace Hertzole.GoldPlayer
                 UpdateInputs();
             }
 
+#if USE_SAFETY
+            if (!IsValidInput(axisName, InputItem.InputType.Axis))
+            {
+                return 0;
+            }
+#endif
+
             return Input.GetAxisRaw(inputsDic[axisName].InputName);
 #else
             return 0;
@@ -235,9 +300,43 @@ namespace Hertzole.GoldPlayer
         [System.Obsolete("GetVector2 will do nothing when using the legacy input manager.")]
         public Vector2 GetVector2(string action)
         {
-            Debug.LogWarning("GetVector2 will do nothing when using the legacy input manager.");
+#if !OBSOLETE
+            if (inputsDic == null)
+            {
+                UpdateInputs();
+            }
+
+#if USE_SAFETY
+            if (!IsValidInput(action, InputItem.InputType.Vector2))
+            {
+                return Vector2.zero;
+            }
+#endif
+
+            return new Vector2(Input.GetAxisRaw(inputsDic[action].InputName), Input.GetAxisRaw(inputsDic[action].InputNameSecondary));
+#else
             return Vector2.zero;
+#endif
         }
+
+#if USE_SAFETY
+        private bool IsValidInput(string action, InputItem.InputType type)
+        {
+            if (!inputsDic.ContainsKey(action))
+            {
+                Debug.LogError("There's no input action called '" + action + "' on '" + gameObject.name + "'.", gameObject);
+                return false;
+            }
+
+            if (inputsDic[action].Type != type)
+            {
+                Debug.LogError("Input action '" + action + "' is a " + inputsDic[action].Type + " but should be a " + type + ".");
+                return false;
+            }
+
+            return true;
+        }
+#endif
 
         /// <summary>
         /// Returns the Input Item that matches the buttonName in the given InputItem array.

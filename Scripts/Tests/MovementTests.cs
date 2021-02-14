@@ -622,6 +622,8 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator MovingPlatformsSmallMovement()
         {
+            player.Movement.MovingPlatforms.Enabled = true;
+
             for (int i = 0; i < 2000; i++)
             {
                 for (int j = 0; j < sceneObjects.Count; j++)

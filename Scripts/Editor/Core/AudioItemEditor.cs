@@ -76,36 +76,10 @@ namespace Hertzole.GoldPlayer.Editor
                     // Else just draw one field.
                     if (property.FindPropertyRelative("randomPitch").boolValue)
                     {
-                        // The 'Pitch' label.
-                        EditorGUI.PrefixLabel(new Rect(fieldRect.x, fieldRect.y, EditorGUIUtility.labelWidth, fieldRect.height), new GUIContent("Pitch"));
-                        // Remove the indent to stop some weird GUI behaviour.
-                        EditorGUI.indentLevel--;
-
-                        // Cache the original label width.
-                        float oWidth = EditorGUIUtility.labelWidth;
-                        // Set the label width to something smaller to make the label fit and still connect to the property field.
-                        EditorGUIUtility.labelWidth = 30;
-
-                        Rect minMaxRect = new Rect()
-                        {
-                            x = fieldRect.x + oWidth,
-                            y = fieldRect.y,
-                            width = ((fieldRect.width - oWidth) / 2) - 2,
-                            height = fieldRect.height
-                        };
-
-                        // The 'Min Pitch' field.
-                        EditorGUI.PropertyField(minMaxRect, property.FindPropertyRelative("minPitch"), new GUIContent("Min"));
-
-                        // Add the half width to move the next element over.
-                        minMaxRect.x += ((fieldRect.width - oWidth) / 2) + 2;
-
-                        // The 'Max Pitch' field.
-                        EditorGUI.PropertyField(minMaxRect, property.FindPropertyRelative("maxPitch"), new GUIContent("Max"));
-                        // Reset the label width to the original width.
-                        EditorGUIUtility.labelWidth = oWidth;
-                        // Add the indent again.
-                        EditorGUI.indentLevel++;
+                        GoldPlayerUIHelper.DrawCustomVector2Field(fieldRect,
+                            property.FindPropertyRelative("minPitch"),
+                            property.FindPropertyRelative("maxPitch"),
+                            30, new GUIContent("Pitch"), true, new GUIContent("Min"), new GUIContent("Max"));
                     }
                     else
                     {

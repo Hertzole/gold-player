@@ -9,42 +9,80 @@ namespace Hertzole.GoldPlayer.Editor
     public class GoldPlayerInputEditor : UnityEditor.Editor
     {
         private SerializedProperty useKeyCodes;
+        private SerializedProperty autoEnableInput;
+        private SerializedProperty autoDisableInput;
         private SerializedProperty inputs;
 
         private ReorderableList list;
 
+        private float FieldHeight { get { return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing; } }
+
         private void OnEnable()
         {
             useKeyCodes = serializedObject.FindProperty("useKeyCodes");
+            autoEnableInput = serializedObject.FindProperty("autoEnableInput");
+            autoDisableInput = serializedObject.FindProperty("autoDisableInput");
             inputs = serializedObject.FindProperty("inputs");
 
             list = new ReorderableList(serializedObject, inputs, true, true, true, true)
             {
                 drawHeaderCallback = (Rect rect) =>
                 {
-                    float oWidth = rect.width - 16;
-                    rect.x += 16;
-                    EditorGUI.LabelField(new Rect(rect.x, rect.y, oWidth / 3, rect.height), new GUIContent("Button Name", "The name components uses to get input."));
-                    EditorGUI.LabelField(new Rect(rect.x + oWidth / 3, rect.y, oWidth / 3, rect.height), new GUIContent("Input Name", "The name of the input in the input manager."));
-                    EditorGUI.LabelField(new Rect(rect.x + (oWidth / 3) * 2, rect.y, oWidth / 3, rect.height), new GUIContent("Button Name", "The key code for the input."));
+                    EditorGUI.LabelField(rect, new GUIContent("Inputs"));
+
                 },
-                drawElementCallback = DrawElement
+                drawElementCallback = DrawElement,
+                elementHeightCallback = CalculateHeight
             };
         }
 
         private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
         {
-            float oWidth = rect.width;
             rect.height = EditorGUIUtility.singleLineHeight;
             SerializedProperty element = inputs.GetArrayElementAtIndex(index);
-            EditorGUI.PropertyField(new Rect(rect.x, rect.y, oWidth / 3 - 4, rect.height), element.FindPropertyRelative("buttonName"), GUIContent.none);
-            EditorGUI.PropertyField(new Rect(rect.x + oWidth / 3, rect.y, oWidth / 3 - 4, rect.height), element.FindPropertyRelative("inputName"), GUIContent.none);
-            EditorGUI.PropertyField(new Rect(rect.x + (oWidth / 3) * 2, rect.y, oWidth / 3, rect.height), element.FindPropertyRelative("key"), GUIContent.none);
+            SerializedProperty type = element.FindPropertyRelative("type");
+            EditorGUI.PropertyField(rect, element.FindPropertyRelative("buttonName"), new GUIContent("Name"));
+            rect.y += FieldHeight;
+            EditorGUI.PropertyField(rect, type, new GUIContent("Type"));
+            rect.y += FieldHeight;
+            if (type.enumValueIndex != 2)
+            {
+                EditorGUI.PropertyField(rect, element.FindPropertyRelative("inputName"), new GUIContent("Input Name"));
+            }
+            else
+            {
+                GoldPlayerUIHelper.DrawCustomVector2Field(rect,
+                    element.FindPropertyRelative("inputName"),
+                    element.FindPropertyRelative("inputNameSecondary"),
+                    10, new GUIContent("Vector2 Input Name"), false,
+                    new GUIContent("X", "The input action that will serve the X axis."),
+                    new GUIContent("Y", "The input action that will serve the Y axis."));
+            }
+
+            rect.y += FieldHeight;
+
+            if (type.enumValueIndex == 0 && useKeyCodes.boolValue)
+            {
+                EditorGUI.PropertyField(rect, element.FindPropertyRelative("key"));
+            }
+        }
+
+        private float CalculateHeight(int index)
+        {
+            SerializedProperty item = inputs.GetArrayElementAtIndex(index);
+            float height = FieldHeight * 3 + 5;
+
+            if (item.FindPropertyRelative("type").enumValueIndex == 0 && useKeyCodes.boolValue)
+            {
+                height += FieldHeight;
+            }
+
+            return height;
         }
 
         public override void OnInspectorGUI()
         {
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT && !ENABLE_LEGACY_INPUT_MANAGER
             if (GUILayout.Button("Replace with Gold Player Input System"))
             {
                 GameObject go = ((GoldPlayerInput)target).gameObject;
@@ -56,6 +94,8 @@ namespace Hertzole.GoldPlayer.Editor
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(useKeyCodes);
+            EditorGUILayout.PropertyField(autoEnableInput);
+            EditorGUILayout.PropertyField(autoDisableInput);
 
             EditorGUILayout.Space();
 
