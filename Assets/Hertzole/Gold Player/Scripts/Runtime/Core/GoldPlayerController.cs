@@ -257,11 +257,39 @@ namespace Hertzole.GoldPlayer
             controller.enabled = true;
         }
 
+        public void SetRotation(float yRotation)
+        {
+            if (cam.RotateCameraOnly)
+            {
+                cam.BodyAngle = yRotation;
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
+            }
+        }
+
+#if UNITY_EDITOR
+        [System.Obsolete("Use SetPositionAndRotation with yRotation instead of rotation. This will be removed on build.", true)]
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
-            controller.enabled = false;
-            transform.SetPositionAndRotation(position, rotation);
-            controller.enabled = true;
+            SetPositionAndRotation(position, 0);
+        }
+#endif
+
+        public void SetPositionAndRotation(Vector3 position, float yRotation)
+        {
+            if (!cam.RotateCameraOnly)
+            {
+                controller.enabled = false;
+                transform.SetPositionAndRotation(position, Quaternion.Euler(transform.eulerAngles.x, yRotation, transform.eulerAngles.z));
+                controller.enabled = true;
+            }
+            else
+            {
+                SetPosition(position);
+                SetRotation(yRotation);
+            }
         }
 
 #if UNITY_EDITOR

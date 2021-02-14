@@ -69,15 +69,78 @@ namespace Hertzole.GoldPlayer.Tests
             yield return null;
             yield return null;
             AreApproximatelyEqualVector3(new Vector3(10, 0.08f, 10), player.transform.position, 0.1f);
-            player.SetLocalPosition(new Vector3(20, 0, 20));
+        }
+
+        [UnityTest]
+        public IEnumerator TestSetLocalPosition()
+        {
             yield return null;
             yield return null;
-            AreApproximatelyEqualVector3(new Vector3(20, 0.08f, 20), player.transform.position, 0.1f);
-            player.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0, 180, 0));
+            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0), player.transform.position);
+            player.SetLocalPosition(new Vector3(10, 0, 10));
             yield return null;
             yield return null;
-            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0), player.transform.position, 0.1f);
-            AreApproximatelyEqualVector3(new Vector3(0, 180, 0), player.transform.eulerAngles);
+            AreApproximatelyEqualVector3(new Vector3(10, 0.08f, 10), player.transform.position, 0.1f);
+        }
+
+        [UnityTest]
+        public IEnumerator TestSetPositionAndRotation()
+        {
+            yield return null;
+            yield return null;
+            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0), player.transform.position);
+            player.SetPositionAndRotation(new Vector3(10, 0, 10), 180);
+            yield return null;
+            yield return null;
+            AreApproximatelyEqualVector3(new Vector3(10, 0.08f, 10), player.transform.position, 0.1f);
+            Assert.AreEqual(new Vector3(0, 180, 0), player.transform.eulerAngles);
+            Assert.AreEqual(new Vector3(0, 0, 0), player.Camera.CameraHead.localEulerAngles);
+        }
+
+        [UnityTest]
+        public IEnumerator TestSetPositionAndRotationCameraOnly()
+        {
+            player.Camera.RotateCameraOnly = true;
+
+            yield return null;
+            yield return null;
+            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0), player.transform.position);
+            player.SetPositionAndRotation(new Vector3(10, 0, 10), 180);
+            yield return null;
+            yield return null;
+            AreApproximatelyEqualVector3(new Vector3(10, 0.08f, 10), player.transform.position, 0.1f);
+            Assert.AreEqual(new Vector3(0, 0, 0), player.transform.eulerAngles);
+            Assert.AreEqual(new Vector3(0, 180, 0), player.Camera.CameraHead.localEulerAngles);
+        }
+
+        [UnityTest]
+        public IEnumerator TestSetRotation()
+        {
+            Assert.AreEqual(player.transform.eulerAngles, Vector3.zero);
+            Assert.AreEqual(player.Camera.CameraHead.localEulerAngles, Vector3.zero);
+            yield return null;
+            yield return null;
+            player.SetRotation(90);
+            yield return null;
+            yield return null;
+            Assert.AreEqual(player.transform.eulerAngles, new Vector3(0, 90, 0));
+            Assert.AreEqual(player.Camera.CameraHead.localEulerAngles, Vector3.zero);
+        }
+
+        [UnityTest]
+        public IEnumerator TestSetRotationCameraOnly()
+        {
+            player.Camera.RotateCameraOnly = true;
+
+            Assert.AreEqual(player.transform.eulerAngles, Vector3.zero);
+            Assert.AreEqual(player.Camera.CameraHead.localEulerAngles, Vector3.zero);
+            yield return null;
+            yield return null;
+            player.SetRotation(90);
+            yield return null;
+            yield return null;
+            Assert.AreEqual(player.transform.eulerAngles, Vector3.zero);
+            Assert.AreEqual(player.Camera.CameraHead.localEulerAngles, new Vector3(0, 90, 0));
         }
 
         [UnityTest]
