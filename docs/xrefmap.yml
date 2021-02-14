@@ -1370,12 +1370,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerController.SetPosition
   nameWithType: GoldPlayerController.SetPosition
-- uid: Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation(Vector3,Quaternion)
-  name: SetPositionAndRotation(Vector3, Quaternion)
-  href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_SetPositionAndRotation_Vector3_Quaternion_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation(Vector3,Quaternion)
-  fullName: Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation(Vector3, Quaternion)
-  nameWithType: GoldPlayerController.SetPositionAndRotation(Vector3, Quaternion)
+- uid: Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation(Vector3,System.Single)
+  name: SetPositionAndRotation(Vector3, Single)
+  href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_SetPositionAndRotation_Vector3_System_Single_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation(Vector3,System.Single)
+  fullName: Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation(Vector3, System.Single)
+  nameWithType: GoldPlayerController.SetPositionAndRotation(Vector3, Single)
 - uid: Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation*
   name: SetPositionAndRotation
   href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_SetPositionAndRotation_
@@ -1383,6 +1383,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerController.SetPositionAndRotation
   nameWithType: GoldPlayerController.SetPositionAndRotation
+- uid: Hertzole.GoldPlayer.GoldPlayerController.SetRotation(System.Single)
+  name: SetRotation(Single)
+  href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_SetRotation_System_Single_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerController.SetRotation(System.Single)
+  fullName: Hertzole.GoldPlayer.GoldPlayerController.SetRotation(System.Single)
+  nameWithType: GoldPlayerController.SetRotation(Single)
+- uid: Hertzole.GoldPlayer.GoldPlayerController.SetRotation*
+  name: SetRotation
+  href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_SetRotation_
+  commentId: Overload:Hertzole.GoldPlayer.GoldPlayerController.SetRotation
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.GoldPlayerController.SetRotation
+  nameWithType: GoldPlayerController.SetRotation
 - uid: Hertzole.GoldPlayer.GoldPlayerController.UnscaledTime
   name: UnscaledTime
   href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_UnscaledTime
@@ -3690,6 +3703,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonUp
   nameWithType: PlayerBehaviour.GetButtonUp
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.String)
+  name: GetVector2Input(String)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetVector2Input_System_String_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.String)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.String)
+  nameWithType: PlayerBehaviour.GetVector2Input(String)
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input*
+  name: GetVector2Input
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetVector2Input_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input
+  nameWithType: PlayerBehaviour.GetVector2Input
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.PlayerController
   name: PlayerController
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_PlayerController
@@ -3949,6 +3975,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.ApplyRecoil
   nameWithType: PlayerCamera.ApplyRecoil
+- uid: Hertzole.GoldPlayer.PlayerCamera.BodyAngle
+  name: BodyAngle
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_BodyAngle
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.BodyAngle
+  fullName: Hertzole.GoldPlayer.PlayerCamera.BodyAngle
+  nameWithType: PlayerCamera.BodyAngle
+- uid: Hertzole.GoldPlayer.PlayerCamera.BodyAngle*
+  name: BodyAngle
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_BodyAngle_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.BodyAngle
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.BodyAngle
+  nameWithType: PlayerCamera.BodyAngle
 - uid: Hertzole.GoldPlayer.PlayerCamera.BodyForward
   name: BodyForward
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_BodyForward
