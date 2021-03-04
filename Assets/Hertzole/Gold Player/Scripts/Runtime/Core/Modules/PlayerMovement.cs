@@ -235,7 +235,7 @@ namespace Hertzole.GoldPlayer
         // The current ground velocity.
         private Vector3 groundVelocity = Vector3.zero;
         // The velocity while the player is in the air.
-        private Vector3 airVelocity = Vector3.zero;
+        internal Vector3 airVelocity = Vector3.zero;
         // The position the player was at when jumping.
         private Vector3 jumpPosition = Vector3.zero;
         // The impact of the applied force.
@@ -411,10 +411,22 @@ namespace Hertzole.GoldPlayer
 #if UNITY_EDITOR
         /// <summary> Horizontal move axis for the old Input Manager. </summary>
         [System.Obsolete("Use 'MoveInput' instead along with GetVector2. This will be removed on build.", true)]
-        public string HorizontalAxis { get { return null; } set { } }
+        public string HorizontalAxis
+        {
+            [UnityEngine.TestTools.ExcludeFromCoverage]
+            get { return null; }
+            [UnityEngine.TestTools.ExcludeFromCoverage]
+            set { }
+        }
         /// <summary> Vertical move axis for the old Input Manager. </summary>
         [System.Obsolete("Use 'MoveInput' instead along with GetVector2. This will be removed on build.", true)]
-        public string VerticalAxis { get { return null; } set { } }
+        public string VerticalAxis
+        {
+            [UnityEngine.TestTools.ExcludeFromCoverage]
+            get { return null; }
+            [UnityEngine.TestTools.ExcludeFromCoverage]
+            set { }
+        }
 #endif
         #endregion
 
@@ -761,7 +773,7 @@ namespace Hertzole.GoldPlayer
         /// Determines if the player should jump.
         /// </summary>
         /// <returns>True if the player should jump.</returns>
-        private bool ShouldPlayerJump()
+        internal bool ShouldPlayerJump()
         {
             if (jumpingRequiresStamina && stamina.EnableStamina && stamina.CurrentStamina < jumpStaminaRequire)
             {

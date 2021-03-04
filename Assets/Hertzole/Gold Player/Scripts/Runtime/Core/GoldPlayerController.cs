@@ -271,6 +271,7 @@ namespace Hertzole.GoldPlayer
 
 #if UNITY_EDITOR
         [System.Obsolete("Use SetPositionAndRotation with yRotation instead of rotation. This will be removed on build.", true)]
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
             SetPositionAndRotation(position, 0);

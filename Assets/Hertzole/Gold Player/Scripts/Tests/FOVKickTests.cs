@@ -56,5 +56,120 @@ namespace Hertzole.GoldPlayer.Tests
             player.Camera.FieldOfViewKick.ForceFOV(true);
         }
 #endif
+
+        [UnityTest]
+        public IEnumerator CheckCameraNull()
+        {
+            player.Camera.FieldOfViewKick.TargetCamera = null;
+#if GOLD_PLAYER_CINEMACHINE
+            player.Camera.FieldOfViewKick.TargetVirtualCamera = null;
+#endif
+            player.Camera.FieldOfViewKick.EnableFOVKick = true;
+
+            player.Camera.FieldOfViewKick.ForceInitialize(null);
+            LogAssert.Expect(LogType.Error, "There's no camera set on field of view kick!");
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator UninitializedTest()
+        {
+            FOVKickClass kick = new FOVKickClass();
+            kick.INTERNAL__ForceHandleFOV();
+            LogAssert.Expect(LogType.Error, "You need to call 'Initialize()' on your FOV kick before using it!");
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator UpdateFOVNullCamera()
+        {
+            FOVKickClass kick = new FOVKickClass
+            {
+                newFOV = 70
+            };
+            kick.INTERNAL__UpdateNewFOV();
+            Assert.AreEqual(kick.newFOV, 70);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator KickWhenNone()
+        {
+            float fov = player.Camera.FieldOfViewKick.TargetCamera.fieldOfView;
+            player.Camera.FieldOfViewKick.KickWhen = RunAction.None;
+            player.Camera.FieldOfViewKick.LerpTimeTo = 100;
+            player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
+            input.moveDirection = new Vector2(0, 1);
+            input.isRunning = true;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.AreEqual(fov, player.Camera.FieldOfViewKick.TargetCamera.fieldOfView);
+        }
+
+        [UnityTest]
+        public IEnumerator KickWhenRunning()
+        {
+            player.Camera.FieldOfViewKick.KickWhen = RunAction.IsRunning;
+            player.Camera.FieldOfViewKick.LerpTimeTo = 100;
+            player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
+            input.moveDirection = new Vector2(0, 1);
+            input.isRunning = true;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
+
+            input.isRunning = false;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
+        }
+
+        [UnityTest]
+        public IEnumerator KickWhenPressingRun()
+        {
+            player.Camera.FieldOfViewKick.KickWhen = RunAction.PressingRun;
+            player.Camera.FieldOfViewKick.LerpTimeTo = 100;
+            player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
+            input.moveDirection = new Vector2(0, 0.1f);
+            input.isRunning = true;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.IsFalse(player.Movement.IsRunning);
+            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
+
+            input.isRunning = false;
+
+            for (int i = 0; i < 60; i++)
+            {
+                yield return null;
+            }
+
+            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
+        }
+
+        [UnityTest]
+        public IEnumerator OnValidateTest()
+        {
+            player.Camera.FieldOfViewKick.TargetCamera.fieldOfView = 90;
+            player.Camera.FieldOfViewKick.OnValidate();
+            Assert.AreEqual(player.Camera.FieldOfViewKick.TargetFieldOfView, 90 + player.Camera.FieldOfViewKick.KickAmount);
+            yield return null;
+        }
     }
 }
