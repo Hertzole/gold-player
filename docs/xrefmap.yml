@@ -252,12 +252,6 @@ references:
   commentId: T:Hertzole.GoldPlayer.BobClass
   fullName: Hertzole.GoldPlayer.BobClass
   nameWithType: BobClass
-- uid: Hertzole.GoldPlayer.BobClass.bobCycle
-  name: bobCycle
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_bobCycle
-  commentId: F:Hertzole.GoldPlayer.BobClass.bobCycle
-  fullName: Hertzole.GoldPlayer.BobClass.bobCycle
-  nameWithType: BobClass.bobCycle
 - uid: Hertzole.GoldPlayer.BobClass.BobCycle
   name: BobCycle
   href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_BobCycle
@@ -271,12 +265,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.BobClass.BobCycle
   nameWithType: BobClass.BobCycle
-- uid: Hertzole.GoldPlayer.BobClass.bobFade
-  name: bobFade
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_bobFade
-  commentId: F:Hertzole.GoldPlayer.BobClass.bobFade
-  fullName: Hertzole.GoldPlayer.BobClass.bobFade
-  nameWithType: BobClass.bobFade
 - uid: Hertzole.GoldPlayer.BobClass.BobFrequency
   name: BobFrequency
   href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_BobFrequency
@@ -420,42 +408,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.BobClass.SideMovement
   nameWithType: BobClass.SideMovement
-- uid: Hertzole.GoldPlayer.BobClass.springDampen
-  name: springDampen
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_springDampen
-  commentId: F:Hertzole.GoldPlayer.BobClass.springDampen
-  fullName: Hertzole.GoldPlayer.BobClass.springDampen
-  nameWithType: BobClass.springDampen
-- uid: Hertzole.GoldPlayer.BobClass.springElastic
-  name: springElastic
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_springElastic
-  commentId: F:Hertzole.GoldPlayer.BobClass.springElastic
-  fullName: Hertzole.GoldPlayer.BobClass.springElastic
-  nameWithType: BobClass.springElastic
-- uid: Hertzole.GoldPlayer.BobClass.springPos
-  name: springPos
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_springPos
-  commentId: F:Hertzole.GoldPlayer.BobClass.springPos
-  fullName: Hertzole.GoldPlayer.BobClass.springPos
-  nameWithType: BobClass.springPos
-- uid: Hertzole.GoldPlayer.BobClass.springPositionThreshold
-  name: springPositionThreshold
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_springPositionThreshold
-  commentId: F:Hertzole.GoldPlayer.BobClass.springPositionThreshold
-  fullName: Hertzole.GoldPlayer.BobClass.springPositionThreshold
-  nameWithType: BobClass.springPositionThreshold
-- uid: Hertzole.GoldPlayer.BobClass.springVelocity
-  name: springVelocity
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_springVelocity
-  commentId: F:Hertzole.GoldPlayer.BobClass.springVelocity
-  fullName: Hertzole.GoldPlayer.BobClass.springVelocity
-  nameWithType: BobClass.springVelocity
-- uid: Hertzole.GoldPlayer.BobClass.springVelocityThreshold
-  name: springVelocityThreshold
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_springVelocityThreshold
-  commentId: F:Hertzole.GoldPlayer.BobClass.springVelocityThreshold
-  fullName: Hertzole.GoldPlayer.BobClass.springVelocityThreshold
-  nameWithType: BobClass.springVelocityThreshold
 - uid: Hertzole.GoldPlayer.BobClass.StrafeTilt
   name: StrafeTilt
   href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_StrafeTilt
@@ -508,18 +460,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.BobClass.UnscaledTime
   nameWithType: BobClass.UnscaledTime
-- uid: Hertzole.GoldPlayer.BobClass.zTilt
-  name: zTilt
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_zTilt
-  commentId: F:Hertzole.GoldPlayer.BobClass.zTilt
-  fullName: Hertzole.GoldPlayer.BobClass.zTilt
-  nameWithType: BobClass.zTilt
-- uid: Hertzole.GoldPlayer.BobClass.zTiltVelocity
-  name: zTiltVelocity
-  href: api/Hertzole.GoldPlayer.BobClass.html#Hertzole_GoldPlayer_BobClass_zTiltVelocity
-  commentId: F:Hertzole.GoldPlayer.BobClass.zTiltVelocity
-  fullName: Hertzole.GoldPlayer.BobClass.zTiltVelocity
-  nameWithType: BobClass.zTiltVelocity
 - uid: Hertzole.GoldPlayer.CrouchToggleMode
   name: CrouchToggleMode
   href: api/Hertzole.GoldPlayer.CrouchToggleMode.html
@@ -635,12 +575,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.LerpTimeTo
   nameWithType: FOVKickClass.LerpTimeTo
-- uid: Hertzole.GoldPlayer.FOVKickClass.newFOV
-  name: newFOV
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_newFOV
-  commentId: F:Hertzole.GoldPlayer.FOVKickClass.newFOV
-  fullName: Hertzole.GoldPlayer.FOVKickClass.newFOV
-  nameWithType: FOVKickClass.newFOV
 - uid: Hertzole.GoldPlayer.FOVKickClass.OnInitialize
   name: OnInitialize()
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_OnInitialize
@@ -667,12 +601,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.OnUpdate
   nameWithType: FOVKickClass.OnUpdate
-- uid: Hertzole.GoldPlayer.FOVKickClass.originalFOV
-  name: originalFOV
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_originalFOV
-  commentId: F:Hertzole.GoldPlayer.FOVKickClass.originalFOV
-  fullName: Hertzole.GoldPlayer.FOVKickClass.originalFOV
-  nameWithType: FOVKickClass.originalFOV
 - uid: Hertzole.GoldPlayer.FOVKickClass.TargetCamera
   name: TargetCamera
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_TargetCamera
