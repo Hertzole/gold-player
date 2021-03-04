@@ -119,5 +119,26 @@ namespace Hertzole.GoldPlayer.Tests
 
             AreApproximatelyEqualQuaternion(Quaternion.identity, Quaternion.Euler(Bob.BobTarget.localEulerAngles), false, 0.05f);
         }
+
+        [UnityTest]
+        public IEnumerator NaNTest()
+        {
+            input.moveDirection = new Vector2(0, 1);
+            for (int i = 0; i < 30; i++)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(player.HeadBob.BobClass.bobCycle > 0);
+            float backup = player.HeadBob.BobClass.bobCycleBackup;
+            Time.timeScale = 0;
+            for (int i = 0; i < 30; i++)
+            {
+                yield return null;
+            }
+            Time.timeScale = 1;
+            yield return null;
+            Assert.AreEqual(player.HeadBob.BobClass.bobCycle, player.HeadBob.BobClass.bobCycleBackup);
+        }
     }
 }

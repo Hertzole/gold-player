@@ -854,5 +854,202 @@ namespace Hertzole.GoldPlayer.Tests
             Assert.IsTrue(player.transform.position.x < 0.5f);
             Assert.IsTrue(player.transform.position.x > -0.5f);
         }
+
+        [UnityTest]
+        public IEnumerator GroundedTest()
+        {
+            player.Movement.GroundCheck = GroundCheckType.Sphere;
+
+            yield return GroundedRoutine();
+
+            player.Movement.GroundCheck = GroundCheckType.Raycast;
+
+            yield return GroundedRoutine();
+        }
+
+        private IEnumerator GroundedRoutine()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(player.Movement.IsGrounded);
+
+            yield return null;
+
+            player.SetPosition(new Vector3(0, 100, 0));
+
+            for (int i = 0; i < 10; i++)
+            {
+                yield return null;
+            }
+            Assert.IsFalse(player.Movement.IsGrounded);
+
+            yield return null;
+
+            player.SetPosition(new Vector3(0, 0, 0));
+
+            for (int i = 0; i < 10; i++)
+            {
+                yield return null;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator JumpStamina()
+        {
+            player.Movement.JumpingRequiresStamina = true;
+            player.Movement.JumpStaminaRequire = 10;
+            player.Movement.JumpStaminaCost = 10;
+            player.Movement.Stamina.CurrentStamina = 100;
+            player.Movement.Stamina.EnableStamina = true;
+            player.Movement.Stamina.RegenWait = 100;
+            player.Movement.Stamina.MaxStamina = 100;
+
+            Assert.IsTrue(player.Movement.ShouldPlayerJump());
+
+            player.Movement.Stamina.CurrentStamina = 0;
+
+            Assert.IsFalse(player.Movement.ShouldPlayerJump());
+
+            player.Movement.Stamina.CurrentStamina = 100;
+
+            input.isJumping = true;
+            for (int i = 0; i < 10; i++)
+            {
+                yield return null;
+            }
+
+            Assert.AreEqual(player.Movement.Stamina.CurrentStamina, 90);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator AirJumps()
+        {
+            player.Movement.AirJump = true;
+            player.Movement.AirJumpsAmount = 5;
+
+            for (int i = 0; i < 6; i++)
+            {
+                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+                input.isJumping = true;
+
+                for (int j = 0; j < 30; j++)
+                {
+                    yield return null;
+                }
+            }
+
+            Assert.IsFalse(player.Movement.ShouldPlayerJump());
+        }
+
+        [UnityTest]
+        public IEnumerator AirJumpTime()
+        {
+            player.Movement.AirJump = true;
+            player.Movement.AirJumpTime = 1;
+
+            yield return null;
+
+            Assert.IsTrue(player.Movement.ShouldPlayerJump());
+
+            yield return null;
+
+            player.SetPosition(new Vector3(0, 100, 0));
+
+            for (int i = 0; i < 30; i++)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(player.Movement.IsFalling);
+            Assert.IsTrue(player.Movement.ShouldPlayerJump());
+        }
+
+        [UnityTest]
+        public IEnumerator AirVelocity()
+        {
+            player.Movement.AirControl = 0.5f;
+            input.moveDirection = new Vector2(0, 1);
+
+            yield return null;
+
+            player.SetPosition(new Vector3(0, 100, 0));
+
+            for (int i = 0; i < 30; i++)
+            {
+                yield return null;
+            }
+
+            AreApproximatelyEqualVector3(new Vector3(0, player.Movement.airVelocity.y, 0.92f), player.Movement.airVelocity, 0.1f);
+        }
+
+        [UnityTest]
+        public IEnumerator CrouchJumping()
+        {
+            player.Movement.CrouchJumping = false;
+            input.isCrouching = true;
+
+            yield return WaitFrames(2);
+
+            Assert.IsTrue(player.Movement.IsCrouching);
+
+            input.isJumping = false;
+
+            for (int i = 0; i < 30; i++)
+            {
+                yield return null;
+                Assert.IsFalse(player.Movement.IsJumping);
+            }
+
+            yield return WaitFrames(2);
+
+            player.Movement.CrouchJumping = true;
+            input.isJumping = true;
+
+            yield return WaitFrames(1);
+
+            Assert.IsTrue(player.Movement.IsJumping);
+            Assert.IsTrue(player.Movement.IsCrouching);
+        }
+
+        [UnityTest]
+        public IEnumerator AllowJumpDirectionChange()
+        {
+            player.Movement.AllowAirJumpDirectionChange = true;
+            player.Movement.JumpHeightMultiplier = 4;
+            player.Movement.AirControl = 0;
+            player.Movement.AirJump = true;
+            player.Movement.AirJumpsAmount = 1;
+            input.moveDirection = new Vector2(0, 1);
+            input.isJumping = true;
+
+            yield return WaitFrames(2);
+
+            Assert.IsTrue(player.Movement.IsJumping);
+            Assert.IsTrue(player.Movement.airVelocity.z > 0f);
+
+            yield return WaitFrames(2);
+
+            input.moveDirection = new Vector2(0, -1);
+            yield return WaitFrames(10);
+            input.isJumping = true;
+
+            yield return WaitFrames(60);
+
+            Assert.IsTrue(player.Movement.IsJumping);
+            Assert.IsTrue(player.Movement.airVelocity.z < 0f);
+        }
+
+        private IEnumerator WaitFrames(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                yield return null;
+            }
+        }
     }
 }

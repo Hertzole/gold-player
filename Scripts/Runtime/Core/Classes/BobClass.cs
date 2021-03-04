@@ -71,17 +71,17 @@ namespace Hertzole.GoldPlayer
         private Vector3 previousVelocity = Vector3.zero;
         private Vector3 originalHeadLocalPosition = Vector3.zero;
 
-        protected float bobCycle = 0f;
-        private float bobCycleBackup = 0;
-        protected float bobFade = 0f;
-        protected float springPos = 0f;
-        protected float springVelocity = 0f;
-        protected float springElastic = 1.1f;
-        protected float springDampen = 0.8f;
-        protected float springVelocityThreshold = 0.05f;
-        protected float springPositionThreshold = 0.05f;
-        protected float zTilt = 0;
-        protected float zTiltVelocity = 0;
+        internal float bobCycle = 0f;
+        internal float bobCycleBackup = 0;
+        internal float bobFade = 0f;
+        internal float springPos = 0f;
+        internal float springVelocity = 0f;
+        internal float springElastic = 1.1f;
+        internal float springDampen = 0.8f;
+        internal float springVelocityThreshold = 0.05f;
+        internal float springPositionThreshold = 0.05f;
+        internal float zTilt = 0;
+        internal float zTiltVelocity = 0;
 
         /// <summary> Determines if the bob effect should be enabled. </summary>
         public bool EnableBob { get { return enableBob; } set { enableBob = value; } }

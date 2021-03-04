@@ -47,9 +47,9 @@ namespace Hertzole.GoldPlayer
         private Camera targetCamera = null;
 
         // The original field of view.
-        protected float originalFOV = 0;
+        internal float originalFOV = 0;
         // The new field of view. Created using the original field of view and adding the kick amount.
-        protected float newFOV = 0;
+        internal float newFOV = 0;
 
         // Simple check to see if the module has been initialized.
         private bool hasBeenInitialized = false;
@@ -139,6 +139,13 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+#if UNITY_EDITOR
+        internal void INTERNAL__UpdateNewFOV()
+        {
+            UpdateNewFOV();
+        }
+#endif
+
         /// <summary>
         /// Updates the target FOV.
         /// </summary>
@@ -163,6 +170,13 @@ namespace Hertzole.GoldPlayer
 
             HandleFOV(deltaTime);
         }
+
+#if UNITY_EDITOR
+        internal void INTERNAL__ForceHandleFOV()
+        {
+            HandleFOV(Time.deltaTime);
+        }
+#endif
 
         /// <summary>
         /// Runs the logic that applies the FOV kick in the right situations.
@@ -230,6 +244,11 @@ namespace Hertzole.GoldPlayer
         {
             // If FOV kick is disabled, stop here.
             if (!enableFOVKick)
+            {
+                return;
+            }
+
+            if (IsCameraNull)
             {
                 return;
             }
