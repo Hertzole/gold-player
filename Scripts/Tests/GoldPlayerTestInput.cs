@@ -7,9 +7,18 @@ namespace Hertzole.GoldPlayer.Tests
         public Vector2 moveDirection;
         public Vector2 mouseInput;
         public bool isRunning;
+        public bool isRunningToggle;
         public bool isJumping;
         public bool isCrouching;
+        public bool isCrouchingToggle;
         public bool isInteracting;
+
+        public const string MOVE = "Moving";
+        public const string LOOK = "Looking";
+        public const string RUN = "Running";
+        public const string CROUCH = "Crouching";
+        public const string JUMP = "Jumping";
+        public const string INTERACT = "Interacting";
 
         public void DisableAction(string action)
         {
@@ -69,9 +78,9 @@ namespace Hertzole.GoldPlayer.Tests
         {
             switch (buttonName)
             {
-                case "Run":
+                case RUN:
                     return isRunning;
-                case "Crouch":
+                case CROUCH:
                     return isCrouching;
                 default:
                     return false;
@@ -82,13 +91,21 @@ namespace Hertzole.GoldPlayer.Tests
         {
             switch (buttonName)
             {
-                case "Jump":
+                case JUMP:
                     bool r = isJumping;
                     isJumping = false;
                     return r;
-                case "Interact":
+                case INTERACT:
                     r = isInteracting;
                     isInteracting = false;
+                    return r;
+                case RUN:
+                    r = isRunningToggle;
+                    isRunningToggle = false;
+                    return r;
+                case CROUCH:
+                    r = isCrouchingToggle;
+                    isCrouchingToggle = false;
                     return r;
                 default:
                     return false;
@@ -104,9 +121,9 @@ namespace Hertzole.GoldPlayer.Tests
         {
             switch (actionName)
             {
-                case "Move":
+                case MOVE:
                     return moveDirection;
-                case "Look":
+                case LOOK:
                     return mouseInput;
                 default:
                     return Vector2.zero;

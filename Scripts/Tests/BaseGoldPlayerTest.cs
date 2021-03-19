@@ -74,6 +74,13 @@ namespace Hertzole.GoldPlayer.Tests
 
             playerController.Movement.GroundLayer = 1;
 
+            playerController.Movement.MoveInput = GoldPlayerTestInput.MOVE;
+            playerController.Movement.JumpInput = GoldPlayerTestInput.JUMP;
+            playerController.Movement.RunInput = GoldPlayerTestInput.RUN;
+            playerController.Movement.CrouchInput = GoldPlayerTestInput.CROUCH;
+
+            playerController.Camera.LookInput = GoldPlayerTestInput.LOOK;
+
             playerController.InitOnStart = false;
             playerController.GetReferences();
             playerController.Initialize();
