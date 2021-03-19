@@ -33,7 +33,7 @@ namespace Hertzole.GoldPlayer.Tests
 
             interaction = player.gameObject.AddComponent<GoldPlayerInteraction>();
             interaction.CameraHead = player.Camera.CameraHead;
-            interaction.InteractInput = "Interact";
+            interaction.InteractInput = GoldPlayerTestInput.INTERACT;
             interaction.InteractionLayer = 1;
 
             return player;

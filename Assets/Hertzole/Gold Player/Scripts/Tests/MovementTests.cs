@@ -859,10 +859,12 @@ namespace Hertzole.GoldPlayer.Tests
         public IEnumerator GroundedTest()
         {
             player.Movement.GroundCheck = GroundCheckType.Sphere;
+            Assert.AreEqual(player.Movement.GroundCheck, GroundCheckType.Sphere);
 
             yield return GroundedRoutine();
 
             player.Movement.GroundCheck = GroundCheckType.Raycast;
+            Assert.AreEqual(player.Movement.GroundCheck, GroundCheckType.Raycast);
 
             yield return GroundedRoutine();
         }
@@ -972,19 +974,28 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator AirVelocity()
         {
-            player.Movement.AirControl = 0.5f;
-            input.moveDirection = new Vector2(0, 1);
+            player.Movement.AirControl = 0;
+            player.Movement.JumpHeightMultiplier = 3;
 
-            yield return null;
+            yield return RunTimeScaleTest(Test(), Test());
 
-            player.SetPosition(new Vector3(0, 100, 0));
-
-            for (int i = 0; i < 30; i++)
+            IEnumerator Test()
             {
-                yield return null;
-            }
+                input.moveDirection = new Vector2(0, 1);
+                input.isRunning = true;
 
-            AreApproximatelyEqualVector3(new Vector3(0, player.Movement.airVelocity.y, 0.92f), player.Movement.airVelocity, 0.1f);
+                yield return WaitFrames(60);
+                input.isJumping = true;
+
+                yield return WaitFrames(60);
+                input.moveDirection = new Vector2(0, -1);
+                yield return WaitFrames(30);
+
+                Assert.AreApproximatelyEqual(player.Movement.airVelocity.x, player.Movement.groundVelocity.x);
+                Assert.AreApproximatelyEqual(player.Movement.airVelocity.z, player.Movement.groundVelocity.z);
+
+                yield return WaitFrames(60);
+            }
         }
 
         [UnityTest]
@@ -1023,7 +1034,7 @@ namespace Hertzole.GoldPlayer.Tests
             player.Movement.JumpHeightMultiplier = 4;
             player.Movement.AirControl = 0;
             player.Movement.AirJump = true;
-            player.Movement.AirJumpsAmount = 1;
+            player.Movement.AirJumpsAmount = 2;
             input.moveDirection = new Vector2(0, 1);
             input.isJumping = true;
 
@@ -1035,13 +1046,200 @@ namespace Hertzole.GoldPlayer.Tests
             yield return WaitFrames(2);
 
             input.moveDirection = new Vector2(0, -1);
-            yield return WaitFrames(10);
+            yield return WaitFrames(60);
             input.isJumping = true;
 
             yield return WaitFrames(60);
 
             Assert.IsTrue(player.Movement.IsJumping);
             Assert.IsTrue(player.Movement.airVelocity.z < 0f);
+
+            yield return WaitFrames(10);
+
+            input.moveDirection = new Vector2(0, 1);
+            yield return WaitFrames(60);
+            input.isJumping = true;
+
+            yield return WaitFrames(60);
+
+            Assert.IsTrue(player.Movement.IsJumping);
+            Assert.IsTrue(player.Movement.airVelocity.z > 0f);
+        }
+
+        [UnityTest]
+        public IEnumerator RunModeHold()
+        {
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
+            {
+                player.Movement.RunToggleMode = RunToggleMode.Hold;
+                input.isRunning = true;
+                input.moveDirection = new Vector2(0, 1);
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning);
+
+                input.isRunning = false;
+
+                yield return WaitFrames(60);
+
+                Assert.IsFalse(player.Movement.IsRunning);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator RunModeToggle()
+        {
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
+            {
+                player.Movement.RunToggleMode = RunToggleMode.Toggle;
+                input.isRunningToggle = true;
+                input.moveDirection = new Vector2(0, 1);
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning, "Player did not run during their first toggle.");
+
+                input.isRunningToggle = true;
+
+                yield return WaitFrames(60);
+
+                Assert.IsFalse(player.Movement.IsRunning, "Player was still running when running was toggled off.");
+
+                input.isRunningToggle = true;
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning, "Player was not running when running was toggled on.");
+
+                input.moveDirection = new Vector2(0, 0);
+
+                yield return WaitFrames(60);
+
+                Assert.IsFalse(player.Movement.IsMoving, "Player was still moving even after no input was given.");
+                input.moveDirection = new Vector2(0, 1);
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning, "Player was not running after starting to run again with still toggled running.");
+
+                // Need to reset the toggle.
+                input.isRunningToggle = true;
+                yield return null;
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator RunModeUntilNoInput()
+        {
+            player.Movement.RunToggleMode = RunToggleMode.UntilNoInput;
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
+            {
+                input.moveDirection = new Vector2(0, 1);
+                input.isRunning = true;
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning, "Player was not running when running was toggled on.");
+
+                input.isRunning = false;
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning, "Player was not running when movement were still provided.");
+                input.moveDirection = new Vector2(0, 0);
+                input.isRunning = false;
+
+                yield return WaitFrames(60);
+
+                input.moveDirection = new Vector2(0, 1);
+
+                yield return WaitFrames(60);
+
+                Assert.IsFalse(player.Movement.IsRunning, "Player was still running when running after no input was provided.");
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator RunStamina()
+        {
+            player.Movement.Stamina.EnableStamina = true;
+            player.Movement.Stamina.DrainRate = 0;
+            player.Movement.Stamina.RegenWait = 1000;
+
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
+            {
+                player.Movement.Stamina.CurrentStamina = player.Movement.Stamina.MaxStamina;
+                input.isRunning = true;
+                input.moveDirection = new Vector2(0, 1);
+
+                yield return WaitFrames(60);
+
+                Assert.IsTrue(player.Movement.IsRunning, "Player was not running when they had enough stamina.");
+
+                player.Movement.Stamina.CurrentStamina = 0;
+
+                yield return WaitFrames(60);
+
+                Assert.IsFalse(player.Movement.IsRunning, "Player was running when they were out of stamina.");
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator CrouchModeHold()
+        {
+            player.Movement.CrouchToggleMode = CrouchToggleMode.Hold;
+
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
+            {
+                Assert.IsFalse(player.Movement.IsCrouching, "Player was crouching when no input were given at the start.");
+                input.isCrouching = true;
+
+                yield return WaitFrames(10);
+
+                Assert.IsTrue(player.Movement.IsCrouching, "Player was not crouching while crouch button was held.");
+                input.isCrouching = false;
+
+                yield return WaitFrames(10);
+
+                Assert.IsFalse(player.Movement.IsCrouching, "Player was still crouching after no crouch input was held.");
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator CrouchModeToggle()
+        {
+            player.Movement.CrouchToggleMode = CrouchToggleMode.Toggle;
+
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
+            {
+                Assert.IsFalse(player.Movement.IsCrouching, "Player was crouching when no input were given at the start.");
+                input.isCrouchingToggle = true;
+
+                yield return WaitFrames(10);
+
+                Assert.IsFalse(input.GetButtonDown(player.Movement.CrouchInput), "Crouch input was true.");
+                Assert.IsTrue(player.Movement.IsCrouching, "Player was not crouching while crouch button was toggled.");
+
+                input.isCrouchingToggle = true;
+
+                yield return WaitFrames(10);
+
+                Assert.IsFalse(input.GetButtonDown(player.Movement.CrouchInput), "Crouch input was true.");
+                Assert.IsFalse(player.Movement.IsCrouching, "Player was still crouching after no crouch input was held.");
+            }
         }
 
         private IEnumerator WaitFrames(int amount)

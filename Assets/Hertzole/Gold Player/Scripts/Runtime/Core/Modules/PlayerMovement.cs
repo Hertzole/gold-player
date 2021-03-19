@@ -233,7 +233,7 @@ namespace Hertzole.GoldPlayer
         // The direction the player is moving in.
         private Vector3 moveDirection = Vector3.zero;
         // The current ground velocity.
-        private Vector3 groundVelocity = Vector3.zero;
+        internal Vector3 groundVelocity = Vector3.zero;
         // The velocity while the player is in the air.
         internal Vector3 airVelocity = Vector3.zero;
         // The position the player was at when jumping.
