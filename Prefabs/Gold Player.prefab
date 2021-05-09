@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam:
+    playerController: {fileID: 114925915917120512}
     canLookAround: 1
     shouldLockCursor: 1
     rotateCameraOnly: 0
@@ -462,21 +463,74 @@ MonoBehaviour:
     lookDamping: 0
     minimumX: -90
     maximumX: 90
+    enableZooming: 1
+    targetZoom: 30
+    zoomInTime: 0.2
+    zoomInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    zoomOutTime: 0.2
+    zoomOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    zoomInput: Zoom
     fieldOfViewKick:
+      playerController: {fileID: 114925915917120512}
       enableFOVKick: 1
       unscaledTime: 0
       kickWhen: 1
       kickAmount: 15
       lerpTimeTo: 4
       lerpTimeFrom: 2.5
-      useCinemachine: 0
-      targetVirtualCamera: {fileID: 0}
-      targetCamera: {fileID: 20764455326535260}
     cameraHead: {fileID: 4766509410355108}
+    useCinemachine: 0
+    targetVirtualCamera: {fileID: 0}
+    targetCamera: {fileID: 20764455326535260}
     input_Look: Look
-    input_MouseX: Mouse X
-    input_MouseY: Mouse Y
   movement:
+    playerController: {fileID: 114925915917120512}
     canMoveAround: 1
     unscaledTime: 0
     walkingSpeeds:
@@ -490,6 +544,7 @@ MonoBehaviour:
       sidewaysSpeed: 5.5
       backwardsSpeed: 5
     stamina:
+      playerController: {fileID: 114925915917120512}
       enableStamina: 1
       drainStaminaWhen: -1
       maxStamina: 10
@@ -529,17 +584,17 @@ MonoBehaviour:
     rayHeight: 0.3
     rayLength: 0.4
     movingPlatforms:
+      playerController: {fileID: 114925915917120512}
       enabled: 1
       movePosition: 1
       moveRotation: 1
       maxAngle: 45
     input_Move: Move
-    input_HorizontalAxis: Horizontal
-    input_VerticalAxis: Vertical
     input_Jump: Jump
     input_Run: Run
     input_Crouch: Crouch
   headBob:
+    playerController: {fileID: 114925915917120512}
     bobClass:
       enableBob: 1
       unscaledTime: 0
@@ -555,6 +610,7 @@ MonoBehaviour:
       strafeTilt: 3
       bobTarget: {fileID: 4910431633050106}
   sounds:
+    playerController: {fileID: 114925915917120512}
     enableAudio: 1
     unscaledTime: 0
     audioType: 0
@@ -639,22 +695,25 @@ MonoBehaviour:
     type: 3}
   actions:
   - actionName: Look
-    action: {fileID: -2911009157714819484, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -1577976139536705079, guid: 0b5686141ac42094688c7771035dbff1,
+      type: 3}
+  - actionName: Zoom
+    action: {fileID: 8804498153281155251, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Move
-    action: {fileID: 6228006781377513727, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 9053306141886922012, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Jump
-    action: {fileID: 2837801055328765847, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -3308119768652057556, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Run
-    action: {fileID: 7499931120916548345, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: -548809032540202596, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Crouch
-    action: {fileID: 3039052082105390073, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 6840833957164920492, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   - actionName: Interact
-    action: {fileID: -2412770888459627074, guid: 0b5686141ac42094688c7771035dbff1,
+    action: {fileID: 6405540692303106935, guid: 0b5686141ac42094688c7771035dbff1,
       type: 3}
   autoEnableInput: 1
   autoDisableInput: 1
@@ -882,6 +941,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 4c1ba7267eb8a6f49969b4babac72815, type: 2}
     - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -897,6 +961,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -908,16 +977,6 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: fd7291cbc39b61a45b8e99aa28f3fb96,

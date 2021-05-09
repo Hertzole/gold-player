@@ -39,7 +39,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Returns true if the button was released this frame.
         /// </summary>
-        bool GetButtonUp(string buttoName);
+        bool GetButtonUp(string buttonName);
 
         /// <summary>
         /// Returns the float value of an axis with some smoothing applied.
@@ -50,12 +50,10 @@ namespace Hertzole.GoldPlayer
         /// Returns the float value of an axis with no smoothing applied.
         /// </summary>
         float GetAxisRaw(string axis);
-
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+        
         /// <summary>
         /// Returns a Vector2 axis.
         /// </summary>
         Vector2 GetVector2(string actionName);
-#endif
     }
 }

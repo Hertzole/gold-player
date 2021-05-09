@@ -126,7 +126,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
             if (unscaledTime)
             {
@@ -145,7 +145,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override void OnFixedUpdate(float fixedDeltaTime)
+        public override void OnFixedUpdate(float fixedDeltaTime, float fixedUnscaledDeltaTime)
         {
             if (unscaledTime)
             {
@@ -158,7 +158,7 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        public override void OnLateUpdate(float deltaTime)
+        public override void OnLateUpdate(float deltaTime, float unscaledDeltaTime)
         {
             if (unscaledTime)
             {

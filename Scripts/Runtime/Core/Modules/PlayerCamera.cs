@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -47,6 +48,27 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Sets how far up the player can look.")]
         [FormerlySerializedAs("m_MaximumX")]
         private float maximumX = 90f;
+        
+        [SerializeField] 
+        [Tooltip("If true, the user will be allowed to zoom using the field of view.")]
+        private bool enableZooming = false;
+        [SerializeField]
+        [Min(0.1f)]
+        [Tooltip("The target field of view when zooming.")]
+        private float targetZoom = 30;
+        [SerializeField] 
+        [Tooltip("The time it takes to zoom in.")]
+        private float zoomInTime = 0.2f;
+        [SerializeField] 
+        private AnimationCurve zoomInCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
+        [SerializeField] 
+        [Tooltip("The time it takes to zoom out.")]
+        private float zoomOutTime = 0.2f;
+        [SerializeField] 
+        private AnimationCurve zoomOutCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
+        [SerializeField] 
+        [Tooltip("The action that will trigger the zooming.")]
+        private string zoomInput = "Zoom";
 
         [SerializeField]
         [Tooltip("Settings related to field of view kick.")]
@@ -57,58 +79,79 @@ namespace Hertzole.GoldPlayer
         [Tooltip("The camera head that should be moved around.")]
         [FormerlySerializedAs("m_CameraHead")]
         private Transform cameraHead = null;
+#if GOLD_PLAYER_CINEMACHINE
+        [SerializeField]
+        [Tooltip("Allows you to use Cinemachine virtual camera instead of a direct reference to a camera.")]
+        private bool useCinemachine = false;
+        [SerializeField]
+        [Tooltip("The virtual camera that the FOV kick should be applied to.")]
+        private Cinemachine.CinemachineVirtualCamera targetVirtualCamera = null;
+#endif
+        [SerializeField]
+        [Tooltip("The camera that the FOV kick should be applied to.")]
+        private Camera targetCamera = null;
 
         [SerializeField]
         [Tooltip("Look action for the new Input System.")]
         private string input_Look = "Look";
 
         // Determines if a camera shake should be preformed.
-        private bool doShake = false;
+        private bool doShake;
         // Was the camera previously shaking?
-        private bool previouslyShaking = false;
+        private bool previouslyShaking;
         // Check to see if the player is force looking.
-        private bool forceLooking = false;
+        private bool forceLooking;
         // Check to see if the player is being forced to look at a target.
-        private bool forceLookAtTarget = false;
+        private bool forceLookAtTarget;
+        // Used to check if the player is zooming.
+        private bool zooming;
 
         // Sets how strong the camera shake is.
-        private float shakeFrequency = 0;
+        private float shakeFrequency;
         // Also sets how strong the camera shake.
-        private float shakeMagnitude = 0;
+        private float shakeMagnitude;
         // The original magnitude of the camera shake.
-        private float shakeMagnitudeFull = 0;
+        private float shakeMagnitudeFull;
         // How last the camera shake lasts.
-        private float shakeDuration = 0;
+        private float shakeDuration;
         // The timer used to reach the duration.
-        private float shakeTimer = 0;
+        private float shakeTimer;
         // The amount of current recoil.
-        private float recoil = 0;
+        private float recoil;
         // The amount of the time the recoil should take.
-        private float recoilTime = 0;
+        private float recoilTime;
         // The start recoil amount.
         private float startRecoil;
         // The current recoil time.
-        private float currentRecoilTime = 0;
+        private float currentRecoilTime;
         // The smoothing intensity when force looking.
         private float lookAtStrength;
         // The rotation of the body.
-        private float bodyAngle = 0;
+        private float bodyAngle;
+        // The original field of view of the camera.
+        private float originalFieldOfView;
+        // A timer used for zooming.
+        private float zoomTimer;
+        // The cached field of view when starting to zoom.
+        private float originalZoomFieldOfView;
+        // The current field of view.
+        private float currentFieldOfView;
 
         // The current input from the mouse.
-        private Vector2 mouseInput = Vector2.zero;
+        private Vector2 mouseInput;
 
         // Where the head should be looking.
-        private Vector3 targetHeadAngles = Vector3.zero;
+        private Vector3 targetHeadAngles;
         // Where the body should be looking.
-        private Vector3 targetBodyAngles = Vector3.zero;
+        private Vector3 targetBodyAngles;
         // Where the head should be looking, smoothed.
-        private Vector3 followHeadAngles = Vector3.zero;
+        private Vector3 followHeadAngles;
         // Where the body should be looking, smoothed.
-        private Vector3 followBodyAngles = Vector3.zero;
+        private Vector3 followBodyAngles;
         // The head smooth velocity.
-        private Vector3 followHeadVelocity = Vector3.zero;
+        private Vector3 followHeadVelocity;
         // The body smooth velocity.
-        private Vector3 followBodyVelocity = Vector3.zero;
+        private Vector3 followBodyVelocity;
         // The point where the player will be forced to look at.
         private Vector3 lookPoint;
         // The force look direction of the body.
@@ -117,9 +160,9 @@ namespace Hertzole.GoldPlayer
         private Vector3 headLookDirection;
 
         // The original head rotation.
-        private Quaternion originalHeadRotation = Quaternion.identity;
+        private Quaternion originalHeadRotation;
         // The rotation the head should be facing.
-        private Quaternion targetHeadRotation = Quaternion.identity;
+        private Quaternion targetHeadRotation;
         // The force look body rotation
         private Quaternion bodyLookRotation;
         // The force look head rotation.
@@ -146,6 +189,32 @@ namespace Hertzole.GoldPlayer
         public float MinimumX { get { return minimumX; } set { minimumX = value; } }
         /// <summary> Sets how far up the player can look. </summary>
         public float MaximumX { get { return maximumX; } set { maximumX = value; } }
+        
+        /// <summary> The current field of view. </summary>
+        public float CurrentFieldOfView 
+        { 
+            get { return currentFieldOfView; }
+            private set
+            {
+                if (Math.Abs(value - currentFieldOfView) > 0.01f)
+                {
+                    currentFieldOfView = value;
+                    OnCurrentFieldOfViewChanged?.Invoke(value);
+                }
+            } 
+        }
+        
+        /// <summary> If true, the user will be allowed to zoom using the field of view. </summary>
+        public bool EnableZooming { get { return enableZooming; } set { enableZooming = value; } }
+        /// <summary> The target field of view when zooming. </summary>
+        public float TargetZoom { get { return targetZoom; } set { targetZoom = value; } }
+        /// <summary> The time it takes to zoom in. </summary>
+        public float ZoomInTime { get { return zoomInTime; } set { zoomInTime = value; } }
+        /// <summary> The time it takes to zoom out. </summary>
+        public float ZoomOutTime { get { return zoomOutTime; } set { zoomOutTime = value; } }
+        /// <summary> The action that will trigger the zooming. </summary>
+        public string ZoomInput { get { return zoomInput; } set { zoomInput = value; } }
+        
         /// <summary> Settings related to field of view kick. </summary>
         public FOVKickClass FieldOfViewKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
 
@@ -183,6 +252,58 @@ namespace Hertzole.GoldPlayer
         public event GoldPlayerDelegates.PlayerEvent OnBeginCameraShake;
         /// <summary> Fires when the camera shake ends. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndCameraShake;
+        /// <summary> Fires when the current field of view changes. </summary>
+        public event Action<float> OnCurrentFieldOfViewChanged; 
+        
+        /// <summary> The camera that the FOV kick should be applied to. </summary>
+        public Camera TargetCamera { get { return targetCamera; } set { targetCamera = value; } }
+#if GOLD_PLAYER_CINEMACHINE
+        /// <summary> Allows you to use Cinemachine virtual camera instead of a direct reference to a camera. </summary>
+        public bool UseCinemachine { get { return useCinemachine; } set { useCinemachine = value; } }
+        /// <summary> The virtual camera that the FOV kick should be applied to. </summary>
+        public Cinemachine.CinemachineVirtualCamera TargetVirtualCamera { get { return targetVirtualCamera; } set { targetVirtualCamera = value; } }
+#endif
+        
+        /// <summary> The target camera field of view. </summary>
+        public float CameraFieldOfView
+        {
+            get
+            {
+#if GOLD_PLAYER_CINEMACHINE
+                return useCinemachine ? targetVirtualCamera.m_Lens.FieldOfView : targetCamera.fieldOfView;
+#else
+                return targetCamera.fieldOfView;
+#endif
+            }
+            set
+            {
+#if GOLD_PLAYER_CINEMACHINE
+                if (useCinemachine)
+                {
+                    targetVirtualCamera.m_Lens.FieldOfView = value;
+                }
+                else
+                {
+                    targetCamera.fieldOfView = value;
+                }
+#else
+                targetCamera.fieldOfView = value;
+#endif
+            }
+        }
+
+        /// <summary> Returns true if the target camera is null. Takes Cinemachine into consideration </summary>
+        public bool IsCameraNull
+        {
+            get
+            {
+#if GOLD_PLAYER_CINEMACHINE
+                return useCinemachine ? targetVirtualCamera == null : targetCamera == null;
+#else
+                return targetCamera == null;
+#endif
+            }
+        }
 
         #region Obsolete
 #if UNITY_EDITOR
@@ -202,9 +323,19 @@ namespace Hertzole.GoldPlayer
             // If the camera head is null, complain.
             if (cameraHead == null)
             {
-                Debug.LogError("'" + PlayerController.gameObject.name + "' needs to have Camera Head assigned in the Camera settings!");
+                Debug.LogError($"'{PlayerController.gameObject.name}' needs to have Camera Head assigned in the Camera settings!");
                 return;
             }
+
+            if (IsCameraNull)
+            {
+                Debug.LogError($"'{PlayerController.gameObject.name}' needs to have a Target Camera assigned in the Camera Settings!");
+                return;
+            }
+
+            originalFieldOfView = CameraFieldOfView;
+            currentFieldOfView = originalFieldOfView;
+            zoomTimer = zoomOutTime;
 
             // Lock the cursor, if it should.
             LockCursor(shouldLockCursor);
@@ -213,7 +344,7 @@ namespace Hertzole.GoldPlayer
             originalHeadRotation = cameraHead.localRotation;
 
             // Initialize the FOV kick module.
-            fieldOfViewKick.Initialize(PlayerInput);
+            fieldOfViewKick.Initialize(PlayerInput, this);
         }
 
         /// <summary>
@@ -228,11 +359,12 @@ namespace Hertzole.GoldPlayer
             Cursor.visible = !lockCursor;
         }
 
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
             ForceLookHandler();
             MouseHandler(deltaTime);
-            fieldOfViewKick.OnUpdate(deltaTime);
+            fieldOfViewKick.OnUpdate(deltaTime, unscaledDeltaTime);
+            ZoomHandler(deltaTime);
             ShakeHandler(deltaTime);
 
             // Update the camera head rotation.
@@ -333,6 +465,63 @@ namespace Hertzole.GoldPlayer
 
             // Reset the target body angles so we can set the transform rotation from other places.
             targetBodyAngles = Vector3.zero;
+        }
+
+        private void ZoomHandler(float deltaTime)
+        {
+            if (!enableZooming)
+            {
+                return;
+            }
+            
+            if (GetButton(zoomInput))
+            {
+                if (zoomInTime <= 0)
+                {
+                    CameraFieldOfView = targetZoom;
+                }
+                else
+                {
+                    if (!zooming)
+                    {
+                        zoomTimer = 0;
+                        zooming = true;
+                        originalZoomFieldOfView = CameraFieldOfView;
+                    }
+                
+                    if (zoomTimer < zoomInTime || CameraFieldOfView > targetZoom)
+                    {
+                        CameraFieldOfView = Mathf.Lerp(originalZoomFieldOfView, targetZoom, zoomInCurve.Evaluate(zoomTimer / zoomInTime));
+                        zoomTimer += deltaTime;
+                        CameraFieldOfView = Mathf.Clamp(CameraFieldOfView, targetZoom, originalFieldOfView);
+                        CurrentFieldOfView = CameraFieldOfView;
+                    }
+                }
+            }
+            else
+            {
+                if (zoomOutTime <= 0)
+                {
+                    CameraFieldOfView = originalFieldOfView;
+                }
+                else
+                {
+                    if (zooming)
+                    {
+                        zoomTimer = 0;
+                        zooming = false;
+                        originalZoomFieldOfView = CameraFieldOfView;
+                    }
+
+                    if (zoomTimer < zoomOutTime || CameraFieldOfView < originalFieldOfView)
+                    {
+                        CameraFieldOfView = Mathf.Lerp(originalZoomFieldOfView, originalFieldOfView, zoomOutCurve.Evaluate(zoomTimer / zoomOutTime));
+                        zoomTimer += deltaTime;
+                        CameraFieldOfView = Mathf.Clamp(CameraFieldOfView, targetZoom, originalFieldOfView);
+                        CurrentFieldOfView = CameraFieldOfView;
+                    }
+                }
+            }
         }
 
         /// <summary>

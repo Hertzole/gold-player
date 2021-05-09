@@ -46,6 +46,7 @@ namespace Hertzole.GoldPlayer
         {
             new InputItem("Move", "Horizontal", "Vertical"),
             new InputItem("Look", "Mouse X", "Mouse Y"),
+            new InputItem("Zoom", "Zoom", KeyCode.Z),
             new InputItem("Jump", "Jump", KeyCode.Space),
             new InputItem("Crouch", "Crouch", KeyCode.C),
             new InputItem("Run", "Run", KeyCode.LeftShift),

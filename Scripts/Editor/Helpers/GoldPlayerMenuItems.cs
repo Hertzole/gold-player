@@ -84,10 +84,10 @@ namespace Hertzole.GoldPlayer.Editor
 
             goldController.Camera.CameraHead = cameraHead.transform;
 #if GOLD_PLAYER_CINEMACHINE
-            goldController.Camera.FieldOfViewKick.UseCinemachine = true;
-            goldController.Camera.FieldOfViewKick.TargetVirtualCamera = playerCamera;
+            goldController.Camera.UseCinemachine = true;
+            goldController.Camera.TargetVirtualCamera = playerCamera;
 #else
-            goldController.Camera.FieldOfViewKick.TargetCamera = playerCamera;
+            goldController.Camera.TargetCamera = playerCamera;
 #endif
 
             goldController.Movement.GroundLayer = 1;

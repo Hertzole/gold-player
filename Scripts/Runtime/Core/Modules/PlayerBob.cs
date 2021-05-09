@@ -54,7 +54,7 @@ namespace Hertzole.GoldPlayer
             bobClass.Initialize();
         }
 
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
             BobHandler(deltaTime);
         }

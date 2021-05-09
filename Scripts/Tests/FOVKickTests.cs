@@ -11,14 +11,14 @@ namespace Hertzole.GoldPlayer.Tests
         public IEnumerator NotEnabled()
         {
             yield return null;
-            float originalFOV = player.Camera.FieldOfViewKick.TargetCamera.fieldOfView;
+            float originalFOV = player.Camera.TargetCamera.fieldOfView;
             player.Camera.FieldOfViewKick.EnableFOVKick = false;
 
             for (int i = 0; i < 60; i++)
             {
                 player.Camera.FieldOfViewKick.ForceFOV(true);
                 yield return null;
-                Assert.AreApproximatelyEqual(originalFOV, player.Camera.FieldOfViewKick.TargetCamera.fieldOfView);
+                Assert.AreApproximatelyEqual(originalFOV, player.Camera.TargetCamera.fieldOfView);
             }
         }
 
@@ -35,24 +35,24 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Camera.FieldOfViewKick.ForceFOV(true);
                 yield return null;
             }
-            Assert.AreApproximatelyEqual(targetFOV, player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, 1f);
+            Assert.AreApproximatelyEqual(targetFOV, player.Camera.TargetCamera.fieldOfView, 1f);
         }
 
 #if GOLD_PLAYER_CINEMACHINE
         [UnityTest]
         public IEnumerator CinemachineVsCamera()
         {
-            player.Camera.FieldOfViewKick.UseCinemachine = false;
-            player.Camera.FieldOfViewKick.TargetVirtualCamera = null;
+            player.Camera.UseCinemachine = false;
+            player.Camera.TargetVirtualCamera = null;
             player.Camera.FieldOfViewKick.ForceFOV(true);
 
             yield return null;
 
             GameObject virtualCamera = new GameObject("", typeof(Cinemachine.CinemachineVirtualCamera));
 
-            player.Camera.FieldOfViewKick.UseCinemachine = true;
-            player.Camera.FieldOfViewKick.TargetCamera = null;
-            player.Camera.FieldOfViewKick.TargetVirtualCamera = virtualCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>();
+            player.Camera.UseCinemachine = true;
+            player.Camera.TargetCamera = null;
+            player.Camera.TargetVirtualCamera = virtualCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>();
             player.Camera.FieldOfViewKick.ForceFOV(true);
         }
 #endif
@@ -60,9 +60,9 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CheckCameraNull()
         {
-            player.Camera.FieldOfViewKick.TargetCamera = null;
+            player.Camera.TargetCamera = null;
 #if GOLD_PLAYER_CINEMACHINE
-            player.Camera.FieldOfViewKick.TargetVirtualCamera = null;
+            player.Camera.TargetVirtualCamera = null;
 #endif
             player.Camera.FieldOfViewKick.EnableFOVKick = true;
 
@@ -83,9 +83,12 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator UpdateFOVNullCamera()
         {
+            player.Camera.TargetCamera = null;
+            
             FOVKickClass kick = new FOVKickClass
             {
-                newFOV = 70
+                newFOV = 70,
+                camera = player.Camera
             };
             kick.INTERNAL__UpdateNewFOV();
             Assert.AreEqual(kick.newFOV, 70);
@@ -95,7 +98,7 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator KickWhenNone()
         {
-            float fov = player.Camera.FieldOfViewKick.TargetCamera.fieldOfView;
+            float fov = player.Camera.TargetCamera.fieldOfView;
             player.Camera.FieldOfViewKick.KickWhen = RunAction.None;
             player.Camera.FieldOfViewKick.LerpTimeTo = 100;
             player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
@@ -107,7 +110,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
             }
 
-            Assert.AreEqual(fov, player.Camera.FieldOfViewKick.TargetCamera.fieldOfView);
+            Assert.AreEqual(fov, player.Camera.TargetCamera.fieldOfView);
         }
 
         [UnityTest]
@@ -124,7 +127,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
             }
 
-            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
+            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
 
             input.isRunning = false;
 
@@ -133,7 +136,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
             }
 
-            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
+            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
         }
 
         [UnityTest]
@@ -151,7 +154,7 @@ namespace Hertzole.GoldPlayer.Tests
             }
 
             Assert.IsFalse(player.Movement.IsRunning);
-            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
+            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
 
             input.isRunning = false;
 
@@ -160,13 +163,13 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
             }
 
-            Assert.AreApproximatelyEqual(player.Camera.FieldOfViewKick.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
+            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
         }
 
         [UnityTest]
         public IEnumerator OnValidateTest()
         {
-            player.Camera.FieldOfViewKick.TargetCamera.fieldOfView = 90;
+            player.Camera.TargetCamera.fieldOfView = 90;
             player.Camera.FieldOfViewKick.OnValidate();
             Assert.AreEqual(player.Camera.FieldOfViewKick.TargetFieldOfView, 90 + player.Camera.FieldOfViewKick.KickAmount);
             yield return null;

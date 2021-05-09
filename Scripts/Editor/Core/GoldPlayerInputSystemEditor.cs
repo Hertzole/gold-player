@@ -105,7 +105,7 @@ namespace Hertzole.GoldPlayer.Editor
 
             serializedObject.ApplyModifiedProperties();
 #else
-                        if(GUILayout.Button("Replace with Gold Player Input"))
+            if(GUILayout.Button("Replace with Gold Player Input"))
             {
                 GameObject go = ((GoldPlayerInputSystem)target).gameObject;
 
@@ -148,6 +148,7 @@ namespace Hertzole.GoldPlayer.Editor
 
                         playerMap.AddAction("Move", InputActionType.Value, expectedControlLayout: "Vector2");
                         playerMap.AddAction("Look", InputActionType.Value, expectedControlLayout: "Vector2");
+                        playerMap.AddAction("Zoom", InputActionType.Button);
                         playerMap.AddAction("Jump", InputActionType.Button);
                         playerMap.AddAction("Crouch", InputActionType.Button);
                         playerMap.AddAction("Run", InputActionType.Button);
@@ -164,6 +165,8 @@ namespace Hertzole.GoldPlayer.Editor
 
                         playerMap.AddBinding(new InputBinding("<Mouse>/delta", "Look", "Keyboard", "ScaleVector2(x=0.1,y=0.1)", null, null));
                         playerMap.AddBinding(new InputBinding("<Gamepad>/rightStick", "Look", "Keyboard", "ScaleVector2(x=2,y=2)", null, null));
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/z", "Zoom", "Keyboard"));
+                        playerMap.AddBinding(new InputBinding("<Gamepad>/leftShoulder", "Zoom", "Gamepad"));
 
                         playerMap.AddBinding(new InputBinding("<Keyboard>/space", "Jump", "Keyboard", null, null, null));
                         playerMap.AddBinding(new InputBinding("<Gamepad>/buttonSouth", "Jump", "Gamepad", null, null, null));

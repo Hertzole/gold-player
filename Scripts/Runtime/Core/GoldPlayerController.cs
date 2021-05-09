@@ -105,75 +105,78 @@ namespace Hertzole.GoldPlayer
         public void Update()
         {
             float deltaTime = Time.deltaTime;
+            float unscaledDeltaTime = Time.unscaledDeltaTime;
 
             if (movement.HasBeenInitialized)
             {
-                movement.OnUpdate(deltaTime);
+                movement.OnUpdate(deltaTime, unscaledDeltaTime);
             }
 
             if (cam.HasBeenInitialized)
             {
-                cam.OnUpdate(deltaTime);
+                cam.OnUpdate(deltaTime, unscaledDeltaTime);
             }
 
             if (headBob.HasBeenInitialized)
             {
-                headBob.OnUpdate(deltaTime);
+                headBob.OnUpdate(deltaTime, unscaledDeltaTime);
             }
 
             if (sounds.HasBeenInitialized)
             {
-                sounds.OnUpdate(deltaTime);
+                sounds.OnUpdate(deltaTime, unscaledDeltaTime);
             }
         }
 
         public void FixedUpdate()
         {
             float fixedDeltaTime = Time.fixedDeltaTime;
+            float fixedUnscaledDeltaTime = Time.fixedUnscaledDeltaTime;
 
             if (movement.HasBeenInitialized)
             {
-                movement.OnFixedUpdate(fixedDeltaTime);
+                movement.OnFixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime);
             }
 
             if (cam.HasBeenInitialized)
             {
-                cam.OnFixedUpdate(fixedDeltaTime);
+                cam.OnFixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime);
             }
 
             if (headBob.HasBeenInitialized)
             {
-                headBob.OnFixedUpdate(fixedDeltaTime);
+                headBob.OnFixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime);
             }
 
             if (sounds.HasBeenInitialized)
             {
-                sounds.OnFixedUpdate(fixedDeltaTime);
+                sounds.OnFixedUpdate(fixedDeltaTime, fixedUnscaledDeltaTime);
             }
         }
 
         public void LateUpdate()
         {
             float deltaTime = Time.deltaTime;
+            float unscaledDeltaTime = Time.deltaTime;
 
             if (movement.HasBeenInitialized)
             {
-                movement.OnLateUpdate(deltaTime);
+                movement.OnLateUpdate(deltaTime, unscaledDeltaTime);
             }
 
             if (cam.HasBeenInitialized)
             {
-                cam.OnLateUpdate(deltaTime);
+                cam.OnLateUpdate(deltaTime, unscaledDeltaTime);
             }
 
             if (headBob.HasBeenInitialized)
             {
-                headBob.OnLateUpdate(deltaTime);
+                headBob.OnLateUpdate(deltaTime, unscaledDeltaTime);
             }
 
             if (sounds.HasBeenInitialized)
             {
-                sounds.OnLateUpdate(deltaTime);
+                sounds.OnLateUpdate(deltaTime, unscaledDeltaTime);
             }
         }
 

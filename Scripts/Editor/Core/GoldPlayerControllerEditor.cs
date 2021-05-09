@@ -31,7 +31,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         // Camera properties
         private SerializedProperty canLookAround;
-        private SerializedProperty shoudLockCursor;
+        private SerializedProperty shouldLockCursor;
         private SerializedProperty rotateCameraOnly;
         private SerializedProperty invertXAxis;
         private SerializedProperty invertYAxis;
@@ -40,19 +40,27 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty minimumX;
         private SerializedProperty maximumX;
         private SerializedProperty cameraHead;
-        private SerializedProperty fieldOfViewKick;
+#if GOLD_PLAYER_CINEMACHINE
+        private SerializedProperty useCinemachine;
+        private SerializedProperty targetVirtualCamera;
+#endif
+        private SerializedProperty targetCamera;
+        
+        private SerializedProperty enableZooming;
+        private SerializedProperty targetZoom;
+        private SerializedProperty zoomInTime;
+        private SerializedProperty zoomInCurve;
+        private SerializedProperty zoomOutTime;
+        private SerializedProperty zoomOutCurve;
+        private SerializedProperty zoomInput;
 
+        private SerializedProperty fieldOfViewKick;
         private SerializedProperty fovEnable;
         private SerializedProperty fovUnscaledTime;
         private SerializedProperty fovKickWhen;
         private SerializedProperty fovKickAmount;
         private SerializedProperty fovTimeTo;
         private SerializedProperty fovTimeFrom;
-#if GOLD_PLAYER_CINEMACHINE
-        private SerializedProperty useCinemachine;
-        private SerializedProperty targetVirtualCamera;
-#endif
-        private SerializedProperty targetCamera;
 
         // Movement properties
         private SerializedProperty canMoveAround;
@@ -172,7 +180,7 @@ namespace Hertzole.GoldPlayer.Editor
             audio = serializedObject.FindProperty("sounds");
 
             canLookAround = camera.FindPropertyRelative("canLookAround");
-            shoudLockCursor = camera.FindPropertyRelative("shouldLockCursor");
+            shouldLockCursor = camera.FindPropertyRelative("shouldLockCursor");
             rotateCameraOnly = camera.FindPropertyRelative("rotateCameraOnly");
             invertXAxis = camera.FindPropertyRelative("invertXAxis");
             invertYAxis = camera.FindPropertyRelative("invertYAxis");
@@ -181,19 +189,27 @@ namespace Hertzole.GoldPlayer.Editor
             minimumX = camera.FindPropertyRelative("minimumX");
             maximumX = camera.FindPropertyRelative("maximumX");
             cameraHead = camera.FindPropertyRelative("cameraHead");
+#if GOLD_PLAYER_CINEMACHINE
+            useCinemachine = camera.FindPropertyRelative("useCinemachine");
+            targetVirtualCamera = camera.FindPropertyRelative("targetVirtualCamera");
+#endif
+            targetCamera = camera.FindPropertyRelative("targetCamera");
+            
+            enableZooming = camera.FindPropertyRelative("enableZooming");
+            targetZoom = camera.FindPropertyRelative("targetZoom");
+            zoomInTime = camera.FindPropertyRelative("zoomInTime");
+            zoomOutCurve = camera.FindPropertyRelative("zoomOutCurve");
+            zoomOutTime = camera.FindPropertyRelative("zoomOutTime");
+            zoomInCurve = camera.FindPropertyRelative("zoomInCurve");
+            zoomInput = camera.FindPropertyRelative("zoomInput");
+            
             fieldOfViewKick = camera.FindPropertyRelative("fieldOfViewKick");
-
             fovEnable = fieldOfViewKick.FindPropertyRelative("enableFOVKick");
             fovUnscaledTime = fieldOfViewKick.FindPropertyRelative("unscaledTime");
             fovKickWhen = fieldOfViewKick.FindPropertyRelative("kickWhen");
             fovKickAmount = fieldOfViewKick.FindPropertyRelative("kickAmount");
             fovTimeTo = fieldOfViewKick.FindPropertyRelative("lerpTimeTo");
             fovTimeFrom = fieldOfViewKick.FindPropertyRelative("lerpTimeFrom");
-#if GOLD_PLAYER_CINEMACHINE
-            useCinemachine = fieldOfViewKick.FindPropertyRelative("useCinemachine");
-            targetVirtualCamera = fieldOfViewKick.FindPropertyRelative("targetVirtualCamera");
-#endif
-            targetCamera = fieldOfViewKick.FindPropertyRelative("targetCamera");
 
             canMoveAround = movement.FindPropertyRelative("canMoveAround");
             moveUnscaledTime = movement.FindPropertyRelative("unscaledTime");
@@ -326,7 +342,7 @@ namespace Hertzole.GoldPlayer.Editor
         private void DoCameraGUI()
         {
             EditorGUILayout.PropertyField(canLookAround);
-            EditorGUILayout.PropertyField(shoudLockCursor);
+            EditorGUILayout.PropertyField(shouldLockCursor);
             EditorGUILayout.PropertyField(rotateCameraOnly);
 
             EditorGUILayout.Space();
@@ -344,7 +360,32 @@ namespace Hertzole.GoldPlayer.Editor
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(cameraHead);
+#if GOLD_PLAYER_CINEMACHINE
+            EditorGUILayout.PropertyField(useCinemachine);
+            if (useCinemachine.boolValue)
+            {
+                EditorGUILayout.PropertyField(targetVirtualCamera);
+            }
+            else
+#endif
+                EditorGUILayout.PropertyField(targetCamera);
 
+            EditorGUILayout.Space();
+
+            DrawFancyFoldout(enableZooming, "Zooming", true, () =>
+            {
+                EditorGUILayout.PropertyField(enableZooming);
+                DrawElementsConditional(enableZooming, () =>
+                {
+                    EditorGUILayout.PropertyField(targetZoom);
+                    EditorGUILayout.PropertyField(zoomInTime);
+                    EditorGUILayout.PropertyField(zoomInCurve);
+                    EditorGUILayout.PropertyField(zoomOutTime);
+                    EditorGUILayout.PropertyField(zoomOutCurve);
+                    EditorGUILayout.PropertyField(zoomInput);
+                });
+            });
+            
             EditorGUILayout.Space();
 
             DrawFancyFoldout(fieldOfViewKick, "Field of View Kick", true, () =>
@@ -352,23 +393,11 @@ namespace Hertzole.GoldPlayer.Editor
                 EditorGUILayout.PropertyField(fovEnable);
                 DrawElementsConditional(fovEnable, () =>
                 {
-                    EditorGUILayout.PropertyField(moveUnscaledTime);
+                    EditorGUILayout.PropertyField(fovUnscaledTime);
                     EditorGUILayout.PropertyField(fovKickWhen);
                     EditorGUILayout.PropertyField(fovKickAmount);
                     EditorGUILayout.PropertyField(fovTimeTo);
                     EditorGUILayout.PropertyField(fovTimeFrom);
-
-                    EditorGUILayout.Space();
-
-#if GOLD_PLAYER_CINEMACHINE
-                    EditorGUILayout.PropertyField(useCinemachine);
-                    if (useCinemachine.boolValue)
-                    {
-                        EditorGUILayout.PropertyField(targetVirtualCamera);
-                    }
-                    else
-#endif
-                        EditorGUILayout.PropertyField(targetCamera);
                 });
             });
         }

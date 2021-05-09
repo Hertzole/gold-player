@@ -23,61 +23,56 @@ namespace Hertzole.GoldPlayer.Editor
                 settings = GoldPlayerProjectSettings.Instance;
             }
 
-            using (new GUILayout.HorizontalScope())
+            using (new SettingsGUIScope())
             {
-                GUILayout.Space(6f);
+                EditorGUILayout.LabelField("Editor", EditorStyles.boldLabel);
 
-                using (new GUILayout.VerticalScope())
+                EditorGUIAdaption uiAdapation = settings.GUIAdapation;
+                EditorGUI.BeginChangeCheck();
+                uiAdapation = (EditorGUIAdaption)EditorGUILayout.EnumPopup(uiAdapationContent, uiAdapation);
+                if (EditorGUI.EndChangeCheck())
                 {
-                    EditorGUILayout.LabelField("Editor", EditorStyles.boldLabel);
-
-                    EditorGUIAdaption uiAdapation = settings.GUIAdapation;
-                    EditorGUI.BeginChangeCheck();
-                    uiAdapation = (EditorGUIAdaption)EditorGUILayout.EnumPopup(uiAdapationContent, uiAdapation);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        settings.GUIAdapation = uiAdapation;
-                    }
-
-                    GUILayout.Space(16f);
-
-                    EditorGUILayout.LabelField("Scene View", EditorStyles.boldLabel);
-
-                    bool showGizmos = settings.ShowGroundCheckGizmos;
-                    EditorGUI.BeginChangeCheck();
-                    showGizmos = EditorGUILayout.Toggle(showGroundGizmosContent, showGizmos);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        settings.ShowGroundCheckGizmos = showGizmos;
-                    }
-
-                    GUILayout.Space(16f);
-
-                    EditorGUILayout.LabelField("Disable Components", EditorStyles.boldLabel);
-
-                    EditorGUILayout.HelpBox("Disabling components strips them out of your game. This is much more recommended than outright removing script files.", MessageType.Info);
-
-                    settings.DisableInteraction = EditorGUILayout.Toggle("Disable Interaction", settings.DisableInteraction);
-                    settings.DisableUI = EditorGUILayout.Toggle("Disable uGUI", settings.DisableUI);
-                    settings.DisableGraphics = EditorGUILayout.Toggle("Disable Graphics", settings.DisableGraphics);
-                    settings.DisableAnimator = EditorGUILayout.Toggle("Disable Animator", settings.DisableAnimator);
-                    settings.DisableAudioExtras = EditorGUILayout.Toggle("Disable Audio Extras", settings.DisableAudioExtras);
-                    settings.DisableObjectBob = EditorGUILayout.Toggle("Disable Object Bob", settings.DisableObjectBob);
-
-                    EditorGUILayout.Space();
-
-                    DrawApplyButton();
-
-                    GUILayout.Space(16f);
-
-                    EditorGUILayout.LabelField("Optimizations", EditorStyles.boldLabel);
-
-                    settings.DisableOptimizations = EditorGUILayout.Toggle(disableOptimizationsContent, settings.DisableOptimizations);
-
-                    EditorGUILayout.Space();
-
-                    DrawApplyButton();
+                    settings.GUIAdapation = uiAdapation;
                 }
+
+                GUILayout.Space(16f);
+
+                EditorGUILayout.LabelField("Scene View", EditorStyles.boldLabel);
+
+                bool showGizmos = settings.ShowGroundCheckGizmos;
+                EditorGUI.BeginChangeCheck();
+                showGizmos = EditorGUILayout.Toggle(showGroundGizmosContent, showGizmos);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    settings.ShowGroundCheckGizmos = showGizmos;
+                }
+
+                GUILayout.Space(16f);
+
+                EditorGUILayout.LabelField("Disable Components", EditorStyles.boldLabel);
+
+                EditorGUILayout.HelpBox("Disabling components strips them out of your game. This is much more recommended than outright removing script files.", MessageType.Info);
+
+                settings.DisableInteraction = EditorGUILayout.Toggle("Disable Interaction", settings.DisableInteraction);
+                settings.DisableUI = EditorGUILayout.Toggle("Disable uGUI", settings.DisableUI);
+                settings.DisableGraphics = EditorGUILayout.Toggle("Disable Graphics", settings.DisableGraphics);
+                settings.DisableAnimator = EditorGUILayout.Toggle("Disable Animator", settings.DisableAnimator);
+                settings.DisableAudioExtras = EditorGUILayout.Toggle("Disable Audio Extras", settings.DisableAudioExtras);
+                settings.DisableObjectBob = EditorGUILayout.Toggle("Disable Object Bob", settings.DisableObjectBob);
+
+                EditorGUILayout.Space();
+
+                DrawApplyButton();
+
+                GUILayout.Space(16f);
+
+                EditorGUILayout.LabelField("Optimizations", EditorStyles.boldLabel);
+
+                settings.DisableOptimizations = EditorGUILayout.Toggle(disableOptimizationsContent, settings.DisableOptimizations);
+
+                EditorGUILayout.Space();
+
+                DrawApplyButton();
             }
         }
 
@@ -93,6 +88,35 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     settings = GoldPlayerProjectSettings.GetOrCreate();
                 }
+            }
+        }
+        
+        private class SettingsGUIScope : GUI.Scope
+        {
+            private readonly float labelWidth;
+
+            public SettingsGUIScope()
+            {
+                GUILayout.BeginVertical();
+
+                labelWidth = EditorGUIUtility.labelWidth;
+
+                if (EditorGUILayout.GetControlRect(false, 0).width > 550)
+                {
+                    EditorGUIUtility.labelWidth = 250;
+                }
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(7);
+                GUILayout.BeginVertical();
+                GUILayout.Space(4);
+            }
+
+            protected override void CloseScope()
+            {
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+                EditorGUIUtility.labelWidth = labelWidth;
             }
         }
 

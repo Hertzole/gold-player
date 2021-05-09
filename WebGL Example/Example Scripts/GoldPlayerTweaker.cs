@@ -143,6 +143,9 @@ namespace Hertzole.GoldPlayer.Example
         }
 #endif
 
+        private GoldPlayerTweakField targetZoom;
+        private GoldPlayerTweakField zoomInTime;
+        private GoldPlayerTweakField zoomOutTime;
         private GoldPlayerTweakField kickAmount;
         private GoldPlayerTweakField lerpTimeTo;
         private GoldPlayerTweakField lerpTimeFrom;
@@ -190,6 +193,19 @@ namespace Hertzole.GoldPlayer.Example
             CreateTweaker("Minimum X", x => { targetPlayer.Camera.MinimumX = x; }, targetPlayer.Camera.MinimumX);
             CreateTweaker("Maximum X", x => { targetPlayer.Camera.MaximumX = x; }, targetPlayer.Camera.MaximumX);
 
+            CreateSubHeader("Zooming");
+            CreateTweaker("Enable Zooming", x =>
+            {
+	            targetPlayer.Camera.EnableZooming = x;
+	            targetZoom.SetInteractable(x);
+	            zoomInTime.SetInteractable(x);
+	            zoomOutTime.SetInteractable(x);
+            }, targetPlayer.Camera.EnableZooming);
+
+            targetZoom = CreateTweaker("Target Zoom", x => { targetPlayer.Camera.TargetZoom = x; }, targetPlayer.Camera.TargetZoom);
+            zoomInTime = CreateTweaker("Zoom In Time", x => { targetPlayer.Camera.ZoomInTime = x; }, targetPlayer.Camera.ZoomInTime);
+            zoomOutTime = CreateTweaker("Zoom Out Time", x => { targetPlayer.Camera.ZoomOutTime = x; }, targetPlayer.Camera.ZoomOutTime);
+            
             CreateSubHeader("FOV Kick");
             CreateTweaker("Enable FOV Kick", x =>
             {
