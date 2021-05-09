@@ -103,6 +103,7 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Only to be called in the Unity editor!
         /// </summary>
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         public void OnValidate()
         {
             if (Application.isPlaying)

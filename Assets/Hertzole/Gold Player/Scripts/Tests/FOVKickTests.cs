@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if GOLD_PLAYER_TESTS
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.TestTools;
@@ -176,3 +177,4 @@ namespace Hertzole.GoldPlayer.Tests
         }
     }
 }
+#endif
