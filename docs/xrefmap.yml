@@ -523,6 +523,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.HandleFOV
   nameWithType: FOVKickClass.HandleFOV
+- uid: Hertzole.GoldPlayer.FOVKickClass.Initialize(Hertzole.GoldPlayer.IGoldInput,Hertzole.GoldPlayer.PlayerCamera)
+  name: Initialize(IGoldInput, PlayerCamera)
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_Initialize_Hertzole_GoldPlayer_IGoldInput_Hertzole_GoldPlayer_PlayerCamera_
+  commentId: M:Hertzole.GoldPlayer.FOVKickClass.Initialize(Hertzole.GoldPlayer.IGoldInput,Hertzole.GoldPlayer.PlayerCamera)
+  fullName: Hertzole.GoldPlayer.FOVKickClass.Initialize(Hertzole.GoldPlayer.IGoldInput, Hertzole.GoldPlayer.PlayerCamera)
+  nameWithType: FOVKickClass.Initialize(IGoldInput, PlayerCamera)
+- uid: Hertzole.GoldPlayer.FOVKickClass.Initialize*
+  name: Initialize
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_Initialize_
+  commentId: Overload:Hertzole.GoldPlayer.FOVKickClass.Initialize
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.FOVKickClass.Initialize
+  nameWithType: FOVKickClass.Initialize
 - uid: Hertzole.GoldPlayer.FOVKickClass.KickAmount
   name: KickAmount
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_KickAmount
@@ -588,12 +601,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.OnInitialize
   nameWithType: FOVKickClass.OnInitialize
-- uid: Hertzole.GoldPlayer.FOVKickClass.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.FOVKickClass.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.FOVKickClass.OnUpdate(System.Single)
-  nameWithType: FOVKickClass.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.FOVKickClass.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.FOVKickClass.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.FOVKickClass.OnUpdate(System.Single, System.Single)
+  nameWithType: FOVKickClass.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.FOVKickClass.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_OnUpdate_
@@ -601,19 +614,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.OnUpdate
   nameWithType: FOVKickClass.OnUpdate
-- uid: Hertzole.GoldPlayer.FOVKickClass.TargetCamera
-  name: TargetCamera
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_TargetCamera
-  commentId: P:Hertzole.GoldPlayer.FOVKickClass.TargetCamera
-  fullName: Hertzole.GoldPlayer.FOVKickClass.TargetCamera
-  nameWithType: FOVKickClass.TargetCamera
-- uid: Hertzole.GoldPlayer.FOVKickClass.TargetCamera*
-  name: TargetCamera
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_TargetCamera_
-  commentId: Overload:Hertzole.GoldPlayer.FOVKickClass.TargetCamera
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.FOVKickClass.TargetCamera
-  nameWithType: FOVKickClass.TargetCamera
 - uid: Hertzole.GoldPlayer.FOVKickClass.TargetFieldOfView
   name: TargetFieldOfView
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_TargetFieldOfView
@@ -2582,6 +2582,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonUp
   nameWithType: IGoldInput.GetButtonUp
+- uid: Hertzole.GoldPlayer.IGoldInput.GetVector2(System.String)
+  name: GetVector2(String)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetVector2_System_String_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetVector2(System.String)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetVector2(System.String)
+  nameWithType: IGoldInput.GetVector2(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetVector2*
+  name: GetVector2
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetVector2_
+  commentId: Overload:Hertzole.GoldPlayer.IGoldInput.GetVector2
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetVector2
+  nameWithType: IGoldInput.GetVector2
 - uid: Hertzole.GoldPlayer.IGoldPlayerInteractable
   name: IGoldPlayerInteractable
   href: api/Hertzole.GoldPlayer.IGoldPlayerInteractable.html
@@ -3063,12 +3076,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.MovingPlatformsClass.OnInitialize
   nameWithType: MovingPlatformsClass.OnInitialize
-- uid: Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.MovingPlatformsClass.html#Hertzole_GoldPlayer_MovingPlatformsClass_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate(System.Single)
-  nameWithType: MovingPlatformsClass.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.MovingPlatformsClass.html#Hertzole_GoldPlayer_MovingPlatformsClass_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate(System.Single, System.Single)
+  nameWithType: MovingPlatformsClass.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.MovingPlatformsClass.html#Hertzole_GoldPlayer_MovingPlatformsClass_OnUpdate_
@@ -3212,12 +3225,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerAudio.LandSource
   nameWithType: PlayerAudio.LandSource
-- uid: Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single)
-  name: OnFixedUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnFixedUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single)
-  nameWithType: PlayerAudio.OnFixedUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single,System.Single)
+  name: OnFixedUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnFixedUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate(System.Single, System.Single)
+  nameWithType: PlayerAudio.OnFixedUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerAudio.OnFixedUpdate*
   name: OnFixedUpdate
   href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnFixedUpdate_
@@ -3238,12 +3251,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerAudio.OnInitialize
   nameWithType: PlayerAudio.OnInitialize
-- uid: Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single)
-  name: OnLateUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnLateUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single)
-  nameWithType: PlayerAudio.OnLateUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single,System.Single)
+  name: OnLateUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnLateUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate(System.Single, System.Single)
+  nameWithType: PlayerAudio.OnLateUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate*
   name: OnLateUpdate
   href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnLateUpdate_
@@ -3251,12 +3264,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerAudio.OnLateUpdate
   nameWithType: PlayerAudio.OnLateUpdate
-- uid: Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single)
-  nameWithType: PlayerAudio.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerAudio.OnUpdate(System.Single, System.Single)
+  nameWithType: PlayerAudio.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerAudio.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.PlayerAudio.html#Hertzole_GoldPlayer_PlayerAudio_OnUpdate_
@@ -3806,12 +3819,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBob.OnInitialize
   nameWithType: PlayerBob.OnInitialize
-- uid: Hertzole.GoldPlayer.PlayerBob.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerBob.html#Hertzole_GoldPlayer_PlayerBob_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerBob.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerBob.OnUpdate(System.Single)
-  nameWithType: PlayerBob.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerBob.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerBob.html#Hertzole_GoldPlayer_PlayerBob_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerBob.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerBob.OnUpdate(System.Single, System.Single)
+  nameWithType: PlayerBob.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerBob.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.PlayerBob.html#Hertzole_GoldPlayer_PlayerBob_OnUpdate_
@@ -3929,6 +3942,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.BodyForward
   nameWithType: PlayerCamera.BodyForward
+- uid: Hertzole.GoldPlayer.PlayerCamera.CameraFieldOfView
+  name: CameraFieldOfView
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CameraFieldOfView
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.CameraFieldOfView
+  fullName: Hertzole.GoldPlayer.PlayerCamera.CameraFieldOfView
+  nameWithType: PlayerCamera.CameraFieldOfView
+- uid: Hertzole.GoldPlayer.PlayerCamera.CameraFieldOfView*
+  name: CameraFieldOfView
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CameraFieldOfView_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.CameraFieldOfView
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.CameraFieldOfView
+  nameWithType: PlayerCamera.CameraFieldOfView
 - uid: Hertzole.GoldPlayer.PlayerCamera.CameraHead
   name: CameraHead
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CameraHead
@@ -3968,6 +3994,32 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.CanLookAround
   nameWithType: PlayerCamera.CanLookAround
+- uid: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
+  name: CurrentFieldOfView
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CurrentFieldOfView
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
+  fullName: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
+  nameWithType: PlayerCamera.CurrentFieldOfView
+- uid: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView*
+  name: CurrentFieldOfView
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CurrentFieldOfView_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
+  nameWithType: PlayerCamera.CurrentFieldOfView
+- uid: Hertzole.GoldPlayer.PlayerCamera.EnableZooming
+  name: EnableZooming
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_EnableZooming
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.EnableZooming
+  fullName: Hertzole.GoldPlayer.PlayerCamera.EnableZooming
+  nameWithType: PlayerCamera.EnableZooming
+- uid: Hertzole.GoldPlayer.PlayerCamera.EnableZooming*
+  name: EnableZooming
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_EnableZooming_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.EnableZooming
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.EnableZooming
+  nameWithType: PlayerCamera.EnableZooming
 - uid: Hertzole.GoldPlayer.PlayerCamera.FieldOfViewKick
   name: FieldOfViewKick
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_FieldOfViewKick
@@ -4052,6 +4104,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.InvertYAxis
   nameWithType: PlayerCamera.InvertYAxis
+- uid: Hertzole.GoldPlayer.PlayerCamera.IsCameraNull
+  name: IsCameraNull
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_IsCameraNull
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.IsCameraNull
+  fullName: Hertzole.GoldPlayer.PlayerCamera.IsCameraNull
+  nameWithType: PlayerCamera.IsCameraNull
+- uid: Hertzole.GoldPlayer.PlayerCamera.IsCameraNull*
+  name: IsCameraNull
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_IsCameraNull_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.IsCameraNull
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.IsCameraNull
+  nameWithType: PlayerCamera.IsCameraNull
 - uid: Hertzole.GoldPlayer.PlayerCamera.IsCameraShaking
   name: IsCameraShaking
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_IsCameraShaking
@@ -4149,6 +4214,12 @@ references:
   commentId: E:Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake
   fullName: Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake
   nameWithType: PlayerCamera.OnBeginCameraShake
+- uid: Hertzole.GoldPlayer.PlayerCamera.OnCurrentFieldOfViewChanged
+  name: OnCurrentFieldOfViewChanged
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnCurrentFieldOfViewChanged
+  commentId: E:Hertzole.GoldPlayer.PlayerCamera.OnCurrentFieldOfViewChanged
+  fullName: Hertzole.GoldPlayer.PlayerCamera.OnCurrentFieldOfViewChanged
+  nameWithType: PlayerCamera.OnCurrentFieldOfViewChanged
 - uid: Hertzole.GoldPlayer.PlayerCamera.OnEndCameraShake
   name: OnEndCameraShake
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnEndCameraShake
@@ -4168,12 +4239,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.OnInitialize
   nameWithType: PlayerCamera.OnInitialize
-- uid: Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single)
-  nameWithType: PlayerCamera.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerCamera.OnUpdate(System.Single, System.Single)
+  nameWithType: PlayerCamera.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerCamera.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnUpdate_
@@ -4246,6 +4317,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.TargetBodyAngles
   nameWithType: PlayerCamera.TargetBodyAngles
+- uid: Hertzole.GoldPlayer.PlayerCamera.TargetCamera
+  name: TargetCamera
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_TargetCamera
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.TargetCamera
+  fullName: Hertzole.GoldPlayer.PlayerCamera.TargetCamera
+  nameWithType: PlayerCamera.TargetCamera
+- uid: Hertzole.GoldPlayer.PlayerCamera.TargetCamera*
+  name: TargetCamera
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_TargetCamera_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.TargetCamera
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.TargetCamera
+  nameWithType: PlayerCamera.TargetCamera
 - uid: Hertzole.GoldPlayer.PlayerCamera.TargetHeadAngles
   name: TargetHeadAngles
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_TargetHeadAngles
@@ -4259,6 +4343,58 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.TargetHeadAngles
   nameWithType: PlayerCamera.TargetHeadAngles
+- uid: Hertzole.GoldPlayer.PlayerCamera.TargetZoom
+  name: TargetZoom
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_TargetZoom
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.TargetZoom
+  fullName: Hertzole.GoldPlayer.PlayerCamera.TargetZoom
+  nameWithType: PlayerCamera.TargetZoom
+- uid: Hertzole.GoldPlayer.PlayerCamera.TargetZoom*
+  name: TargetZoom
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_TargetZoom_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.TargetZoom
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.TargetZoom
+  nameWithType: PlayerCamera.TargetZoom
+- uid: Hertzole.GoldPlayer.PlayerCamera.ZoomInput
+  name: ZoomInput
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_ZoomInput
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.ZoomInput
+  fullName: Hertzole.GoldPlayer.PlayerCamera.ZoomInput
+  nameWithType: PlayerCamera.ZoomInput
+- uid: Hertzole.GoldPlayer.PlayerCamera.ZoomInput*
+  name: ZoomInput
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_ZoomInput_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.ZoomInput
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.ZoomInput
+  nameWithType: PlayerCamera.ZoomInput
+- uid: Hertzole.GoldPlayer.PlayerCamera.ZoomInTime
+  name: ZoomInTime
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_ZoomInTime
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.ZoomInTime
+  fullName: Hertzole.GoldPlayer.PlayerCamera.ZoomInTime
+  nameWithType: PlayerCamera.ZoomInTime
+- uid: Hertzole.GoldPlayer.PlayerCamera.ZoomInTime*
+  name: ZoomInTime
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_ZoomInTime_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.ZoomInTime
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.ZoomInTime
+  nameWithType: PlayerCamera.ZoomInTime
+- uid: Hertzole.GoldPlayer.PlayerCamera.ZoomOutTime
+  name: ZoomOutTime
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_ZoomOutTime
+  commentId: P:Hertzole.GoldPlayer.PlayerCamera.ZoomOutTime
+  fullName: Hertzole.GoldPlayer.PlayerCamera.ZoomOutTime
+  nameWithType: PlayerCamera.ZoomOutTime
+- uid: Hertzole.GoldPlayer.PlayerCamera.ZoomOutTime*
+  name: ZoomOutTime
+  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_ZoomOutTime_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.ZoomOutTime
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerCamera.ZoomOutTime
+  nameWithType: PlayerCamera.ZoomOutTime
 - uid: Hertzole.GoldPlayer.PlayerModule
   name: PlayerModule
   href: api/Hertzole.GoldPlayer.PlayerModule.html
@@ -4375,12 +4511,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.Initialize
   nameWithType: PlayerModule.Initialize
-- uid: Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate(System.Single)
-  name: OnFixedUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnFixedUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate(System.Single)
-  nameWithType: PlayerModule.OnFixedUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate(System.Single,System.Single)
+  name: OnFixedUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnFixedUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate(System.Single, System.Single)
+  nameWithType: PlayerModule.OnFixedUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerModule.OnFixedUpdate*
   name: OnFixedUpdate
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnFixedUpdate_
@@ -4401,12 +4537,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.OnInitialize
   nameWithType: PlayerModule.OnInitialize
-- uid: Hertzole.GoldPlayer.PlayerModule.OnLateUpdate(System.Single)
-  name: OnLateUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnLateUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerModule.OnLateUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerModule.OnLateUpdate(System.Single)
-  nameWithType: PlayerModule.OnLateUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerModule.OnLateUpdate(System.Single,System.Single)
+  name: OnLateUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnLateUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.OnLateUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerModule.OnLateUpdate(System.Single, System.Single)
+  nameWithType: PlayerModule.OnLateUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerModule.OnLateUpdate*
   name: OnLateUpdate
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnLateUpdate_
@@ -4414,12 +4550,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.OnLateUpdate
   nameWithType: PlayerModule.OnLateUpdate
-- uid: Hertzole.GoldPlayer.PlayerModule.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerModule.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerModule.OnUpdate(System.Single)
-  nameWithType: PlayerModule.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerModule.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerModule.OnUpdate(System.Single, System.Single)
+  nameWithType: PlayerModule.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerModule.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_OnUpdate_
@@ -5063,12 +5199,12 @@ references:
   commentId: E:Hertzole.GoldPlayer.PlayerMovement.OnLand
   fullName: Hertzole.GoldPlayer.PlayerMovement.OnLand
   nameWithType: PlayerMovement.OnLand
-- uid: Hertzole.GoldPlayer.PlayerMovement.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.PlayerMovement.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.PlayerMovement.OnUpdate(System.Single)
-  nameWithType: PlayerMovement.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.PlayerMovement.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.PlayerMovement.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.PlayerMovement.OnUpdate(System.Single, System.Single)
+  nameWithType: PlayerMovement.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.PlayerMovement.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_OnUpdate_
@@ -5442,12 +5578,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.StaminaClass.OnInitialize
   nameWithType: StaminaClass.OnInitialize
-- uid: Hertzole.GoldPlayer.StaminaClass.OnUpdate(System.Single)
-  name: OnUpdate(Single)
-  href: api/Hertzole.GoldPlayer.StaminaClass.html#Hertzole_GoldPlayer_StaminaClass_OnUpdate_System_Single_
-  commentId: M:Hertzole.GoldPlayer.StaminaClass.OnUpdate(System.Single)
-  fullName: Hertzole.GoldPlayer.StaminaClass.OnUpdate(System.Single)
-  nameWithType: StaminaClass.OnUpdate(Single)
+- uid: Hertzole.GoldPlayer.StaminaClass.OnUpdate(System.Single,System.Single)
+  name: OnUpdate(Single, Single)
+  href: api/Hertzole.GoldPlayer.StaminaClass.html#Hertzole_GoldPlayer_StaminaClass_OnUpdate_System_Single_System_Single_
+  commentId: M:Hertzole.GoldPlayer.StaminaClass.OnUpdate(System.Single,System.Single)
+  fullName: Hertzole.GoldPlayer.StaminaClass.OnUpdate(System.Single, System.Single)
+  nameWithType: StaminaClass.OnUpdate(Single, Single)
 - uid: Hertzole.GoldPlayer.StaminaClass.OnUpdate*
   name: OnUpdate
   href: api/Hertzole.GoldPlayer.StaminaClass.html#Hertzole_GoldPlayer_StaminaClass_OnUpdate_
