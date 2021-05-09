@@ -73,6 +73,7 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty runSpeeds;
         private SerializedProperty stamina;
         private SerializedProperty enableStamina;
+        private SerializedProperty staminaUnscaledTime;
         private SerializedProperty drainStaminaWhen;
         private SerializedProperty maxStamina;
         private SerializedProperty drainRate;
@@ -221,6 +222,7 @@ namespace Hertzole.GoldPlayer.Editor
             runSpeeds = movement.FindPropertyRelative("runSpeeds");
             stamina = movement.FindPropertyRelative("stamina");
             enableStamina = stamina.FindPropertyRelative("enableStamina");
+            staminaUnscaledTime = stamina.FindPropertyRelative("unscaledTime");
             drainStaminaWhen = stamina.FindPropertyRelative("drainStaminaWhen");
             maxStamina = stamina.FindPropertyRelative("maxStamina");
             drainRate = stamina.FindPropertyRelative("drainRate");
@@ -429,6 +431,7 @@ namespace Hertzole.GoldPlayer.Editor
                         EditorGUILayout.PropertyField(enableStamina);
                         DrawElementsConditional(enableStamina, () =>
                         {
+                            EditorGUILayout.PropertyField(staminaUnscaledTime);
                             EditorGUILayout.PropertyField(drainStaminaWhen);
                             EditorGUILayout.PropertyField(maxStamina);
                             EditorGUILayout.PropertyField(drainRate);

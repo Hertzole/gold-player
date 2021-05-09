@@ -628,7 +628,7 @@ namespace Hertzole.GoldPlayer
 
             if (!movingPlatforms.IsMoving || movementInput != Vector2.zero)
             {
-                velocity = (previousPosition - PlayerTransform.position) / (unscaledTime ? unscaledDeltaTime : deltaTime);
+                velocity = -((previousPosition - PlayerTransform.position) / (unscaledTime ? unscaledDeltaTime : deltaTime));
             }
             else
             {
