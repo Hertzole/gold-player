@@ -149,6 +149,7 @@ namespace Hertzole.GoldPlayer.Tests
         {
             player.Camera.FieldOfViewKick.UnscaledTime = false;
             player.Movement.UnscaledTime = true;
+            player.Movement.Stamina.UnscaledTime = true;
             player.HeadBob.UnscaledTime = true;
             player.Audio.UnscaledTime = true;
 
@@ -160,6 +161,7 @@ namespace Hertzole.GoldPlayer.Tests
 
             player.Camera.FieldOfViewKick.UnscaledTime = false;
             player.Movement.UnscaledTime = false;
+            player.Movement.Stamina.UnscaledTime = false;
             player.HeadBob.UnscaledTime = false;
             player.Audio.UnscaledTime = false;
             Assert.IsFalse(player.UnscaledTime);

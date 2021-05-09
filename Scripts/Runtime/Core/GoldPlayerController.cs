@@ -40,8 +40,21 @@ namespace Hertzole.GoldPlayer
         /// <summary> If true, Gold Player will use unscaled delta time. </summary>
         public bool UnscaledTime
         {
-            get { return cam.FieldOfViewKick.UnscaledTime && movement.UnscaledTime && headBob.UnscaledTime && sounds.UnscaledTime; }
-            set { cam.FieldOfViewKick.UnscaledTime = value; movement.UnscaledTime = value; headBob.UnscaledTime = value; sounds.UnscaledTime = value; }
+            get
+            {
+                return cam.FieldOfViewKick.UnscaledTime && 
+                       movement.UnscaledTime && 
+                       movement.Stamina.UnscaledTime &&
+                       headBob.UnscaledTime &&
+                       sounds.UnscaledTime;
+            }
+            set 
+            {
+                cam.FieldOfViewKick.UnscaledTime = value; 
+                movement.UnscaledTime = value;
+                movement.Stamina.UnscaledTime = value;
+                headBob.UnscaledTime = value; 
+                sounds.UnscaledTime = value; }
         }
 
         /// <summary> Everything related to the player camera (mouse movement). </summary>

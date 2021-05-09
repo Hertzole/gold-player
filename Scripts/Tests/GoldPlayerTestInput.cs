@@ -8,7 +8,7 @@ namespace Hertzole.GoldPlayer.Tests
         public Vector2 mouseInput;
         public bool isRunning;
         public bool isRunningToggle;
-        public bool isJumping;
+        public bool isJumpingToggle;
         public bool isCrouching;
         public bool isCrouchingToggle;
         public bool isInteracting;
@@ -92,8 +92,8 @@ namespace Hertzole.GoldPlayer.Tests
             switch (buttonName)
             {
                 case JUMP:
-                    bool r = isJumping;
-                    isJumping = false;
+                    bool r = isJumpingToggle;
+                    isJumpingToggle = false;
                     return r;
                 case INTERACT:
                     r = isInteracting;

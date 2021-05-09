@@ -181,9 +181,12 @@ namespace Hertzole.GoldPlayer.Example
         private void SetupUI()
         {
             CreateHeader("Game");
-            CreateTweaker("Timescale", x => { Time.timeScale = x / 10f; }, 10, true, 0, 20, 10f);
+            CreateTweaker("Timescale", x => { Time.timeScale = x / 10f; }, Mathf.RoundToInt(Time.timeScale * 10), true, 0, 20, 10f);
             CreateTweaker("V-Sync", x => { QualitySettings.vSyncCount = x ? 1 : 0; }, QualitySettings.vSyncCount == 1);
             CreateTweaker("Unscaled Movement", x => { targetPlayer.UnscaledTime = x; }, false);
+
+            CreateTweaker("Movement Multiplier", x => { targetPlayer.Movement.MoveSpeedMultiplier = x; }, targetPlayer.Movement.MoveSpeedMultiplier);
+            CreateTweaker("Jump Multiplier", x => { targetPlayer.Movement.JumpHeightMultiplier = x; }, targetPlayer.Movement.JumpHeightMultiplier);
 
             CreateHeader("Camera");
             CreateTweaker("Invert X Axis", x => { targetPlayer.Camera.InvertXAxis = x; }, targetPlayer.Camera.InvertXAxis);

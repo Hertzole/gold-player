@@ -187,7 +187,7 @@ namespace Hertzole.GoldPlayer
         private float maxAirHeight = 0;
 
         // The current amount of times an air jump has been performed.
-        private int currentJumps = 0;
+        internal int currentJumps = 0;
 
         // Is the player grounded?
         private bool isGrounded = false;
@@ -775,15 +775,22 @@ namespace Hertzole.GoldPlayer
                 return false;
             }
 
+            if (isCrouching && !crouchJumping)
+            {
+                return false;
+            }
+
             if (isGrounded && !isJumping)
             {
                 return true;
             }
-            else if (airJumpsAmount > 0 && currentJumps < airJumpsAmount)
+
+            if (airJumpsAmount > 0 && currentJumps < airJumpsAmount)
             {
                 return true;
             }
-            else if (airJump && isFalling && currentAirTime > 0)
+
+            if (airJump && isFalling && currentAirTime > 0)
             {
                 return true;
             }

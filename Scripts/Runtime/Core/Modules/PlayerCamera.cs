@@ -141,9 +141,9 @@ namespace Hertzole.GoldPlayer
         private Vector2 mouseInput;
 
         // Where the head should be looking.
-        private Vector3 targetHeadAngles;
+        internal Vector3 targetHeadAngles;
         // Where the body should be looking.
-        private Vector3 targetBodyAngles;
+        internal Vector3 targetBodyAngles;
         // Where the head should be looking, smoothed.
         private Vector3 followHeadAngles;
         // Where the body should be looking, smoothed.
