@@ -16,30 +16,36 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanRunStops()
         {
-            Debug.Log("CanRunStops :: START");
+            yield return RunTimeScaleTest(Test(), Test());
 
-            input.moveDirection = new Vector2(0, 1);
-            input.isRunning = true;
-            player.Movement.Acceleration = 0;
+            IEnumerator Test()
+            {
+                Debug.Log("CanRunStops :: START");
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                input.moveDirection = new Vector2(0, 1);
+                input.isRunning = true;
+                player.Movement.CanRun = true;
+                player.Movement.Acceleration = 0;
 
-            Debug.Log("CanRunStops :: Player velocity: " + player.Controller.velocity.z);
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Assert.AreApproximatelyEqual(7f, player.Controller.velocity.z);
+                Debug.Log("CanRunStops :: Player velocity: " + player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanRunStops :: Set CanRun to false.");
-            player.Movement.CanRun = false;
-            // Skip 2 frames to make sure the player slows down.
-            yield return null;
-            yield return null;
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
 
-            Debug.Log("CanRunStops :: Player velocity: " + player.Controller.velocity.z);
+                yield return null;
+                Debug.Log("CanRunStops :: Set CanRun to false.");
+                player.Movement.CanRun = false;
+                // Skip 2 frames to make sure the player slows down.
+                yield return null;
+                yield return null;
 
-            Assert.AreApproximatelyEqual(3f, player.Controller.velocity.z);
+                Debug.Log("CanRunStops :: Player velocity: " + player.Velocity.z);
+
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+            }
         }
 
         /// <summary>
@@ -49,31 +55,40 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanRunContinues()
         {
-            Debug.Log("CanRunContinues :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanRunContinues :: START");
 
-            input.moveDirection = new Vector2(0, 1);
-            input.isRunning = true;
-            player.Movement.Acceleration = 0;
-            player.Movement.CanRun = false;
+                input.moveDirection = new Vector2(0, 1);
+                input.isRunning = true;
+                player.Movement.Acceleration = 0;
+                player.Movement.CanRun = false;
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanRunContinues :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanRunContinues :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(3f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanRunContinues :: Set CanRun to true.");
-            player.Movement.CanRun = true;
-            // Skip 2 frames to make sure the player slows down.
-            yield return null;
-            yield return null;
+                yield return null;
+                Debug.Log("CanRunContinues :: Set CanRun to true.");
+                player.Movement.CanRun = true;
+                // Skip 2 frames to make sure the player slows down.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanRunContinues :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanRunContinues :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(7f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+
+                input.isRunning = false;
+
+                yield return null;
+            }
         }
 
         /// <summary>
@@ -82,30 +97,36 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanMoveStops()
         {
-            Debug.Log("CanMoveStops :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanMoveStops :: START");
 
-            input.moveDirection = new Vector2(0, 1);
-            player.Movement.Acceleration = 0;
+                input.moveDirection = new Vector2(0, 1);
+                player.Movement.Acceleration = 0;
+                player.Movement.CanMoveAround = true;
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveStops :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveStops :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(3f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanMoveStops :: Set CanMoveAround to false.");
-            player.Movement.CanMoveAround = false;
+                yield return null;
+                Debug.Log("CanMoveStops :: Set CanMoveAround to false.");
+                player.Movement.CanMoveAround = false;
 
-            // Skip 2 frames to make sure the player slows down.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player slows down.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveStops :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveStops :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(0f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
+            }
         }
 
         /// <summary>
@@ -114,31 +135,36 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanMoveContinues()
         {
-            Debug.Log("CanMoveContinues :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanMoveContinues :: START");
 
-            input.moveDirection = new Vector2(0, 1);
-            player.Movement.Acceleration = 0;
-            player.Movement.CanMoveAround = false;
+                input.moveDirection = new Vector2(0, 1);
+                player.Movement.Acceleration = 0;
+                player.Movement.CanMoveAround = false;
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveContinues :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveContinues :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(0f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanMoveContinues :: Set CanMoveAround to true.");
-            player.Movement.CanMoveAround = true;
+                yield return null;
+                Debug.Log("CanMoveContinues :: Set CanMoveAround to true.");
+                player.Movement.CanMoveAround = true;
 
-            // Skip 2 frames to make sure the player slows down.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player slows down.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveContinues :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveContinues :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(3f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+            }
         }
 
         /// <summary>
@@ -147,32 +173,37 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanMoveRunningContinues()
         {
-            Debug.Log("CanMoveRunningContinues :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanMoveRunningContinues :: START");
 
-            input.moveDirection = new Vector2(0, 1);
-            input.isRunning = true;
-            player.Movement.Acceleration = 0;
-            player.Movement.CanMoveAround = false;
+                input.moveDirection = new Vector2(0, 1);
+                input.isRunning = true;
+                player.Movement.Acceleration = 0;
+                player.Movement.CanMoveAround = false;
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveRunningContinues :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveRunningContinues :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(0f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanMoveRunningContinues :: Set CanMoveAround to true.");
-            player.Movement.CanMoveAround = true;
+                yield return null;
+                Debug.Log("CanMoveRunningContinues :: Set CanMoveAround to true.");
+                player.Movement.CanMoveAround = true;
 
-            // Skip 2 frames to make sure the player slows down.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player slows down.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveRunningContinues :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveRunningContinues :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(7f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+            }
         }
 
         /// <summary>
@@ -182,31 +213,36 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanMoveAround()
         {
-            Debug.Log("CanMoveAround :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanMoveAround :: START");
 
-            input.moveDirection = new Vector2(0, 1);
-            player.Movement.Acceleration = 0;
-            player.Movement.CanMoveAround = false;
+                input.moveDirection = new Vector2(0, 1);
+                player.Movement.Acceleration = 0;
+                player.Movement.CanMoveAround = false;
 
-            // Skip 2 frames to let the simulation play a bit.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to let the simulation play a bit.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveAround :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveAround :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(0f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanMoveAround :: Set CanMoveAround to false.");
-            player.Movement.CanMoveAround = true;
+                yield return null;
+                Debug.Log("CanMoveAround :: Set CanMoveAround to false.");
+                player.Movement.CanMoveAround = true;
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanMoveAround :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanMoveAround :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(3f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+            }
         }
 
         /// <summary>
@@ -216,28 +252,35 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanLookAround()
         {
-            Debug.Log("CanLookAround:: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanLookAround:: START");
 
-            input.mouseInput = new Vector2(10, -10);
-            player.Camera.CanLookAround = true;
+                player.Camera.CanLookAround = true;
+                player.Camera.targetBodyAngles = Vector3.zero;
+                player.Camera.targetHeadAngles = Vector3.zero;
+                input.mouseInput = new Vector2(10, -10);
+                
+                yield return null;
+                
+                Debug.Log("CanLookAround :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x + " | Player rotation: " + player.transform.eulerAngles.y);
 
-            yield return null;
+                Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+                Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, 0.1f);
 
-            Debug.Log("CanLookAround :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x + " | Player rotation: " + player.transform.eulerAngles.y);
+                // Let one more frame go before we disable CanLookAround.
+                yield return null;
+                Debug.Log("CanLookAround :: Set CanLookAround to false.");
+                player.Camera.CanLookAround = false;
+                yield return null;
 
-            Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
-            Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, 0.1f);
+                Debug.Log("CanLookAround :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x + " | Player rotation: " + player.transform.eulerAngles.y);
 
-            // Let one more frame go before we disable CanLookAround.
-            yield return null;
-            Debug.Log("CanLookAround :: Set CanLookAround to false.");
-            player.Camera.CanLookAround = false;
-            yield return null;
-
-            Debug.Log("CanLookAround :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x + " | Player rotation: " + player.transform.eulerAngles.y);
-
-            Assert.AreApproximatelyEqual(40f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
-            Assert.AreApproximatelyEqual(40f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(40f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+                Assert.AreApproximatelyEqual(40f, player.transform.eulerAngles.y, 0.1f);
+            }
         }
 
         /// <summary>
@@ -247,32 +290,47 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanRun()
         {
-            Debug.Log("CanRun :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanRun :: START");
 
-            input.moveDirection = new Vector2(0, 1);
-            input.isRunning = true;
-            player.Movement.Acceleration = 0;
-            player.Movement.CanRun = false;
+                input.moveDirection = new Vector2(0, 1);
+                input.isRunning = true;
+                player.Movement.Acceleration = 0;
+                player.Movement.CanRun = false;
 
-            // Skip 2 frames to let the simulation play a bit.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to let the simulation play a bit.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanRun :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanRun :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(3f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
 
-            yield return null;
-            Debug.Log("CanRun :: Set CanRun to true.");
-            player.Movement.CanRun = true;
+                yield return null;
+                Debug.Log("CanRun :: Set CanRun to true.");
+                player.Movement.CanRun = true;
 
-            // Skip 2 frames to make sure the player gets their speed up.
-            yield return null;
-            yield return null;
+                // Skip 2 frames to make sure the player gets their speed up.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CanRun :: Player velocity: " + player.Controller.velocity.z);
+                Debug.Log("CanRun :: Player velocity: " + player.Velocity.z);
 
-            Assert.AreApproximatelyEqual(7f, player.Controller.velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+
+                yield return null;
+                player.Movement.CanRun = false;
+
+                // Skip 2 frames to make sure the player slows down.
+                yield return null;
+                yield return null;
+                
+                Debug.Log("CanRun :: Player velocity: " + player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+            }
         }
 
         /// <summary>
@@ -282,33 +340,39 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanJump()
         {
-            Debug.Log("CanJump :: START");
-
-            input.isJumping = true;
-
-            // Skip a frame to let the simulation play a bit.
-            yield return null;
-
-            Debug.Log("CanJump :: Player velocity: " + player.Controller.velocity.y);
-
-            Assert.AreApproximatelyEqual(8.944f, player.Controller.velocity.y, 0.1f);
-
-            while (player.Movement.IsJumping || !player.Movement.IsGrounded)
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
+                Debug.Log("CanJump :: START");
+
+                input.isJumpingToggle = true;
+                player.Movement.CanJump = true;
+
+                // Skip a frame to let the simulation play a bit.
                 yield return null;
+
+                Debug.Log("CanJump :: Player velocity: " + player.Velocity.y);
+
+                Assert.AreApproximatelyEqual(8.944f, player.Velocity.y, 0.1f);
+
+                while (player.Movement.IsJumping || !player.Movement.IsGrounded)
+                {
+                    yield return null;
+                }
+
+                Debug.Log("CanJump :: Set CanJump to false.");
+                player.Movement.CanJump = false;
+                yield return new WaitForSecondsRealtime(0.3f); // Give plenty of time for the player to settle.
+
+                input.isJumpingToggle = true;
+
+                yield return null;
+
+                Debug.Log("CanJump :: Player velocity: " + player.Velocity.y);
+
+                Assert.AreApproximatelyEqual(0, player.Velocity.y, 0.1f);
             }
-
-            Debug.Log("CanJump :: Set CanJump to false.");
-            player.Movement.CanJump = false;
-            yield return new WaitForSecondsRealtime(0.3f); // Give plenty of time for the player to settle.
-
-            input.isJumping = true;
-
-            yield return null;
-
-            Debug.Log("CanJump :: Player velocity: " + player.Controller.velocity.y);
-
-            Assert.AreApproximatelyEqual(0, player.Controller.velocity.y, 0.1f);
         }
 
         /// <summary>
@@ -318,38 +382,44 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CanCrouch()
         {
-            Debug.Log("CanCrouch :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CanCrouch :: START");
 
-            float originalHeight = player.Controller.height;
-            input.isCrouching = true;
+                float originalHeight = player.Controller.height;
+                player.Movement.CanCrouch = true;
+                input.isCrouching = true;
 
-            // Skip a frame to let the simulation play a bit.
-            yield return null;
+                // Skip a frame to let the simulation play a bit.
+                yield return null;
 
-            Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
+                Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
 
-            Assert.AreApproximatelyEqual(player.Movement.CrouchHeight, player.Controller.height);
+                Assert.AreApproximatelyEqual(player.Movement.CrouchHeight, player.Controller.height);
 
-            Debug.Log("CanCrouch :: Set isCrouching to false.");
-            input.isCrouching = false;
+                Debug.Log("CanCrouch :: Set isCrouching to false.");
+                input.isCrouching = false;
 
-            yield return null;
+                yield return null;
 
-            Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
+                Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
 
-            Assert.AreApproximatelyEqual(originalHeight, player.Controller.height);
+                Assert.AreApproximatelyEqual(originalHeight, player.Controller.height);
 
-            yield return null;
+                yield return null;
 
-            Debug.Log("CanCrouch :: Set CanCrouch to false and isCrouching to true.");
-            player.Movement.CanCrouch = false;
-            input.isCrouching = true;
+                Debug.Log("CanCrouch :: Set CanCrouch to false and isCrouching to true.");
+                player.Movement.CanCrouch = false;
+                input.isCrouching = true;
 
-            yield return null;
+                yield return null;
 
-            Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
-            // It should no longer crouch.
-            Assert.AreApproximatelyEqual(originalHeight, player.Controller.height);
+                Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
+                // It should no longer crouch.
+                Assert.AreApproximatelyEqual(originalHeight, player.Controller.height);
+            }
         }
 
         /// <summary>
@@ -359,27 +429,32 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CameraInvertX()
         {
-            Debug.Log("CameraInvertX :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CameraInvertX :: START");
 
-            input.mouseInput = new Vector2(10, 0);
-            player.Camera.InvertXAxis = true;
+                input.mouseInput = new Vector2(10, 0);
+                player.Camera.InvertXAxis = true;
 
-            yield return null;
+                yield return null;
 
-            Debug.Log("CameraInvertX :: Player rotation: " + player.transform.eulerAngles.y);
+                Debug.Log("CameraInvertX :: Player rotation: " + player.transform.eulerAngles.y);
 
-            Assert.AreApproximatelyEqual(340f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(340f, player.transform.eulerAngles.y, 0.1f);
 
-            Debug.Log("CameraInvertX :: Set InvertX to false.");
-            player.Camera.InvertXAxis = false;
+                Debug.Log("CameraInvertX :: Set InvertX to false.");
+                player.Camera.InvertXAxis = false;
 
-            // Let 2 frames pass to get past the 0 rotation.
-            yield return null;
-            yield return null;
+                // Let 2 frames pass to get past the 0 rotation.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CameraInvertX :: Player rotation: " + player.transform.eulerAngles.y);
+                Debug.Log("CameraInvertX :: Player rotation: " + player.transform.eulerAngles.y);
 
-            Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, 0.1f);
+            }
         }
 
         /// <summary>
@@ -389,27 +464,34 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CameraInvertY()
         {
-            Debug.Log("CameraInvertY :: START");
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                Debug.Log("CameraInvertY :: START");
 
-            input.mouseInput = new Vector2(0, -10);
-            player.Camera.InvertYAxis = true;
+                input.mouseInput = new Vector2(0, -10);
+                player.Camera.targetBodyAngles = Vector3.zero;
+                player.Camera.targetHeadAngles = Vector3.zero;
+                player.Camera.InvertYAxis = true;
 
-            yield return null;
+                yield return null;
 
-            Debug.Log("CameraInvertY :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x);
+                Debug.Log("CameraInvertY :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x);
 
-            Assert.AreApproximatelyEqual(340f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+                Assert.AreApproximatelyEqual(340f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
 
-            Debug.Log("CameraInvertY :: Set InvertY to false.");
-            player.Camera.InvertYAxis = false;
+                Debug.Log("CameraInvertY :: Set InvertY to false.");
+                player.Camera.InvertYAxis = false;
 
-            // Let 2 frames pass to get past the 0 rotation.
-            yield return null;
-            yield return null;
+                // Let 2 frames pass to get past the 0 rotation.
+                yield return null;
+                yield return null;
 
-            Debug.Log("CameraInvertY :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x);
+                Debug.Log("CameraInvertY :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x);
 
-            Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+                Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+            }
         }
 
         /// <summary>
@@ -419,39 +501,67 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator FollowMovingPlatform()
         {
-            Debug.Log("FollowMovingPlatform :: START");
-            Debug.Log("FollowingMovingPlatform :: Set Enabled to true.");
-            player.Movement.MovingPlatforms.Enabled = true;
-
-            yield return null;
-            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
-            yield return null;
+            Vector3[] op = new Vector3[sceneObjects.Count];
+            Vector3[] or = new Vector3[sceneObjects.Count];
 
             for (int i = 0; i < sceneObjects.Count; i++)
             {
-                sceneObjects[i].transform.position += new Vector3(200, 0, 200);
-                sceneObjects[i].transform.Rotate(Vector3.up * 45, Space.World);
+                op[i] = sceneObjects[i].transform.position;
+                or[i] = sceneObjects[i].transform.eulerAngles;
             }
-
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
-            Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
-
-            yield return null;
-            Debug.Log("FollowingMovingPlatform :: Set Enabled to false.");
-            player.Movement.MovingPlatforms.Enabled = false;
-            yield return null;
-
-            for (int i = 0; i < sceneObjects.Count; i++)
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                sceneObjects[i].transform.position -= new Vector3(200, 0, 200);
-                sceneObjects[i].transform.Rotate(Vector3.up * -45, Space.World);
+                Debug.Log("FollowMovingPlatform :: START");
+                Debug.Log("FollowingMovingPlatform :: Set Enabled to true.");
+
+                player.Movement.MovingPlatforms.Enabled = true;
+                player.Movement.MovingPlatforms.currentPlatformGlobalRotation = Quaternion.identity;
+                
+                yield return null;
+                AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
+                yield return null;
+                Assert.AreApproximatelyEqual(0, player.transform.eulerAngles.y);
+                yield return null;
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+                    sceneObjects[i].transform.Rotate(Vector3.up * 45, Space.World);
+                }
+
+                yield return null;
+                yield return null;
+
+                AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+
+                yield return null;
+                Debug.Log("FollowingMovingPlatform :: Set Enabled to false.");
+                player.Movement.MovingPlatforms.Enabled = false;
+                yield return null;
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position -= new Vector3(200, 0, 200);
+                    sceneObjects[i].transform.Rotate(Vector3.up * -45, Space.World);
+                }
+
+                yield return null;
+
+                AreApproximatelyEqualVector3(new Vector3(200, 0f, 200), player.transform.position, 0.1f);
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+                
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position = op[i];
+                    sceneObjects[i].transform.eulerAngles = or[i];
+                }
+
+                yield return WaitFrames(10);
             }
-
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(200, 0f, 200), player.transform.position, 0.1f);
         }
 
         /// <summary>
@@ -461,37 +571,56 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator MovingPlatformPosition()
         {
-            Debug.Log("MovingPlatformPosition :: START");
-
-            Debug.Log("MovingPlatformPosition :: Set MovePosition to true.");
-            player.Movement.MovingPlatforms.MovePosition = true;
-
-            yield return null;
-            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
-            yield return null;
+            Vector3[] op = new Vector3[sceneObjects.Count];
+            Vector3[] or = new Vector3[sceneObjects.Count];
 
             for (int i = 0; i < sceneObjects.Count; i++)
             {
-                sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+                op[i] = sceneObjects[i].transform.position;
+                or[i] = sceneObjects[i].transform.eulerAngles;
             }
-
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
-
-            yield return null;
-            Debug.Log("MovingPlatformPosition :: Set MovePosition to false.");
-            player.Movement.MovingPlatforms.MovePosition = false;
-            yield return null;
-
-            for (int i = 0; i < sceneObjects.Count; i++)
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                sceneObjects[i].transform.position -= new Vector3(200, 0, 200);
+                yield return WaitFrames(10);
+                
+                Assert.IsTrue(player.Movement.IsGrounded);
+                
+                player.Movement.MovingPlatforms.MovePosition = true;
+                yield return WaitFrames(2);
+                
+                AreApproximatelyEqualVector2(new Vector2(0, 0), new Vector2(player.transform.position.x, player.transform.position.z));
+                yield return WaitFrames(2);
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position = new Vector3(200, 0, 200);
+                }
+
+                yield return WaitFrames(2);
+                
+                AreApproximatelyEqualVector2(new Vector2(200, 200), new Vector2(player.transform.position.x, player.transform.position.z));
+
+                player.Movement.MovingPlatforms.MovePosition = false;
+                yield return WaitFrames(2);
+                
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position = new Vector3(500, 0, 500);
+                }
+                
+                yield return WaitFrames(2);
+                
+                AreApproximatelyEqualVector2(new Vector2(200, 200), new Vector2(player.transform.position.x, player.transform.position.z));
+  
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position = op[i];
+                    sceneObjects[i].transform.eulerAngles = or[i];
+                }
             }
-
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(200, 0, 200), player.transform.position, 0.1f);
         }
 
         /// <summary>
@@ -501,215 +630,254 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator MovingPlatformRotation()
         {
-            Debug.Log("MovingPlatformRotation :: START");
-
-            Debug.Log("MovingPlatformRotation :: Set MoveRotation to true.");
-            player.Movement.MovingPlatforms.MoveRotation = true;
-
-            yield return null;
-            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
-            yield return null;
+            Vector3[] op = new Vector3[sceneObjects.Count];
+            Vector3[] or = new Vector3[sceneObjects.Count];
 
             for (int i = 0; i < sceneObjects.Count; i++)
             {
-                sceneObjects[i].transform.Rotate(Vector3.up * 45, Space.World);
+                op[i] = sceneObjects[i].transform.position;
+                or[i] = sceneObjects[i].transform.eulerAngles;
             }
-
-            yield return null;
-
-            Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
-
-            yield return null;
-            Debug.Log("MovingPlatformRotation :: Set MoveRotation to false.");
-            player.Movement.MovingPlatforms.MoveRotation = false;
-            yield return null;
-
-            for (int i = 0; i < sceneObjects.Count; i++)
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                sceneObjects[i].transform.Rotate(Vector3.up * -45, Space.World);
+                yield return WaitFrames(10);
+                
+                Assert.IsTrue(player.Movement.IsGrounded);
+                
+                player.Movement.MovingPlatforms.MoveRotation = true;
+                yield return WaitFrames(2);
+                
+                Assert.AreApproximatelyEqual(0, player.transform.eulerAngles.y);
+                yield return WaitFrames(2);
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.eulerAngles = new Vector3(0, 45, 0);
+                }
+
+                yield return WaitFrames(2);
+                
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+
+                player.Movement.MovingPlatforms.MoveRotation = false;
+                yield return WaitFrames(2);
+                
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.eulerAngles = new Vector3(0, 90, 0);
+                }
+                
+                yield return WaitFrames(2);
+                
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position = op[i];
+                    sceneObjects[i].transform.eulerAngles = or[i];
+                }
             }
-
-            yield return null;
-
-            Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
         }
 
         [UnityTest]
         public IEnumerator MovingPlatformsMaxAngle()
         {
-            player.Movement.MovingPlatforms.MovePosition = true;
-
-            yield return null;
-            AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
-            yield return null;
+            Vector3[] op = new Vector3[sceneObjects.Count];
+            Vector3[] or = new Vector3[sceneObjects.Count];
 
             for (int i = 0; i < sceneObjects.Count; i++)
             {
-                sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+                op[i] = sceneObjects[i].transform.position;
+                or[i] = sceneObjects[i].transform.eulerAngles;
             }
-
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
-
-            yield return null;
-            for (int i = 0; i < sceneObjects.Count; i++)
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                Vector3 rot = sceneObjects[i].transform.eulerAngles;
-                rot.x -= Platforms.MaxAngle - 1;
-                sceneObjects[i].transform.eulerAngles = rot;
-            }
-            yield return null;
+                yield return WaitFrames(10);
+                
+                player.Movement.MovingPlatforms.MovePosition = true;
 
-            for (int i = 0; i < sceneObjects.Count; i++)
-            {
-                sceneObjects[i].transform.position -= new Vector3(200, 0, 200);
-            }
-
-            yield return null;
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
-
-            for (int i = 0; i < 20; i++)
-            {
                 yield return null;
-            }
-
-            for (int i = 0; i < sceneObjects.Count; i++)
-            {
-                Vector3 rot = sceneObjects[i].transform.eulerAngles;
-                rot.x -= 5;
-                sceneObjects[i].transform.eulerAngles = rot;
-            }
-
-            for (int i = 0; i < 20; i++)
-            {
+                AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
                 yield return null;
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+                }
+
+                yield return null;
+
+                AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
+
+                yield return null;
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    Vector3 rot = sceneObjects[i].transform.eulerAngles;
+                    rot.x -= Platforms.MaxAngle - 1;
+                    sceneObjects[i].transform.eulerAngles = rot;
+                }
+                yield return null;
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position -= new Vector3(200, 0, 200);
+                }
+
+                yield return null;
+                yield return null;
+
+                AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
+
+                for (int i = 0; i < 20; i++)
+                {
+                    yield return null;
+                }
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    Vector3 rot = sceneObjects[i].transform.eulerAngles;
+                    rot.x -= 5;
+                    sceneObjects[i].transform.eulerAngles = rot;
+                }
+
+                for (int i = 0; i < 20; i++)
+                {
+                    yield return null;
+                }
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position += new Vector3(200, 0, 200);
+                }
+
+                yield return null;
+                yield return null;
+
+                AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
+
+                for (int i = 0; i < sceneObjects.Count; i++)
+                {
+                    sceneObjects[i].transform.position = op[i];
+                    sceneObjects[i].transform.eulerAngles = or[i];
+                }
+
+                yield return WaitFrames(10);
             }
-
-            for (int i = 0; i < sceneObjects.Count; i++)
-            {
-                sceneObjects[i].transform.position += new Vector3(200, 0, 200);
-            }
-
-            yield return null;
-            yield return null;
-
-            AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
-
-            yield return null;
         }
 
         [UnityTest]
         public IEnumerator MovingPlatformsNoHeadBob()
         {
-            player.HeadBob.EnableBob = true;
-
-            for (int i = 0; i < 600; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                for (int j = 0; j < sceneObjects.Count; j++)
+                player.HeadBob.EnableBob = true;
+
+                for (int i = 0; i < 600; i++)
                 {
-                    sceneObjects[j].transform.position = Vector3.MoveTowards(sceneObjects[j].transform.position, sceneObjects[j].transform.position + Vector3.forward, 2 * Time.deltaTime);
+                    for (int j = 0; j < sceneObjects.Count; j++)
+                    {
+                        sceneObjects[j].transform.position = Vector3.MoveTowards(sceneObjects[j].transform.position, sceneObjects[j].transform.position + Vector3.forward, 2 * Time.deltaTime);
+                    }
+
+                    Assert.AreEqual(0, player.HeadBob.BobCycle);
+
+                    yield return null;
                 }
-
-                Assert.AreEqual(0, player.HeadBob.BobCycle);
-
-                yield return null;
             }
         }
 
         [UnityTest]
         public IEnumerator MovingPlatformsSmallMovement()
         {
-            player.Movement.MovingPlatforms.Enabled = true;
-
-            for (int i = 0; i < 10; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                for (int j = 0; j < sceneObjects.Count; j++)
+                player.Movement.MovingPlatforms.Enabled = true;
+
+                for (int i = 0; i < 10; i++)
                 {
-                    sceneObjects[j].transform.position += Vector3.forward * 0.00099f;
+                    for (int j = 0; j < sceneObjects.Count; j++)
+                    {
+                        sceneObjects[j].transform.position += Vector3.forward * 0.00099f;
+                    }
+
+                    yield return null;
                 }
 
-                yield return null;
+                Assert.AreNotEqual(0, player.transform.position.z);
             }
-
-            Assert.AreNotEqual(0, player.transform.position.z);
         }
 
         [UnityTest]
         public IEnumerator MultiplierTests()
         {
-            input.moveDirection = new Vector2(0, -1);
-
-            for (int i = 0; i < 300; i++)
+            player.Movement.Acceleration = 0;
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                yield return null;
-            }
+                player.Movement.MoveSpeedMultiplier = 1;
+                player.Movement.JumpHeightMultiplier = 1;
+                
+                input.moveDirection = new Vector2(0, 1);
 
-            AreApproximatelyEqualVector3(new Vector3(0, 0, 2), player.Velocity, 0.1f);
+                yield return WaitFrames(2);
 
-            player.Movement.MoveSpeedMultiplier = 2f;
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
 
-            for (int i = 0; i < 300; i++)
-            {
-                yield return null;
-            }
+                player.Movement.MoveSpeedMultiplier = 2f;
 
-            AreApproximatelyEqualVector3(new Vector3(0, 0, 4), player.Velocity, 0.1f);
+                yield return WaitFrames(2);
+                
+                Assert.AreApproximatelyEqual(6f, player.Velocity.z);
 
-            input.moveDirection = new Vector2(0, 0);
+                input.isJumpingToggle = true;
 
-            for (int i = 0; i < 100; i++)
-            {
-                yield return null;
-            }
+                float highest = 0;
 
-            player.SetPosition(Vector3.zero);
+                yield return WaitFrames(2);
 
-            yield return null;
-            yield return null;
-
-            input.isJumping = true;
-
-            float highest = 0;
-
-            yield return null;
-            yield return null;
-
-            while (!player.Movement.IsGrounded)
-            {
-                if (player.transform.position.y > highest)
+                while (!player.Movement.IsGrounded)
                 {
-                    highest = player.transform.position.y;
+                    if (player.transform.position.y > highest)
+                    {
+                        highest = player.transform.position.y;
+                    }
+                    
+                    yield return null;
                 }
 
-                yield return null;
-            }
+                Assert.AreApproximatelyEqual(2f, highest, 0.25f);
+                player.Movement.JumpHeightMultiplier = 2f;
+                
+                input.isJumpingToggle = true;
 
-            Assert.AreApproximatelyEqual(2f, highest, 0.25f);
+                highest = 0;
 
-            yield return null;
-            yield return null;
+                yield return WaitFrames(2);
 
-            player.Movement.JumpHeightMultiplier = 2;
-            input.isJumping = true;
-            highest = 0;
-
-            yield return null;
-            yield return null;
-
-            while (!player.Movement.IsGrounded)
-            {
-                if (player.transform.position.y > highest)
+                while (!player.Movement.IsGrounded)
                 {
-                    highest = player.transform.position.y;
+                    if (player.transform.position.y > highest)
+                    {
+                        highest = player.transform.position.y;
+                    }
+                    
+                    yield return null;
                 }
-
-                yield return null;
+              
+                Assert.AreApproximatelyEqual(4f, highest, 0.25f);
             }
-
-            Assert.AreApproximatelyEqual(4f, highest, 0.25f);
         }
 
         [UnityTest]
@@ -757,26 +925,26 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator ValidateSmoothedMovementInput()
         {
-            yield return RunTimeScaleTest(ValidateSmoohtedMovementInputRoutine(), ValidateSmoohtedMovementInputRoutine());
-        }
+            yield return RunTimeScaleTest(Test(), Test());
 
-        private IEnumerator ValidateSmoohtedMovementInputRoutine()
-        {
-            input.moveDirection = new Vector2(0, 1);
-            for (int i = 0; i < 100; i++)
+            IEnumerator Test()
             {
-                yield return null;
+                input.moveDirection = new Vector2(0, 1);
+                for (int i = 0; i < 100; i++)
+                {
+                    yield return null;
+                }
+
+                AreApproximatelyEqualVector2(new Vector2(0, 1), player.Movement.SmoothedMovementInput, 0.1f);
+                input.moveDirection = new Vector2(1, 1);
+
+                for (int i = 0; i < 100; i++)
+                {
+                    yield return null;
+                }
+
+                AreApproximatelyEqualVector2(new Vector2(0.7f, 0.7f), player.Movement.SmoothedMovementInput, 0.1f);
             }
-
-            AreApproximatelyEqualVector2(new Vector2(0, 1), player.Movement.SmoothedMovementInput, 0.1f);
-            input.moveDirection = new Vector2(1, 1);
-
-            for (int i = 0; i < 100; i++)
-            {
-                yield return null;
-            }
-
-            AreApproximatelyEqualVector2(new Vector2(0.7f, 0.7f), player.Movement.SmoothedMovementInput, 0.1f);
         }
 
         [UnityTest]
@@ -787,114 +955,119 @@ namespace Hertzole.GoldPlayer.Tests
             sceneObjects.Add(prim);
             player.Movement.JumpHeightMultiplier = 10;
 
-            yield return RunTimeScaleTest(HitHeadOnCeilingRoutine(), HitHeadOnCeilingRoutine());
-        }
+            yield return RunTimeScaleTest(Test(), Test());
 
-        private IEnumerator HitHeadOnCeilingRoutine()
-        {
-            input.isJumping = true;
-
-            yield return null;
-            yield return null;
-
-            int framesStuck = 0;
-
-            while (!player.Movement.IsGrounded)
+            IEnumerator Test()
             {
-                if (player.transform.position.y > 2.35f)
-                {
-                    framesStuck++;
-                }
-                Assert.IsFalse(framesStuck > 10);
+                input.isJumpingToggle = true;
+
                 yield return null;
+                yield return null;
+
+                int framesStuck = 0;
+
+                while (!player.Movement.IsGrounded)
+                {
+                    if (player.transform.position.y > 2.35f)
+                    {
+                        framesStuck++;
+                    }
+                    Assert.IsFalse(framesStuck > 10);
+                    yield return null;
+                }
             }
         }
 
         [UnityTest]
         public IEnumerator CheckIsRunning()
         {
-            yield return RunTimeScaleTest(CheckIsRunningRoutine(), CheckIsRunningRoutine());
-        }
+            yield return RunTimeScaleTest(Test(), Test());
 
-        private IEnumerator CheckIsRunningRoutine()
-        {
-            input.moveDirection = new Vector2(0, -1);
-            input.isRunning = true;
-
-            for (int i = 0; i < 60; i++)
+            IEnumerator Test()
             {
-                yield return null;
-            }
+                input.moveDirection = new Vector2(0, -1);
+                input.isRunning = true;
 
-            Assert.IsTrue(player.Movement.IsRunning);
+                for (int i = 0; i < 60; i++)
+                {
+                    yield return null;
+                }
+
+                Assert.IsTrue(player.Movement.IsRunning);
+            }
         }
 
         [UnityTest]
         public IEnumerator CameraOnlyRotateTest()
         {
-            yield return RunTimeScaleTest(CameraOnlyRotateTestRoutine(), CameraOnlyRotateTestRoutine());
-        }
+            yield return RunTimeScaleTest(Test(), Test());
 
-        private IEnumerator CameraOnlyRotateTestRoutine()
-        {
-            player.Camera.BodyAngle = -180;
-            input.moveDirection = new Vector2(0, -1);
-            input.mouseInput = new Vector2(0, -100);
-
-            yield return null;
-
-            player.Camera.RotateCameraOnly = true;
-
-            for (int i = 0; i < 60; i++)
+            IEnumerator Test()
             {
-                yield return null;
-            }
+                player.Camera.BodyAngle = -180;
+                input.moveDirection = new Vector2(0, -1);
+                input.mouseInput = new Vector2(0, -100);
 
-            Assert.IsTrue(player.transform.position.z > 0);
-            Assert.IsTrue(player.transform.position.x < 0.5f);
-            Assert.IsTrue(player.transform.position.x > -0.5f);
+                yield return null;
+
+                player.Camera.RotateCameraOnly = true;
+
+                for (int i = 0; i < 60; i++)
+                {
+                    yield return null;
+                }
+
+                Assert.IsTrue(player.transform.position.z > 0);
+                Assert.IsTrue(player.transform.position.x < 0.5f);
+                Assert.IsTrue(player.transform.position.x > -0.5f);
+            }
         }
 
         [UnityTest]
         public IEnumerator GroundedTest()
         {
-            player.Movement.GroundCheck = GroundCheckType.Sphere;
-            Assert.AreEqual(player.Movement.GroundCheck, GroundCheckType.Sphere);
-
-            yield return GroundedRoutine();
-
-            player.Movement.GroundCheck = GroundCheckType.Raycast;
-            Assert.AreEqual(player.Movement.GroundCheck, GroundCheckType.Raycast);
-
-            yield return GroundedRoutine();
-        }
-
-        private IEnumerator GroundedRoutine()
-        {
-            for (int i = 0; i < 10; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                yield return null;
-            }
+                player.Movement.GroundCheck = GroundCheckType.Sphere;
+                Assert.AreEqual(player.Movement.GroundCheck, GroundCheckType.Sphere);
 
-            Assert.IsTrue(player.Movement.IsGrounded);
+                yield return GroundedRoutine();
 
-            yield return null;
+                player.Movement.GroundCheck = GroundCheckType.Raycast;
+                Assert.AreEqual(player.Movement.GroundCheck, GroundCheckType.Raycast);
 
-            player.SetPosition(new Vector3(0, 100, 0));
+                yield return GroundedRoutine();
 
-            for (int i = 0; i < 10; i++)
-            {
-                yield return null;
-            }
-            Assert.IsFalse(player.Movement.IsGrounded);
+                IEnumerator GroundedRoutine()
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        yield return null;
+                    }
 
-            yield return null;
+                    Assert.IsTrue(player.Movement.IsGrounded);
 
-            player.SetPosition(new Vector3(0, 0, 0));
+                    yield return null;
 
-            for (int i = 0; i < 10; i++)
-            {
-                yield return null;
+                    player.SetPosition(new Vector3(0, 100, 0));
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        yield return null;
+                    }
+                    Assert.IsFalse(player.Movement.IsGrounded);
+
+                    yield return null;
+
+                    player.SetPosition(new Vector3(0, 0, 0));
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        yield return null;
+                    }
+                }
             }
         }
 
@@ -904,28 +1077,40 @@ namespace Hertzole.GoldPlayer.Tests
             player.Movement.JumpingRequiresStamina = true;
             player.Movement.JumpStaminaRequire = 10;
             player.Movement.JumpStaminaCost = 10;
-            player.Movement.Stamina.CurrentStamina = 100;
             player.Movement.Stamina.EnableStamina = true;
             player.Movement.Stamina.RegenWait = 100;
             player.Movement.Stamina.MaxStamina = 100;
-
-            Assert.IsTrue(player.Movement.ShouldPlayerJump());
-
-            player.Movement.Stamina.CurrentStamina = 0;
-
-            Assert.IsFalse(player.Movement.ShouldPlayerJump());
-
-            player.Movement.Stamina.CurrentStamina = 100;
-
-            input.isJumping = true;
-            for (int i = 0; i < 10; i++)
+            player.Movement.AirJump = true;
+            player.Movement.AirJumpsAmount = 10;
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
+                player.Movement.Stamina.CurrentStamina = 100;
+                input.isJumpingToggle = true;
+
+                yield return null;
+                
+                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+
+                player.Movement.Stamina.CurrentStamina = 0;
+                input.isJumpingToggle = false;
+
+                yield return null;
+
+                Assert.IsFalse(player.Movement.ShouldPlayerJump());
+
+                player.Movement.Stamina.CurrentStamina = 100;
+
+                input.isJumpingToggle = true;
+
+                yield return WaitFrames(10);
+
+                Assert.AreEqual(player.Movement.Stamina.CurrentStamina, 90);
+
                 yield return null;
             }
-
-            Assert.AreEqual(player.Movement.Stamina.CurrentStamina, 90);
-
-            yield return null;
         }
 
         [UnityTest]
@@ -933,42 +1118,54 @@ namespace Hertzole.GoldPlayer.Tests
         {
             player.Movement.AirJump = true;
             player.Movement.AirJumpsAmount = 5;
-
-            for (int i = 0; i < 6; i++)
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                Assert.IsTrue(player.Movement.ShouldPlayerJump());
-                input.isJumping = true;
-
-                for (int j = 0; j < 30; j++)
+                // Wait to make sure the player is grounded.
+                yield return WaitFrames(5);
+                
+                Assert.IsTrue(player.Movement.IsGrounded);
+                
+                for (int i = 0; i < 6; i++)
                 {
-                    yield return null;
-                }
-            }
+                    Assert.IsTrue(player.Movement.ShouldPlayerJump(), "Player should jump but isn't marked as such.");
+                    input.isJumpingToggle = true;
 
-            Assert.IsFalse(player.Movement.ShouldPlayerJump());
+                    yield return WaitFrames(10);
+                }
+                
+                Assert.IsFalse(player.Movement.ShouldPlayerJump(), "Player should not jump but is marked as it should.");
+            }
         }
 
         [UnityTest]
         public IEnumerator AirJumpTime()
         {
-            player.Movement.AirJump = true;
-            player.Movement.AirJumpTime = 1;
-
-            yield return null;
-
-            Assert.IsTrue(player.Movement.ShouldPlayerJump());
-
-            yield return null;
-
-            player.SetPosition(new Vector3(0, 100, 0));
-
-            for (int i = 0; i < 30; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                yield return null;
-            }
+                player.Movement.AirJump = true;
+                player.Movement.AirJumpTime = 1;
 
-            Assert.IsTrue(player.Movement.IsFalling);
-            Assert.IsTrue(player.Movement.ShouldPlayerJump());
+                yield return null;
+
+                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+
+                yield return null;
+
+                player.SetPosition(new Vector3(0, 100, 0));
+
+                for (int i = 0; i < 30; i++)
+                {
+                    yield return null;
+                }
+
+                Assert.IsTrue(player.Movement.IsFalling);
+                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+            }
         }
 
         [UnityTest]
@@ -985,7 +1182,7 @@ namespace Hertzole.GoldPlayer.Tests
                 input.isRunning = true;
 
                 yield return WaitFrames(60);
-                input.isJumping = true;
+                input.isJumpingToggle = true;
 
                 yield return WaitFrames(60);
                 input.moveDirection = new Vector2(0, -1);
@@ -1001,30 +1198,41 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator CrouchJumping()
         {
-            player.Movement.CrouchJumping = false;
-            input.isCrouching = true;
-
-            yield return WaitFrames(2);
-
-            Assert.IsTrue(player.Movement.IsCrouching);
-
-            input.isJumping = false;
-
-            for (int i = 0; i < 30; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
             {
-                yield return null;
-                Assert.IsFalse(player.Movement.IsJumping);
+                yield return WaitFrames(10);
+                
+                Assert.IsTrue(player.Movement.IsGrounded);
+                
+                player.Movement.CrouchJumping = false;
+                input.isCrouching = true;
+
+                yield return WaitFrames(10);
+                
+                Assert.IsTrue(player.Movement.IsCrouching);
+
+                input.isJumpingToggle = true;
+
+                for (int i = 0; i < 30; i++)
+                {
+                    Assert.IsFalse(player.Movement.IsJumping);
+                    yield return null;
+                }
+
+                yield return WaitFrames(2);
+
+                player.Movement.CrouchJumping = true;
+                input.isJumpingToggle = true;
+
+                yield return WaitFrames(1);
+
+                Assert.IsTrue(player.Movement.IsJumping);
+                Assert.IsTrue(player.Movement.IsCrouching);
+
+                yield return WaitFrames(60);
             }
-
-            yield return WaitFrames(2);
-
-            player.Movement.CrouchJumping = true;
-            input.isJumping = true;
-
-            yield return WaitFrames(1);
-
-            Assert.IsTrue(player.Movement.IsJumping);
-            Assert.IsTrue(player.Movement.IsCrouching);
         }
 
         [UnityTest]
@@ -1035,35 +1243,46 @@ namespace Hertzole.GoldPlayer.Tests
             player.Movement.AirControl = 0;
             player.Movement.AirJump = true;
             player.Movement.AirJumpsAmount = 2;
-            input.moveDirection = new Vector2(0, 1);
-            input.isJumping = true;
+            
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                // Make sure the player is grounded.
+                yield return WaitFrames(10);
+                
+                Assert.IsTrue(player.Movement.IsGrounded);
+                
+                input.moveDirection = new Vector2(0, 1);
+                input.isJumpingToggle = true;
 
-            yield return WaitFrames(2);
+                yield return WaitFrames(2);
 
-            Assert.IsTrue(player.Movement.IsJumping);
-            Assert.IsTrue(player.Movement.airVelocity.z > 0f);
+                Assert.IsTrue(player.Movement.IsJumping);
+                Assert.IsTrue(player.Movement.airVelocity.z > 0f);
 
-            yield return WaitFrames(2);
+                yield return WaitFrames(2);
 
-            input.moveDirection = new Vector2(0, -1);
-            yield return WaitFrames(60);
-            input.isJumping = true;
+                input.moveDirection = new Vector2(0, -1);
+                yield return WaitFrames(60);
+                input.isJumpingToggle = true;
 
-            yield return WaitFrames(60);
+                yield return WaitFrames(60);
 
-            Assert.IsTrue(player.Movement.IsJumping);
-            Assert.IsTrue(player.Movement.airVelocity.z < 0f);
+                Assert.IsTrue(player.Movement.IsJumping);
+                Assert.IsTrue(player.Movement.airVelocity.z < 0f);
 
-            yield return WaitFrames(10);
+                yield return WaitFrames(10);
 
-            input.moveDirection = new Vector2(0, 1);
-            yield return WaitFrames(60);
-            input.isJumping = true;
+                input.moveDirection = new Vector2(0, 1);
+                yield return WaitFrames(60);
+                input.isJumpingToggle = true;
 
-            yield return WaitFrames(60);
+                yield return WaitFrames(60);
 
-            Assert.IsTrue(player.Movement.IsJumping);
-            Assert.IsTrue(player.Movement.airVelocity.z > 0f);
+                Assert.IsTrue(player.Movement.IsJumping);
+                Assert.IsTrue(player.Movement.airVelocity.z > 0f);
+            }
         }
 
         [UnityTest]

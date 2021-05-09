@@ -47,8 +47,8 @@ namespace Hertzole.GoldPlayer
         private Vector3 currentPlatformLocalPoint = Vector3.zero;
         private Vector3 currentPlatformGlobalPoint = Vector3.zero;
 
-        private Quaternion currentPlatformLocalRotation = Quaternion.identity;
-        private Quaternion currentPlatformGlobalRotation = Quaternion.identity;
+        internal Quaternion currentPlatformLocalRotation = Quaternion.identity;
+        internal Quaternion currentPlatformGlobalRotation = Quaternion.identity;
 
         // The current hit directly underneath the player.
         private RaycastHit groundHit;
@@ -148,12 +148,11 @@ namespace Hertzole.GoldPlayer
             }
 
             Vector3 position = PlayerTransform.position;
-            Quaternion rotation = PlayerTransform.rotation;
-            
             currentPlatformGlobalPoint = position;
             currentPlatformLastPosition = currentPlatform.position;
             currentPlatformLocalPoint = currentPlatform.InverseTransformPoint(position);
 
+            Quaternion rotation = PlayerTransform.rotation;
             currentPlatformGlobalRotation = rotation;
             currentPlatformLocalRotation = Quaternion.Inverse(currentPlatform.rotation) * rotation;
         }
