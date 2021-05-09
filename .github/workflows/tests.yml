@@ -19,12 +19,12 @@ jobs:
         lfs: true
 
     # Cache
-    - uses: actions/cache@v1.1.0
+    - uses: actions/cache@v2.1.4
       with:
         path: Library
         key: Library
     
     - name: Run tests
-      uses: webbertakken/unity-test-runner@v1.6
+      uses: game-ci/unity-test-runner@v2
       with:
-        unityVersion: 2019.4.14f1
+        testMode: "playmode"
