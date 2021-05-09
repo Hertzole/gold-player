@@ -59,7 +59,7 @@ namespace Hertzole.GoldPlayer
             minNormalY = vector.y;
         }
 
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
             // If it isn't enabled, just stop here.
             if (!enabled)

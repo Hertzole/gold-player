@@ -600,40 +600,35 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Called every frame.
         /// </summary>
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
-            if (unscaledTime)
-            {
-                deltaTime = Time.unscaledDeltaTime;
-            }
-
             previousPosition = PlayerTransform.position;
 
             // Call update on the stamina module.
-            stamina.OnUpdate(deltaTime);
+            stamina.OnUpdate(deltaTime, unscaledDeltaTime);
             // Call update on the moving platforms module.
-            movingPlatforms.OnUpdate(deltaTime);
+            movingPlatforms.OnUpdate(deltaTime, unscaledDeltaTime);
 
             // Check the grounded state.
             isGrounded = CheckGrounded();
             // Update the input.
-            GetInput(deltaTime);
+            GetInput(unscaledTime ? unscaledDeltaTime : deltaTime);
 
             // Do movement.
-            BasicMovement(deltaTime);
+            BasicMovement(unscaledTime ? unscaledDeltaTime : deltaTime);
             // Do crouching.
-            Crouching(deltaTime);
+            Crouching(unscaledTime ? unscaledDeltaTime : deltaTime);
             // Do running.
             Running();
             // Do force update.
-            ForceUpdate(deltaTime);
+            ForceUpdate(unscaledTime ? unscaledDeltaTime : deltaTime);
 
             // Move the player using the character controller.
-            CharacterController.Move(moveDirection * deltaTime);
+            CharacterController.Move(moveDirection * (unscaledTime ? unscaledDeltaTime : deltaTime));
 
             if (!movingPlatforms.IsMoving || movementInput != Vector2.zero)
             {
-                velocity = (previousPosition - PlayerTransform.position) / deltaTime;
+                velocity = (previousPosition - PlayerTransform.position) / (unscaledTime ? unscaledDeltaTime : deltaTime);
             }
             else
             {

@@ -112,7 +112,7 @@ namespace Hertzole.GoldPlayer.Tests
             }
         }
 
-        public bool GetButtonUp(string buttoName)
+        public bool GetButtonUp(string buttonName)
         {
             return false;
         }

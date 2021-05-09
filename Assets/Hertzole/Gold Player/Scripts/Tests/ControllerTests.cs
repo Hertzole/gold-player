@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.TestTools;
@@ -31,7 +32,6 @@ namespace Hertzole.GoldPlayer.Tests
             tempPlayer.AddComponent<GoldPlayerTestInput>();
             GoldPlayerController pl = tempPlayer.AddComponent<GoldPlayerController>();
 
-
             pl.InitOnStart = false;
 
             Assert.IsFalse(pl.HasBeenFullyInitialized);
@@ -46,6 +46,7 @@ namespace Hertzole.GoldPlayer.Tests
             tempPlayer = new GameObject();
             tempPlayer.AddComponent<GoldPlayerTestInput>();
             pl = tempPlayer.AddComponent<GoldPlayerController>();
+            pl.Camera.TargetCamera = player.Camera.TargetCamera;
             pl.Camera.FieldOfViewKick.EnableFOVKick = false;
             pl.HeadBob.EnableBob = false;
             pl.Camera.CameraHead = tempPlayer.transform;

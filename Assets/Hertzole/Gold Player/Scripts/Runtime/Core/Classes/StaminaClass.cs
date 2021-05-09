@@ -83,7 +83,7 @@ namespace Hertzole.GoldPlayer
             currentRegenWait = regenWait;
         }
 
-        public override void OnUpdate(float deltaTime)
+        public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
             // Do the stamina logic.
             HandleStamina(deltaTime);
