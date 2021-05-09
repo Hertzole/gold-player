@@ -3089,12 +3089,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.MovingPlatformsClass.OnUpdate
   nameWithType: MovingPlatformsClass.OnUpdate
-- uid: Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform(System.Single)
-  name: UpdatePlatform(Single)
-  href: api/Hertzole.GoldPlayer.MovingPlatformsClass.html#Hertzole_GoldPlayer_MovingPlatformsClass_UpdatePlatform_System_Single_
-  commentId: M:Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform(System.Single)
-  fullName: Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform(System.Single)
-  nameWithType: MovingPlatformsClass.UpdatePlatform(Single)
+- uid: Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform
+  name: UpdatePlatform()
+  href: api/Hertzole.GoldPlayer.MovingPlatformsClass.html#Hertzole_GoldPlayer_MovingPlatformsClass_UpdatePlatform
+  commentId: M:Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform
+  fullName: Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform()
+  nameWithType: MovingPlatformsClass.UpdatePlatform()
 - uid: Hertzole.GoldPlayer.MovingPlatformsClass.UpdatePlatform*
   name: UpdatePlatform
   href: api/Hertzole.GoldPlayer.MovingPlatformsClass.html#Hertzole_GoldPlayer_MovingPlatformsClass_UpdatePlatform_
@@ -5656,3 +5656,16 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.StaminaClass.StillThreshold
   nameWithType: StaminaClass.StillThreshold
+- uid: Hertzole.GoldPlayer.StaminaClass.UnscaledTime
+  name: UnscaledTime
+  href: api/Hertzole.GoldPlayer.StaminaClass.html#Hertzole_GoldPlayer_StaminaClass_UnscaledTime
+  commentId: P:Hertzole.GoldPlayer.StaminaClass.UnscaledTime
+  fullName: Hertzole.GoldPlayer.StaminaClass.UnscaledTime
+  nameWithType: StaminaClass.UnscaledTime
+- uid: Hertzole.GoldPlayer.StaminaClass.UnscaledTime*
+  name: UnscaledTime
+  href: api/Hertzole.GoldPlayer.StaminaClass.html#Hertzole_GoldPlayer_StaminaClass_UnscaledTime_
+  commentId: Overload:Hertzole.GoldPlayer.StaminaClass.UnscaledTime
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.StaminaClass.UnscaledTime
+  nameWithType: StaminaClass.UnscaledTime
