@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -75,10 +76,8 @@ namespace Hertzole.GoldPlayer
             audioClips = new AudioClip[0];
         }
 
-        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch)
+        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch) : this(enabled)
         {
-            // Set enabled to the provided enabled parameter.
-            this.enabled = enabled;
             // Set random pitch to the provided random pitch parameter.
             this.randomPitch = randomPitch;
             // Set pitch to the provided pitch parameter.
@@ -93,18 +92,9 @@ namespace Hertzole.GoldPlayer
             audioClips = new AudioClip[0];
         }
 
-        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume)
+        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume) : 
+            this(enabled, randomPitch, pitch, minPitch, maxPitch)
         {
-            // Set enabled to the provided enabled parameter.
-            this.enabled = enabled;
-            // Set random pitch to the provided random pitch parameter.
-            this.randomPitch = randomPitch;
-            // Set pitch to the provided pitch parameter.
-            this.pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch parameter.
-            this.minPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch parameter.
-            this.maxPitch = maxPitch;
             // Set change volume to the provided change volume parameter.
             this.changeVolume = changeVolume;
             // Set the volume to the provided volume parameter.
@@ -113,45 +103,15 @@ namespace Hertzole.GoldPlayer
             audioClips = new AudioClip[0];
         }
 
-        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip audioClip)
+        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip[] audioClips) : 
+            this(enabled, randomPitch, pitch, minPitch, maxPitch, changeVolume, volume)
         {
-            // Set enabled to the provided enabled parameter.
-            this.enabled = enabled;
-            // Set random pitch to the provided random pitch parameter.
-            this.randomPitch = randomPitch;
-            // Set pitch to the provided pitch parameter.
-            this.pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch parameter.
-            this.minPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch parameter.
-            this.maxPitch = maxPitch;
-            // Set change volume to the provided change volume parameter.
-            this.changeVolume = changeVolume;
-            // Set the volume to the provided volume parameter.
-            this.volume = volume;
-            // Set audio clips to an array with only one clip that was provided.
-            audioClips = new AudioClip[1] { audioClip };
-        }
-
-        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip[] audioClips)
-        {
-            // Set enabled to the provided enabled parameter.
-            this.enabled = enabled;
-            // Set random pitch to the provided random pitch parameter.
-            this.randomPitch = randomPitch;
-            // Set pitch to the provided pitch parameter.
-            this.pitch = pitch;
-            // Set the minimum pitch to the provided minimum pitch parameter.
-            this.minPitch = minPitch;
-            // Set the maximum pitch to the provided maximum pitch parameter.
-            this.maxPitch = maxPitch;
-            // Set change volume to the provided change volume parameter.
-            this.changeVolume = changeVolume;
-            // Set the volume to the provided volume parameter.
-            this.volume = volume;
             // Set audio clips to the array of clips provided.
             this.audioClips = audioClips;
         }
+        
+        public AudioItem(bool enabled, bool randomPitch, float pitch, float minPitch, float maxPitch, bool changeVolume, float volume, AudioClip audioClip) : 
+            this(enabled, randomPitch, pitch, minPitch, maxPitch, changeVolume, volume, new AudioClip[1] { audioClip }) { }
 
         /// <summary>
         /// Plays a random audio clip at on a audio source and uses the settings set on the item.
@@ -163,7 +123,7 @@ namespace Hertzole.GoldPlayer
             if (enabled && audioSource != null)
             {
                 // Only play if there are any audio clips.
-                if (audioClips.Length > 0)
+                if (audioClips != null && audioClips.Length > 0)
                 {
                     // If random pitch is enabled, set the pitch to something random between min and max pitch.
                     // Else just set it to the pitch set when random pitch is disabled.
@@ -202,7 +162,7 @@ namespace Hertzole.GoldPlayer
                 else
                 {
                     // There were no audio clips, so tell the user about it.
-                    Debug.LogWarning("Tried to play audio on '" + audioSource.name + "' but no audio clips have been set!");
+                    Debug.LogWarning($"Tried to play audio on '{audioSource.name}' but no audio clips have been set!");
                 }
             }
         }
@@ -219,7 +179,40 @@ namespace Hertzole.GoldPlayer
         public bool Equals(AudioItem other)
         {
             return enabled == other.enabled && randomPitch == other.randomPitch && changeVolume == other.changeVolume && pitch == other.pitch &&
-                   minPitch == other.minPitch && maxPitch == other.maxPitch && volume == other.volume && EqualityComparer<AudioClip[]>.Default.Equals(audioClips, other.audioClips);
+                   minPitch == other.minPitch && maxPitch == other.maxPitch && volume == other.volume && AreAudioClipsEqual(other.audioClips);
+        }
+
+        internal bool AreAudioClipsEqual(AudioClip[] other)
+        {
+            if (audioClips == null && other == null)
+            {
+                return true;
+            }
+
+            if (audioClips == null && other != null)
+            {
+                return false;
+            }
+
+            if (other == null)
+            {
+                return false;
+            }
+
+            if (audioClips.Length != other.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < audioClips.Length; i++)
+            {
+                if (audioClips[i] != other[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public override int GetHashCode()
@@ -232,8 +225,27 @@ namespace Hertzole.GoldPlayer
             hashCode = hashCode * -1521134295 + minPitch.GetHashCode();
             hashCode = hashCode * -1521134295 + maxPitch.GetHashCode();
             hashCode = hashCode * -1521134295 + volume.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<AudioClip[]>.Default.GetHashCode(audioClips);
+            hashCode = hashCode * -1521134295 + GetAudioClipsHashCode();
             return hashCode;
+        }
+
+        internal int GetAudioClipsHashCode()
+        {
+            if (audioClips == null)
+            {
+                return 0;
+            }
+            
+            unchecked
+            {
+                int hash = audioClips.Length.GetHashCode();
+                for (int i = 0; i < audioClips.Length; i++)
+                {
+                    hash = hash * 27 * (audioClips[i] == null ? 1 : audioClips[i].GetHashCode());
+                }
+
+                return hash;
+            }
         }
 
         public static bool operator ==(AudioItem left, AudioItem right)

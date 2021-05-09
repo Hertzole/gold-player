@@ -1,7 +1,6 @@
-﻿#if UNITY_2018_3_OR_NEWER
-using NUnit.Framework;
+﻿#if GOLD_PLAYER_TESTS && UNITY_2018_3_OR_NEWER
 using System.Collections;
-using UnityEngine;
+using NUnit.Framework;
 using UnityEngine.TestTools;
 using UnityEngine.TestTools.Constraints;
 using Is = UnityEngine.TestTools.Constraints.Is;

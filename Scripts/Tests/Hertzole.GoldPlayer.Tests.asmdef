@@ -5,7 +5,6 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.InputSystem",
-        "Unity.PerformanceTesting",
         "Cinemachine"
     ],
     "includePlatforms": [],
@@ -34,6 +33,11 @@
             "name": "com.unity.cinemachine",
             "expression": "",
             "define": "GOLD_PLAYER_CINEMACHINE"
+        },
+        {
+            "name": "com.unity.test-framework",
+            "expression": "",
+            "define": "GOLD_PLAYER_TESTS"
         }
     ],
     "noEngineReferences": false

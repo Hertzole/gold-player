@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if GOLD_PLAYER_TESTS && !GOLD_PLAYER_DISABLE_GRAPHICS
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering;
@@ -216,3 +217,4 @@ namespace Hertzole.GoldPlayer.Tests
         }
     }
 }
+#endif

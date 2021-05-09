@@ -1,4 +1,4 @@
-﻿#if !GOLD_PLAYER_DISABLE_INTERACTION
+﻿#if GOLD_PLAYER_TESTS && !GOLD_PLAYER_DISABLE_INTERACTION
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
