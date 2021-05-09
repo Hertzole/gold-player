@@ -624,11 +624,11 @@ namespace Hertzole.GoldPlayer.Tests
         {
             player.Movement.MovingPlatforms.Enabled = true;
 
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < sceneObjects.Count; j++)
                 {
-                    sceneObjects[j].transform.position += Vector3.forward * Time.deltaTime * 0.00099f;
+                    sceneObjects[j].transform.position += Vector3.forward * 0.00099f;
                 }
 
                 yield return null;

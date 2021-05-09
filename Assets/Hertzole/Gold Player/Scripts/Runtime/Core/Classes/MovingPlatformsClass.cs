@@ -40,8 +40,8 @@ namespace Hertzole.GoldPlayer
         private const float CHECK_DISTANCE = 0.2f;
 
         // The current platform the player should be moving with.
-        private Transform currentPlatform = null;
-        private Transform recordedPlatform = null;
+        private Transform currentPlatform;
+        private Transform recordedPlatform;
 
         private Vector3 currentPlatformLastPosition = Vector3.zero;
         private Vector3 currentPlatformLocalPoint = Vector3.zero;
@@ -73,11 +73,11 @@ namespace Hertzole.GoldPlayer
             }
 
             Transform previousPlatform = currentPlatform;
-            UpdatePlatform(deltaTime);
+            UpdatePlatform();
             PostUpdatePlatform(previousPlatform);
         }
 
-        protected virtual void UpdatePlatform(float deltaTime)
+        protected virtual void UpdatePlatform()
         {
             if (currentPlatform == null || recordedPlatform == null)
             {
@@ -98,8 +98,8 @@ namespace Hertzole.GoldPlayer
                 Vector3 moveDistance = (newGlobalPlatformPoint - currentPlatformGlobalPoint);
                 if (DidPlatformMove)
                 {
-                    // If the move distance is really small the player won't move. If it's really small, just 
-                    // add it to the position as the small amount won't be noticable. 
+                    // If the move distance is really small the player won't move. In that case,
+                    // just add it to the position as the small amount won't be noticeable. 
                     // Otherwise just move normally.
                     if (moveDistance.magnitude < 0.001f)
                     {
@@ -124,9 +124,10 @@ namespace Hertzole.GoldPlayer
 
             if (moveRotation)
             {
+                Vector3 up = PlayerTransform.up;
                 Quaternion newGlobalPlatformRotation = usePlatform.rotation * currentPlatformLocalRotation;
                 Quaternion rotationDiff = newGlobalPlatformRotation * Quaternion.Inverse(currentPlatformGlobalRotation);
-                rotationDiff = Quaternion.FromToRotation(rotationDiff * PlayerTransform.up, PlayerTransform.up) * rotationDiff;
+                rotationDiff = Quaternion.FromToRotation(rotationDiff * up, up) * rotationDiff;
                 PlayerTransform.rotation = rotationDiff * PlayerTransform.rotation;
             }
 
@@ -146,12 +147,15 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            currentPlatformGlobalPoint = PlayerTransform.position;
+            Vector3 position = PlayerTransform.position;
+            Quaternion rotation = PlayerTransform.rotation;
+            
+            currentPlatformGlobalPoint = position;
             currentPlatformLastPosition = currentPlatform.position;
-            currentPlatformLocalPoint = currentPlatform.InverseTransformPoint(PlayerTransform.position);
+            currentPlatformLocalPoint = currentPlatform.InverseTransformPoint(position);
 
-            currentPlatformGlobalRotation = PlayerTransform.rotation;
-            currentPlatformLocalRotation = Quaternion.Inverse(currentPlatform.rotation) * PlayerTransform.rotation;
+            currentPlatformGlobalRotation = rotation;
+            currentPlatformLocalRotation = Quaternion.Inverse(currentPlatform.rotation) * rotation;
         }
 
         private void CheckUnderneath()

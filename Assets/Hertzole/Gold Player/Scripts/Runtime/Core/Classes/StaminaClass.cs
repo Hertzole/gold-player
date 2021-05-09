@@ -13,6 +13,9 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Determines if stamina should be enabled.")]
         [FormerlySerializedAs("m_EnableStamina")]
         private bool enableStamina = false;
+        [SerializeField] 
+        [Tooltip("If true, stamina will use unscaled delta time.")]
+        private bool unscaledTime = false;
         [SerializeField]
         [Tooltip("Sets when the stamina should be drained.")]
         [FormerlySerializedAs("m_DrainStaminaWhen")]
@@ -48,6 +51,8 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> Determines if stamina should be enabled. </summary>
         public bool EnableStamina { get { return enableStamina; } set { enableStamina = value; } }
+        /// <summary> If true, stamina will use unscaled delta time. </summary>
+        public bool UnscaledTime { get { return unscaledTime; } set { unscaledTime = value; } }
         /// <summary> Sets when the stamina should be drained. </summary>
         public RunAction DrainStaminaWhen { get { return drainStaminaWhen; } set { drainStaminaWhen = value; } }
         /// <summary> The maximum amount of stamina. </summary>
@@ -86,7 +91,7 @@ namespace Hertzole.GoldPlayer
         public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
         {
             // Do the stamina logic.
-            HandleStamina(deltaTime);
+            HandleStamina(unscaledTime ? unscaledDeltaTime : deltaTime);
         }
 
         /// <summary>
@@ -106,12 +111,8 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            bool drainStamina = true;
             // We need to set it to false here or else the player will just lose stamina by standing still.
-            if (drainStaminaWhen == RunAction.None)
-            {
-                drainStamina = false;
-            }
+            bool drainStamina = drainStaminaWhen != RunAction.None;
 
             // Only check if we need to drain stamina if we're still draining stamina.
             if (drainStamina)

@@ -8,6 +8,7 @@
 - Added option to only rotate the camera without rotating the root transform.
 - Added support for using Vector2 with legacy input manager.
 - Added support for using legacy Gold Player Input component with Gold Player Input System if 'Both' is set in input backend.
+- Added zoom feature.
 
 ### Changes:
 - Revamped how Gold Player project settings are saved. Old settings will be upgraded.
@@ -16,6 +17,8 @@
 - All virtual methods and protected fields have been turned private.
 - Bob target is now a child of camera head by default due to the change regarding only rotating the camera.
 - When Cinemachine is enabled, the newly created player object will have a virtual camera instead of a normal camera.
+- Stamina now has control over unscaled time by itself.
+- **[BREAKING]** Target Camera has been moved from field of view kick to player camera instead.
 
 ### Fixed:
 - Fixed head bob not working on time scale 0.

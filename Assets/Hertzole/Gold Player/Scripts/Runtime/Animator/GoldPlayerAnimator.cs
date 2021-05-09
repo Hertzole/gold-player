@@ -65,6 +65,8 @@ namespace Hertzole.GoldPlayer
         [HideInInspector]
         private GoldPlayerController playerController = null;
 
+        private bool hasGoldPlayer;
+        
         // The hashes of the parameters.
         private int moveXHash;
         private int moveYHash;
@@ -151,6 +153,8 @@ namespace Hertzole.GoldPlayer
             }
 
             UpdateTargetLookAngle();
+
+            hasGoldPlayer = playerController != null;
 #endif
         }
 
@@ -238,7 +242,7 @@ namespace Hertzole.GoldPlayer
             }
 
             // Get the direction relative transform from the character controller.
-            Vector3 velocity = transform.InverseTransformDirection(controller.velocity);
+            Vector3 velocity = transform.InverseTransformDirection(hasGoldPlayer ? controller.velocity : playerController.Velocity);
             velocity /= maxSpeed;
 
             // It only needs to smooth the value if value smooth is above 0.
@@ -272,7 +276,7 @@ namespace Hertzole.GoldPlayer
         protected virtual void CalculateLookAngle()
         {
             // If look angle is disabled, stop here.
-            if (!this.lookAngle.enabled)
+            if (!lookAngle.enabled)
             {
                 return;
             }
@@ -284,20 +288,20 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            float lookAngle;
+            float currentLookAngle;
             // If the look angle is below 90 degrees, we're looking down so make the value -X.
             // Else we're looking up and we just want to go from 0 to 90, so take away 360 from it.
             if (targetLookAngle.eulerAngles.x <= 90f)
             {
-                lookAngle = -targetLookAngle.eulerAngles.x;
+                currentLookAngle = -targetLookAngle.eulerAngles.x;
             }
             else
             {
-                lookAngle = 360 - targetLookAngle.eulerAngles.x;
+                currentLookAngle = 360 - targetLookAngle.eulerAngles.x;
             }
 
             // Set the look angle parameter.
-            animator.SetFloat(lookAngleHash, lookAngle);
+            animator.SetFloat(lookAngleHash, currentLookAngle);
         }
 
 #if UNITY_EDITOR
