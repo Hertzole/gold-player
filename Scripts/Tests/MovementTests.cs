@@ -890,6 +890,12 @@ namespace Hertzole.GoldPlayer.Tests
 
             player.Movement.Gravity = -10;
             Assert.AreEqual(player.Movement.Gravity, 10);
+            
+#if UNITY_EDITOR
+            player.Movement.gravity = -10;
+            player.Movement.OnValidate();
+            Assert.AreEqual(player.Movement.Gravity, 10);
+#endif
 
             yield return null;
         }
@@ -903,6 +909,12 @@ namespace Hertzole.GoldPlayer.Tests
 
             player.Movement.GroundStick = -10;
             Assert.AreEqual(player.Movement.GroundStick, 10);
+            
+#if UNITY_EDITOR
+            player.Movement.groundStick = -10;
+            player.Movement.OnValidate();
+            Assert.AreEqual(player.Movement.GroundStick, 10);
+#endif
 
             yield return null;
         }
@@ -919,6 +931,11 @@ namespace Hertzole.GoldPlayer.Tests
             Vector3[] rays = new Vector3[0];
             LogAssert.Expect(LogType.Error, "The provided array needs to be the same as Ray Amount + 1 (11)");
             player.Movement.CreateGroundCheckRayCircle(ref rays, Vector3.zero, 0f);
+
+            player.Movement.RayAmount = 0;
+            player.Movement.rayAmount = 10;
+            player.Movement.OnValidate();
+            Assert.AreEqual(player.Movement.groundCheckRays.Length, player.Movement.rayAmount + 1);
 
             yield return null;
         }
@@ -1018,9 +1035,10 @@ namespace Hertzole.GoldPlayer.Tests
                     yield return null;
                 }
 
-                Assert.IsTrue(player.transform.position.z > 0);
-                Assert.IsTrue(player.transform.position.x < 0.5f);
-                Assert.IsTrue(player.transform.position.x > -0.5f);
+                Vector3 position = player.transform.position;
+                Assert.IsTrue(position.z > 0);
+                Assert.IsTrue(position.x < 0.5f);
+                Assert.IsTrue(position.x > -0.5f);
             }
         }
 
@@ -1093,14 +1111,15 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return null;
                 
-                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+                Assert.IsTrue(player.Movement.PressedJump);
+                Assert.IsTrue(player.Movement.ShouldJump);
 
                 player.Movement.Stamina.CurrentStamina = 0;
                 input.isJumpingToggle = false;
 
                 yield return null;
 
-                Assert.IsFalse(player.Movement.ShouldPlayerJump());
+                Assert.IsFalse(player.Movement.ShouldJump);
 
                 player.Movement.Stamina.CurrentStamina = 100;
 
@@ -1131,13 +1150,13 @@ namespace Hertzole.GoldPlayer.Tests
                 
                 for (int i = 0; i < 6; i++)
                 {
-                    Assert.IsTrue(player.Movement.ShouldPlayerJump(), "Player should jump but isn't marked as such.");
+                    Assert.IsTrue(player.Movement.ShouldJump, "Player should jump but isn't marked as such.");
                     input.isJumpingToggle = true;
 
                     yield return WaitFrames(10);
                 }
                 
-                Assert.IsFalse(player.Movement.ShouldPlayerJump(), "Player should not jump but is marked as it should.");
+                Assert.IsFalse(player.Movement.ShouldJump, "Player should not jump but is marked as it should.");
             }
         }
 
@@ -1153,7 +1172,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return null;
 
-                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+                Assert.IsTrue(player.Movement.ShouldJump);
 
                 yield return null;
 
@@ -1165,7 +1184,7 @@ namespace Hertzole.GoldPlayer.Tests
                 }
 
                 Assert.IsTrue(player.Movement.IsFalling);
-                Assert.IsTrue(player.Movement.ShouldPlayerJump());
+                Assert.IsTrue(player.Movement.ShouldJump);
             }
         }
 
@@ -1289,22 +1308,26 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator RunModeHold()
         {
+            player.Movement.RunToggleMode = RunToggleMode.Hold;
+            player.Movement.Acceleration = 0;
+            
             yield return RunTimeScaleTest(Test(), Test());
 
             IEnumerator Test()
             {
-                player.Movement.RunToggleMode = RunToggleMode.Hold;
                 input.isRunning = true;
                 input.moveDirection = new Vector2(0, 1);
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun);
                 Assert.IsTrue(player.Movement.IsRunning);
 
                 input.isRunning = false;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsFalse(player.Movement.ShouldRun);
                 Assert.IsFalse(player.Movement.IsRunning);
             }
         }
@@ -1312,44 +1335,51 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator RunModeToggle()
         {
+            player.Movement.RunToggleMode = RunToggleMode.Toggle;
+            player.Movement.Acceleration = 0;
+            
             yield return RunTimeScaleTest(Test(), Test());
 
             IEnumerator Test()
             {
-                player.Movement.RunToggleMode = RunToggleMode.Toggle;
                 input.isRunningToggle = true;
                 input.moveDirection = new Vector2(0, 1);
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun, "Player should be running.");
                 Assert.IsTrue(player.Movement.IsRunning, "Player did not run during their first toggle.");
 
                 input.isRunningToggle = true;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsFalse(player.Movement.ShouldRun, "Player should not be running.");
                 Assert.IsFalse(player.Movement.IsRunning, "Player was still running when running was toggled off.");
 
                 input.isRunningToggle = true;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun, "Player should be running.");
                 Assert.IsTrue(player.Movement.IsRunning, "Player was not running when running was toggled on.");
 
                 input.moveDirection = new Vector2(0, 0);
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun, "Player should not be running.");
                 Assert.IsFalse(player.Movement.IsMoving, "Player was still moving even after no input was given.");
                 input.moveDirection = new Vector2(0, 1);
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun, "Player should be running.");
                 Assert.IsTrue(player.Movement.IsRunning, "Player was not running after starting to run again with still toggled running.");
 
                 // Need to reset the toggle.
                 input.isRunningToggle = true;
-                yield return null;
+                yield return WaitFrames(5);
             }
         }
 
@@ -1357,6 +1387,8 @@ namespace Hertzole.GoldPlayer.Tests
         public IEnumerator RunModeUntilNoInput()
         {
             player.Movement.RunToggleMode = RunToggleMode.UntilNoInput;
+            player.Movement.Acceleration = 0;
+            
             yield return RunTimeScaleTest(Test(), Test());
 
             IEnumerator Test()
@@ -1364,25 +1396,43 @@ namespace Hertzole.GoldPlayer.Tests
                 input.moveDirection = new Vector2(0, 1);
                 input.isRunning = true;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun);
                 Assert.IsTrue(player.Movement.IsRunning, "Player was not running when running was toggled on.");
 
                 input.isRunning = false;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun);
                 Assert.IsTrue(player.Movement.IsRunning, "Player was not running when movement were still provided.");
                 input.moveDirection = new Vector2(0, 0);
                 input.isRunning = false;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
                 input.moveDirection = new Vector2(0, 1);
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsFalse(player.Movement.ShouldRun);
                 Assert.IsFalse(player.Movement.IsRunning, "Player was still running when running after no input was provided.");
+                input.isRunningToggle = true;
+
+                yield return WaitFrames(5);
+
+                Assert.IsTrue(player.Movement.ShouldRun);
+                Assert.IsTrue(player.Movement.IsRunning, "Player was not running when they were supposed to.");
+                input.isRunningToggle = true;
+
+                yield return WaitFrames(5);
+
+                Assert.IsFalse(player.Movement.ShouldRun);
+                Assert.IsFalse(player.Movement.IsRunning, "Player was still running when they were not supposed to.");
+                input.moveDirection = new Vector2(0, 0);
+
+                yield return WaitFrames(5);
             }
         }
 
@@ -1392,6 +1442,7 @@ namespace Hertzole.GoldPlayer.Tests
             player.Movement.Stamina.EnableStamina = true;
             player.Movement.Stamina.DrainRate = 0;
             player.Movement.Stamina.RegenWait = 1000;
+            player.Movement.Acceleration = 0;
 
             yield return RunTimeScaleTest(Test(), Test());
 
@@ -1400,15 +1451,18 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Movement.Stamina.CurrentStamina = player.Movement.Stamina.MaxStamina;
                 input.isRunning = true;
                 input.moveDirection = new Vector2(0, 1);
+                player.Movement.Stamina.CurrentStamina = 100;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsTrue(player.Movement.ShouldRun);
                 Assert.IsTrue(player.Movement.IsRunning, "Player was not running when they had enough stamina.");
 
                 player.Movement.Stamina.CurrentStamina = 0;
 
-                yield return WaitFrames(60);
+                yield return WaitFrames(5);
 
+                Assert.IsFalse(player.Movement.ShouldRun);
                 Assert.IsFalse(player.Movement.IsRunning, "Player was running when they were out of stamina.");
             }
         }
@@ -1425,13 +1479,15 @@ namespace Hertzole.GoldPlayer.Tests
                 Assert.IsFalse(player.Movement.IsCrouching, "Player was crouching when no input were given at the start.");
                 input.isCrouching = true;
 
-                yield return WaitFrames(10);
+                yield return WaitFrames(1);
 
+                Assert.IsTrue(player.Movement.ShouldCrouch);
                 Assert.IsTrue(player.Movement.IsCrouching, "Player was not crouching while crouch button was held.");
                 input.isCrouching = false;
 
-                yield return WaitFrames(10);
+                yield return WaitFrames(1);
 
+                Assert.IsFalse(player.Movement.ShouldCrouch);
                 Assert.IsFalse(player.Movement.IsCrouching, "Player was still crouching after no crouch input was held.");
             }
         }
@@ -1448,19 +1504,42 @@ namespace Hertzole.GoldPlayer.Tests
                 Assert.IsFalse(player.Movement.IsCrouching, "Player was crouching when no input were given at the start.");
                 input.isCrouchingToggle = true;
 
-                yield return WaitFrames(10);
+                yield return WaitFrames(1);
 
                 Assert.IsFalse(input.GetButtonDown(player.Movement.CrouchInput), "Crouch input was true.");
+                Assert.IsTrue(player.Movement.ShouldCrouch);
                 Assert.IsTrue(player.Movement.IsCrouching, "Player was not crouching while crouch button was toggled.");
 
                 input.isCrouchingToggle = true;
 
-                yield return WaitFrames(10);
+                yield return WaitFrames(1);
 
                 Assert.IsFalse(input.GetButtonDown(player.Movement.CrouchInput), "Crouch input was true.");
                 Assert.IsFalse(player.Movement.IsCrouching, "Player was still crouching after no crouch input was held.");
+                Assert.IsFalse(player.Movement.ShouldCrouch);
             }
         }
+
+#if UNITY_EDITOR
+        [UnityTest]
+        public IEnumerator ValidateResetMovementInput()
+        {
+            input.moveDirection = new Vector2(0, 1);
+            player.Movement.Acceleration = 0;
+            yield return RunTimeScaleTest(Test(), Test());
+            
+            IEnumerator Test()
+            {
+                player.Movement.canMoveAround = true;
+                yield return WaitFrames(1);
+                Assert.AreNotEqual(player.Movement.MovementInput, Vector2.zero);
+
+                player.Movement.canMoveAround = false;
+                player.Movement.OnValidate();
+                Assert.AreEqual(player.Movement.MovementInput, Vector2.zero);
+            }
+        }
+#endif
 
         private IEnumerator WaitFrames(int amount)
         {

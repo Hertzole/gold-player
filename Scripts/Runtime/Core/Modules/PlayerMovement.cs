@@ -12,7 +12,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Determines if the player can move at all.")]
         [FormerlySerializedAs("m_CanMoveAround")]
-        private bool canMoveAround = true;
+        internal bool canMoveAround = true;
         [SerializeField]
         [Tooltip("If true, movement will use unscaled delta time.")]
         private bool unscaledTime = false;
@@ -133,7 +133,7 @@ namespace Hertzole.GoldPlayer
         private GroundCheckType groundCheck = GroundCheckType.Sphere;
         [SerializeField]
         [Tooltip("The amount of rays to use for ground checking.")]
-        private int rayAmount = 8;
+        internal int rayAmount = 8;
         [SerializeField]
         [Tooltip("How high up the rays will be when using ray ground checking.")]
         private float rayHeight = 0.3f;
@@ -194,7 +194,7 @@ namespace Hertzole.GoldPlayer
         // Is the player moving at all?
         private bool isMoving = false;
         // Does the player want to be running?
-        private bool shouldRun = false;
+        internal bool shouldRun = false;
         // Is the player running?
         private bool isRunning = false;
         // Did the player run at all since their last break in move input?
@@ -379,8 +379,10 @@ namespace Hertzole.GoldPlayer
         public bool IsCrouching { get { return isCrouching; } }
         /// <summary> Can the player stand up while crouching? </summary>
         public bool CanStandUp { get { return canStandUp; } }
+        /// <summary> Was the jump button pressed? </summary>
+        public bool PressedJump { get { return pressedJump; } set { pressedJump = value; } }
         /// <summary> Should the player try to jump? </summary>
-        public bool ShouldJump { get { return pressedJump; } set { pressedJump = value; } }
+        public bool ShouldJump { get { return ShouldPlayerJump(); } }
         /// <summary> Should the player run? </summary>
         public bool ShouldRun { get { return shouldRun; } set { shouldRun = value; } }
         /// <summary> Should the player crouch? </summary>
@@ -438,9 +440,9 @@ namespace Hertzole.GoldPlayer
             crouchSpeeds.CalculateMax();
 
             // Initialize the stamina module.
-            stamina.Initialize(PlayerInput);
+            stamina.Initialize(PlayerController, PlayerInput);
             // Initialize the moving platforms module.
-            movingPlatforms.Initialize(PlayerInput);
+            movingPlatforms.Initialize(PlayerController, PlayerInput);
 
             // Make the gravity + if needed.
             if (gravity < 0)
@@ -768,7 +770,7 @@ namespace Hertzole.GoldPlayer
         /// Determines if the player should jump.
         /// </summary>
         /// <returns>True if the player should jump.</returns>
-        internal bool ShouldPlayerJump()
+        private bool ShouldPlayerJump()
         {
             if (jumpingRequiresStamina && stamina.EnableStamina && stamina.CurrentStamina < jumpStaminaRequire)
             {
@@ -972,6 +974,12 @@ namespace Hertzole.GoldPlayer
                 }
             }
 
+            // Just set shouldRun to false if there's not enough stamina. The player should not be running.
+            if (shouldRun && stamina.EnableStamina && stamina.CurrentStamina <= 0)
+            {
+                shouldRun = false;
+            }
+
             // Only run if we're not crouching, can run, and the player wants to be running.
             if (!isCrouching && canRun && shouldRun)
             {
@@ -985,10 +993,6 @@ namespace Hertzole.GoldPlayer
                 else if (!stamina.EnableStamina)
                 {
                     moveSpeed = runSpeeds;
-                }
-                else if (stamina.CurrentStamina <= 0)
-                {
-                    moveSpeed = walkingSpeeds;
                 }
             }
             else if (!isCrouching && !shouldRun)
@@ -1194,7 +1198,7 @@ namespace Hertzole.GoldPlayer
         }
 
         /// <summary>
-        /// Resets all movmenet related input.
+        /// Resets all movement related input.
         /// </summary>
         private void ResetMovementInput()
         {

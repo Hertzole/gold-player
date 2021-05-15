@@ -89,7 +89,7 @@ namespace Hertzole.GoldPlayer.Tests
             FOVKickClass kick = new FOVKickClass
             {
                 newFOV = 70,
-                camera = player.Camera
+                PlayerController = player
             };
             kick.INTERNAL__UpdateNewFOV();
             Assert.AreEqual(kick.newFOV, 70);
@@ -174,6 +174,16 @@ namespace Hertzole.GoldPlayer.Tests
             player.Camera.FieldOfViewKick.OnValidate();
             Assert.AreEqual(player.Camera.FieldOfViewKick.TargetFieldOfView, 90 + player.Camera.FieldOfViewKick.KickAmount);
             yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator FieldOfViewChangedEvent()
+        {
+            player.Camera.FieldOfViewKick.KickAmount = 10;
+            player.Camera.CurrentFieldOfView = 10;
+            Assert.AreEqual(player.Camera.FieldOfViewKick.newFOV, 20);
+            
+            yield break;
         }
     }
 }
