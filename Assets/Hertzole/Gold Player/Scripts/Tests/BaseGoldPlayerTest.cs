@@ -132,13 +132,51 @@ namespace Hertzole.GoldPlayer.Tests
             player.UnscaledTime = false;
             Time.timeScale = 1;
 
-            yield return normalScaleTest;
+            while (true)
+            {
+                object current;
+                try
+                {
+                    if (normalScaleTest.MoveNext() == false)
+                    {
+                        break;
+                    }
+
+                    current = normalScaleTest.Current;
+                }
+                catch (AssertionException ex)
+                {
+                    Debug.LogAssertion(ex);
+                    yield break;
+                }
+
+                yield return current;
+            }
 
             player.SetPositionAndRotation(Vector3.zero, 0);
             player.UnscaledTime = true;
             Time.timeScale = 0;
+            
+            while (true)
+            {
+                object current;
+                try
+                {
+                    if (frozenScaleTest.MoveNext() == false)
+                    {
+                        break;
+                    }
 
-            yield return frozenScaleTest;
+                    current = frozenScaleTest.Current;
+                }
+                catch (AssertionException ex)
+                {
+                    Debug.LogAssertion(ex);
+                    yield break;
+                }
+
+                yield return current;
+            }
         }
     }
 }

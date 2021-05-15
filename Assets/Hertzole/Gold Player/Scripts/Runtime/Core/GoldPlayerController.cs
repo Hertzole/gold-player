@@ -226,7 +226,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeMovement()
         {
-            movement.Initialize(PlayerInput);
+            movement.Initialize(this, PlayerInput);
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeCamera()
         {
-            cam.Initialize(PlayerInput);
+            cam.Initialize(this, PlayerInput);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeHeadBob()
         {
-            headBob.Initialize(PlayerInput);
+            headBob.Initialize(this, PlayerInput);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void InitializeAudio()
         {
-            sounds.Initialize(PlayerInput);
+            sounds.Initialize(this, PlayerInput);
         }
 
         /// <summary>

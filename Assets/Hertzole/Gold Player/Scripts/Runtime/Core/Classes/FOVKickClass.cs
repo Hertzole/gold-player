@@ -42,9 +42,6 @@ namespace Hertzole.GoldPlayer
         // Simple check to see if the module has been initialized.
         private bool hasBeenInitialized = false;
 
-        // The parent player camera module.
-        internal PlayerCamera camera;
-
         /// <summary> Determines if FOV kick should be enabled. </summary>
         public bool EnableFOVKick { get { return enableFOVKick; } set { enableFOVKick = value; } }
         /// <summary> If true, FOV kick will use unscaled delta time. </summary>
@@ -60,6 +57,9 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> The new field of view with the original field of view with kick amount added. </summary>
         public float TargetFieldOfView { get { return newFOV; } }
+        
+        // The parent player camera module.
+        private PlayerCamera Camera { get { return PlayerController.Camera; } }
         
         #region Obsolete
 #if UNITY_EDITOR
@@ -89,13 +89,6 @@ namespace Hertzole.GoldPlayer
 #endif
         #endregion
 
-        public void Initialize(IGoldInput input, PlayerCamera playerCamera)
-        {
-            camera = playerCamera;
-            camera.OnCurrentFieldOfViewChanged += OnCurrentFieldOfViewChanged;
-            Initialize(input);
-        }
-
         private void OnCurrentFieldOfViewChanged(float currentFieldOfView)
         {
             newFOV = currentFieldOfView + kickAmount;
@@ -104,11 +97,13 @@ namespace Hertzole.GoldPlayer
         protected override void OnInitialize()
         {
             // If FOV kick is enabled and there's no target camera, complain.
-            if (enableFOVKick && camera.IsCameraNull)
+            if (enableFOVKick && Camera.IsCameraNull)
             {
                 Debug.LogError("There's no camera set on field of view kick!", PlayerTransform.gameObject);
                 return;
             }
+
+            Camera.OnCurrentFieldOfViewChanged += OnCurrentFieldOfViewChanged;
 
             // Set hasBeenInitialized to true.
             hasBeenInitialized = true;
@@ -117,7 +112,7 @@ namespace Hertzole.GoldPlayer
             if (enableFOVKick)
             {
                 // Get the original FOV from the target camera.
-                originalFOV = camera.CameraFieldOfView;
+                originalFOV = Camera.CameraFieldOfView;
                 // Update the new FOV.
                 UpdateNewFOV();
             }
@@ -136,13 +131,13 @@ namespace Hertzole.GoldPlayer
         private void UpdateNewFOV()
         {
             // If there's no target camera, stop here.
-            if (camera.IsCameraNull)
+            if (Camera.IsCameraNull)
             {
                 return;
             }
 
             // Create the new FOV by taking the original FOV and adding kick amount.
-            newFOV = camera.CameraFieldOfView + kickAmount;
+            newFOV = Camera.CameraFieldOfView + kickAmount;
         }
 
         public override void OnUpdate(float deltaTime, float unscaledDeltaTime)
@@ -224,26 +219,26 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            if (camera.IsCameraNull)
+            if (Camera.IsCameraNull)
             {
                 return;
             }
 
             // If active is true, lerp the target camera field of view to the new FOV.
             // Else lerp it to the original FOV.
-            float targetFOV = Mathf.Lerp(camera.CameraFieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
-            camera.CameraFieldOfView = targetFOV;
+            float targetFOV = Mathf.Lerp(Camera.CameraFieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
+            Camera.CameraFieldOfView = targetFOV;
         }
 
 #if UNITY_EDITOR
         public override void OnValidate()
         {
-            if (Application.isPlaying && enableFOVKick && camera != null)
+            if (Application.isPlaying && enableFOVKick && PlayerController != null && Camera != null)
             {
-                if (!camera.IsCameraNull)
+                if (!Camera.IsCameraNull)
                 {
                     // Create the new FOV by taking the original FOV and adding kick amount.
-                    newFOV = camera.CameraFieldOfView + kickAmount;
+                    newFOV = Camera.CameraFieldOfView + kickAmount;
                 }
             }
         }

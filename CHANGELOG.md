@@ -19,6 +19,7 @@
 - When Cinemachine is enabled, the newly created player object will have a virtual camera instead of a normal camera.
 - Stamina now has control over unscaled time by itself.
 - **[BREAKING]** Target Camera has been moved from field of view kick to player camera instead.
+- `ShouldJump` in `PlayerMovement` is now get only and returns if the player should jump with stamina, air jumps, etc, considered. PressedJump has been added as a replacement for the old behavior.
 
 ### Fixed:
 - Fixed head bob not working on time scale 0.

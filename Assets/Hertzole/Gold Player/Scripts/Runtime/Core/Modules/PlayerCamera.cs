@@ -189,21 +189,7 @@ namespace Hertzole.GoldPlayer
         public float MinimumX { get { return minimumX; } set { minimumX = value; } }
         /// <summary> Sets how far up the player can look. </summary>
         public float MaximumX { get { return maximumX; } set { maximumX = value; } }
-        
-        /// <summary> The current field of view. </summary>
-        public float CurrentFieldOfView 
-        { 
-            get { return currentFieldOfView; }
-            private set
-            {
-                if (Math.Abs(value - currentFieldOfView) > 0.01f)
-                {
-                    currentFieldOfView = value;
-                    OnCurrentFieldOfViewChanged?.Invoke(value);
-                }
-            } 
-        }
-        
+
         /// <summary> If true, the user will be allowed to zoom using the field of view. </summary>
         public bool EnableZooming { get { return enableZooming; } set { enableZooming = value; } }
         /// <summary> The target field of view when zooming. </summary>
@@ -263,6 +249,20 @@ namespace Hertzole.GoldPlayer
         /// <summary> The virtual camera that the FOV kick should be applied to. </summary>
         public Cinemachine.CinemachineVirtualCamera TargetVirtualCamera { get { return targetVirtualCamera; } set { targetVirtualCamera = value; } }
 #endif
+        
+        /// <summary> The current field of view. </summary>
+        public float CurrentFieldOfView 
+        { 
+            get { return currentFieldOfView; }
+            internal set
+            {
+                if (Math.Abs(value - currentFieldOfView) > 0.01f)
+                {
+                    currentFieldOfView = value;
+                    OnCurrentFieldOfViewChanged?.Invoke(value);
+                }
+            } 
+        }
         
         /// <summary> The target camera field of view. </summary>
         public float CameraFieldOfView
@@ -344,7 +344,7 @@ namespace Hertzole.GoldPlayer
             originalHeadRotation = cameraHead.localRotation;
 
             // Initialize the FOV kick module.
-            fieldOfViewKick.Initialize(PlayerInput, this);
+            fieldOfViewKick.Initialize(PlayerController, PlayerInput);
         }
 
         /// <summary>

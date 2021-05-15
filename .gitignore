@@ -70,3 +70,4 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+/[Pp]roject[Ss]ettings/[Pp]ackages/com.unity.testtools.codecoverage/
