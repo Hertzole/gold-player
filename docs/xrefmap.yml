@@ -523,19 +523,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.HandleFOV
   nameWithType: FOVKickClass.HandleFOV
-- uid: Hertzole.GoldPlayer.FOVKickClass.Initialize(Hertzole.GoldPlayer.IGoldInput,Hertzole.GoldPlayer.PlayerCamera)
-  name: Initialize(IGoldInput, PlayerCamera)
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_Initialize_Hertzole_GoldPlayer_IGoldInput_Hertzole_GoldPlayer_PlayerCamera_
-  commentId: M:Hertzole.GoldPlayer.FOVKickClass.Initialize(Hertzole.GoldPlayer.IGoldInput,Hertzole.GoldPlayer.PlayerCamera)
-  fullName: Hertzole.GoldPlayer.FOVKickClass.Initialize(Hertzole.GoldPlayer.IGoldInput, Hertzole.GoldPlayer.PlayerCamera)
-  nameWithType: FOVKickClass.Initialize(IGoldInput, PlayerCamera)
-- uid: Hertzole.GoldPlayer.FOVKickClass.Initialize*
-  name: Initialize
-  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_Initialize_
-  commentId: Overload:Hertzole.GoldPlayer.FOVKickClass.Initialize
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.FOVKickClass.Initialize
-  nameWithType: FOVKickClass.Initialize
 - uid: Hertzole.GoldPlayer.FOVKickClass.KickAmount
   name: KickAmount
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_KickAmount
@@ -4498,12 +4485,12 @@ references:
   commentId: F:Hertzole.GoldPlayer.PlayerModule.HasBeenInitialized
   fullName: Hertzole.GoldPlayer.PlayerModule.HasBeenInitialized
   nameWithType: PlayerModule.HasBeenInitialized
-- uid: Hertzole.GoldPlayer.PlayerModule.Initialize(Hertzole.GoldPlayer.IGoldInput)
-  name: Initialize(IGoldInput)
-  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_Initialize_Hertzole_GoldPlayer_IGoldInput_
-  commentId: M:Hertzole.GoldPlayer.PlayerModule.Initialize(Hertzole.GoldPlayer.IGoldInput)
-  fullName: Hertzole.GoldPlayer.PlayerModule.Initialize(Hertzole.GoldPlayer.IGoldInput)
-  nameWithType: PlayerModule.Initialize(IGoldInput)
+- uid: Hertzole.GoldPlayer.PlayerModule.Initialize(Hertzole.GoldPlayer.GoldPlayerController,Hertzole.GoldPlayer.IGoldInput)
+  name: Initialize(GoldPlayerController, IGoldInput)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_Initialize_Hertzole_GoldPlayer_GoldPlayerController_Hertzole_GoldPlayer_IGoldInput_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.Initialize(Hertzole.GoldPlayer.GoldPlayerController,Hertzole.GoldPlayer.IGoldInput)
+  fullName: Hertzole.GoldPlayer.PlayerModule.Initialize(Hertzole.GoldPlayer.GoldPlayerController, Hertzole.GoldPlayer.IGoldInput)
+  nameWithType: PlayerModule.Initialize(GoldPlayerController, IGoldInput)
 - uid: Hertzole.GoldPlayer.PlayerModule.Initialize*
   name: Initialize
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_Initialize_
@@ -5212,6 +5199,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerMovement.OnUpdate
   nameWithType: PlayerMovement.OnUpdate
+- uid: Hertzole.GoldPlayer.PlayerMovement.PressedJump
+  name: PressedJump
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_PressedJump
+  commentId: P:Hertzole.GoldPlayer.PlayerMovement.PressedJump
+  fullName: Hertzole.GoldPlayer.PlayerMovement.PressedJump
+  nameWithType: PlayerMovement.PressedJump
+- uid: Hertzole.GoldPlayer.PlayerMovement.PressedJump*
+  name: PressedJump
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_PressedJump_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerMovement.PressedJump
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerMovement.PressedJump
+  nameWithType: PlayerMovement.PressedJump
 - uid: Hertzole.GoldPlayer.PlayerMovement.RayAmount
   name: RayAmount
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_RayAmount
