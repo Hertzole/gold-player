@@ -2,6 +2,10 @@
 #define USE_GUI
 #endif
 
+#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#define NEW_INPUT
+#endif
+
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -62,7 +66,7 @@ namespace Hertzole.GoldPlayer.Example
         public GoldPlayerTweakField TweakField { get { return tweakField; } set { tweakField = value; } }
         [Space]
 
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !NEW_INPUT
         [SerializeField]
         [FormerlySerializedAs("m_ToggleKey")]
         private KeyCode toggleKey = KeyCode.F1;
@@ -119,7 +123,7 @@ namespace Hertzole.GoldPlayer.Example
                 SetupUI();
             }
 
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if NEW_INPUT
             tweakText.text = "Press " + toggleAction.GetBindingDisplayString() + " to tweak settings. Press " + resetSceneAction.GetBindingDisplayString() + " to reset scene.";
 #else
             tweakText.text = "Press " + toggleKey.ToString() + " to tweak settings. Press " + resetSceneKey.ToString() + " to reset scene.";
@@ -129,7 +133,7 @@ namespace Hertzole.GoldPlayer.Example
 #endif
         }
 
-#if ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if NEW_INPUT
         private void OnEnable()
         {
             toggleAction.Enable();
@@ -165,7 +169,8 @@ namespace Hertzole.GoldPlayer.Example
         private GoldPlayerTweakField allowAirJumpDirectionChange;
         private GoldPlayerTweakField crouchJumping;
         private GoldPlayerTweakField crouchHeight;
-        private GoldPlayerTweakField crouchHeadLerp;
+        private GoldPlayerTweakField crouchTime;
+        private GoldPlayerTweakField standUpTime;
         private GoldPlayerTweakField groundStick;
         private GoldPlayerTweakField bobFrequency;
         private GoldPlayerTweakField bobHeight;
@@ -182,6 +187,7 @@ namespace Hertzole.GoldPlayer.Example
         {
             CreateHeader("Game");
             CreateTweaker("Timescale", x => { Time.timeScale = x / 10f; }, Mathf.RoundToInt(Time.timeScale * 10), true, 0, 20, 10f);
+            CreateTweaker("Target FPS", x => { Application.targetFrameRate = x; }, Application.targetFrameRate, true, 0, 165);
             CreateTweaker("V-Sync", x => { QualitySettings.vSyncCount = x ? 1 : 0; }, QualitySettings.vSyncCount == 1);
             CreateTweaker("Unscaled Movement", x => { targetPlayer.UnscaledTime = x; }, false);
 
@@ -281,11 +287,13 @@ namespace Hertzole.GoldPlayer.Example
                 targetPlayer.Movement.CanCrouch = x;
                 crouchJumping.SetInteractable(x);
                 crouchHeight.SetInteractable(x);
-                crouchHeadLerp.SetInteractable(x);
+                crouchTime.SetInteractable(x);
+                standUpTime.SetInteractable(x);
             }, targetPlayer.Movement.CanCrouch);
             crouchJumping = CreateTweaker("Crouch Jumping", x => { targetPlayer.Movement.CrouchJumping = x; }, targetPlayer.Movement.CrouchJumping);
             crouchHeight = CreateTweaker("Crouch Height", x => { targetPlayer.Movement.CrouchHeight = x; }, targetPlayer.Movement.CrouchHeight);
-            crouchHeadLerp = CreateTweaker("Crouch Head Lerp", x => { targetPlayer.Movement.CrouchHeadLerp = x; }, targetPlayer.Movement.CrouchHeadLerp);
+            crouchTime = CreateTweaker("Crouch Time", x => { targetPlayer.Movement.CrouchTime = x; }, targetPlayer.Movement.CrouchTime);
+            standUpTime = CreateTweaker("Stand Up Time", x => { targetPlayer.Movement.StandUpTime = x; }, targetPlayer.Movement.StandUpTime);
             CreateSubHeader("Other");
             CreateTweaker("Acceleration", x => { targetPlayer.Movement.Acceleration = x; }, targetPlayer.Movement.Acceleration);
             CreateTweaker("Gravity", x => { targetPlayer.Movement.Gravity = x; }, targetPlayer.Movement.Gravity);
@@ -380,7 +388,7 @@ namespace Hertzole.GoldPlayer.Example
                 return;
             }
 
-#if !ENABLE_INPUT_SYSTEM && GOLD_PLAYER_NEW_INPUT
+#if !NEW_INPUT
             if (Input.GetKeyDown(toggleKey))
             {
                 SetShowing(!showing);

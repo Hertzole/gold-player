@@ -71,18 +71,23 @@ namespace Hertzole.GoldPlayer
         #region Obsolete
 #if UNITY_EDITOR
         [System.Obsolete("Use 'GetButton' without defaultKey parameter instead. This will be removed on build.", true)]
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         protected bool GetButton(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButton(buttonName); }
 
         [System.Obsolete("Use 'GetButtonDown' without defaultKey parameter instead. This will be removed on build.", true)]
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         protected bool GetButtonDown(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonDown(buttonName); }
 
         [System.Obsolete("Use 'GetButtonUp' without defaultKey parameter instead. This will be removed on build.", true)]
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         protected bool GetButtonUp(string buttonName, KeyCode defaultKey = KeyCode.None) { return GetButtonUp(buttonName); }
 
         [System.Obsolete("Use 'GetAxis' without defaultAxisName parameter instead. This will be removed on build.", true)]
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         protected float GetAxis(string axisName, string defaultAxisName = "") { return GetAxis(axisName); }
 
         [System.Obsolete("Use 'GetAxisRaw' without defaultAxisName parameter instead. This will be removed on build.", true)]
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         protected float GetAxisRaw(string axisName, string defaultAxisName = "") { return GetAxisRaw(axisName); }
 #endif
         #endregion

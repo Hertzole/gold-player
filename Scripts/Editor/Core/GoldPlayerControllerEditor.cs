@@ -60,7 +60,9 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty fovKickWhen;
         private SerializedProperty fovKickAmount;
         private SerializedProperty fovTimeTo;
+        private SerializedProperty fovToCurve;
         private SerializedProperty fovTimeFrom;
+        private SerializedProperty fovFromCurve;
 
         // Movement properties
         private SerializedProperty canMoveAround;
@@ -87,7 +89,10 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty crouchSpeeds;
         private SerializedProperty crouchJumping;
         private SerializedProperty crouchHeight;
-        private SerializedProperty crouchHeadLerp;
+        private SerializedProperty crouchTime;
+        private SerializedProperty crouchCurve;
+        private SerializedProperty standUpTime;
+        private SerializedProperty standUpCurve;
 
         private SerializedProperty canJump;
         private SerializedProperty jumpingRequiresStamina;
@@ -210,7 +215,9 @@ namespace Hertzole.GoldPlayer.Editor
             fovKickWhen = fieldOfViewKick.FindPropertyRelative("kickWhen");
             fovKickAmount = fieldOfViewKick.FindPropertyRelative("kickAmount");
             fovTimeTo = fieldOfViewKick.FindPropertyRelative("lerpTimeTo");
+            fovToCurve = fieldOfViewKick.FindPropertyRelative("lerpToCurve");
             fovTimeFrom = fieldOfViewKick.FindPropertyRelative("lerpTimeFrom");
+            fovFromCurve = fieldOfViewKick.FindPropertyRelative("lerpFromCurve");
 
             canMoveAround = movement.FindPropertyRelative("canMoveAround");
             moveUnscaledTime = movement.FindPropertyRelative("unscaledTime");
@@ -236,7 +243,10 @@ namespace Hertzole.GoldPlayer.Editor
             crouchSpeeds = movement.FindPropertyRelative("crouchSpeeds");
             crouchJumping = movement.FindPropertyRelative("crouchJumping");
             crouchHeight = movement.FindPropertyRelative("crouchHeight");
-            crouchHeadLerp = movement.FindPropertyRelative("crouchHeadLerp");
+            crouchTime = movement.FindPropertyRelative("crouchTime");
+            crouchCurve = movement.FindPropertyRelative("crouchCurve");
+            standUpTime = movement.FindPropertyRelative("standUpTime");
+            standUpCurve = movement.FindPropertyRelative("standUpCurve");
 
             canJump = movement.FindPropertyRelative("canJump");
             jumpingRequiresStamina = movement.FindPropertyRelative("jumpingRequiresStamina");
@@ -395,11 +405,18 @@ namespace Hertzole.GoldPlayer.Editor
                 EditorGUILayout.PropertyField(fovEnable);
                 DrawElementsConditional(fovEnable, () =>
                 {
+                    if (enableZooming.boolValue)
+                    {
+                        EditorGUILayout.HelpBox("Zooming and field of view kick may cause some visual issues when both are active!", MessageType.Warning);
+                    }
+                    
                     EditorGUILayout.PropertyField(fovUnscaledTime);
                     EditorGUILayout.PropertyField(fovKickWhen);
                     EditorGUILayout.PropertyField(fovKickAmount);
                     EditorGUILayout.PropertyField(fovTimeTo);
+                    EditorGUILayout.PropertyField(fovToCurve);
                     EditorGUILayout.PropertyField(fovTimeFrom);
+                    EditorGUILayout.PropertyField(fovFromCurve);
                 });
             });
         }
@@ -460,7 +477,10 @@ namespace Hertzole.GoldPlayer.Editor
                         EditorGUILayout.HelpBox("The Crouch Height should not be less than 0.8 because it breaks the character controller!", MessageType.Warning);
                     }
                     EditorGUILayout.PropertyField(crouchHeight);
-                    EditorGUILayout.PropertyField(crouchHeadLerp);
+                    EditorGUILayout.PropertyField(crouchTime);
+                    EditorGUILayout.PropertyField(crouchCurve);
+                    EditorGUILayout.PropertyField(standUpTime);
+                    EditorGUILayout.PropertyField(standUpCurve);
                 });
             });
 
