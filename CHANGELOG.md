@@ -1,4 +1,4 @@
-## 1.7
+## [1.7.0] - Unreleased
 
 ### Added:
 - Added raycast ground check as an alternative to sphere ground check.
@@ -9,6 +9,8 @@
 - Added support for using Vector2 with legacy input manager.
 - Added support for using legacy Gold Player Input component with Gold Player Input System if 'Both' is set in input backend.
 - Added zoom feature.
+- Added separate predictable values for crouching and standing up, along with curves to control the lerp.
+- Added curves to field of view kick.
 
 ### Changes:
 - Revamped how Gold Player project settings are saved. Old settings will be upgraded.
@@ -20,6 +22,7 @@
 - Stamina now has control over unscaled time by itself.
 - **[BREAKING]** Target Camera has been moved from field of view kick to player camera instead.
 - `ShouldJump` in `PlayerMovement` is now get only and returns if the player should jump with stamina, air jumps, etc, considered. PressedJump has been added as a replacement for the old behavior.
+- Field of view kick times are now predictable. **If you're upgrading from an older version, you might need to change your old values!**
 
 ### Fixed:
 - Fixed head bob not working on time scale 0.
@@ -33,7 +36,7 @@
 
 ---
 
-## 1.6
+## [1.6.0] - 2020-09-06
 
 ### Added:
 - Added Gold Player Animator for easy and simple animation support.
@@ -81,11 +84,11 @@
 
 ---
 
-## 1.5.1
+## [1.5.1] - 2020-01-02
 ### Fixes:
 - Fixed 'Can Move Around' not working with the normal input manager.
 
-## 1.5
+## [1.5.0] - 2020-01-01
 ### Added:
 - Movement multipliers in code. Can be used to easily make the player faster/slower and jump higher.
 - Camera force look.
@@ -102,7 +105,7 @@
 
 ---
 
-## 1.4.1
+## [1.4.1] - 2019-12-20
 ### Improvements:
 - Input now looks for an interface instead of a class. It makes it much easier to make your own input class.
 - You can now manually control when input gets enabled and disabled in Gold Player Input System.
@@ -112,7 +115,7 @@
 - Fixed using normal input manager not working.
 - Fixed Null error with interaction component.
 
-## 1.4
+## [1.4.0] - 2019-11-06
 ### Added:
 - Added support for Unity's new input system (requires 2019.3+ to work with Gold Player!)
 - Added input strings in the editor, in the new "Input" tab.
@@ -139,7 +142,7 @@
 
 ---
 
-## 1.3
+## [1.3.0] - 2019-03-24
 ### Added:
 - Added support for reference and auto find specific player components in UI
 - Added full support for Unity 2018.3
@@ -163,26 +166,26 @@
 
 ---
 
-## 1.2.3
+## [1.2.3] - 2018-08-20
 ### Bug fixes:
 - Fixed .NET 4.6 code in UI not working
 - Fixed UI not auto finding player even if it was checked
 
-## 1.2.2
+## [1.2.2] - 2018-08-15
 ### Added:
 - Added support for sprinting feature in Gold Player UI
 
 ### Bug fixes:
 - Fixed Gold Player defines removing other defines.
 
-## 1.2.1
+## [1.2.1] - 2018-07-22
 ### Changes:
 - UI component no longer has to be attached to the player
 
 ### Bug fixes:
 - Fixed Interaction not updating correctly
 
-## 1.2.0
+## [1.2.0] - 2018-07-15
 ### Added:
 - Added audio behaviour that hooks into the audio part, for more control over the audio
 - Added player interactions; Easily add interactable elements in your world
@@ -195,7 +198,7 @@
 
 ---
 
-## 1.1.0
+## [1.1.0] - 2018-01-09
 ### Added:
 - Added camera shake
 - Added player events
@@ -212,5 +215,5 @@
 
 ---
 
-## 1.0.0
+## [1.0.0] - 2017-12-25
 ### First release!

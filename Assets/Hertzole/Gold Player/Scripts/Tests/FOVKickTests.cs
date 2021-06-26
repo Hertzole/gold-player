@@ -29,9 +29,9 @@ namespace Hertzole.GoldPlayer.Tests
             yield return null;
             float targetFOV = player.Camera.FieldOfViewKick.TargetFieldOfView;
             player.Camera.FieldOfViewKick.EnableFOVKick = true;
-            player.Camera.FieldOfViewKick.LerpTimeTo = 100f;
+            player.Camera.FieldOfViewKick.LerpTimeTo = 0f;
 
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 5; i++)
             {
                 player.Camera.FieldOfViewKick.ForceFOV(true);
                 yield return null;
@@ -101,12 +101,12 @@ namespace Hertzole.GoldPlayer.Tests
         {
             float fov = player.Camera.TargetCamera.fieldOfView;
             player.Camera.FieldOfViewKick.KickWhen = RunAction.None;
-            player.Camera.FieldOfViewKick.LerpTimeTo = 100;
-            player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
+            player.Camera.FieldOfViewKick.LerpTimeTo = 0;
+            player.Camera.FieldOfViewKick.LerpTimeFrom = 0;
             input.moveDirection = new Vector2(0, 1);
             input.isRunning = true;
 
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < 5; i++)
             {
                 yield return null;
             }
@@ -118,53 +118,77 @@ namespace Hertzole.GoldPlayer.Tests
         public IEnumerator KickWhenRunning()
         {
             player.Camera.FieldOfViewKick.KickWhen = RunAction.IsRunning;
-            player.Camera.FieldOfViewKick.LerpTimeTo = 100;
-            player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
             input.moveDirection = new Vector2(0, 1);
-            input.isRunning = true;
 
-            for (int i = 0; i < 60; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
             {
-                yield return null;
+                player.Camera.FieldOfViewKick.LerpTimeTo = 0;
+                player.Camera.FieldOfViewKick.LerpTimeFrom = 0;
+            
+                yield return InnerTest();
+            
+                player.Camera.FieldOfViewKick.LerpTimeTo = 0.1f;
+                player.Camera.FieldOfViewKick.LerpTimeFrom = 0.1f;
+
+                yield return InnerTest();
+
+                IEnumerator InnerTest()
+                {
+                    input.isRunning = true;
+
+                    yield return new WaitForSecondsRealtime(0.5f);
+
+                    Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
+
+                    input.isRunning = false;
+
+                    yield return new WaitForSecondsRealtime(0.5f);
+
+                    Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
+                }
             }
-
-            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
-
-            input.isRunning = false;
-
-            for (int i = 0; i < 60; i++)
-            {
-                yield return null;
-            }
-
-            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
         }
 
         [UnityTest]
         public IEnumerator KickWhenPressingRun()
         {
+            player.Movement.Acceleration = 0;
             player.Camera.FieldOfViewKick.KickWhen = RunAction.PressingRun;
-            player.Camera.FieldOfViewKick.LerpTimeTo = 100;
-            player.Camera.FieldOfViewKick.LerpTimeFrom = 100;
             input.moveDirection = new Vector2(0, 0.1f);
-            input.isRunning = true;
 
-            for (int i = 0; i < 60; i++)
+            yield return RunTimeScaleTest(Test(), Test());
+
+            IEnumerator Test()
             {
-                yield return null;
+                player.Camera.FieldOfViewKick.LerpTimeTo = 0f;
+                player.Camera.FieldOfViewKick.LerpTimeFrom = 0f;
+
+                yield return InnerTest();
+            
+                player.Camera.FieldOfViewKick.LerpTimeTo = 0.1f;
+                player.Camera.FieldOfViewKick.LerpTimeFrom = 0.1f;
+        
+                yield return InnerTest();
+
+                IEnumerator InnerTest()
+                {
+                    input.isRunning = true;
+                
+                    yield return new WaitForSecondsRealtime(0.5f);
+
+                    Assert.IsFalse(player.Movement.IsRunning, "Player was running");
+                    Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f, "Field of view was not kicked");
+
+                    input.isRunning = false;
+
+                    yield return new WaitForSecondsRealtime(0.5f);
+
+                    Assert.IsFalse(player.Movement.IsRunning);
+                    Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
+                }
             }
-
-            Assert.IsFalse(player.Movement.IsRunning);
-            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.TargetFieldOfView, 0.05f);
-
-            input.isRunning = false;
-
-            for (int i = 0; i < 60; i++)
-            {
-                yield return null;
-            }
-
-            Assert.AreApproximatelyEqual(player.Camera.TargetCamera.fieldOfView, player.Camera.FieldOfViewKick.originalFOV, 0.05f);
         }
 
         [UnityTest]
@@ -174,16 +198,6 @@ namespace Hertzole.GoldPlayer.Tests
             player.Camera.FieldOfViewKick.OnValidate();
             Assert.AreEqual(player.Camera.FieldOfViewKick.TargetFieldOfView, 90 + player.Camera.FieldOfViewKick.KickAmount);
             yield return null;
-        }
-
-        [UnityTest]
-        public IEnumerator FieldOfViewChangedEvent()
-        {
-            player.Camera.FieldOfViewKick.KickAmount = 10;
-            player.Camera.CurrentFieldOfView = 10;
-            Assert.AreEqual(player.Camera.FieldOfViewKick.newFOV, 20);
-            
-            yield break;
         }
     }
 }

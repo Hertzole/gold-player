@@ -28,19 +28,28 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("Sets how fast the FOV will move to the new FOV.")]
         [FormerlySerializedAs("m_LerpTimeTo")]
-        private float lerpTimeTo = 4f;
+        private float lerpTimeTo = 0.25f;
+        [SerializeField] 
+        private AnimationCurve lerpToCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField]
         [Tooltip("Sets how fast the FOV will move back to the original FOV.")]
         [FormerlySerializedAs("m_LerpTimeFrom")]
-        private float lerpTimeFrom = 2.5f;
+        private float lerpTimeFrom = 1f;
+        [SerializeField] 
+        private AnimationCurve lerpFromCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         // The original field of view.
-        internal float originalFOV = 0;
+        internal float originalFOV;
         // The new field of view. Created using the original field of view and adding the kick amount.
-        internal float newFOV = 0;
+        internal float newFOV;
+        // Timer used for lerping.
+        private float lerpTimer;
+        private float lerpStartFieldOfView;
 
         // Simple check to see if the module has been initialized.
-        private bool hasBeenInitialized = false;
+        private bool hasBeenInitialized;
+        // Check used to determine if it was already kicking or not.
+        private bool wasKicking;
 
         /// <summary> Determines if FOV kick should be enabled. </summary>
         public bool EnableFOVKick { get { return enableFOVKick; } set { enableFOVKick = value; } }
@@ -57,6 +66,9 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> The new field of view with the original field of view with kick amount added. </summary>
         public float TargetFieldOfView { get { return newFOV; } }
+        
+        /// <summary> True if the field of view kick is active. </summary>
+        public bool IsKicking { get; private set; }
         
         // The parent player camera module.
         private PlayerCamera Camera { get { return PlayerController.Camera; } }
@@ -89,11 +101,6 @@ namespace Hertzole.GoldPlayer
 #endif
         #endregion
 
-        private void OnCurrentFieldOfViewChanged(float currentFieldOfView)
-        {
-            newFOV = currentFieldOfView + kickAmount;
-        }
-
         protected override void OnInitialize()
         {
             // If FOV kick is enabled and there's no target camera, complain.
@@ -103,10 +110,10 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            Camera.OnCurrentFieldOfViewChanged += OnCurrentFieldOfViewChanged;
-
             // Set hasBeenInitialized to true.
             hasBeenInitialized = true;
+
+            lerpTimer = lerpTimeFrom;
 
             // Only call code if it's enabled.
             if (enableFOVKick)
@@ -213,20 +220,62 @@ namespace Hertzole.GoldPlayer
         /// <param name="deltaTime">The delta time.</param>
         protected virtual void DoFOV(bool activate, float deltaTime)
         {
-            // If FOV kick is disabled, stop here.
-            if (!enableFOVKick)
+            // If FOV kick is disabled or if there's no camera, stop here.
+            if (!enableFOVKick || Camera.IsCameraNull)
             {
                 return;
             }
 
-            if (Camera.IsCameraNull)
+            // If it was kicking but no longer, stop kicking.
+            // Else if it wasn't kicking but is now, start kicking.
+            if (wasKicking && !activate)
             {
-                return;
+                lerpTimer = 0;
+                wasKicking = false;
+                lerpStartFieldOfView = Camera.CameraFieldOfView;
+                IsKicking = false;
+            }
+            else if (!wasKicking && activate)
+            {
+                lerpTimer = 0;
+                wasKicking = true;
+                lerpStartFieldOfView = Camera.CameraFieldOfView;
+                IsKicking = true;
             }
 
-            // If active is true, lerp the target camera field of view to the new FOV.
-            // Else lerp it to the original FOV.
-            float targetFOV = Mathf.Lerp(Camera.CameraFieldOfView, activate ? newFOV : originalFOV, (activate ? lerpTimeTo : lerpTimeFrom) * deltaTime);
+            float targetFOV;
+
+            if (activate)
+            {
+                // As long as the lerpTimeTo is above 0 and the lerp timer is less than the time to lerp, lerp the target FOV value.
+                // Else just set it directly.
+                if (lerpTimeTo > 0 && lerpTimer < lerpTimeTo)
+                {
+                    // Lerp to the target field of view.
+                    targetFOV = Mathf.Lerp(lerpStartFieldOfView, newFOV, lerpToCurve.Evaluate(lerpTimer / lerpTimeTo));
+                    lerpTimer += deltaTime;
+                }
+                else
+                {
+                    targetFOV = newFOV;
+                }
+            }
+            else
+            {
+                // As long as the lerpTimeFrom is above 0 and the lerp timer is less than the time to lerp, lerp the target FOV value.
+                // Else just set it directly.
+                if (lerpTimeFrom > 0 && lerpTimer < lerpTimeFrom)
+                {
+                    // Lerp to the original field of view.
+                    targetFOV = Mathf.Lerp(lerpStartFieldOfView, originalFOV, lerpFromCurve.Evaluate(lerpTimer / lerpTimeFrom));
+                    lerpTimer += deltaTime;
+                }
+                else
+                {
+                    targetFOV = originalFOV;
+                }
+            }
+
             Camera.CameraFieldOfView = targetFOV;
         }
 

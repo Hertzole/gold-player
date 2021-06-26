@@ -453,7 +453,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam:
-    playerController: {fileID: 114925915917120512}
     canLookAround: 1
     shouldLockCursor: 1
     rotateCameraOnly: 0
@@ -517,20 +516,66 @@ MonoBehaviour:
       m_RotationOrder: 4
     zoomInput: Zoom
     fieldOfViewKick:
-      playerController: {fileID: 114925915917120512}
       enableFOVKick: 1
       unscaledTime: 0
       kickWhen: 1
       kickAmount: 15
-      lerpTimeTo: 4
-      lerpTimeFrom: 2.5
+      lerpTimeTo: 0.25
+      lerpToCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      lerpTimeFrom: 1
+      lerpFromCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
     cameraHead: {fileID: 4766509410355108}
     useCinemachine: 0
     targetVirtualCamera: {fileID: 0}
     targetCamera: {fileID: 20764455326535260}
     input_Look: Look
   movement:
-    playerController: {fileID: 114925915917120512}
     canMoveAround: 1
     unscaledTime: 0
     walkingSpeeds:
@@ -544,8 +589,8 @@ MonoBehaviour:
       sidewaysSpeed: 5.5
       backwardsSpeed: 5
     stamina:
-      playerController: {fileID: 114925915917120512}
       enableStamina: 1
+      unscaledTime: 0
       drainStaminaWhen: -1
       maxStamina: 10
       drainRate: 1
@@ -570,7 +615,56 @@ MonoBehaviour:
       backwardsSpeed: 1
     crouchJumping: 0
     crouchHeight: 1
-    crouchHeadLerp: 10
+    crouchTime: 0.25
+    crouchCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    standUpTime: 0.25
+    standUpCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     groundLayer:
       serializedVersion: 2
       m_Bits: 1
@@ -584,7 +678,6 @@ MonoBehaviour:
     rayHeight: 0.3
     rayLength: 0.4
     movingPlatforms:
-      playerController: {fileID: 114925915917120512}
       enabled: 1
       movePosition: 1
       moveRotation: 1
@@ -594,7 +687,6 @@ MonoBehaviour:
     input_Run: Run
     input_Crouch: Crouch
   headBob:
-    playerController: {fileID: 114925915917120512}
     bobClass:
       enableBob: 1
       unscaledTime: 0
@@ -610,7 +702,6 @@ MonoBehaviour:
       strafeTilt: 3
       bobTarget: {fileID: 4910431633050106}
   sounds:
-    playerController: {fileID: 114925915917120512}
     enableAudio: 1
     unscaledTime: 0
     audioType: 0

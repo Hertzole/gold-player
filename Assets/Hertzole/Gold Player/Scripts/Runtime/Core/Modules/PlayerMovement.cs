@@ -98,9 +98,15 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_CrouchHeight")]
         private float crouchHeight = 1f;
         [SerializeField]
-        [Tooltip("How fast the lerp for the head is when crouching/standing up.")]
-        [FormerlySerializedAs("m_CrouchHeadLerp")]
-        private float crouchHeadLerp = 10;
+        [Tooltip("How long it takes to crouch.")]
+        private float crouchTime = 0.25f;     
+        [SerializeField] 
+        private AnimationCurve crouchCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        [SerializeField]
+        [Tooltip("How long it takes to crouch.")]
+        private float standUpTime = 0.25f;
+        [SerializeField] 
+        private AnimationCurve standUpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         //////// OTHER
         [SerializeField]
@@ -160,95 +166,99 @@ namespace Hertzole.GoldPlayer
         private string input_Crouch = "Crouch";
 
         // The real calculated jump height.
-        private float realJumpHeight = 0;
+        private float realJumpHeight;
         // The original character controller height.
-        private float originalControllerHeight = 0;
+        private float originalControllerHeight;
         // The original camera position.
-        private float originalCameraPosition = 0;
+        private float originalCameraPosition;
         // The character controller center set when the player is crouching.
-        private float controllerCrouchCenter = 0;
+        private float controllerCrouchCenter;
         // The current camera position, related to crouching.
-        private float currentCrouchCameraPosition = 0;
+        private float currentCrouchCameraPosition;
         // The position to set the camera to when crouching.
-        private float crouchCameraPosition = 0;
+        private float crouchCameraPosition;
         // Just used in Input smoothing.
-        private float forwardSpeedVelocity = 0;
+        private float forwardSpeedVelocity;
         // Just used in Input smoothing.
-        private float sidewaysSpeedVelocity = 0;
+        private float sidewaysSpeedVelocity;
         // The current air time of the player.
-        private float currentAirTime = 0;
+        private float currentAirTime;
         // The current move speed multiplier.
         private float moveSpeedMultiplier = 1;
         // The current jump height multiplier,
         private float jumpHeightMultiplier = 1;
         // The start position of the player when they jump.
-        private float jumpStartYPosition = 0;
+        private float jumpStartYPosition;
         // The max height the player reached in their jump.
-        private float maxAirHeight = 0;
+        private float maxAirHeight;
+        // Timer used for lerping crouching.
+        private float crouchTimer;
+        // The position of the camera when a crouching event starts.
+        private float crouchStartPosition;
 
         // The current amount of times an air jump has been performed.
-        internal int currentJumps = 0;
+        internal int currentJumps;
 
         // Is the player grounded?
-        private bool isGrounded = false;
+        private bool isGrounded;
         // Is the player moving at all?
         private bool isMoving = false;
         // Does the player want to be running?
-        internal bool shouldRun = false;
+        internal bool shouldRun;
         // Is the player running?
-        private bool isRunning = false;
+        private bool isRunning;
         // Did the player run at all since their last break in move input?
         private bool didRunSinceLastBreakInMovement;
         // Is the player jumping?
-        private bool isJumping = false;
+        private bool isJumping;
         // Is the player falling?
-        private bool isFalling = false;
+        private bool isFalling;
         // Does the player want to be crouching?
-        private bool shouldCrouch = false;
+        private bool shouldCrouch;
         // Is the player crouching?
-        private bool isCrouching = false;
+        private bool isCrouching;
         // Can the player stand up while crouching?
-        private bool canStandUp = false;
+        private bool canStandUp;
         // Was the player previously grounded?
-        private bool previouslyGrounded = false;
+        private bool previouslyGrounded;
         // Was the player previously crouched?
-        private bool previouslyCrouched = false;
+        private bool previouslyCrouched;
         // Was the player previously running?
-        private bool previouslyRunning = false;
+        private bool previouslyRunning;
         // Determines if the player should jump.
-        private bool shouldJump = false;
+        private bool shouldJump;
         // Checking if the jump button is pressed.
-        private bool pressedJump = false;
+        private bool pressedJump;
+        // Whether or not the player registered movement input this frame. This can be false while
+        // movementInput is non-zero due to the smoothing applied to movementInput.
+        private bool hasUserInput;
 
         // Raw input values for movement on the X and Z axis.
         private Vector2 movementInput = Vector2.zero;
         // Input values for movement on the X and Z axis, automatically dampened for smoothing.
         private Vector2 smoothedMovementInput = Vector2.zero;
-        // Whether or not the player registered movement input this frame. This can be false while
-        // movementInput is non-zero due to the smoothing applied to movementInput.
-        private bool hasUserInput = false;
 
         // The original character controller center.
-        private Vector3 originalControllerCenter = Vector3.zero;
+        private Vector3 originalControllerCenter;
         // The direction the player is moving in.
-        private Vector3 moveDirection = Vector3.zero;
+        private Vector3 moveDirection;
         // The current ground velocity.
-        internal Vector3 groundVelocity = Vector3.zero;
+        internal Vector3 groundVelocity;
         // The velocity while the player is in the air.
-        internal Vector3 airVelocity = Vector3.zero;
+        internal Vector3 airVelocity;
         // The position the player was at when jumping.
-        private Vector3 jumpPosition = Vector3.zero;
+        private Vector3 jumpPosition;
         // The impact of the applied force.
-        private Vector3 forceImpact = Vector3.zero;
+        private Vector3 forceImpact;
         // The previous player position.
-        private Vector3 previousPosition = Vector3.zero;
+        private Vector3 previousPosition;
         // The current velocity.
-        private Vector3 velocity = Vector3.zero;
+        private Vector3 velocity;
         // The rays used for raycast ground check.
         internal Vector3[] groundCheckRays;
 
         // The move speed that will be used when moving. Can be changed and it will be reflected in movement.
-        private MovementSpeeds moveSpeed = new MovementSpeeds();
+        private MovementSpeeds moveSpeed;
 
         /// <summary> Determines if the player can move at all. </summary>
         public bool CanMoveAround { get { return canMoveAround; } set { canMoveAround = value; if (!value) { ResetMovementInput(); } } }
@@ -301,8 +311,10 @@ namespace Hertzole.GoldPlayer
         public bool CrouchJumping { get { return crouchJumping; } set { crouchJumping = value; } }
         /// <summary> The height of the character controller when crouched. </summary>
         public float CrouchHeight { get { return crouchHeight; } set { crouchHeight = value; } }
-        /// <summary> How fast the lerp for the head is when crouching/standing up. </summary>
-        public float CrouchHeadLerp { get { return crouchHeadLerp; } set { crouchHeadLerp = value; } }
+        /// <summary> How long it takes to crouch. </summary>
+        public float CrouchTime { get { return crouchTime; } set { crouchTime = value; } }
+        /// <summary> How long it takes to stand up. </summary>
+        public float StandUpTime { get { return standUpTime; } set { standUpTime = value; } }
 
         /// <summary> The layers the player will treat as ground. SHOULD NOT INCLUDE THE LAYER THE PLAYER IS ON! </summary>
         public LayerMask GroundLayer { get { return groundLayer; } set { groundLayer = value; } }
@@ -429,6 +441,11 @@ namespace Hertzole.GoldPlayer
             [UnityEngine.TestTools.ExcludeFromCoverage]
             set { }
         }
+        
+        /// <summary> How fast the lerp for the head is when crouching/standing up. </summary>
+        [System.Obsolete("Use 'CrouchTime' or 'StandUpTime' instead This will be removed on build.", true)]
+        public float CrouchHeadLerp { get { return 0; } set { } }
+        
 #endif
         #endregion
 
@@ -443,6 +460,8 @@ namespace Hertzole.GoldPlayer
             stamina.Initialize(PlayerController, PlayerInput);
             // Initialize the moving platforms module.
             movingPlatforms.Initialize(PlayerController, PlayerInput);
+
+            crouchTimer = standUpTime;
 
             // Make the gravity + if needed.
             if (gravity < 0)
@@ -829,9 +848,9 @@ namespace Hertzole.GoldPlayer
             else
             {
                 // Get the "inverted air control". (Inspector value being 1, this is 0. Value is 0.2, this is 0.8)
-                float airControl = 1 - this.airControl;
+                float invertedAirControl = 1 - airControl;
                 // Set the air velocity based on the ground velocity multiplied with the air control.
-                airVelocity = new Vector3(groundVelocity.x * airControl, moveDirection.y, groundVelocity.z * airControl);
+                airVelocity = new Vector3(groundVelocity.x * invertedAirControl, moveDirection.y, groundVelocity.z * invertedAirControl);
                 // Apply the same movement speeds as when grounded.
                 if (smoothedMovementInput.y > 0)
                 {
@@ -1078,6 +1097,9 @@ namespace Hertzole.GoldPlayer
                     // If the player was previously crouched, fire the OnEndCrouch event, as the player is longer crouching.
                     if (previouslyCrouched)
                     {
+                        crouchTimer = 0;
+                        crouchStartPosition = PlayerController.Camera.CameraHead.localPosition.y;
+     
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                         OnEndCrouch?.Invoke();
 #else
@@ -1106,6 +1128,9 @@ namespace Hertzole.GoldPlayer
                     // If the player wasn't previously crouched, fire the OnBeginCrouch event, as the player is now crouching.
                     if (!previouslyCrouched)
                     {
+                        crouchTimer = 0;
+                        crouchStartPosition = PlayerController.Camera.CameraHead.localPosition.y;
+                        
 #if NET_4_6 || (UNITY_2018_3_OR_NEWER && !NET_LEGACY)
                         OnBeginCrouch?.Invoke();
 #else
@@ -1128,10 +1153,58 @@ namespace Hertzole.GoldPlayer
                     previouslyCrouched = true;
                 }
 
+                // Used to determine the player head crouch position.
+                float percent = 0;
+                
+                if (isCrouching)
+                {
+                    // If crouch time is more than 0, smoothly lerp the value. Otherwise just set the value.
+                    if (crouchTime > 0)
+                    {
+                        if (crouchTimer < crouchTime)
+                        {
+                            percent = crouchTimer / crouchTime;
+                            crouchTimer += deltaTime;
+                        }
+                        else
+                        {
+                            percent = 1;
+                        }   
+                        
+                        currentCrouchCameraPosition = Mathf.Lerp(crouchStartPosition, crouchCameraPosition, crouchCurve.Evaluate(percent));
+                    }
+                    else
+                    {
+                        currentCrouchCameraPosition = crouchCameraPosition;
+                    }
+                }
+                else
+                {
+                    if (standUpTime > 0)
+                    {
+                        if (crouchTimer < standUpTime)
+                        {
+                            percent = crouchTimer / standUpTime;
+                            crouchTimer += deltaTime;
+                        }
+                        else
+                        {
+                            percent = 1;
+                        }   
+                        
+                        currentCrouchCameraPosition = Mathf.Lerp(crouchStartPosition, originalCameraPosition, standUpCurve.Evaluate(percent));
+                    }
+                    else
+                    {
+                        currentCrouchCameraPosition = originalCameraPosition;
+                    }
+                }
+
+                Vector3 localPos = PlayerController.Camera.CameraHead.localPosition;
+
                 // Lerp the current crouch camera position to either the crouch camera position or the original camera position.
-                currentCrouchCameraPosition = Mathf.Lerp(currentCrouchCameraPosition, isCrouching ? crouchCameraPosition : originalCameraPosition, crouchHeadLerp * deltaTime);
                 // Set the camera head position to the current crouch camera position.
-                PlayerController.Camera.CameraHead.localPosition = new Vector3(PlayerController.Camera.CameraHead.localPosition.x, currentCrouchCameraPosition, PlayerController.Camera.CameraHead.localPosition.z);
+                PlayerController.Camera.CameraHead.localPosition = new Vector3(localPos.x, currentCrouchCameraPosition, localPos.z);
             }
             else
             {
@@ -1146,8 +1219,11 @@ namespace Hertzole.GoldPlayer
         /// <returns></returns>
         private bool CheckCanStandUp()
         {
+            // Cache the values to avoid too many native calls.
+            Vector3 position = PlayerTransform.position;
+            float radius = CharacterController.radius;
             // Check if we can stand up using a capsule from the player bottom to the player top.
-            return !Physics.CheckCapsule(PlayerTransform.position + Vector3.up * CharacterController.radius, PlayerTransform.position + (Vector3.up * originalControllerHeight) - (Vector3.up * CharacterController.radius), CharacterController.radius, groundLayer, QueryTriggerInteraction.Ignore);
+            return !Physics.CheckCapsule(position + Vector3.up * radius, position + (Vector3.up * originalControllerHeight) - (Vector3.up * radius), radius, groundLayer, QueryTriggerInteraction.Ignore);
         }
 
         /// <summary>

@@ -46,6 +46,11 @@ namespace Hertzole.GoldPlayer
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// Only uses for tests to forcefully initialize modules.
+        /// </summary>
+        /// <param name="input"></param>
+        [UnityEngine.TestTools.ExcludeFromCoverage]
         internal void ForceInitialize(IGoldInput input)
         {
             if (input != null)
