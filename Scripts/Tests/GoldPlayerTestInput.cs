@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Hertzole.GoldPlayer.Tests
 {
@@ -13,6 +14,10 @@ namespace Hertzole.GoldPlayer.Tests
         public bool isCrouchingToggle;
         public bool isInteracting;
 
+        public const string HORIZONTAL = "Horizontal";
+        public const string VERTICAL = "Vertical";
+        public const string MOUSE_X = "Mouse X";
+        public const string MOUSE_Y = "Mouse Y";
         public const string MOVE = "Moving";
         public const string LOOK = "Looking";
         public const string RUN = "Running";
@@ -20,115 +25,154 @@ namespace Hertzole.GoldPlayer.Tests
         public const string JUMP = "Jumping";
         public const string INTERACT = "Interacting";
 
-        public void DisableAction(string action)
+        private readonly int horizontalHash = GoldPlayerController.InputNameToHash(HORIZONTAL);
+        private readonly int verticalHash = GoldPlayerController.InputNameToHash(VERTICAL);
+        private readonly int mouseXHash = GoldPlayerController.InputNameToHash(MOUSE_X);
+        private readonly int mouseYHash = GoldPlayerController.InputNameToHash(MOUSE_Y);
+        
+        private readonly int moveHash = GoldPlayerController.InputNameToHash(MOVE);
+        private readonly int lookHash = GoldPlayerController.InputNameToHash(LOOK);
+        private readonly int runHash = GoldPlayerController.InputNameToHash(RUN);
+        private readonly int crouchHash = GoldPlayerController.InputNameToHash(CROUCH);
+        private readonly int jumpHash = GoldPlayerController.InputNameToHash(JUMP);
+        private readonly int interactHash = GoldPlayerController.InputNameToHash(INTERACT);
+
+        public void DisableAction(int action)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void DisableInput()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public void EnableAction(string action)
+        public void EnableAction(int action)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void EnableInput()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+        
+        public float GetAxis(int axis)
+        {
+            if (axis == horizontalHash)
+            {
+                return moveDirection.x;
+            }
+
+            if (axis == verticalHash)
+            {
+                return moveDirection.y;
+            }
+
+            if (axis == mouseXHash)
+            {
+                return mouseInput.x;
+            }
+
+            if (axis == mouseYHash)
+            {
+                return mouseInput.y;
+            }
+
+            return 0;
         }
 
-        public float GetAxis(string axis)
+        public float GetAxisRaw(int axis)
         {
-            switch (axis)
+            if (axis == horizontalHash)
             {
-                case "Horizontal":
-                    return moveDirection.x;
-                case "Vertical":
-                    return moveDirection.y;
-                case "Mouse X":
-                    return mouseInput.x;
-                case "Mouse Y":
-                    return mouseInput.y;
-                default:
-                    return 0;
+                return moveDirection.x;
             }
+
+            if (axis == verticalHash)
+            {
+                return moveDirection.y;
+            }
+
+            if (axis == mouseXHash)
+            {
+                return mouseInput.x;
+            }
+
+            if (axis == mouseYHash)
+            {
+                return mouseInput.y;
+            }
+
+            return 0;
         }
 
-        public float GetAxisRaw(string axis)
+        public bool GetButton(int buttonName)
         {
-            switch (axis)
+            if (buttonName == runHash)
             {
-                case "Horizontal":
-                    return moveDirection.x;
-                case "Vertical":
-                    return moveDirection.y;
-                case "Mouse X":
-                    return mouseInput.x;
-                case "Mouse Y":
-                    return mouseInput.y;
-                default:
-                    return 0;
+                return isRunning;
             }
-        }
 
-        public bool GetButton(string buttonName)
-        {
-            switch (buttonName)
+            if (buttonName == crouchHash)
             {
-                case RUN:
-                    return isRunning;
-                case CROUCH:
-                    return isCrouching;
-                default:
-                    return false;
+                return isCrouching;
             }
+
+            return false;
         }
 
         public bool GetButtonDown(string buttonName)
         {
-            switch (buttonName)
-            {
-                case JUMP:
-                    bool r = isJumpingToggle;
-                    isJumpingToggle = false;
-                    return r;
-                case INTERACT:
-                    r = isInteracting;
-                    isInteracting = false;
-                    return r;
-                case RUN:
-                    r = isRunningToggle;
-                    isRunningToggle = false;
-                    return r;
-                case CROUCH:
-                    r = isCrouchingToggle;
-                    isCrouchingToggle = false;
-                    return r;
-                default:
-                    return false;
-            }
+            return GetButtonDown(GoldPlayerController.InputNameToHash(buttonName));
         }
 
-        public bool GetButtonUp(string buttonName)
+        public bool GetButtonDown(int buttonName)
+        {
+            if (buttonName == jumpHash)
+            {
+                bool r = isJumpingToggle;
+                isJumpingToggle = false;
+                return r;
+            }
+
+            if (buttonName == interactHash)
+            {
+                bool r = isInteracting;
+                isInteracting = false;
+                return r;
+            }
+
+            if (buttonName == runHash)
+            {
+                bool r = isRunningToggle;
+                isRunningToggle = false;
+                return r;
+            }
+
+            if (buttonName == crouchHash)
+            {
+                bool r = isCrouchingToggle;
+                isCrouchingToggle = false;
+                return r;
+            }
+
+            return false;
+        }
+
+        public bool GetButtonUp(int buttonName)
         {
             return false;
         }
 
-        public Vector2 GetVector2(string actionName)
+        public Vector2 GetVector2(int actionName)
         {
-            switch (actionName)
+            if (actionName == moveHash)
             {
-                case MOVE:
-                    return moveDirection;
-                case LOOK:
-                    return mouseInput;
-                default:
-                    return Vector2.zero;
+                return moveDirection;
             }
 
+            return actionName == lookHash ? mouseInput : Vector2.zero;
         }
     }
 }

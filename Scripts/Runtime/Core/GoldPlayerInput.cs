@@ -55,8 +55,9 @@ namespace Hertzole.GoldPlayer
 #endif
         };
 
-        private Dictionary<string, InputItem> inputsDic;
-        private Dictionary<string, bool> enabledInputs;
+        private int[] inputHashes;
+        private Dictionary<int, InputItem> inputsDic;
+        private Dictionary<int, bool> enabledInputs;
 
         /// <summary> Determines if the input should be based around KeyCodes. If false, Input Manager will be used. </summary>
         public bool UseKeyCodes { get { return useKeyCodes; } set { useKeyCodes = value; } }
@@ -95,14 +96,33 @@ namespace Hertzole.GoldPlayer
 
         public void UpdateInputs()
         {
-            inputsDic = new Dictionary<string, InputItem>();
-            inputsDic.Clear();
-            enabledInputs = new Dictionary<string, bool>();
+	        inputHashes = new int[inputs.Length];
 
-            for (int i = 0; i < inputs.Length; i++)
+	        if (inputsDic == null)
+	        {
+				inputsDic = new Dictionary<int, InputItem>(inputs.Length);
+	        }
+	        else
+	        {
+				inputsDic.Clear();
+	        }
+
+	        if (enabledInputs == null)
+	        {
+				enabledInputs = new Dictionary<int, bool>(inputs.Length);
+	        }
+	        else
+	        {
+		        enabledInputs.Clear();
+	        }
+
+	        for (int i = 0; i < inputs.Length; i++)
             {
-                inputsDic.Add(inputs[i].ButtonName, inputs[i]);
-                enabledInputs.Add(inputs[i].ButtonName, false);
+	            int hash = GoldPlayerController.InputNameToHash(inputs[i].ButtonName);
+	            inputHashes[i] = hash;
+	            
+                inputsDic.Add(hash, inputs[i]);
+                enabledInputs.Add(hash, false);
             }
         }
 
@@ -116,7 +136,7 @@ namespace Hertzole.GoldPlayer
 
             for (int i = 0; i < inputs.Length; i++)
             {
-                EnableAction(inputs[i].ButtonName);
+                EnableAction(inputHashes[i]);
             }
 #else
             Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
@@ -133,38 +153,38 @@ namespace Hertzole.GoldPlayer
 
             for (int i = 0; i < inputs.Length; i++)
             {
-                DisableAction(inputs[i].ButtonName);
+                DisableAction(inputHashes[i]);
             }
 #else
             Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
 #endif
         }
 
-        public void EnableAction(string action)
+        public void EnableAction(int actionIndex)
         {
 #if !OBSOLETE
-            if (!enabledInputs.ContainsKey(action))
+            if (!enabledInputs.ContainsKey(actionIndex))
             {
-                Debug.LogError("There's no action called '" + action + "' on " + gameObject.name + ".");
+                Debug.LogError("There's no action called '" + actionIndex + "' on " + gameObject.name + ".");
                 return;
             }
 
-            enabledInputs[action] = true;
+            enabledInputs[actionIndex] = true;
 #else
             Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
 #endif
         }
 
-        public void DisableAction(string action)
+        public void DisableAction(int actionIndex)
         {
 #if !OBSOLETE
-            if (!enabledInputs.ContainsKey(action))
+            if (!enabledInputs.ContainsKey(actionIndex))
             {
-                Debug.LogError("There's no action called '" + action + "' on " + gameObject.name + ".");
+                Debug.LogError("There's no action called '" + actionIndex + "' on " + gameObject.name + ".");
                 return;
             }
 
-            enabledInputs[action] = false;
+            enabledInputs[actionIndex] = false;
 #else
             Debug.LogError("GoldPlayerInput is obsolete. DisableInput will do nothing.");
 #endif
@@ -174,7 +194,7 @@ namespace Hertzole.GoldPlayer
         /// Returns true while a button is being held down.
         /// </summary>
         /// <param name="buttonName">The button to check.</param>
-        public bool GetButton(string buttonName)
+        public bool GetButton(int buttonName)
         {
 #if !OBSOLETE
             if (inputsDic == null)
@@ -199,7 +219,7 @@ namespace Hertzole.GoldPlayer
         /// Returns true if the button was pressed this frame.
         /// </summary>
         /// <param name="buttonName">The button to check.</param>
-        public bool GetButtonDown(string buttonName)
+        public bool GetButtonDown(int buttonName)
         {
 #if !OBSOLETE
             if (inputsDic == null)
@@ -224,7 +244,7 @@ namespace Hertzole.GoldPlayer
         /// Returns true if the button was released this frame.
         /// </summary>
         /// <param name="buttonName">The button to check.</param>
-        public bool GetButtonUp(string buttonName)
+        public bool GetButtonUp(int buttonName)
         {
 #if !OBSOLETE
             if (inputsDic == null)
@@ -249,7 +269,7 @@ namespace Hertzole.GoldPlayer
         /// Returns the value of a axis.
         /// </summary>
         /// <param name="axisName">The axis to check.</param>
-        public float GetAxis(string axisName)
+        public float GetAxis(int axisName)
         {
 #if !OBSOLETE
             if (inputsDic == null)
@@ -274,7 +294,7 @@ namespace Hertzole.GoldPlayer
         /// Returns the value of a axis with no processing applied.
         /// </summary>
         /// <param name="axisName">The axis to check.</param>
-        public float GetAxisRaw(string axisName)
+        public float GetAxisRaw(int axisName)
         {
 #if !OBSOLETE
             if (inputsDic == null)
@@ -295,11 +315,7 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
-        /// <summary>
-        /// Not used on GoldPlayerInput.
-        /// </summary>
-        [System.Obsolete("GetVector2 will do nothing when using the legacy input manager.")]
-        public Vector2 GetVector2(string action)
+        public Vector2 GetVector2(int action)
         {
 #if !OBSOLETE
             if (inputsDic == null)
@@ -321,42 +337,23 @@ namespace Hertzole.GoldPlayer
         }
 
 #if USE_SAFETY
-        private bool IsValidInput(string action, InputItem.InputType type)
+	    private bool IsValidInput(int action, InputItem.InputType type)
         {
             if (!inputsDic.ContainsKey(action))
             {
-                Debug.LogError("There's no input action called '" + action + "' on '" + gameObject.name + "'.", gameObject);
+                Debug.LogError($"There's no input action called '{action}' on '{gameObject.name}'.", gameObject);
                 return false;
             }
 
             if (inputsDic[action].Type != type)
             {
-                Debug.LogError("Input action '" + action + "' is a " + inputsDic[action].Type + " but should be a " + type + ".");
+                Debug.LogError($"Input action '{action}' is a {inputsDic[action].Type} but should be a {type}.");
                 return false;
             }
 
             return true;
         }
 #endif
-
-        /// <summary>
-        /// Returns the Input Item that matches the buttonName in the given InputItem array.
-        /// </summary>
-        /// <param name="buttonName">The name of the item to try and find.</param>
-        /// <param name="inputsArray">The array to search in to find the item.</param>
-        protected virtual InputItem GetItem(string buttonName, InputItem[] inputsArray)
-        {
-            for (int i = 0; i < inputsArray.Length; i++)
-            {
-                if (inputsArray[i].ButtonName == buttonName)
-                {
-                    return inputsArray[i];
-                }
-            }
-
-            Debug.LogError("No input with the name '" + buttonName + "' assigned on '" + gameObject.name + "'!");
-            return new InputItem();
-        }
     }
 }
 #endif

@@ -309,6 +309,25 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+        /// <summary>
+        /// Generates a stable hash code from a string.
+        /// </summary>
+        /// <param name="actionName">The action name.</param>
+        /// <returns>The action name hash code.</returns>
+        public static int InputNameToHash(string actionName)
+        {
+            unchecked
+            {
+                int hash = 7;
+                for (int i = 0; i < actionName.Length; i++)
+                {
+                    hash = hash * 8 + actionName[i];
+                }
+
+                return hash;
+            }
+        }
+
 #if UNITY_EDITOR
         [UnityEngine.TestTools.ExcludeFromCoverage]
         private void Reset()

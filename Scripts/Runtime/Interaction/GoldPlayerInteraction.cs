@@ -59,6 +59,8 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_InteractInput")]
         internal string interactInput = "Interact";
 
+        private int interactHash;
+
         // Flag to determine if we have checked for a interactable.
         internal bool haveCheckedInteractable = false;
 
@@ -90,7 +92,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> A default message for UI elements to show when the player can interact. </summary>
         public string InteractMessage { get { return interactMessage; } set { interactMessage = value; } }
         /// <summary> The input name for interaction to use. </summary>
-        public string InteractInput { get { return interactInput; } set { interactInput = value; } }
+        public string InteractInput { get { return interactInput; } set { interactInput = value; interactHash = GoldPlayerController.InputNameToHash(interactInput); } }
 
 #if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
         /// <summary> The current hit interactable. </summary>
@@ -105,6 +107,8 @@ namespace Hertzole.GoldPlayer
 #if OBSOLETE
             Debug.LogError(gameObject.name + " has GoldPlayerInteraction attached. It will be removed on build. Please remove this component if you don't intend to use it.", gameObject);
 #endif
+
+	        interactHash = GoldPlayerController.InputNameToHash(interactInput);
 
             // Apply the trigger interaction.
             SetTriggerInteraction();
@@ -182,7 +186,7 @@ namespace Hertzole.GoldPlayer
             CanInteract = CurrentHitInteractable != null && CurrentHitInteractable.CanInteract;
 
             // If the player presses the interact key and it can react, call interact.
-            if (GetButtonDown(interactInput) && CanInteract)
+            if (CanInteract && GetButtonDown(interactHash))
             {
                 CurrentHitInteractable.Interact();
             }

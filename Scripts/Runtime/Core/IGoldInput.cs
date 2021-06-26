@@ -17,43 +17,43 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Enable a specific action.
         /// </summary>
-        /// <param name="action">The action to enable.</param>
-        void EnableAction(string action);
+        /// <param name="actionIndex">The action to enable.</param>
+        void EnableAction(int actionIndex);
 
         /// <summary>
         /// Disables a specific action.
         /// </summary>
-        /// <param name="action">The action to disable.</param>
-        void DisableAction(string action);
+        /// <param name="actionIndex">The action to disable.</param>
+        void DisableAction(int actionIndex);
 
         /// <summary>
         /// Returns true if the button is being pressed.
         /// </summary>
-        bool GetButton(string buttonName);
+        bool GetButton(int buttonHash);
 
         /// <summary>
         /// Return true if the button was pressed this frame.
         /// </summary>
-        bool GetButtonDown(string buttonName);
+        bool GetButtonDown(int buttonHash);
 
         /// <summary>
         /// Returns true if the button was released this frame.
         /// </summary>
-        bool GetButtonUp(string buttonName);
+        bool GetButtonUp(int buttonHash);
 
         /// <summary>
         /// Returns the float value of an axis with some smoothing applied.
         /// </summary>
-        float GetAxis(string axis);
+        float GetAxis(int axisHash);
 
         /// <summary>
         /// Returns the float value of an axis with no smoothing applied.
         /// </summary>
-        float GetAxisRaw(string axis);
+        float GetAxisRaw(int axisHash);
         
         /// <summary>
         /// Returns a Vector2 axis.
         /// </summary>
-        Vector2 GetVector2(string actionName);
+        Vector2 GetVector2(int actionHash);
     }
 }
