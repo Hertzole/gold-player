@@ -1240,6 +1240,19 @@ references:
   commentId: F:Hertzole.GoldPlayer.GoldPlayerController.InitOnStart
   fullName: Hertzole.GoldPlayer.GoldPlayerController.InitOnStart
   nameWithType: GoldPlayerController.InitOnStart
+- uid: Hertzole.GoldPlayer.GoldPlayerController.InputNameToHash(System.String)
+  name: InputNameToHash(String)
+  href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerController.InputNameToHash(System.String)
+  fullName: Hertzole.GoldPlayer.GoldPlayerController.InputNameToHash(System.String)
+  nameWithType: GoldPlayerController.InputNameToHash(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerController.InputNameToHash*
+  name: InputNameToHash
+  href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_
+  commentId: Overload:Hertzole.GoldPlayer.GoldPlayerController.InputNameToHash
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.GoldPlayerController.InputNameToHash
+  nameWithType: GoldPlayerController.InputNameToHash
 - uid: Hertzole.GoldPlayer.GoldPlayerController.LateUpdate
   name: LateUpdate()
   href: api/Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_LateUpdate
@@ -1585,12 +1598,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.AutoEnableInput
   nameWithType: GoldPlayerInput.AutoEnableInput
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.DisableAction(System.String)
-  name: DisableAction(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_DisableAction_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.DisableAction(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.DisableAction(System.String)
-  nameWithType: GoldPlayerInput.DisableAction(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.DisableAction(System.Int32)
+  name: DisableAction(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_DisableAction_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.DisableAction(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.DisableAction(System.Int32)
+  nameWithType: GoldPlayerInput.DisableAction(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.DisableAction*
   name: DisableAction
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_DisableAction_
@@ -1611,12 +1624,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.DisableInput
   nameWithType: GoldPlayerInput.DisableInput
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.EnableAction(System.String)
-  name: EnableAction(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_EnableAction_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.EnableAction(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.EnableAction(System.String)
-  nameWithType: GoldPlayerInput.EnableAction(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.EnableAction(System.Int32)
+  name: EnableAction(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_EnableAction_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.EnableAction(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.EnableAction(System.Int32)
+  nameWithType: GoldPlayerInput.EnableAction(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.EnableAction*
   name: EnableAction
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_EnableAction_
@@ -1637,12 +1650,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.EnableInput
   nameWithType: GoldPlayerInput.EnableInput
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetAxis(System.String)
-  name: GetAxis(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetAxis_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetAxis(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetAxis(System.String)
-  nameWithType: GoldPlayerInput.GetAxis(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetAxis(System.Int32)
+  name: GetAxis(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetAxis_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetAxis(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetAxis(System.Int32)
+  nameWithType: GoldPlayerInput.GetAxis(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.GetAxis*
   name: GetAxis
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetAxis_
@@ -1650,12 +1663,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetAxis
   nameWithType: GoldPlayerInput.GetAxis
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw(System.String)
-  name: GetAxisRaw(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetAxisRaw_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw(System.String)
-  nameWithType: GoldPlayerInput.GetAxisRaw(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw(System.Int32)
+  name: GetAxisRaw(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetAxisRaw_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw(System.Int32)
+  nameWithType: GoldPlayerInput.GetAxisRaw(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw*
   name: GetAxisRaw
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetAxisRaw_
@@ -1663,12 +1676,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetAxisRaw
   nameWithType: GoldPlayerInput.GetAxisRaw
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButton(System.String)
-  name: GetButton(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButton_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetButton(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButton(System.String)
-  nameWithType: GoldPlayerInput.GetButton(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButton(System.Int32)
+  name: GetButton(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButton_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetButton(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButton(System.Int32)
+  nameWithType: GoldPlayerInput.GetButton(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButton*
   name: GetButton
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButton_
@@ -1676,12 +1689,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButton
   nameWithType: GoldPlayerInput.GetButton
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown(System.String)
-  name: GetButtonDown(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButtonDown_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown(System.String)
-  nameWithType: GoldPlayerInput.GetButtonDown(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown(System.Int32)
+  name: GetButtonDown(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButtonDown_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown(System.Int32)
+  nameWithType: GoldPlayerInput.GetButtonDown(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown*
   name: GetButtonDown
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButtonDown_
@@ -1689,12 +1702,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonDown
   nameWithType: GoldPlayerInput.GetButtonDown
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp(System.String)
-  name: GetButtonUp(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButtonUp_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp(System.String)
-  nameWithType: GoldPlayerInput.GetButtonUp(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp(System.Int32)
+  name: GetButtonUp(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButtonUp_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp(System.Int32)
+  nameWithType: GoldPlayerInput.GetButtonUp(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp*
   name: GetButtonUp
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetButtonUp_
@@ -1702,28 +1715,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetButtonUp
   nameWithType: GoldPlayerInput.GetButtonUp
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetItem(System.String,Hertzole.GoldPlayer.InputItem[])
-  name: GetItem(String, InputItem[])
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetItem_System_String_Hertzole_GoldPlayer_InputItem___
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetItem(System.String,Hertzole.GoldPlayer.InputItem[])
-  name.vb: GetItem(String, InputItem())
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetItem(System.String, Hertzole.GoldPlayer.InputItem[])
-  fullName.vb: Hertzole.GoldPlayer.GoldPlayerInput.GetItem(System.String, Hertzole.GoldPlayer.InputItem())
-  nameWithType: GoldPlayerInput.GetItem(String, InputItem[])
-  nameWithType.vb: GoldPlayerInput.GetItem(String, InputItem())
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetItem*
-  name: GetItem
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetItem_
-  commentId: Overload:Hertzole.GoldPlayer.GoldPlayerInput.GetItem
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetItem
-  nameWithType: GoldPlayerInput.GetItem
-- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetVector2(System.String)
-  name: GetVector2(String)
-  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetVector2_System_String_
-  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetVector2(System.String)
-  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetVector2(System.String)
-  nameWithType: GoldPlayerInput.GetVector2(String)
+- uid: Hertzole.GoldPlayer.GoldPlayerInput.GetVector2(System.Int32)
+  name: GetVector2(Int32)
+  href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetVector2_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.GoldPlayerInput.GetVector2(System.Int32)
+  fullName: Hertzole.GoldPlayer.GoldPlayerInput.GetVector2(System.Int32)
+  nameWithType: GoldPlayerInput.GetVector2(Int32)
 - uid: Hertzole.GoldPlayer.GoldPlayerInput.GetVector2*
   name: GetVector2
   href: api/Hertzole.GoldPlayer.GoldPlayerInput.html#Hertzole_GoldPlayer_GoldPlayerInput_GetVector2_
@@ -2465,12 +2462,12 @@ references:
   commentId: T:Hertzole.GoldPlayer.IGoldInput
   fullName: Hertzole.GoldPlayer.IGoldInput
   nameWithType: IGoldInput
-- uid: Hertzole.GoldPlayer.IGoldInput.DisableAction(System.String)
-  name: DisableAction(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_DisableAction_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.DisableAction(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.DisableAction(System.String)
-  nameWithType: IGoldInput.DisableAction(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.DisableAction(System.Int32)
+  name: DisableAction(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_DisableAction_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.DisableAction(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.DisableAction(System.Int32)
+  nameWithType: IGoldInput.DisableAction(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.DisableAction*
   name: DisableAction
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_DisableAction_
@@ -2491,12 +2488,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.DisableInput
   nameWithType: IGoldInput.DisableInput
-- uid: Hertzole.GoldPlayer.IGoldInput.EnableAction(System.String)
-  name: EnableAction(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_EnableAction_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.EnableAction(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.EnableAction(System.String)
-  nameWithType: IGoldInput.EnableAction(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.EnableAction(System.Int32)
+  name: EnableAction(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_EnableAction_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.EnableAction(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.EnableAction(System.Int32)
+  nameWithType: IGoldInput.EnableAction(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.EnableAction*
   name: EnableAction
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_EnableAction_
@@ -2517,12 +2514,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.EnableInput
   nameWithType: IGoldInput.EnableInput
-- uid: Hertzole.GoldPlayer.IGoldInput.GetAxis(System.String)
-  name: GetAxis(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetAxis_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetAxis(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.GetAxis(System.String)
-  nameWithType: IGoldInput.GetAxis(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetAxis(System.Int32)
+  name: GetAxis(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetAxis_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetAxis(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetAxis(System.Int32)
+  nameWithType: IGoldInput.GetAxis(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.GetAxis*
   name: GetAxis
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetAxis_
@@ -2530,12 +2527,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.GetAxis
   nameWithType: IGoldInput.GetAxis
-- uid: Hertzole.GoldPlayer.IGoldInput.GetAxisRaw(System.String)
-  name: GetAxisRaw(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetAxisRaw_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetAxisRaw(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.GetAxisRaw(System.String)
-  nameWithType: IGoldInput.GetAxisRaw(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetAxisRaw(System.Int32)
+  name: GetAxisRaw(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetAxisRaw_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetAxisRaw(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetAxisRaw(System.Int32)
+  nameWithType: IGoldInput.GetAxisRaw(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.GetAxisRaw*
   name: GetAxisRaw
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetAxisRaw_
@@ -2543,12 +2540,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.GetAxisRaw
   nameWithType: IGoldInput.GetAxisRaw
-- uid: Hertzole.GoldPlayer.IGoldInput.GetButton(System.String)
-  name: GetButton(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButton_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetButton(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.GetButton(System.String)
-  nameWithType: IGoldInput.GetButton(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetButton(System.Int32)
+  name: GetButton(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButton_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetButton(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetButton(System.Int32)
+  nameWithType: IGoldInput.GetButton(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.GetButton*
   name: GetButton
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButton_
@@ -2556,12 +2553,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.GetButton
   nameWithType: IGoldInput.GetButton
-- uid: Hertzole.GoldPlayer.IGoldInput.GetButtonDown(System.String)
-  name: GetButtonDown(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButtonDown_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetButtonDown(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonDown(System.String)
-  nameWithType: IGoldInput.GetButtonDown(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetButtonDown(System.Int32)
+  name: GetButtonDown(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButtonDown_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetButtonDown(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonDown(System.Int32)
+  nameWithType: IGoldInput.GetButtonDown(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.GetButtonDown*
   name: GetButtonDown
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButtonDown_
@@ -2569,12 +2566,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonDown
   nameWithType: IGoldInput.GetButtonDown
-- uid: Hertzole.GoldPlayer.IGoldInput.GetButtonUp(System.String)
-  name: GetButtonUp(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButtonUp_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetButtonUp(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonUp(System.String)
-  nameWithType: IGoldInput.GetButtonUp(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetButtonUp(System.Int32)
+  name: GetButtonUp(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButtonUp_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetButtonUp(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonUp(System.Int32)
+  nameWithType: IGoldInput.GetButtonUp(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.GetButtonUp*
   name: GetButtonUp
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetButtonUp_
@@ -2582,12 +2579,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.IGoldInput.GetButtonUp
   nameWithType: IGoldInput.GetButtonUp
-- uid: Hertzole.GoldPlayer.IGoldInput.GetVector2(System.String)
-  name: GetVector2(String)
-  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetVector2_System_String_
-  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetVector2(System.String)
-  fullName: Hertzole.GoldPlayer.IGoldInput.GetVector2(System.String)
-  nameWithType: IGoldInput.GetVector2(String)
+- uid: Hertzole.GoldPlayer.IGoldInput.GetVector2(System.Int32)
+  name: GetVector2(Int32)
+  href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetVector2_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.IGoldInput.GetVector2(System.Int32)
+  fullName: Hertzole.GoldPlayer.IGoldInput.GetVector2(System.Int32)
+  nameWithType: IGoldInput.GetVector2(Int32)
 - uid: Hertzole.GoldPlayer.IGoldInput.GetVector2*
   name: GetVector2
   href: api/Hertzole.GoldPlayer.IGoldInput.html#Hertzole_GoldPlayer_IGoldInput_GetVector2_
@@ -3579,6 +3576,12 @@ references:
   commentId: T:Hertzole.GoldPlayer.PlayerBehaviour
   fullName: Hertzole.GoldPlayer.PlayerBehaviour
   nameWithType: PlayerBehaviour
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetAxis(System.Int32)
+  name: GetAxis(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetAxis_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetAxis(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetAxis(System.Int32)
+  nameWithType: PlayerBehaviour.GetAxis(Int32)
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.GetAxis(System.String)
   name: GetAxis(String)
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetAxis_System_String_
@@ -3592,6 +3595,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetAxis
   nameWithType: PlayerBehaviour.GetAxis
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetAxisRaw(System.Int32)
+  name: GetAxisRaw(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetAxisRaw_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetAxisRaw(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetAxisRaw(System.Int32)
+  nameWithType: PlayerBehaviour.GetAxisRaw(Int32)
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.GetAxisRaw(System.String)
   name: GetAxisRaw(String)
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetAxisRaw_System_String_
@@ -3605,6 +3614,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetAxisRaw
   nameWithType: PlayerBehaviour.GetAxisRaw
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetButton(System.Int32)
+  name: GetButton(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetButton_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetButton(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButton(System.Int32)
+  nameWithType: PlayerBehaviour.GetButton(Int32)
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.GetButton(System.String)
   name: GetButton(String)
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetButton_System_String_
@@ -3618,6 +3633,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButton
   nameWithType: PlayerBehaviour.GetButton
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonDown(System.Int32)
+  name: GetButtonDown(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetButtonDown_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetButtonDown(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonDown(System.Int32)
+  nameWithType: PlayerBehaviour.GetButtonDown(Int32)
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonDown(System.String)
   name: GetButtonDown(String)
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetButtonDown_System_String_
@@ -3631,6 +3652,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonDown
   nameWithType: PlayerBehaviour.GetButtonDown
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonUp(System.Int32)
+  name: GetButtonUp(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetButtonUp_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetButtonUp(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonUp(System.Int32)
+  nameWithType: PlayerBehaviour.GetButtonUp(Int32)
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonUp(System.String)
   name: GetButtonUp(String)
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetButtonUp_System_String_
@@ -3644,6 +3671,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetButtonUp
   nameWithType: PlayerBehaviour.GetButtonUp
+- uid: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.Int32)
+  name: GetVector2Input(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetVector2Input_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.Int32)
+  nameWithType: PlayerBehaviour.GetVector2Input(Int32)
 - uid: Hertzole.GoldPlayer.PlayerBehaviour.GetVector2Input(System.String)
   name: GetVector2Input(String)
   href: api/Hertzole.GoldPlayer.PlayerBehaviour.html#Hertzole_GoldPlayer_PlayerBehaviour_GetVector2Input_System_String_
@@ -4414,6 +4447,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.CharacterController
   nameWithType: PlayerModule.CharacterController
+- uid: Hertzole.GoldPlayer.PlayerModule.GetAxis(System.Int32)
+  name: GetAxis(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxis_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetAxis(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetAxis(System.Int32)
+  nameWithType: PlayerModule.GetAxis(Int32)
 - uid: Hertzole.GoldPlayer.PlayerModule.GetAxis(System.String)
   name: GetAxis(String)
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxis_System_String_
@@ -4427,6 +4466,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.GetAxis
   nameWithType: PlayerModule.GetAxis
+- uid: Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.Int32)
+  name: GetAxisRaw(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.Int32)
+  nameWithType: PlayerModule.GetAxisRaw(Int32)
 - uid: Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.String)
   name: GetAxisRaw(String)
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_String_
@@ -4440,6 +4485,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.GetAxisRaw
   nameWithType: PlayerModule.GetAxisRaw
+- uid: Hertzole.GoldPlayer.PlayerModule.GetButton(System.Int32)
+  name: GetButton(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButton_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetButton(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetButton(System.Int32)
+  nameWithType: PlayerModule.GetButton(Int32)
 - uid: Hertzole.GoldPlayer.PlayerModule.GetButton(System.String)
   name: GetButton(String)
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButton_System_String_
@@ -4453,6 +4504,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.GetButton
   nameWithType: PlayerModule.GetButton
+- uid: Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.Int32)
+  name: GetButtonDown(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.Int32)
+  nameWithType: PlayerModule.GetButtonDown(Int32)
 - uid: Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.String)
   name: GetButtonDown(String)
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_String_
@@ -4466,6 +4523,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.GetButtonDown
   nameWithType: PlayerModule.GetButtonDown
+- uid: Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.Int32)
+  name: GetButtonUp(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.Int32)
+  nameWithType: PlayerModule.GetButtonUp(Int32)
 - uid: Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.String)
   name: GetButtonUp(String)
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_String_
@@ -4479,6 +4542,12 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerModule.GetButtonUp
   nameWithType: PlayerModule.GetButtonUp
+- uid: Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.Int32)
+  name: GetVector2Input(Int32)
+  href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_Int32_
+  commentId: M:Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.Int32)
+  fullName: Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.Int32)
+  nameWithType: PlayerModule.GetVector2Input(Int32)
 - uid: Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.String)
   name: GetVector2Input(String)
   href: api/Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_String_

@@ -259,14 +259,65 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetAxis_System_Int32_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetAxis(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L162">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerModule_GetAxis_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxis*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerModule_GetAxis_System_Int32_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxis(System.Int32)">GetAxis(Int32)</h4>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetAxis function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected float GetAxis(int axisHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">axisHash</span></td>
+        <td><p>The hash of the axis you want to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetAxis_System_String_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetAxis(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L118">View Source</a>
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L153">View Source</a>
   </span>
   <a id="Hertzole_GoldPlayer_PlayerModule_GetAxis_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxis*"></a>
   <h4 id="Hertzole_GoldPlayer_PlayerModule_GetAxis_System_String_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxis(System.String)">GetAxis(String)</h4>
-  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetAxis function.</p>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetAxis function.
+It&apos;s much more recommended to cache a hash using <a class="xref" href="Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_">InputNameToHash(String)</a>
+and call <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxis_System_Int32_">GetAxis(Int32)</a> instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -308,14 +359,65 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_Int32_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L182">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxisRaw*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_Int32_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.Int32)">GetAxisRaw(Int32)</h4>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetAxisRaw function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected float GetAxisRaw(int axisHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">axisHash</span></td>
+        <td><p>The hash of the axis you want to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_String_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L127">View Source</a>
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L173">View Source</a>
   </span>
   <a id="Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxisRaw*"></a>
   <h4 id="Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_String_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetAxisRaw(System.String)">GetAxisRaw(String)</h4>
-  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetAxisRaw function.</p>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetAxisRaw function.
+It&apos;s much more recommended to cache a hash using <a class="xref" href="Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_">InputNameToHash(String)</a>
+and call <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_Int32_">GetAxisRaw(Int32)</a> instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -357,14 +459,65 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetButton_System_Int32_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetButton(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L102">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerModule_GetButton_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButton*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerModule_GetButton_System_Int32_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButton(System.Int32)">GetButton(Int32)</h4>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButton/GetKey function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool GetButton(int buttonHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">buttonHash</span></td>
+        <td><p>The hash of the action you want to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetButton_System_String_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetButton(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L91">View Source</a>
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L93">View Source</a>
   </span>
   <a id="Hertzole_GoldPlayer_PlayerModule_GetButton_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButton*"></a>
   <h4 id="Hertzole_GoldPlayer_PlayerModule_GetButton_System_String_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButton(System.String)">GetButton(String)</h4>
-  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButton/GetKey function.</p>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButton/GetKey function.
+It&apos;s much more recommended to cache a hash using <a class="xref" href="Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_">InputNameToHash(String)</a>
+and call <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButton_System_Int32_">GetButton(Int32)</a> instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -406,14 +559,65 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_Int32_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L122">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerModule_GetButtonDown_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonDown*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_Int32_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.Int32)">GetButtonDown(Int32)</h4>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButtonDown/GetKeyDown function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool GetButtonDown(int buttonHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">buttonHash</span></td>
+        <td><p>The hash of the action you want to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_String_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L100">View Source</a>
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L113">View Source</a>
   </span>
   <a id="Hertzole_GoldPlayer_PlayerModule_GetButtonDown_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonDown*"></a>
   <h4 id="Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_String_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonDown(System.String)">GetButtonDown(String)</h4>
-  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButtonDown/GetKeyDown function.</p>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButtonDown/GetKeyDown function.
+It&apos;s much more recommended to cache a hash using <a class="xref" href="Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_">InputNameToHash(String)</a>
+and call <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonDown_System_Int32_">GetButtonDown(Int32)</a> instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -455,14 +659,65 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_Int32_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L142">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerModule_GetButtonUp_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonUp*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_Int32_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.Int32)">GetButtonUp(Int32)</h4>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButtonUp/GetKeyUp function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool GetButtonUp(int buttonHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">buttonHash</span></td>
+        <td><p>The hash of the action you want to get.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_String_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L109">View Source</a>
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L133">View Source</a>
   </span>
   <a id="Hertzole_GoldPlayer_PlayerModule_GetButtonUp_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonUp*"></a>
   <h4 id="Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_String_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetButtonUp(System.String)">GetButtonUp(String)</h4>
-  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButtonUp/GetKeyUp function.</p>
+  <div class="markdown level1 summary"><p>Equivalent to Input&apos;s GetButtonUp/GetKeyUp function.
+It&apos;s much more recommended to cache a hash using <a class="xref" href="Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_">InputNameToHash(String)</a>
+and call <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetButtonUp_System_Int32_">GetButtonUp(Int32)</a> instead.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -504,14 +759,65 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_Int32_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L204">View Source</a>
+  </span>
+  <a id="Hertzole_GoldPlayer_PlayerModule_GetVector2Input_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetVector2Input*"></a>
+  <h4 id="Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_Int32_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.Int32)">GetVector2Input(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets a Vector2 input value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Vector2 GetVector2Input(int actionHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">actionHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Hertzole/gold-player/new/master/apiSpec/new?filename=Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_String_.md&amp;value=---%0Auid%3A%20Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L132">View Source</a>
+    <a href="https://github.com/Hertzole/gold-player/blob/master/Assets/Hertzole/Gold Player/Scripts/Runtime/Core/Modules/PlayerModule.cs/#L194">View Source</a>
   </span>
   <a id="Hertzole_GoldPlayer_PlayerModule_GetVector2Input_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetVector2Input*"></a>
   <h4 id="Hertzole_GoldPlayer_PlayerModule_GetVector2Input_System_String_" data-uid="Hertzole.GoldPlayer.PlayerModule.GetVector2Input(System.String)">GetVector2Input(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a Vector2 input value.
+It&apos;s much more recommended to cache a hash using <a class="xref" href="Hertzole.GoldPlayer.GoldPlayerController.html#Hertzole_GoldPlayer_GoldPlayerController_InputNameToHash_System_String_">InputNameToHash(String)</a>
+and call <a class="xref" href="Hertzole.GoldPlayer.PlayerModule.html#Hertzole_GoldPlayer_PlayerModule_GetAxisRaw_System_Int32_">GetAxisRaw(Int32)</a> instead.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
