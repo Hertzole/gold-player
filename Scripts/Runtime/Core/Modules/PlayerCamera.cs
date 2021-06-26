@@ -139,8 +139,8 @@ namespace Hertzole.GoldPlayer
         private float zoomTimer;
         // The cached field of view when starting to zoom.
         private float originalZoomFieldOfView;
-        // The current field of view.
-        private float currentFieldOfView;
+        // The field of view of the zoom.
+        private float zoomFieldOfView;
 
         // The current input from the mouse.
         private Vector2 mouseInput;
@@ -244,7 +244,6 @@ namespace Hertzole.GoldPlayer
         /// <summary> Fires when the camera shake ends. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndCameraShake;
         /// <summary> Fires when the current field of view changes. </summary>
-        public event Action<float> OnCurrentFieldOfViewChanged; 
         
         /// <summary> The camera that the FOV kick should be applied to. </summary>
         public Camera TargetCamera { get { return targetCamera; } set { targetCamera = value; } }
@@ -254,21 +253,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> The virtual camera that the FOV kick should be applied to. </summary>
         public Cinemachine.CinemachineVirtualCamera TargetVirtualCamera { get { return targetVirtualCamera; } set { targetVirtualCamera = value; } }
 #endif
-        
-        /// <summary> The current field of view. </summary>
-        public float CurrentFieldOfView 
-        { 
-            get { return currentFieldOfView; }
-            internal set
-            {
-                if (Math.Abs(value - currentFieldOfView) > 0.01f)
-                {
-                    currentFieldOfView = value;
-                    OnCurrentFieldOfViewChanged?.Invoke(value);
-                }
-            } 
-        }
-        
+
         /// <summary> The target camera field of view. </summary>
         public float CameraFieldOfView
         {
@@ -342,7 +327,7 @@ namespace Hertzole.GoldPlayer
             zoomHash = GoldPlayerController.InputNameToHash(zoomInput);
 
             originalFieldOfView = CameraFieldOfView;
-            currentFieldOfView = originalFieldOfView;
+            zoomFieldOfView = originalFieldOfView;
             zoomTimer = zoomOutTime;
 
             // Lock the cursor, if it should.
@@ -498,17 +483,23 @@ namespace Hertzole.GoldPlayer
                     {
                         zoomTimer = 0;
                         zooming = true;
-                        originalZoomFieldOfView = CameraFieldOfView;
+                        Debug.Log(CameraFieldOfView);
+                        originalZoomFieldOfView = zoomFieldOfView + fieldOfViewKick.FieldOfViewDifference;
+                        if (fieldOfViewKick.EnableFOVKick && originalZoomFieldOfView > fieldOfViewKick.TargetFieldOfView)
+                        {
+                            originalZoomFieldOfView = fieldOfViewKick.TargetFieldOfView;
+                        }
+                        Debug.Log($"START ZOOM {originalZoomFieldOfView}");
                     }
                 
                     // As long as the zoom timer is less than the zoom in time or the field of view is more than the target zoom, 
                     // set the zoom value.
                     if (zoomTimer < zoomInTime || CameraFieldOfView > targetZoom)
                     {
-                        CameraFieldOfView = Mathf.Lerp(originalZoomFieldOfView, targetZoom, zoomInCurve.Evaluate(zoomTimer / zoomInTime));
+                        zoomFieldOfView = Mathf.Lerp(originalZoomFieldOfView, targetZoom, zoomInCurve.Evaluate(zoomTimer / zoomInTime));
+                        // zoomFieldOfView = Mathf.Clamp(zoomFieldOfView, targetZoom, originalFieldOfView);
                         zoomTimer += deltaTime;
-                        CameraFieldOfView = Mathf.Clamp(CameraFieldOfView, targetZoom, originalFieldOfView);
-                        CurrentFieldOfView = CameraFieldOfView;
+                        CameraFieldOfView = zoomFieldOfView;
                     }
                 }
             }
@@ -524,24 +515,20 @@ namespace Hertzole.GoldPlayer
                     // If the player is zooming, they aren't now. Reset the timer and get the FOV.
                     if (zooming)
                     {
-                        float kickAmount = 0;
-                        if (fieldOfViewKick.IsKicking)
-                        {
-                            kickAmount = fieldOfViewKick.TargetFieldOfView - targetZoom;
-                        }
-                        
                         zoomTimer = 0;
                         zooming = false;
-                        originalZoomFieldOfView = CameraFieldOfView - kickAmount;
+                        originalZoomFieldOfView = zoomFieldOfView;
                     }
+
+                    float target = originalFieldOfView + fieldOfViewKick.FieldOfViewDifference;
 
                     // As long as the zoom timer is less than the zoom in time or the field of view is less than the original FOV, 
                     // set the zoom value.
-                    if (zoomTimer < zoomOutTime || CameraFieldOfView < originalFieldOfView)
+                    if (zoomTimer < zoomOutTime || CameraFieldOfView < target)
                     {
-                        CameraFieldOfView = Mathf.Lerp(originalZoomFieldOfView, originalFieldOfView, zoomOutCurve.Evaluate(zoomTimer / zoomOutTime));
+                        zoomFieldOfView = Mathf.Lerp(originalZoomFieldOfView, target, zoomOutCurve.Evaluate(zoomTimer / zoomOutTime));
+                        CameraFieldOfView = zoomFieldOfView;
                         zoomTimer += deltaTime;
-                        CurrentFieldOfView = CameraFieldOfView;
                     }
                 }
             }
