@@ -106,6 +106,11 @@ namespace Hertzole.GoldPlayer
         // Used to check if the player is zooming.
         private bool zooming;
 
+        // Hash for look input.
+        private int lookHash;
+        // Hash for zoom input.
+        private int zoomHash;
+
         // Sets how strong the camera shake is.
         private float shakeFrequency;
         // Also sets how strong the camera shake.
@@ -199,7 +204,7 @@ namespace Hertzole.GoldPlayer
         /// <summary> The time it takes to zoom out. </summary>
         public float ZoomOutTime { get { return zoomOutTime; } set { zoomOutTime = value; } }
         /// <summary> The action that will trigger the zooming. </summary>
-        public string ZoomInput { get { return zoomInput; } set { zoomInput = value; } }
+        public string ZoomInput { get { return zoomInput; } set { zoomInput = value; zoomHash = GoldPlayerController.InputNameToHash(value); } }
         
         /// <summary> Settings related to field of view kick. </summary>
         public FOVKickClass FieldOfViewKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
@@ -208,7 +213,7 @@ namespace Hertzole.GoldPlayer
         public Transform CameraHead { get { return cameraHead; } set { cameraHead = value; } }
 
         /// <summary> Look action for the new Input System. </summary>
-        public string LookInput { get { return input_Look; } set { input_Look = value; } }
+        public string LookInput { get { return input_Look; } set { input_Look = value; lookHash = GoldPlayerController.InputNameToHash(value); } }
 
         /// <summary> The rotation of the body. </summary>
         public float BodyAngle { get { return bodyAngle; } set { bodyAngle = value; } }
@@ -333,6 +338,9 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
+            lookHash = GoldPlayerController.InputNameToHash(input_Look);
+            zoomHash = GoldPlayerController.InputNameToHash(zoomInput);
+
             originalFieldOfView = CameraFieldOfView;
             currentFieldOfView = originalFieldOfView;
             zoomTimer = zoomOutTime;
@@ -400,7 +408,7 @@ namespace Hertzole.GoldPlayer
             if (canLookAround && !forceLooking)
             {
                 // Set the input.
-                mouseInput = GetVector2Input(input_Look);
+                mouseInput = GetVector2Input(lookHash);
                 if (invertXAxis)
                 {
                     mouseInput.x = -mouseInput.x;
@@ -476,7 +484,7 @@ namespace Hertzole.GoldPlayer
             }
             
             // If the zoom button is held down, do the zoom.
-            if (GetButton(zoomInput))
+            if (GetButton(zoomHash))
             {
                 // If the zoom in time is less than or equals to 0, just set the value directly.
                 if (zoomInTime <= 0)

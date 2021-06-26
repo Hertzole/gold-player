@@ -23,6 +23,7 @@
 - **[BREAKING]** Target Camera has been moved from field of view kick to player camera instead.
 - `ShouldJump` in `PlayerMovement` is now get only and returns if the player should jump with stamina, air jumps, etc, considered. PressedJump has been added as a replacement for the old behavior.
 - Field of view kick times are now predictable. **If you're upgrading from an older version, you might need to change your old values!**
+- Input now uses hashes for lookups instead. **BREAKING** Enable/DisableInput(int) on GoldPlayerInputSystem is now called Enable/DisableInputIndex instead because of Enable/DisableAction now uses int for hashes.
 
 ### Fixed:
 - Fixed head bob not working on time scale 0.

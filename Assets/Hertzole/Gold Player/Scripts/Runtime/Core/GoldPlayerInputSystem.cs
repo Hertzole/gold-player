@@ -51,7 +51,7 @@ namespace Hertzole.GoldPlayer
 #endif
         /// <summary> The input asset to get all actions from. </summary>
         public InputActionAsset InputAsset { get { return inputAsset; } set { inputAsset = value; } }
-        private Dictionary<string, InputAction> actionsDictionary;
+        private Dictionary<int, InputAction> actionsDictionary;
 #endif
 
         /// <summary> Has input been enabled? </summary>
@@ -130,26 +130,26 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Enables a specific action.
         /// </summary>
-        /// <param name="actionName">The action by name to enable.</param>
-        public void EnableAction(string actionName)
+        /// <param name="actionHash">The action by name to enable.</param>
+        public void EnableAction(int actionHash)
         {
 #if !OBSOLETE
             // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
 #if DEBUG || UNITY_EDITOR
             // If the action doesn't exist, complain.
-            if (!actionsDictionary.ContainsKey(actionName))
+            if (!actionsDictionary.ContainsKey(actionHash))
             {
-                throw new System.ArgumentException("There's no action called '" + actionName + "' on " + gameObject.name + ".");
+                throw new System.ArgumentException($"There's no action called '{actionHash}' on {gameObject.name}.");
             }
 
             // If there's no action, complain.
-            if (actionsDictionary[actionName] == null)
+            if (actionsDictionary[actionHash] == null)
             {
-                Debug.LogWarning("There's no action asset present on " + actionsDictionary[actionName] + ".", gameObject);
+                Debug.LogWarning($"There's no action asset present on {actionsDictionary[actionHash]}.", gameObject);
                 return;
             }
 #endif // DEBUG || UNITY_EDITOR
-            actionsDictionary[actionName].Enable();
+            actionsDictionary[actionHash].Enable();
 #endif // !OBSOLETE
         }
 
@@ -157,7 +157,7 @@ namespace Hertzole.GoldPlayer
         /// Enables a specific action.
         /// </summary>
         /// <param name="actionIndex">The action by index to enable.</param>
-        public void EnableAction(int actionIndex)
+        public void EnableActionIndex(int actionIndex)
         {
 #if !OBSOLETE
             // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
@@ -165,13 +165,13 @@ namespace Hertzole.GoldPlayer
             // If the index is out of range, complain.
             if (actionIndex < 0 || actionIndex >= actions.Length)
             {
-                throw new System.ArgumentOutOfRangeException("actionIndex");
+                throw new System.ArgumentOutOfRangeException(nameof(actionIndex));
             }
 
             // If there's no action, complain.
             if (actions[actionIndex].action == null)
             {
-                Debug.LogWarning("There's no action asset present on " + actions[actionIndex].actionName + ".", gameObject);
+                Debug.LogWarning($"There's no action asset present on {actions[actionIndex].actionName}.", gameObject);
                 return;
             }
 #endif // DEBUG || UNITY_EDITOR
@@ -182,26 +182,26 @@ namespace Hertzole.GoldPlayer
         /// <summary>
         /// Disables a specific action.
         /// </summary>
-        /// <param name="actionName">The action by name to disable.</param>
-        public void DisableAction(string actionName)
+        /// <param name="actionHash">The action by name to disable.</param>
+        public void DisableAction(int actionHash)
         {
 #if !OBSOLETE
             // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
 #if DEBUG || UNITY_EDITOR
             // If the action doesn't exist, complain.
-            if (!actionsDictionary.ContainsKey(actionName))
+            if (!actionsDictionary.ContainsKey(actionHash))
             {
-                throw new System.ArgumentException("There's no action called '" + actionName + "' on " + gameObject.name + ".");
+                throw new System.ArgumentException($"There's no action called '{actionHash}' on {gameObject.name}.");
             }
 
             // If there's no action, complain.
-            if (actionsDictionary[actionName] == null)
+            if (actionsDictionary[actionHash] == null)
             {
-                Debug.LogWarning("There's no action asset present on " + actionsDictionary[actionName] + ".", gameObject);
+                Debug.LogWarning($"There's no action asset present on {actionsDictionary[actionHash]}.", gameObject);
                 return;
             }
 #endif // DEBUG || UNITY_EDITOR
-            actionsDictionary[actionName].Disable();
+            actionsDictionary[actionHash].Disable();
 #endif // !OBSOLETE
         }
 
@@ -209,7 +209,7 @@ namespace Hertzole.GoldPlayer
         /// Disables a specific action.
         /// </summary>
         /// <param name="actionIndex">The action by index to disable.</param>
-        public void DisableAction(int actionIndex)
+        public void DisableActionIndex(int actionIndex)
         {
 #if !OBSOLETE
             // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
@@ -217,13 +217,13 @@ namespace Hertzole.GoldPlayer
             // If the index is out of range, complain.
             if (actionIndex < 0 || actionIndex >= actions.Length)
             {
-                throw new System.ArgumentOutOfRangeException("actionIndex");
+                throw new System.ArgumentOutOfRangeException(nameof(actionIndex));
             }
 
             // If there's no action, complain.
             if (actions[actionIndex].action == null)
             {
-                Debug.LogWarning("There's no action asset present on " + actions[actionIndex].actionName + ".", gameObject);
+                Debug.LogWarning($"There's no action asset present on {actions[actionIndex].actionName}.", gameObject);
                 return;
             }
 #endif // DEBUG || UNITY_EDITOR
@@ -258,10 +258,10 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
-            actionsDictionary = new Dictionary<string, InputAction>();
+            actionsDictionary = new Dictionary<int, InputAction>();
             for (int i = 0; i < actions.Length; i++)
             {
-                actionsDictionary.Add(actions[i].actionName, actions[i].action);
+                actionsDictionary.Add(GoldPlayerController.InputNameToHash(actions[i].actionName), actions[i].action);
             }
         }
 #endif // !OBSOLETE
@@ -270,7 +270,7 @@ namespace Hertzole.GoldPlayer
         /// Returns true while an action is being held down.
         /// </summary>
         /// <param name="buttonName">The action to check.</param>
-        public bool GetButton(string buttonName)
+        public bool GetButton(int buttonName)
         {
 #if !OBSOLETE
             // Make sure the action exists.
@@ -289,7 +289,7 @@ namespace Hertzole.GoldPlayer
         /// Returns true if the action was pressed this frame.
         /// </summary>
         /// <param name="buttonName">The action to check.</param>
-        public bool GetButtonDown(string buttonName)
+        public bool GetButtonDown(int buttonName)
         {
 #if !OBSOLETE
             // Make sure the action exists.
@@ -308,7 +308,7 @@ namespace Hertzole.GoldPlayer
         /// Returns true if the action was released this frame.
         /// </summary>
         /// <param name="buttonName">The action to check.</param>
-        public bool GetButtonUp(string buttonName)
+        public bool GetButtonUp(int buttonName)
         {
 #if !OBSOLETE
             // Make sure the action exists.
@@ -327,7 +327,7 @@ namespace Hertzole.GoldPlayer
         /// Returns the value of an action axis.
         /// </summary>
         /// <param name="axisName">The action to check.</param>
-        public float GetAxis(string axisName)
+        public float GetAxis(int axisName)
         {
 #if !OBSOLETE
             // Make sure the action exists.
@@ -346,7 +346,7 @@ namespace Hertzole.GoldPlayer
         /// Does the same as GetAxis when using the input system.
         /// </summary>
         /// <param name="axisName">The action to check.</param>
-        public float GetAxisRaw(string axisName)
+        public float GetAxisRaw(int axisName)
         {
             return GetAxis(axisName);
         }
@@ -355,7 +355,7 @@ namespace Hertzole.GoldPlayer
         /// Returns the Vector2 value from an action.
         /// </summary>
         /// <param name="action">The action to check.</param>
-        public Vector2 GetVector2(string action)
+        public Vector2 GetVector2(int action)
         {
 #if !OBSOLETE
             // Make sure the action exists.
@@ -371,13 +371,13 @@ namespace Hertzole.GoldPlayer
         }
 
 #if !OBSOLETE
-        private bool DoesActionExist(string action, bool axis = false)
+        private bool DoesActionExist(int action, bool axis = false)
         {
             // Put in DEBUG or Unity editor because we don't want this in release builds in order to improve performance.
 #if DEBUG || UNITY_EDITOR
             if (inputAsset == null)
             {
-                Debug.LogWarning("There is no input asset on " + gameObject.name + ".", gameObject);
+                Debug.LogWarning($"There is no input asset on {gameObject.name}.", gameObject);
                 return false;
             }
 #endif
@@ -392,14 +392,14 @@ namespace Hertzole.GoldPlayer
             // If there's no action, complain.
             if (!actionsDictionary.ContainsKey(action))
             {
-                Debug.LogError("Can't find action '" + action + "' in " + inputAsset.name + ".");
+                Debug.LogError($"Can't find action '{action}' in {inputAsset.name}.");
                 return false;
             }
 
             // Check if there's an action asset assigned.
             if (actionsDictionary[action] == null)
             {
-                Debug.LogError("There's no action assigned on '" + action + "'.", gameObject);
+                Debug.LogError($"There's no action assigned on '{action}'.", gameObject);
                 return false;
             }
 #endif
@@ -415,7 +415,7 @@ namespace Hertzole.GoldPlayer
             {
                 if (!(actionsDictionary[action].activeControl is AxisControl))
                 {
-                    Debug.LogError(action + " is not an axis type.");
+                    Debug.LogError($"{action} is not an axis type.");
                     return false;
                 }
             }
@@ -450,6 +450,7 @@ namespace Hertzole.GoldPlayer
             {
                 new InputSystemItem(gp != null ? gp.Camera.LookInput : "Look", null),
                 new InputSystemItem(gp != null ? gp.Movement.MoveInput : "Move", null),
+                new InputSystemItem(gp != null ? gp.Camera.ZoomInput : "Zoom", null),
                 new InputSystemItem(gp != null ? gp.Movement.JumpInput : "Jump", null),
                 new InputSystemItem(gp != null ? gp.Movement.RunInput : "Run", null),
                 new InputSystemItem(gp != null ? gp.Movement.CrouchInput : "Crouch", null),

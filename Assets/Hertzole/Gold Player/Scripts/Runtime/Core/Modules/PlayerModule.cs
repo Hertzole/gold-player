@@ -86,52 +86,124 @@ namespace Hertzole.GoldPlayer
 
         /// <summary>
         /// Equivalent to Input's GetButton/GetKey function.
+        /// It's much more recommended to cache a hash using <see cref="GoldPlayerController.InputNameToHash"/>
+        /// and call <see cref="GetButton(int)"/> instead.
         /// </summary>
         /// <param name="buttonName">The button name you want to get.</param>
         protected bool GetButton(string buttonName)
         {
-            return PlayerInput.GetButton(buttonName);
+            return GetButton(GoldPlayerController.InputNameToHash(buttonName));
+        }
+
+        /// <summary>
+        /// Equivalent to Input's GetButton/GetKey function.
+        /// </summary>
+        /// <param name="buttonHash">The hash of the action you want to get.</param>
+        protected bool GetButton(int buttonHash)
+        {
+            return PlayerInput.GetButton(buttonHash);
+        }
+
+        /// <summary>
+        /// Equivalent to Input's GetButtonDown/GetKeyDown function.
+        /// It's much more recommended to cache a hash using <see cref="GoldPlayerController.InputNameToHash"/>
+        /// and call <see cref="GetButtonDown(int)"/> instead.
+        /// </summary>
+        /// <param name="buttonName">The button name you want to get.</param>
+        protected bool GetButtonDown(string buttonName)
+        {
+            return GetButtonDown(GoldPlayerController.InputNameToHash(buttonName));
         }
 
         /// <summary>
         /// Equivalent to Input's GetButtonDown/GetKeyDown function.
         /// </summary>
-        /// <param name="buttonName">The button name you want to get.</param>
-        protected bool GetButtonDown(string buttonName)
+        /// <param name="buttonHash">The hash of the action you want to get.</param>
+        protected bool GetButtonDown(int buttonHash)
         {
-            return PlayerInput.GetButtonDown(buttonName);
+            return PlayerInput.GetButtonDown(buttonHash);
+        }
+
+        /// <summary>
+        /// Equivalent to Input's GetButtonUp/GetKeyUp function.
+        /// It's much more recommended to cache a hash using <see cref="GoldPlayerController.InputNameToHash"/>
+        /// and call <see cref="GetButtonUp(int)"/> instead.
+        /// </summary>
+        /// <param name="buttonName">The button name you want to get.</param>
+        protected bool GetButtonUp(string buttonName)
+        {
+            return GetButtonUp(GoldPlayerController.InputNameToHash(buttonName));
         }
 
         /// <summary>
         /// Equivalent to Input's GetButtonUp/GetKeyUp function.
         /// </summary>
-        /// <param name="buttonName">The button name you want to get.</param>
-        protected bool GetButtonUp(string buttonName)
+        /// <param name="buttonHash">The hash of the action you want to get.</param>
+        protected bool GetButtonUp(int buttonHash)
         {
-            return PlayerInput.GetButtonUp(buttonName);
+            return PlayerInput.GetButtonUp(buttonHash);
+        }
+
+        /// <summary>
+        /// Equivalent to Input's GetAxis function.
+        /// It's much more recommended to cache a hash using <see cref="GoldPlayerController.InputNameToHash"/>
+        /// and call <see cref="GetAxis(int)"/> instead.
+        /// </summary>
+        /// <param name="axisName">The axis name you want to get.</param>
+        protected float GetAxis(string axisName)
+        {
+            return GetAxis(GoldPlayerController.InputNameToHash(axisName));
         }
 
         /// <summary>
         /// Equivalent to Input's GetAxis function.
         /// </summary>
-        /// <param name="axisName">The axis name you want to get.</param>
-        protected float GetAxis(string axisName)
+        /// <param name="axisHash">The hash of the axis you want to get.</param>
+        protected float GetAxis(int axisHash)
         {
-            return PlayerInput.GetAxis(axisName);
+            return PlayerInput.GetAxis(axisHash);
+        }
+
+        /// <summary>
+        /// Equivalent to Input's GetAxisRaw function.
+        /// It's much more recommended to cache a hash using <see cref="GoldPlayerController.InputNameToHash"/>
+        /// and call <see cref="GetAxisRaw(int)"/> instead.
+        /// </summary>
+        /// <param name="axisName">The axis name you want to get.</param>
+        protected float GetAxisRaw(string axisName)
+        {
+            return GetAxisRaw(GoldPlayerController.InputNameToHash(axisName));
         }
 
         /// <summary>
         /// Equivalent to Input's GetAxisRaw function.
         /// </summary>
-        /// <param name="axisName">The axis name you want to get.</param>
-        protected float GetAxisRaw(string axisName)
+        /// <param name="axisHash">The hash of the axis you want to get.</param>
+        protected float GetAxisRaw(int axisHash)
         {
-            return PlayerInput.GetAxisRaw(axisName);
+            return PlayerInput.GetAxisRaw(axisHash);
         }
 
+        /// <summary>
+        /// Gets a Vector2 input value.
+        /// It's much more recommended to cache a hash using <see cref="GoldPlayerController.InputNameToHash"/>
+        /// and call <see cref="GetAxisRaw(int)"/> instead.
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         protected Vector2 GetVector2Input(string action)
         {
-            return PlayerInput.GetVector2(action);
+            return GetVector2Input(GoldPlayerController.InputNameToHash(action));
+        }
+
+        /// <summary>
+        /// Gets a Vector2 input value.
+        /// </summary>
+        /// <param name="actionHash"></param>
+        /// <returns></returns>
+        protected Vector2 GetVector2Input(int actionHash)
+        {
+            return PlayerInput.GetVector2(actionHash);
         }
 
         #region Obsolete

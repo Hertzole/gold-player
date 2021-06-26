@@ -199,6 +199,15 @@ namespace Hertzole.GoldPlayer
         // The current amount of times an air jump has been performed.
         internal int currentJumps;
 
+        // Hash for move input.
+        private int moveHash;
+        // Hash for jump input.
+        private int jumpHash;
+        // Hash for run input.
+        private int runHash;
+        // Hash for crouch input.
+        private int crouchHash;
+
         // Is the player grounded?
         private bool isGrounded;
         // Is the player moving at all?
@@ -369,13 +378,13 @@ namespace Hertzole.GoldPlayer
         public MovingPlatformsClass MovingPlatforms { get { return movingPlatforms; } set { movingPlatforms = value; } }
 
         /// <summary> Move action for the new Input System. </summary>
-        public string MoveInput { get { return input_Move; } set { input_Move = value; } }
+        public string MoveInput { get { return input_Move; } set { input_Move = value; moveHash = GoldPlayerController.InputNameToHash(value); } }
         /// <summary> Jump input action. </summary>
-        public string JumpInput { get { return input_Jump; } set { input_Jump = value; } }
+        public string JumpInput { get { return input_Jump; } set { input_Jump = value; jumpHash = GoldPlayerController.InputNameToHash(value); } }
         /// <summary> Run input action. </summary>
-        public string RunInput { get { return input_Run; } set { input_Run = value; } }
+        public string RunInput { get { return input_Run; } set { input_Run = value; runHash = GoldPlayerController.InputNameToHash(value); } }
         /// <summary> Crouch input action. </summary>
-        public string CrouchInput { get { return input_Crouch; } set { input_Crouch = value; } }
+        public string CrouchInput { get { return input_Crouch; } set { input_Crouch = value; crouchHash = GoldPlayerController.InputNameToHash(value); } }
 
         /// <summary> Is the player grounded? </summary>
         public bool IsGrounded { get { return isGrounded; } }
@@ -455,6 +464,12 @@ namespace Hertzole.GoldPlayer
             walkingSpeeds.CalculateMax();
             runSpeeds.CalculateMax();
             crouchSpeeds.CalculateMax();
+            
+            // Cache the hashes for input.
+            moveHash = GoldPlayerController.InputNameToHash(input_Move);
+            jumpHash = GoldPlayerController.InputNameToHash(input_Jump);
+            crouchHash = GoldPlayerController.InputNameToHash(input_Crouch);
+            runHash = GoldPlayerController.InputNameToHash(input_Run);
 
             // Initialize the stamina module.
             stamina.Initialize(PlayerController, PlayerInput);
@@ -569,7 +584,7 @@ namespace Hertzole.GoldPlayer
 #if DEBUG
             if (rays.Length != rayAmount + 1)
             {
-                Debug.LogError("The provided array needs to be the same as Ray Amount + 1 (" + (rayAmount + 1).ToString() + ")");
+                Debug.LogError($"The provided array needs to be the same as Ray Amount + 1 ({rayAmount + 1})");
                 return;
             }
 #endif
@@ -589,7 +604,7 @@ namespace Hertzole.GoldPlayer
         /// <returns></returns>
         public Vector2 GetInput(float deltaTime)
         {
-            Vector2 input = GetVector2Input(input_Move);
+            Vector2 input = GetVector2Input(moveHash);
             if (canMoveAround)
             {
                 movementInput.x = input.x;
@@ -766,7 +781,7 @@ namespace Hertzole.GoldPlayer
 
             if (canMoveAround)
             {
-                pressedJump = GetButtonDown(input_Jump);
+                pressedJump = GetButtonDown(jumpHash);
             }
 
             // Make sure the player is moving in the right direction.
@@ -956,8 +971,8 @@ namespace Hertzole.GoldPlayer
             // Only set shouldRun if the player can move around.
             if (canMoveAround)
             {
-                bool runButtonPressed = GetButtonDown(input_Run);
-                bool runButtonDown = GetButton(input_Run);
+                bool runButtonPressed = GetButtonDown(runHash);
+                bool runButtonDown = GetButton(runHash);
 
                 switch (runToggleMode)
                 {
@@ -1071,12 +1086,12 @@ namespace Hertzole.GoldPlayer
                     {
                         case CrouchToggleMode.Hold:
                             {
-                                shouldCrouch = GetButton(input_Crouch);
+                                shouldCrouch = GetButton(crouchHash);
                                 break;
                             }
                         case CrouchToggleMode.Toggle:
                             {
-                                bool crouchButtonPressed = GetButtonDown(input_Crouch);
+                                bool crouchButtonPressed = GetButtonDown(crouchHash);
                                 if (crouchButtonPressed)
                                 {
                                     shouldCrouch = !shouldCrouch;
