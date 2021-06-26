@@ -523,6 +523,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.HandleFOV
   nameWithType: FOVKickClass.HandleFOV
+- uid: Hertzole.GoldPlayer.FOVKickClass.IsKicking
+  name: IsKicking
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_IsKicking
+  commentId: P:Hertzole.GoldPlayer.FOVKickClass.IsKicking
+  fullName: Hertzole.GoldPlayer.FOVKickClass.IsKicking
+  nameWithType: FOVKickClass.IsKicking
+- uid: Hertzole.GoldPlayer.FOVKickClass.IsKicking*
+  name: IsKicking
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_IsKicking_
+  commentId: Overload:Hertzole.GoldPlayer.FOVKickClass.IsKicking
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.FOVKickClass.IsKicking
+  nameWithType: FOVKickClass.IsKicking
 - uid: Hertzole.GoldPlayer.FOVKickClass.KickAmount
   name: KickAmount
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_KickAmount
@@ -4773,19 +4786,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerMovement.CreateGroundCheckRayCircle
   nameWithType: PlayerMovement.CreateGroundCheckRayCircle
-- uid: Hertzole.GoldPlayer.PlayerMovement.CrouchHeadLerp
-  name: CrouchHeadLerp
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_CrouchHeadLerp
-  commentId: P:Hertzole.GoldPlayer.PlayerMovement.CrouchHeadLerp
-  fullName: Hertzole.GoldPlayer.PlayerMovement.CrouchHeadLerp
-  nameWithType: PlayerMovement.CrouchHeadLerp
-- uid: Hertzole.GoldPlayer.PlayerMovement.CrouchHeadLerp*
-  name: CrouchHeadLerp
-  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_CrouchHeadLerp_
-  commentId: Overload:Hertzole.GoldPlayer.PlayerMovement.CrouchHeadLerp
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.PlayerMovement.CrouchHeadLerp
-  nameWithType: PlayerMovement.CrouchHeadLerp
 - uid: Hertzole.GoldPlayer.PlayerMovement.CrouchHeight
   name: CrouchHeight
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_CrouchHeight
@@ -4838,6 +4838,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerMovement.CrouchSpeeds
   nameWithType: PlayerMovement.CrouchSpeeds
+- uid: Hertzole.GoldPlayer.PlayerMovement.CrouchTime
+  name: CrouchTime
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_CrouchTime
+  commentId: P:Hertzole.GoldPlayer.PlayerMovement.CrouchTime
+  fullName: Hertzole.GoldPlayer.PlayerMovement.CrouchTime
+  nameWithType: PlayerMovement.CrouchTime
+- uid: Hertzole.GoldPlayer.PlayerMovement.CrouchTime*
+  name: CrouchTime
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_CrouchTime_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerMovement.CrouchTime
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerMovement.CrouchTime
+  nameWithType: PlayerMovement.CrouchTime
 - uid: Hertzole.GoldPlayer.PlayerMovement.CrouchToggleMode
   name: CrouchToggleMode
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_CrouchToggleMode
@@ -5355,6 +5368,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerMovement.Stamina
   nameWithType: PlayerMovement.Stamina
+- uid: Hertzole.GoldPlayer.PlayerMovement.StandUpTime
+  name: StandUpTime
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_StandUpTime
+  commentId: P:Hertzole.GoldPlayer.PlayerMovement.StandUpTime
+  fullName: Hertzole.GoldPlayer.PlayerMovement.StandUpTime
+  nameWithType: PlayerMovement.StandUpTime
+- uid: Hertzole.GoldPlayer.PlayerMovement.StandUpTime*
+  name: StandUpTime
+  href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_StandUpTime_
+  commentId: Overload:Hertzole.GoldPlayer.PlayerMovement.StandUpTime
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.PlayerMovement.StandUpTime
+  nameWithType: PlayerMovement.StandUpTime
 - uid: Hertzole.GoldPlayer.PlayerMovement.UnscaledTime
   name: UnscaledTime
   href: api/Hertzole.GoldPlayer.PlayerMovement.html#Hertzole_GoldPlayer_PlayerMovement_UnscaledTime
