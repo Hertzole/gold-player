@@ -510,6 +510,19 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.FOVKickClass.EnableFOVKick
   nameWithType: FOVKickClass.EnableFOVKick
+- uid: Hertzole.GoldPlayer.FOVKickClass.FieldOfViewDifference
+  name: FieldOfViewDifference
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_FieldOfViewDifference
+  commentId: P:Hertzole.GoldPlayer.FOVKickClass.FieldOfViewDifference
+  fullName: Hertzole.GoldPlayer.FOVKickClass.FieldOfViewDifference
+  nameWithType: FOVKickClass.FieldOfViewDifference
+- uid: Hertzole.GoldPlayer.FOVKickClass.FieldOfViewDifference*
+  name: FieldOfViewDifference
+  href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_FieldOfViewDifference_
+  commentId: Overload:Hertzole.GoldPlayer.FOVKickClass.FieldOfViewDifference
+  isSpec: "True"
+  fullName: Hertzole.GoldPlayer.FOVKickClass.FieldOfViewDifference
+  nameWithType: FOVKickClass.FieldOfViewDifference
 - uid: Hertzole.GoldPlayer.FOVKickClass.HandleFOV(System.Single)
   name: HandleFOV(Single)
   href: api/Hertzole.GoldPlayer.FOVKickClass.html#Hertzole_GoldPlayer_FOVKickClass_HandleFOV_System_Single_
@@ -4027,19 +4040,6 @@ references:
   isSpec: "True"
   fullName: Hertzole.GoldPlayer.PlayerCamera.CanLookAround
   nameWithType: PlayerCamera.CanLookAround
-- uid: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
-  name: CurrentFieldOfView
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CurrentFieldOfView
-  commentId: P:Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
-  fullName: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
-  nameWithType: PlayerCamera.CurrentFieldOfView
-- uid: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView*
-  name: CurrentFieldOfView
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_CurrentFieldOfView_
-  commentId: Overload:Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
-  isSpec: "True"
-  fullName: Hertzole.GoldPlayer.PlayerCamera.CurrentFieldOfView
-  nameWithType: PlayerCamera.CurrentFieldOfView
 - uid: Hertzole.GoldPlayer.PlayerCamera.EnableZooming
   name: EnableZooming
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_EnableZooming
@@ -4247,12 +4247,6 @@ references:
   commentId: E:Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake
   fullName: Hertzole.GoldPlayer.PlayerCamera.OnBeginCameraShake
   nameWithType: PlayerCamera.OnBeginCameraShake
-- uid: Hertzole.GoldPlayer.PlayerCamera.OnCurrentFieldOfViewChanged
-  name: OnCurrentFieldOfViewChanged
-  href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnCurrentFieldOfViewChanged
-  commentId: E:Hertzole.GoldPlayer.PlayerCamera.OnCurrentFieldOfViewChanged
-  fullName: Hertzole.GoldPlayer.PlayerCamera.OnCurrentFieldOfViewChanged
-  nameWithType: PlayerCamera.OnCurrentFieldOfViewChanged
 - uid: Hertzole.GoldPlayer.PlayerCamera.OnEndCameraShake
   name: OnEndCameraShake
   href: api/Hertzole.GoldPlayer.PlayerCamera.html#Hertzole_GoldPlayer_PlayerCamera_OnEndCameraShake
