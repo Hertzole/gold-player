@@ -66,6 +66,7 @@ namespace Hertzole.GoldPlayer
 
         /// <summary> The new field of view with the original field of view with kick amount added. </summary>
         public float TargetFieldOfView { get { return newFOV; } }
+        public float FieldOfViewDifference { get; private set; }
         
         /// <summary> True if the field of view kick is active. </summary>
         public bool IsKicking { get; private set; }
@@ -275,6 +276,8 @@ namespace Hertzole.GoldPlayer
                     targetFOV = originalFOV;
                 }
             }
+
+            FieldOfViewDifference = targetFOV - originalFOV;
 
             Camera.CameraFieldOfView = targetFOV;
         }
