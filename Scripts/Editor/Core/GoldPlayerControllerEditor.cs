@@ -3,12 +3,13 @@
 // Disabled because IMGUI simply offers a better experience as of right now.
 //#define USE_UI_ELEMENTS
 #endif
-using UnityEditor;
-using UnityEngine;
 #if USE_UI_ELEMENTS
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 #endif
+using System;
+using UnityEditor;
+using UnityEngine;
 using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
 
 namespace Hertzole.GoldPlayer.Editor
@@ -310,13 +311,27 @@ namespace Hertzole.GoldPlayer.Editor
 #if !USE_UI_ELEMENTS
         public override void OnInspectorGUI()
         {
-            if (characterController != null && characterController.center.y != characterController.height / 2)
+            if (characterController != null)
             {
-                EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
-                if (GUILayout.Button("Fix"))
+                Vector3 scale = characterController.transform.localScale;
+                if (Math.Abs(scale.x - 1f) > 0.00001f || Math.Abs(scale.y - 1f) > 0.00001f || Math.Abs(scale.z - 1f) > 0.00001f)
                 {
-                    Undo.RecordObject(characterController, "Fixed player center");
-                    characterController.center = new Vector3(characterController.center.x, characterController.height / 2, characterController.center.z);
+                    EditorGUILayout.HelpBox("Your transform scale needs to be 1, 1, 1 in order to work properly!", MessageType.Error);
+                    if (GUILayout.Button("Fix"))
+                    {
+                        Undo.RecordObject(characterController.transform, "Fixed player scale");
+                        characterController.transform.localScale = Vector3.one;
+                    }
+                }
+                
+                if (Math.Abs(characterController.center.y - characterController.height / 2f) > 0.00001f)
+                {
+                    EditorGUILayout.HelpBox("The Character Controller Y center must be half of the height. Set your Y center to " + characterController.height / 2 + "!", MessageType.Warning);
+                    if (GUILayout.Button("Fix"))
+                    {
+                        Undo.RecordObject(characterController, "Fixed player center");
+                        characterController.center = new Vector3(characterController.center.x, characterController.height / 2, characterController.center.z);
+                    }
                 }
             }
 
