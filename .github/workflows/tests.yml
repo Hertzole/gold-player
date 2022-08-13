@@ -24,14 +24,8 @@ jobs:
         path: Library
         key: Library
     
-    - name: Run tests 2019.4
+    - name: Run tests
       uses: game-ci/unity-test-runner@v2
       with:
-        unityVersion: "2019.4.20f1"
-        testMode: "playmode"
-    
-    - name: Run tests 2020.3
-      uses: game-ci/unity-test-runner@v2
-      with:
-        unityVersion: "2019.3.6f1"
+        unityVersion: "2021.3.5f1"
         testMode: "playmode"
