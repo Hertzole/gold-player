@@ -53,8 +53,6 @@ ExportedObj/
 *.VC.db
 *.leu
 
-!Hertzole.GoldPlayer.csproj
-
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
