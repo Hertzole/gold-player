@@ -1,3 +1,0 @@
-# Gold Player Controller
-
-TODO
