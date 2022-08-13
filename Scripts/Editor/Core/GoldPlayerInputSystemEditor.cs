@@ -19,6 +19,7 @@ namespace Hertzole.GoldPlayer.Editor
     public class GoldPlayerInputSystemEditor : UnityEditor.Editor
     {
 #if !OBSOLETE
+        private SerializedProperty playerInput;
         private SerializedProperty actionAsset;
         private SerializedProperty autoEnableInput;
         private SerializedProperty autoDisableInput;
@@ -43,6 +44,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         private void GetProperties()
         {
+            playerInput = serializedObject.FindProperty("playerInput");
             actionAsset = serializedObject.FindProperty("inputAsset");
             autoEnableInput = serializedObject.FindProperty("autoEnableInput");
             autoDisableInput = serializedObject.FindProperty("autoDisableInput");
@@ -56,7 +58,11 @@ namespace Hertzole.GoldPlayer.Editor
             serializedObject.Update();
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(actionAsset);
+            EditorGUILayout.PropertyField(playerInput);
+            if (playerInput.objectReferenceValue == null)
+            {
+                EditorGUILayout.PropertyField(actionAsset);
+            }
             if (EditorGUI.EndChangeCheck())
             {
                 InputActionAsset actions = actionAsset.objectReferenceValue as InputActionAsset;
