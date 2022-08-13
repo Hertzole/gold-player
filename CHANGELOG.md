@@ -1,4 +1,4 @@
-## [1.7.0] - Unreleased
+## [1.7.0] - 2022-08-13
 
 ### Added:
 - Added raycast ground check as an alternative to sphere ground check.
@@ -11,6 +11,7 @@
 - Added zoom feature.
 - Added separate predictable values for crouching and standing up, along with curves to control the lerp.
 - Added curves to field of view kick.
+- Added support for player input in input system component.
 
 ### Changes:
 - Revamped how Gold Player project settings are saved. Old settings will be upgraded.

@@ -1,6 +1,9 @@
 # Gold Player
 A first-person player controller for Unity, built with being user-friendly and developer-friendly in mind.
 
+## 🖤 Final Release
+With the release of 1.7.0, I've decided to stop working on Gold Player. It has served well as a prototype (and even production ready!) player controller but it's stuck in legacy code that makes it hard to improve upon. Don't get me wrong, **Gold Player is still very usable**, it's just that I don't want to add new features to it or fix old issues. It's time to move on.
+
 ## 🎇 Features
 
 - Optimized for speed and size
