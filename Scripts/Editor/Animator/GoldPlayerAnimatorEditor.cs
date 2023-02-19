@@ -40,6 +40,9 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty moveY;
         private SerializedProperty crouching;
         private SerializedProperty lookAngle;
+        
+        private static readonly GUIContent[] noParameterContent = new GUIContent[] { new GUIContent("None") };
+        private static readonly int[] noParameterValues = new int[] { 0 };
 
         private void OnEnable()
         {
@@ -91,8 +94,8 @@ namespace Hertzole.GoldPlayer.Editor
                 parameters.Add("None");
                 parametersIndex.Add(0);
 #else
-                parameters = new GUIContent[1] { new GUIContent("None") };
-                optionValues = new int[1] { 0 };
+                parameters = noParameterContent;
+                optionValues = noParameterValues;
 #endif
 
                 moveX.FindPropertyRelative("index").intValue = 0;

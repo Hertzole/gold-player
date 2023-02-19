@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 #endif
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static Hertzole.GoldPlayer.Editor.GoldPlayerUIHelper;
@@ -167,6 +168,8 @@ namespace Hertzole.GoldPlayer.Editor
         private VisualElement groundLayerWarning;
 #endif
 
+        private static GUIContent[] inputContents;
+
         private void OnEnable()
         {
             currentTab = EditorPrefs.GetInt(SELECTED_TAB_PREFS, 0);
@@ -306,6 +309,36 @@ namespace Hertzole.GoldPlayer.Editor
 
             goldPlayer = (GoldPlayerController)target;
             characterController = goldPlayer.GetComponent<CharacterController>();
+
+            if (inputContents == null)
+            {
+                List<GUIContent> list = new List<GUIContent>();
+                SerializedProperty cam = camera.Copy();
+                while (cam.NextVisible(true))
+                {
+                    if (cam.propertyPath.StartsWith(camera.name) && cam.depth < 2)
+                    {
+                        if (cam.name.StartsWith("input_"))
+                        {
+                            list.Add(new GUIContent(cam.displayName.Substring(6), cam.tooltip));
+                        }
+                    }
+                }
+
+                SerializedProperty move = movement.Copy();
+                while (move.NextVisible(true))
+                {
+                    if (move.propertyPath.StartsWith(movement.name) && move.depth < 2)
+                    {
+                        if (move.name.StartsWith("input_"))
+                        {
+                            list.Add(new GUIContent(move.displayName.Substring(6), move.tooltip));
+                        }
+                    }
+                }
+                
+                inputContents = list.ToArray();
+            }
         }
 
 #if !USE_UI_ELEMENTS
@@ -636,6 +669,8 @@ namespace Hertzole.GoldPlayer.Editor
         {
             EditorGUILayout.LabelField("Camera", EditorStyles.boldLabel);
 
+            int index = 0;
+            
             SerializedProperty cam = camera.Copy();
             while (cam.NextVisible(true))
             {
@@ -643,7 +678,8 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     if (cam.name.StartsWith("input_"))
                     {
-                        EditorGUILayout.PropertyField(cam, new GUIContent(cam.displayName.Substring(6), cam.tooltip), true);
+                        EditorGUILayout.PropertyField(cam, inputContents[index], true);
+                        index++;
                     }
                 }
             }
@@ -657,7 +693,8 @@ namespace Hertzole.GoldPlayer.Editor
                 {
                     if (move.name.StartsWith("input_"))
                     {
-                        EditorGUILayout.PropertyField(move, new GUIContent(move.displayName.Substring(6), move.tooltip), true);
+                        EditorGUILayout.PropertyField(move, inputContents[index], true);
+                        index++;
                     }
                 }
             }

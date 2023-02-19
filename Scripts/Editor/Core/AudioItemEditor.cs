@@ -24,6 +24,10 @@ namespace Hertzole.GoldPlayer.Editor
 		// Shortcut for EditorGUIUtility.standardVerticalSpacing.
 		private readonly float padding = EditorGUIUtility.standardVerticalSpacing;
 
+		private static readonly GUIContent pitchLabel = new GUIContent("Pitch");
+		private static readonly GUIContent minLabel = new GUIContent("Min");
+		private static readonly GUIContent maxLabel = new GUIContent("Max");
+
 #if USE_UI_ELEMENTS
 		private VisualElement elements;
 
@@ -75,7 +79,7 @@ namespace Hertzole.GoldPlayer.Editor
 						GoldPlayerUIHelper.DrawCustomVector2Field(fieldRect,
 							property.FindPropertyRelative("minPitch"),
 							property.FindPropertyRelative("maxPitch"),
-							30, new GUIContent("Pitch"), true, new GUIContent("Min"), new GUIContent("Max"));
+							30, pitchLabel, true, minLabel, maxLabel);
 					}
 					else
 					{
