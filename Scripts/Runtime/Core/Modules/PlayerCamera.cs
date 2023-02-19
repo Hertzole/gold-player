@@ -483,13 +483,11 @@ namespace Hertzole.GoldPlayer
                     {
                         zoomTimer = 0;
                         zooming = true;
-                        Debug.Log(CameraFieldOfView);
                         originalZoomFieldOfView = zoomFieldOfView + fieldOfViewKick.FieldOfViewDifference;
                         if (fieldOfViewKick.EnableFOVKick && originalZoomFieldOfView > fieldOfViewKick.TargetFieldOfView)
                         {
                             originalZoomFieldOfView = fieldOfViewKick.TargetFieldOfView;
                         }
-                        Debug.Log($"START ZOOM {originalZoomFieldOfView}");
                     }
                 
                     // As long as the zoom timer is less than the zoom in time or the field of view is more than the target zoom, 
