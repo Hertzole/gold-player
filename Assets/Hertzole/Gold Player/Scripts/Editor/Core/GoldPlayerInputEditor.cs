@@ -16,6 +16,14 @@ namespace Hertzole.GoldPlayer.Editor
         private ReorderableList list;
 
         private float FieldHeight { get { return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing; } }
+        
+        private static readonly GUIContent inputsContent = new GUIContent("Inputs");
+        private static readonly GUIContent buttonNameContent = new GUIContent("Name");
+        private static readonly GUIContent buttonTypeContent = new GUIContent("Type");
+        private static readonly GUIContent inputNameContent = new GUIContent("Input Name");
+        private static readonly GUIContent vector2InputNameContent = new GUIContent("Vector2 Input Name");
+        private static readonly GUIContent vector2InputNameXContent = new GUIContent("X", "The input action that will serve the X axis.");
+        private static readonly GUIContent vector2InputNameYContent = new GUIContent("Y", "The input action that will serve the Y axis.");
 
         private void OnEnable()
         {
@@ -28,7 +36,7 @@ namespace Hertzole.GoldPlayer.Editor
             {
                 drawHeaderCallback = (Rect rect) =>
                 {
-                    EditorGUI.LabelField(rect, new GUIContent("Inputs"));
+                    EditorGUI.LabelField(rect, inputsContent);
 
                 },
                 drawElementCallback = DrawElement,
@@ -41,22 +49,22 @@ namespace Hertzole.GoldPlayer.Editor
             rect.height = EditorGUIUtility.singleLineHeight;
             SerializedProperty element = inputs.GetArrayElementAtIndex(index);
             SerializedProperty type = element.FindPropertyRelative("type");
-            EditorGUI.PropertyField(rect, element.FindPropertyRelative("buttonName"), new GUIContent("Name"));
+            EditorGUI.PropertyField(rect, element.FindPropertyRelative("buttonName"), buttonNameContent);
             rect.y += FieldHeight;
-            EditorGUI.PropertyField(rect, type, new GUIContent("Type"));
+            EditorGUI.PropertyField(rect, type, buttonTypeContent);
             rect.y += FieldHeight;
             if (type.enumValueIndex != 2)
             {
-                EditorGUI.PropertyField(rect, element.FindPropertyRelative("inputName"), new GUIContent("Input Name"));
+                EditorGUI.PropertyField(rect, element.FindPropertyRelative("inputName"), inputNameContent);
             }
             else
             {
                 GoldPlayerUIHelper.DrawCustomVector2Field(rect,
                     element.FindPropertyRelative("inputName"),
                     element.FindPropertyRelative("inputNameSecondary"),
-                    10, new GUIContent("Vector2 Input Name"), false,
-                    new GUIContent("X", "The input action that will serve the X axis."),
-                    new GUIContent("Y", "The input action that will serve the Y axis."));
+                    10, vector2InputNameContent, false,
+                    vector2InputNameXContent,
+                    vector2InputNameYContent);
             }
 
             rect.y += FieldHeight;
