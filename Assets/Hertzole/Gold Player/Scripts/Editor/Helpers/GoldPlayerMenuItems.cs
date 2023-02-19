@@ -62,7 +62,15 @@ namespace Hertzole.GoldPlayer.Editor
 			GameObject bobTarget = CreateChild("Bob Target", cameraHead);
 
 			// Create the player camera.
-#if GOLD_PLAYER_CINEMACHINE
+#if GOLD_PLAYER_CINEMACHINE_3
+			GameObject playerCameraGo = CreateChild("Player Camera", bobTarget, typeof(CinemachineCamera));
+			CinemachineCamera playerCamera = playerCameraGo.GetComponent<CinemachineCamera>();
+			playerCamera.Lens.FieldOfView = 80;
+			playerCamera.Lens.NearClipPlane = 0.01f;
+			playerCamera.Lens.FarClipPlane = 1000f;
+			
+			CreateCinemachineBrainIfNeeded();
+#elif GOLD_PLAYER_CINEMACHINE
 			GameObject playerCameraGo = CreateChild("Player Camera", bobTarget, typeof(CinemachineVirtualCamera));
 			CinemachineVirtualCamera playerCamera = playerCameraGo.GetComponent<CinemachineVirtualCamera>();
 
