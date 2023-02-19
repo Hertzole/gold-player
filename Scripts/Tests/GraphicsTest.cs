@@ -101,7 +101,7 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator TestShadowsOnly()
         {
-            graphics.Objects[0].WhenOtherGraphics = HandleGraphics.ShawdosOnly;
+            graphics.Objects[0].WhenOtherGraphics = HandleGraphics.ShadowsOnly;
             graphics.Owner = GraphicsOwner.Other;
             TestObject(graphics.Objects[0].Target, true, true, ShadowCastingMode.ShadowsOnly);
             yield return null;
@@ -110,7 +110,7 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator TestOriginalShadowMode()
         {
-            graphics.Objects[0].WhenOtherGraphics = HandleGraphics.ShawdosOnly;
+            graphics.Objects[0].WhenOtherGraphics = HandleGraphics.ShadowsOnly;
             graphics.Owner = GraphicsOwner.Other;
             TestObject(graphics.Objects[0].Target, true, true, ShadowCastingMode.ShadowsOnly);
             graphics.Objects[0].WhenMyGraphics = HandleGraphics.EnableTarget;

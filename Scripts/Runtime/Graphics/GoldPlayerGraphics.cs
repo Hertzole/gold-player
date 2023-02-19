@@ -14,7 +14,7 @@ using UnityEngine.Rendering;
 namespace Hertzole.GoldPlayer
 {
     public enum GraphicsOwner { Me = 0, Other = 1 };
-    public enum HandleGraphics { EnableTarget = 0, DisableTarget = 1, EnableRenderers = 2, DisableRenderers = 3, ShawdosOnly = 4 }
+    public enum HandleGraphics { EnableTarget = 0, DisableTarget = 1, EnableRenderers = 2, DisableRenderers = 3, ShadowsOnly = 4 }
 
     [DisallowMultipleComponent]
 #if !OBSOLETE
@@ -220,7 +220,7 @@ namespace Hertzole.GoldPlayer
                         target.Target.gameObject.SetActive(true);
                     }
                     break;
-                case HandleGraphics.ShawdosOnly:
+                case HandleGraphics.ShadowsOnly:
                     if (target.renderers != null && target.renderers.Length > 0)
                     {
                         for (int i = 0; i < target.renderers.Length; i++)
