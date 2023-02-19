@@ -1,7 +1,7 @@
 {
   "name": "se.hertzole.gold-player",
   "displayName": "Gold Player",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "unity": "2020.3",
   "description": "Gold Player is a player controller that is focused on being advanced enough to suit a variety of first-person games but still being very user friendly.",
   "keywords": [
