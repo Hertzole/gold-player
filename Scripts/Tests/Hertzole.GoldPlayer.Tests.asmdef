@@ -1,11 +1,12 @@
 {
     "name": "Hertzole.GoldPlayer.Tests",
+    "rootNamespace": "",
     "references": [
-        "Hertzole.GoldPlayer",
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "Unity.InputSystem",
-        "Cinemachine"
+        "GUID:375af9abe7f79fb4c8bdf440a295f2e7",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:4307f53044263cf4b835bd812fc161a4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -38,6 +39,11 @@
             "name": "com.unity.test-framework",
             "expression": "",
             "define": "GOLD_PLAYER_TESTS"
+        },
+        {
+            "name": "com.unity.cinemachine",
+            "expression": "3.0.0-pre.1",
+            "define": "GOLD_PLAYER_CINEMACHINE_3"
         }
     ],
     "noEngineReferences": false

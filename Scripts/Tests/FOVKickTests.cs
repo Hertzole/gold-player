@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.TestTools;
+#if GOLD_PLAYER_CINEMACHINE
+using Cinemachine;
+#endif
 
 namespace Hertzole.GoldPlayer.Tests
 {
@@ -49,11 +52,19 @@ namespace Hertzole.GoldPlayer.Tests
 
             yield return null;
 
+#if GOLD_PLAYER_CINEMACHINE_3
+            GameObject virtualCamera = new GameObject("", typeof(CinemachineCamera));
+#else
             GameObject virtualCamera = new GameObject("", typeof(Cinemachine.CinemachineVirtualCamera));
+#endif
 
             player.Camera.UseCinemachine = true;
             player.Camera.TargetCamera = null;
-            player.Camera.TargetVirtualCamera = virtualCamera.GetComponent<Cinemachine.CinemachineVirtualCamera>();
+#if GOLD_PLAYER_CINEMACHINE_3
+            player.Camera.TargetVirtualCamera = virtualCamera.GetComponent<CinemachineCamera>();
+#else
+            player.Camera.TargetVirtualCamera = virtualCamera.GetComponent<CinemachineVirtualCamera>();
+#endif
             player.Camera.FieldOfViewKick.ForceFOV(true);
         }
 #endif

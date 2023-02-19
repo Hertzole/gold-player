@@ -1,9 +1,10 @@
 {
     "name": "Hertzole.GoldPlayer.Editor",
+    "rootNamespace": "",
     "references": [
-        "Hertzole.GoldPlayer",
-        "Unity.InputSystem",
-        "Cinemachine"
+        "GUID:375af9abe7f79fb4c8bdf440a295f2e7",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:4307f53044263cf4b835bd812fc161a4"
     ],
     "includePlatforms": [
         "Editor"
@@ -34,6 +35,11 @@
             "name": "com.unity.textmeshpro",
             "expression": "",
             "define": "GOLD_PLAYER_TMP"
+        },
+        {
+            "name": "com.unity.cinemachine",
+            "expression": "3.0.0-pre.1",
+            "define": "GOLD_PLAYER_CINEMACHINE_3"
         }
     ],
     "noEngineReferences": false
