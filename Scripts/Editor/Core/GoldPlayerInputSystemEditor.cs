@@ -163,10 +163,10 @@ namespace Hertzole.GoldPlayer.Editor
 #endif
 
                         playerMap.AddBinding(new InputBinding("2DVector", "Move", null, null, null, "WASD") { isComposite = true });
-                        playerMap.AddBinding(new InputBinding("<Keyboard>/w", "Move", "WASD", null, null, "up") { isPartOfComposite = true });
-                        playerMap.AddBinding(new InputBinding("<Keyboard>/s", "Move", "WASD", null, null, "down") { isPartOfComposite = true });
-                        playerMap.AddBinding(new InputBinding("<Keyboard>/a", "Move", "WASD", null, null, "left") { isPartOfComposite = true });
-                        playerMap.AddBinding(new InputBinding("<Keyboard>/d", "Move", "WASD", null, null, "right") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/w", "Move", "Keyboard", null, null, "up") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/s", "Move", "Keyboard", null, null, "down") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/a", "Move", "Keyboard", null, null, "left") { isPartOfComposite = true });
+                        playerMap.AddBinding(new InputBinding("<Keyboard>/d", "Move", "Keyboard", null, null, "right") { isPartOfComposite = true });
                         playerMap.AddBinding(new InputBinding("<Gamepad>/leftStick", "Move", "Gamepad", null, null, null));
 
                         playerMap.AddBinding(new InputBinding("<Mouse>/delta", "Look", "Keyboard", "ScaleVector2(x=0.1,y=0.1)", null, null));
