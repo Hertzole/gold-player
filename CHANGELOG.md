@@ -1,3 +1,22 @@
+## [1.7.1] - 2022-02-19
+
+### Added:
+- Added support for Cinemachine 3.0.0.
+
+### Fixed:
+- Fixed WASD not being associated with keyboard when creating new input actions, thus not allowing the player to move when using PlayerInput.
+- Fixed not being able to undo creation of controller when using Cinemachine.
+- Fixed a normal camera being created when using Cinemachine.
+- Fixed CinemachineBrain not being created when creating a new controller with Cinemachine enabled.
+- Fixed logs being printed when zooming.
+- Fixed step cycle not increasing when using a custom step cycle.
+- Fixed obsolete warnings in 2023.1+.
+- Fixed constant garbage allocation in GoldPlayerUI.
+- Fixed IMGUI editor for AudioItem.
+- Fixed several UI toolkit editor issues for AudioItem.
+- Fixed a lot of garbage allocation in editors.
+- Fixed spelling mistake in GoldPlayerGraphics.
+
 ## [1.7.0] - 2022-08-13
 
 ### Added:
