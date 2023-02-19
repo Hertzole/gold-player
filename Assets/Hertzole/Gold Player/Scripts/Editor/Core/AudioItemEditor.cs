@@ -23,9 +23,6 @@ namespace Hertzole.GoldPlayer.Editor
         // Shortcut for EditorGUIUtility.standardVerticalSpacing.
         private readonly float padding = EditorGUIUtility.standardVerticalSpacing;
 
-        // Check to see if the property height should be from the GUI.
-        private bool doGUI = false;
-
 #if USE_UI_ELEMENTS
         private VisualElement elements;
         private VisualElement randomPitchElements;
@@ -40,8 +37,6 @@ namespace Hertzole.GoldPlayer.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            // Set 'doGUI' to true as we want to bae it of the GUI.
-            doGUI = true;
             // Begin the property GUI.
             EditorGUI.BeginProperty(position, label, property);
             // Set the full rect to the provided position.
@@ -133,10 +128,7 @@ namespace Hertzole.GoldPlayer.Editor
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            if (!doGUI)
-            {
-                fullRect = CalculateFullRectHeight(property);
-            }
+            fullRect = CalculateFullRectHeight(property);
 
             return fullRect.height;
         }
@@ -151,20 +143,13 @@ namespace Hertzole.GoldPlayer.Editor
             Rect rect = new Rect(0, 0, 0, lineHeight);
             if (property.isExpanded)
             {
-                rect.height += (lineHeight + padding) * 5;
+                rect.height += (lineHeight + padding) * 4;
                 if (property.FindPropertyRelative("changeVolume").boolValue)
                 {
                     rect.height += lineHeight + padding;
                 }
-
-                if (property.FindPropertyRelative("audioClips").isExpanded)
-                {
-                    rect.height += lineHeight + padding;
-                    for (int i = 0; i < property.FindPropertyRelative("audioClips").arraySize; i++)
-                    {
-                        rect.height += lineHeight + padding;
-                    }
-                }
+                 
+                rect.height += EditorGUI.GetPropertyHeight(property.FindPropertyRelative("audioClips")) + padding;
             }
             return rect;
         }
