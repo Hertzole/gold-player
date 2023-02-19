@@ -29,6 +29,7 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty staminaBarSlider;
         private SerializedProperty staminaLabel;
         private SerializedProperty staminaLabelDisplay;
+        private SerializedProperty staminaLabelChangeRequired;
         private SerializedProperty staminaPercentageFormat;
         private SerializedProperty staminaDirectValueFormat;
         private SerializedProperty staminaDirectMaxFormat;
@@ -58,6 +59,7 @@ namespace Hertzole.GoldPlayer.Editor
             staminaLabelPro = serializedObject.FindProperty("staminaLabelPro");
 #endif
             staminaLabelDisplay = serializedObject.FindProperty("staminaLabelDisplay");
+            staminaLabelChangeRequired = serializedObject.FindProperty("staminaLabelChangeRequired");
             staminaPercentageFormat = serializedObject.FindProperty("staminaPercentageFormat");
             staminaDirectValueFormat = serializedObject.FindProperty("staminaDirectValueFormat");
             staminaDirectMaxFormat = serializedObject.FindProperty("staminaDirectMaxFormat");
@@ -94,6 +96,7 @@ namespace Hertzole.GoldPlayer.Editor
 #if USE_TMP
             EditorGUILayout.PropertyField(staminaLabelPro, true);
 #endif
+	        EditorGUILayout.PropertyField(staminaLabelChangeRequired, true);
             EditorGUILayout.PropertyField(staminaLabelDisplay, true);
             switch (staminaLabelDisplay.enumValueIndex)
             {
