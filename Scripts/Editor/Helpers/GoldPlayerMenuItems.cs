@@ -155,15 +155,22 @@ namespace Hertzole.GoldPlayer.Editor
 #if GOLD_PLAYER_CINEMACHINE
 		private static void CreateCinemachineBrainIfNeeded()
 		{
+			#if UNITY_2023_1_OR_NEWER
+			CinemachineBrain[] brains = Object.FindObjectsByType<CinemachineBrain>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+#else
 			CinemachineBrain[] brains = Object.FindObjectsOfType<CinemachineBrain>();
+#endif
 			CinemachineBrain brain = brains != null && brains.Length > 0 ? brains[0] : null;
 			if (brain == null)
 			{
 				Camera cam = Camera.main;
 				if (cam == null)
 				{
-					Camera[] cams = Object.FindObjectsOfType(
-						typeof(Camera)) as Camera[];
+#if UNITY_2023_1_OR_NEWER
+					Camera[] cams = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+#else
+					Camera[] cams = Object.FindObjectsOfType<Camera>();
+#endif
 
 					if (cams != null && cams.Length > 0)
 					{

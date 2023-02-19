@@ -170,7 +170,7 @@ namespace Hertzole.GoldPlayer
         public GoldPlayerController Player
         {
             // If the player is null, and auto find is on, find the player.
-            get { if (!player && autoFindPlayer) { player = FindObjectOfType<GoldPlayerController>(); } return player; }
+            get { if (!player && autoFindPlayer) { player = FindFirstObject<GoldPlayerController>(); } return player; }
             set { SetPlayer(value); }
         }
 
@@ -180,7 +180,7 @@ namespace Hertzole.GoldPlayer
         protected GoldPlayerInteraction PlayerInteraction
         {
             // If the player interaction is null, and auto find is on, find the player interaction.
-            get { if (!playerInteraction && autoFindInteraction) { playerInteraction = FindObjectOfType<GoldPlayerInteraction>(); } return playerInteraction; }
+            get { if (!playerInteraction && autoFindInteraction) { playerInteraction = FindFirstObject<GoldPlayerInteraction>(); } return playerInteraction; }
             set { playerInteraction = value; }
         }
 #endif
@@ -302,7 +302,7 @@ namespace Hertzole.GoldPlayer
             }
             else if (autoFindPlayer)
             {
-                playerInteraction = FindObjectOfType<GoldPlayerInteraction>();
+                playerInteraction = FindFirstObject<GoldPlayerInteraction>();
             }
         }
 #endif
@@ -438,6 +438,15 @@ namespace Hertzole.GoldPlayer
                     return string.Empty;
 #endif
             }
+        }
+
+        private static T FindFirstObject<T>() where T : Object
+        {
+#if UNITY_2023_1_OR_NEWER
+	        return FindFirstObjectByType<T>();
+#else
+	        return FindObjectOfType<T>();
+#endif
         }
 
 #if UNITY_EDITOR
