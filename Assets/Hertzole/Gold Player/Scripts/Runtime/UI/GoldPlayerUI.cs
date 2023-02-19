@@ -21,8 +21,10 @@
 #if USE_TMP
 using TMPro;
 #endif
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 #if USE_GUI
 using UnityEngine.UI;
 #endif
@@ -88,6 +90,9 @@ namespace Hertzole.GoldPlayer
         [FormerlySerializedAs("m_SprintingLabelDisplay")]
         [FormerlySerializedAs("sprintingLabelDisplay")]
         private LabelDisplayType staminaLabelDisplay = LabelDisplayType.Percentage;
+        [SerializeField] 
+        [Tooltip("The amount of stamina change required before the label is updated.")]
+        private float staminaLabelChangeRequired = 0.1f;
         [SerializeField]
         [Tooltip("The format of the stamina percentage value.")]
         private string staminaPercentageFormat = "F0";
@@ -141,6 +146,8 @@ namespace Hertzole.GoldPlayer
         public TextMeshProUGUI StaminaLabelPro { get { return staminaLabelPro; } set { staminaLabelPro = value; } }
 #endif
 #endif
+	    /// <summary> The amount of stamina change required before the label is updated. </summary>
+	    public float StaminaLabelChangeRequired { get { return staminaLabelChangeRequired; } set { staminaLabelChangeRequired = value; } }
         /// <summary> The format of the stamina percentage value. </summary>
         public string PercentageFormat { get { return staminaPercentageFormat; } set { staminaPercentageFormat = value; } }
         /// <summary> The format of the current stamina value. </summary>
@@ -315,6 +322,8 @@ namespace Hertzole.GoldPlayer
 #endif
         }
 
+        private float previousStamina = 0;
+        
         protected virtual void SprintingUpdate()
         {
 #if USE_GUI
@@ -340,19 +349,22 @@ namespace Hertzole.GoldPlayer
                         throw new System.NotImplementedException("There's no support for progress bar type '" + staminaBarType + "' in GoldPlayerUI!");
                 }
 
-                string sprintString = GetLabel(staminaLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina, staminaDirectValueFormat, staminaDirectMaxFormat, staminaPercentageFormat);
-
-                if (staminaLabel != null)
+                if (Math.Abs(Player.Movement.Stamina.CurrentStamina - previousStamina) > staminaLabelChangeRequired)
                 {
-                    staminaLabel.text = sprintString;
-                }
+	                previousStamina = Player.Movement.Stamina.CurrentStamina;
+					string sprintString = GetLabel(staminaLabelDisplay, Player.Movement.Stamina.CurrentStamina, Player.Movement.Stamina.MaxStamina, staminaDirectValueFormat, staminaDirectMaxFormat, staminaPercentageFormat);
+					if (staminaLabel != null)
+					{
+						staminaLabel.text = sprintString;
+					}
 
 #if USE_TMP
-                if (staminaLabelPro != null)
-                {
-                    staminaLabelPro.text = sprintString;
-                }
+					if (staminaLabelPro != null)
+					{
+						staminaLabelPro.text = sprintString;
+					}
 #endif
+                }
             }
 #else
             Debug.LogWarning("GoldPlayerUI is being used but there's no UGUI in this project!");

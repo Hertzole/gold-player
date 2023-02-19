@@ -23,6 +23,8 @@ namespace Hertzole.GoldPlayer
         [Tooltip("Sets the max angle of the platforms the player can stand on.")]
         internal float maxAngle = 45f;
 
+        private int? previousHitColliderId = null;
+        
         /// <summary> Determines if support for moving platforms should be enabled. </summary>
         public bool Enabled { get { return enabled; } set { enabled = value; } }
         /// <summary> If enabled, the player will move with platforms. </summary>
@@ -42,6 +44,7 @@ namespace Hertzole.GoldPlayer
         // The current platform the player should be moving with.
         private Transform currentPlatform;
         private Transform recordedPlatform;
+        private Transform hitPlatform;
 
         private Vector3 currentPlatformLastPosition = Vector3.zero;
         private Vector3 currentPlatformLocalPoint = Vector3.zero;
@@ -161,7 +164,18 @@ namespace Hertzole.GoldPlayer
         {
             if (Physics.Raycast(PlayerTransform.position, new Vector3(0, -1, 0), out groundHit, CHECK_DISTANCE, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore))
             {
-                CheckPlatformCollision(new Vector3(0f, -CHECK_DISTANCE, 0f), groundHit.normal, groundHit.transform);
+                if (previousHitColliderId != groundHit.colliderInstanceID)
+                {
+                    hitPlatform = groundHit.collider.transform;
+                    previousHitColliderId = groundHit.colliderInstanceID;
+                }
+                
+                CheckPlatformCollision(new Vector3(0f, -CHECK_DISTANCE, 0f), groundHit.normal, hitPlatform);
+            }
+            else
+            {
+                previousHitColliderId = null;
+                hitPlatform = null;
             }
         }
 

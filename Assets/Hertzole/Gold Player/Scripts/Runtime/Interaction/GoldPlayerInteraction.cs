@@ -60,9 +60,10 @@ namespace Hertzole.GoldPlayer
         internal string interactInput = "Interact";
 
         private int interactHash;
+        private int? previousHitColliderId = null;
 
         // Flag to determine if we have checked for a interactable.
-        internal bool haveCheckedInteractable = false;
+        internal bool hasCheckedInteractable = false;
 
         // How it should behave with triggers.
         private QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.Ignore;
@@ -147,28 +148,29 @@ namespace Hertzole.GoldPlayer
                 CanInteract = false;
                 CurrentHitInteractable = null;
                 currentHit = null;
+                previousHitColliderId = null;
             }
         }
 
         internal void HitInteraction(RaycastHit hit)
         {
-            // If there's no hit transform, stop here.
-            if (hit.collider == null)
-            {
-                return;
-            }
+	        // If there's no current hit or the hits doesn't match, update it and
+	        // the player need to check for a interactable again.
+	        if (hit.colliderInstanceID != previousHitColliderId)
+	        {
+		        previousHitColliderId = hit.colliderInstanceID;
+		        currentHit = hit.collider;
+		        hasCheckedInteractable = false;
 
-            // If there's no current hit or the hits doesn't match, update it and
-            // the player need to check for a interactable again.
-            if (currentHit == null || currentHit != hit.collider)
-            {
-                currentHit = hit.collider;
-                haveCheckedInteractable = false;
-            }
+		        if (hit.collider == null)
+		        {
+			        return;
+		        }
+	        }
 
-            // If the player hasn't checked for an interactable, do so ONCE.
+	        // If the player hasn't checked for an interactable, do so ONCE.
             // We don't want to call GetComponent every frame, you know!
-            if (!haveCheckedInteractable)
+            if (!hasCheckedInteractable)
             {
                 // Prefer interactables on the collider itself, but if the collider doesn't
                 // have one, then look on the rigidbody.
@@ -178,7 +180,7 @@ namespace Hertzole.GoldPlayer
                     CurrentHitInteractable = hit.rigidbody.GetComponent<IGoldPlayerInteractable>();
                 }
 
-                haveCheckedInteractable = true;
+                hasCheckedInteractable = true;
             }
 
             // Set Can Interact depending on if the player has a interactable object

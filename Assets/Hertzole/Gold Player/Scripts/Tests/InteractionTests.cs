@@ -207,12 +207,12 @@ namespace Hertzole.GoldPlayer.Tests
         [UnityTest]
         public IEnumerator TestNullCollider()
         {
-            interaction.haveCheckedInteractable = false;
+            interaction.hasCheckedInteractable = false;
 
             RaycastHit empty = new RaycastHit();
             interaction.HitInteraction(empty);
 
-            Assert.IsFalse(interaction.haveCheckedInteractable);
+            Assert.IsFalse(interaction.hasCheckedInteractable);
 
             yield return null;
         }
