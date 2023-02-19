@@ -211,8 +211,10 @@ namespace Hertzole.GoldPlayer
                 return;
             }
 
+            Vector3 controllerVelocity = CharacterController.velocity;
+            
             // Get the velocity from the character controller.
-            float flatVelocity = new Vector3(CharacterController.velocity.x, 0, CharacterController.velocity.z).magnitude * Time.timeScale;
+            float flatVelocity = new Vector3(controllerVelocity.x, 0, controllerVelocity.z).magnitude * Time.timeScale;
             // Calculate some stride thing. (Not 100% what everything here does)
             float strideLengthen = 1 + (flatVelocity * 0.3f);
             stepCycle += (flatVelocity / strideLengthen) * (deltaTime / stepTime);
@@ -273,6 +275,9 @@ namespace Hertzole.GoldPlayer
             {
                 customBehaviour.PlayFootstepSound();
             }
+            
+            // Add some time to the next step time.
+            nextStepTime = stepCycle + 0.5f;
         }
 
         private void InternalPlayJumpSound()
@@ -297,6 +302,9 @@ namespace Hertzole.GoldPlayer
             {
                 customBehaviour.PlayLandSound();
             }
+            
+            // Add some time to the next step time.
+            nextStepTime = stepCycle + 0.5f;
         }
 
         /// <summary>
@@ -322,9 +330,6 @@ namespace Hertzole.GoldPlayer
                 {
                     walkFootsteps.Play(footstepsSource);
                 }
-
-                // Add some time to the next step time.
-                nextStepTime = stepCycle + 0.5f;
             }
         }
 
@@ -349,9 +354,6 @@ namespace Hertzole.GoldPlayer
             if (enableAudio && landing.Enabled)
             {
                 landing.Play(landSource);
-
-                // Add some time to the next step time.
-                nextStepTime = stepCycle + 0.5f;
             }
         }
 
