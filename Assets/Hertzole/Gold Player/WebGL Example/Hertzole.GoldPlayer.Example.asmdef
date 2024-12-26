@@ -1,5 +1,6 @@
 {
     "name": "Hertzole.GoldPlayer.Example",
+    "rootNamespace": "",
     "references": [
         "GUID:375af9abe7f79fb4c8bdf440a295f2e7",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
@@ -21,6 +22,11 @@
         {
             "name": "com.unity.textmeshpro",
             "expression": "",
+            "define": "GOLD_PLAYER_TMP"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "2",
             "define": "GOLD_PLAYER_TMP"
         },
         {
