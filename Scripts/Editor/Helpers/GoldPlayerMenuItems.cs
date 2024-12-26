@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -261,7 +262,7 @@ namespace Hertzole.GoldPlayer.Editor
 
 		/*
 		 * Borrowed from
-		 * https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/Commands/GOCreationCommands.cs#L15
+		 * https://github.com/Unity-Technologies/UnityCsReference/blob/129a67089d125df5b95b659d3535deaf9968e86c/Editor/Mono/Commands/GOCreationCommands.cs#L41
 		 * */
 		private static void PlaceInScene(GameObject go, GameObject parent)
 		{
@@ -276,7 +277,15 @@ namespace Hertzole.GoldPlayer.Editor
 			}
 			else
 			{
-				PlaceGameObjectInFrontOfSceneView(go);
+				if (ShouldPlaceAtOrigin())
+				{
+					go.transform.position = Vector3.zero;
+				}
+				else
+				{
+					PlaceGameObjectInFrontOfSceneView(go);
+				}
+				
 #if UNITY_2018_3_OR_NEWER
 				StageUtility.PlaceGameObjectInCurrentStage(go);
 #endif
@@ -287,7 +296,7 @@ namespace Hertzole.GoldPlayer.Editor
 
 		/*
 		 * Borrowed from
-		 * https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/SceneView/SceneView.cs#L641
+		 * https://github.com/Unity-Technologies/UnityCsReference/blob/129a67089d125df5b95b659d3535deaf9968e86c/Editor/Mono/SceneView/SceneView.cs#L1600
 		 * */
 		private static void PlaceGameObjectInFrontOfSceneView(GameObject go)
 		{
@@ -300,6 +309,23 @@ namespace Hertzole.GoldPlayer.Editor
 			if (view)
 			{
 				view.MoveToView(go.transform);
+			}
+		}
+		
+		private static bool ShouldPlaceAtOrigin()
+		{
+			// Place everything in try & catch in case the internal API changes.
+			try
+			{
+				Type goCreationCommandsType = typeof(EditorApplication).Assembly.GetType("UnityEditor.GOCreationCommands");
+				PropertyInfo placeObjectsAtWorldOrigin = goCreationCommandsType.GetProperty("placeObjectsAtWorldOrigin", BindingFlags.Static | BindingFlags.NonPublic);
+				
+				return (bool) placeObjectsAtWorldOrigin!.GetValue(null);
+			}
+			catch (Exception e)
+			{
+				Debug.LogWarning("Failed to get placeObjectsAtWorldOrigin property. Placing the new object at world origin.\n" + e);
+				return true;
 			}
 		}
 	}
