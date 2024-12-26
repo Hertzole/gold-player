@@ -3,7 +3,11 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 #if GOLD_PLAYER_CINEMACHINE
+#if GOLD_PLAYER_CINEMACHINE_3
+using Unity.Cinemachine;
+#else
 using Cinemachine;
+#endif
 #endif
 #if UNITY_2018_3_OR_NEWER
 using UnityEditor.SceneManagement;

@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.TestTools;
 #if GOLD_PLAYER_CINEMACHINE
+#if GOLD_PLAYER_CINEMACHINE_3
+using Unity.Cinemachine;
+#else
 using Cinemachine;
-#endif
+#endif // GOLD_PLAYER_CINEMACHINE_3
+#endif // GOLD_PLAYER_CINEMACHINE
 
 namespace Hertzole.GoldPlayer.Tests
 {
@@ -212,4 +216,4 @@ namespace Hertzole.GoldPlayer.Tests
         }
     }
 }
-#endif
+#endif // GOLD_PLAYER_TESTS

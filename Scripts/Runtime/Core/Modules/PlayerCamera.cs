@@ -86,7 +86,7 @@ namespace Hertzole.GoldPlayer
         [SerializeField]
         [Tooltip("The virtual camera that the FOV kick should be applied to.")]
 #if GOLD_PLAYER_CINEMACHINE_3
-        private Cinemachine.CinemachineCamera targetVirtualCamera = null;
+        private Unity.Cinemachine.CinemachineCamera targetVirtualCamera = null;
 #else
         private Cinemachine.CinemachineVirtualCamera targetVirtualCamera = null;
         #endif
@@ -255,8 +255,8 @@ namespace Hertzole.GoldPlayer
         /// <summary> Allows you to use Cinemachine virtual camera instead of a direct reference to a camera. </summary>
         public bool UseCinemachine { get { return useCinemachine; } set { useCinemachine = value; } }
         /// <summary> The virtual camera that the FOV kick should be applied to. </summary>
-        #if GOLD_PLAYER_CINEMACHINE_3
-        public Cinemachine.CinemachineCamera TargetVirtualCamera { get { return targetVirtualCamera; } set { targetVirtualCamera = value; } }
+#if GOLD_PLAYER_CINEMACHINE_3
+        public Unity.Cinemachine.CinemachineCamera TargetVirtualCamera { get { return targetVirtualCamera; } set { targetVirtualCamera = value; } }
 #else
         public Cinemachine.CinemachineVirtualCamera TargetVirtualCamera { get { return targetVirtualCamera; } set { targetVirtualCamera = value; } }
         #endif
