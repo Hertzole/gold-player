@@ -430,34 +430,6 @@ namespace Hertzole.GoldPlayer
         /// <summary> Fires when the player stops running. </summary>
         public event GoldPlayerDelegates.PlayerEvent OnEndRun;
 
-        #region Obsolete
-#if UNITY_EDITOR
-        /// <summary> Horizontal move axis for the old Input Manager. </summary>
-        [System.Obsolete("Use 'MoveInput' instead along with GetVector2. This will be removed on build.", true)]
-        public string HorizontalAxis
-        {
-            [UnityEngine.TestTools.ExcludeFromCoverage]
-            get { return null; }
-            [UnityEngine.TestTools.ExcludeFromCoverage]
-            set { }
-        }
-        /// <summary> Vertical move axis for the old Input Manager. </summary>
-        [System.Obsolete("Use 'MoveInput' instead along with GetVector2. This will be removed on build.", true)]
-        public string VerticalAxis
-        {
-            [UnityEngine.TestTools.ExcludeFromCoverage]
-            get { return null; }
-            [UnityEngine.TestTools.ExcludeFromCoverage]
-            set { }
-        }
-        
-        /// <summary> How fast the lerp for the head is when crouching/standing up. </summary>
-        [System.Obsolete("Use 'CrouchTime' or 'StandUpTime' instead This will be removed on build.", true)]
-        public float CrouchHeadLerp { get { return 0; } set { } }
-        
-#endif
-        #endregion
-
         protected override void OnInitialize()
         {
             // Calculate max on all the speeds to make sure it's correct when spawning the player.

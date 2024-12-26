@@ -309,19 +309,6 @@ namespace Hertzole.GoldPlayer
             }
         }
 
-        #region Obsolete
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'FieldOfViewKick' instead. This will be removed on build.", true)]
-        public FOVKickClass FOVKick { get { return fieldOfViewKick; } set { fieldOfViewKick = value; } }
-        /// <summary> Mouse X axis for the old Input Manager. </summary>
-        [System.Obsolete("Use 'LookInput' instead along with GetVector2. This will be removed on build.", true)]
-        public string MouseX { get { return null; } set { } }
-        /// <summary> Mouse Y axis for the old Input Manager. </summary>
-        [System.Obsolete("Use 'LookInput' instead along with GetVector2. This will be removed on build.", true)]
-        public string MouseY { get { return null; } set { } }
-#endif
-        #endregion
-
         protected override void OnInitialize()
         {
             // If the camera head is null, complain.

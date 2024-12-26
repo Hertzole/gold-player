@@ -73,13 +73,6 @@ namespace Hertzole.GoldPlayer
         /// <summary> The current regen wait time. </summary>
         public float CurrentRegenWait { get { return currentRegenWait; } set { currentRegenWait = value; } }
 
-        #region Obsolete
-#if UNITY_EDITOR
-        [System.Obsolete("Use RegenRateStill or RegenRateMoving instead. This will be removed on build.", true)]
-        public float RegenRate { get { return regenRateStill; } set { regenRateStill = value; } }
-#endif
-        #endregion
-
         protected override void OnInitialize()
         {
             // Set the current stamina to the max stamina. This way we always start with a full stamina bar.

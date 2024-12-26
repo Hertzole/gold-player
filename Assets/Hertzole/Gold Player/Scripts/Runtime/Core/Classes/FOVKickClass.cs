@@ -73,34 +73,6 @@ namespace Hertzole.GoldPlayer
         
         // The parent player camera module.
         private PlayerCamera Camera { get { return PlayerController.Camera; } }
-        
-        #region Obsolete
-#if UNITY_EDITOR
-        /// <summary> The camera that the FOV kick should be applied to. </summary>
-        [Obsolete("Use 'TargetCamera' in PlayerCamera instead.", true)]
-        public Camera TargetCamera
-        {
-            [UnityEngine.TestTools.ExcludeFromCoverage] get { return null; } 
-            [UnityEngine.TestTools.ExcludeFromCoverage] set { }
-        }
-#if GOLD_PLAYER_CINEMACHINE
-        /// <summary> Allows you to use Cinemachine virtual camera instead of a direct reference to a camera. </summary>
-        [Obsolete("Use 'UseCinemachine' in PlayerCamera instead.", true)]
-        public bool UseCinemachine
-        {
-            [UnityEngine.TestTools.ExcludeFromCoverage] get { return false; } 
-            [UnityEngine.TestTools.ExcludeFromCoverage] set { }
-        }
-        /// <summary> The virtual camera that the FOV kick should be applied to. </summary>
-        [Obsolete("Use 'TargetVirtualCamera' in PlayerCamera instead.", true)]
-        public Cinemachine.CinemachineVirtualCamera TargetVirtualCamera
-        {
-            [UnityEngine.TestTools.ExcludeFromCoverage] get { return null; } 
-            [UnityEngine.TestTools.ExcludeFromCoverage] set { }
-        }
-#endif
-#endif
-        #endregion
 
         protected override void OnInitialize()
         {

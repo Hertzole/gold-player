@@ -74,11 +74,6 @@ namespace Hertzole.GoldPlayer
         /// </summary>
         public virtual void OnLateUpdate(float deltaTime) { }
 
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'PlayFootstepSound' instead. This will be removed on build.", true), UnityEngine.TestTools.ExcludeFromCoverage]
-        public virtual void PlayFoostepSound() { }
-#endif
-
         /// <summary>
         /// Called when a footstep should be played.
         /// </summary>

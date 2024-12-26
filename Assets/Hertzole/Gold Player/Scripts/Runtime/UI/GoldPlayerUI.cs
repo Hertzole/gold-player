@@ -192,23 +192,6 @@ namespace Hertzole.GoldPlayer
         }
 #endif
 
-        #region Obsolete
-#if UNITY_EDITOR
-        [System.Obsolete("Use 'StaminaBarType' instead. This will be removed on build.", true)]
-        public ProgressBarType SprintingBarType { get { return staminaBarType; } set { staminaBarType = value; AdaptSprintingUI(); } }
-#if USE_GUI
-        [System.Obsolete("Use 'StaminaBarImage' instead. This will be removed on build.", true)]
-        public Image SprintingBarImage { get { return staminaBarImage; } set { staminaBarImage = value; } }
-        [System.Obsolete("Use 'StaminaBarSlider' instead. This will be removed on build.", true)]
-        public Slider SprintingBarSlider { get { return staminaBarSlider; } set { staminaBarSlider = value; } }
-        [System.Obsolete("Use 'StaminaLabel' instead. This will be removed on build.", true)]
-        public Text SprintingLabel { get { return staminaLabel; } set { staminaLabel = value; } }
-#endif
-        [System.Obsolete("Use 'StaminaLabelDisplay' instead. This will be removed on build.", true)]
-        public LabelDisplayType SprintingLabelDisplay { get { return staminaLabelDisplay; } set { staminaLabelDisplay = value; } }
-#endif
-        #endregion
-
         private void Awake()
         {
 #if OBSOLETE
