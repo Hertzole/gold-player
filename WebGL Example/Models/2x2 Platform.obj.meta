@@ -1,26 +1,56 @@
 fileFormatVersion: 2
 guid: a12748370560c234f9370566e6397105
-timeCreated: 1515367320
-licenseType: Free
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: 2x2_Platform_0
-    100004: 2x2_Platform_1
-    400000: //RootNode
-    400002: 2x2_Platform_0
-    400004: 2x2_Platform_1
-    2100000: GP_Dev_Orange
-    2100002: GP_Dev_Gray
-    2100004: 2x2_Platform_0Mat
-    2100006: 2x2_Platform_1Mat
-    2300000: 2x2_Platform_0
-    2300002: 2x2_Platform_1
-    3300000: 2x2_Platform_0
-    3300002: 2x2_Platform_1
-    4300000: 2x2_Platform_0
-    4300002: 2x2_Platform_1
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: 2x2_Platform_0
+  - first:
+      1: 100004
+    second: 2x2_Platform_1
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: 2x2_Platform_0
+  - first:
+      4: 400004
+    second: 2x2_Platform_1
+  - first:
+      21: 2100000
+    second: GP_Dev_Orange
+  - first:
+      21: 2100002
+    second: GP_Dev_Gray
+  - first:
+      21: 2100004
+    second: 2x2_Platform_0Mat
+  - first:
+      21: 2100006
+    second: 2x2_Platform_1Mat
+  - first:
+      23: 2300000
+    second: 2x2_Platform_0
+  - first:
+      23: 2300002
+    second: 2x2_Platform_1
+  - first:
+      33: 3300000
+    second: 2x2_Platform_0
+  - first:
+      33: 3300002
+    second: 2x2_Platform_1
+  - first:
+      43: 4300000
+    second: 2x2_Platform_0
+  - first:
+      43: 4300002
+    second: 2x2_Platform_1
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -43,7 +73,7 @@ ModelImporter:
       name: GP_Dev_Orange
     second: {fileID: 2100000, guid: 510d2b7dca1aeb340a26b21807eb2abf, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -52,14 +82,14 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -74,32 +104,49 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -109,14 +156,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
