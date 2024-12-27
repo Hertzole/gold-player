@@ -1,0 +1,15 @@
+{
+    "name": "Gold Player",
+    "short_name": "Gold Player",
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "background_color": "#012E57",
+    "theme_color": "#000",
+    "description": "Gold Player Example by Hertzole",
+    "icons": [{
+      "src": "TemplateData/icons/unity-logo-dark.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }]
+  }
