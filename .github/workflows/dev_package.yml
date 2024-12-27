@@ -8,9 +8,10 @@ jobs:
     name: Create dev package
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        
     - name: Create dev package branch
       run: |
         git branch -d dev-package &> /dev/null || echo dev-package branch not found
