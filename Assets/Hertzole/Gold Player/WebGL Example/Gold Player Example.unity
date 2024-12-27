@@ -17677,6 +17677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetPlayer: {fileID: 847471339}
   tweakText: {fileID: 1905155571}
+  headerText: {fileID: 174971833}
   panel: {fileID: 1601291127}
   viewport: {fileID: 1517645964}
   headerLabel: {fileID: 1081921105}
