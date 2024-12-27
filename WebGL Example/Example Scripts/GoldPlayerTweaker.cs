@@ -21,6 +21,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 #endif
 
+#if GOLD_PLAYER_TMP
+using TextType = TMPro.TextMeshProUGUI;
+#else
+using TextType = UnityEngine.UI.Text;
+#endif
+
 namespace Hertzole.GoldPlayer.Example
 {
     [AddComponentMenu("Gold Player/Examples/Gold Player Tweaker", 100)]
@@ -41,6 +47,10 @@ namespace Hertzole.GoldPlayer.Example
         public Text TweakText { get { return tweakText; } set { tweakText = value; } }
 #endif
 #endif
+	    [SerializeField] 
+	    private TextType headerText = null;
+	    public TextType HeaderText { get { return headerText; } set { headerText = value; } }
+	    
         [SerializeField]
         [FormerlySerializedAs("m_Panel")]
         private GameObject panel;
@@ -106,6 +116,8 @@ namespace Hertzole.GoldPlayer.Example
         void Start()
         {
 #if USE_GUI
+	        headerText.text = "Player Tweaker - " + Application.version;	        
+
             Panel.gameObject.SetActive(false);
             headerLabel.gameObject.SetActive(false);
             tweakField.gameObject.SetActive(false);
