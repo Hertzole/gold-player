@@ -1,9 +1,11 @@
 ﻿#if GOLD_PLAYER_TESTS
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
 
 namespace Hertzole.GoldPlayer.Tests
 {
@@ -13,7 +15,7 @@ namespace Hertzole.GoldPlayer.Tests
 		protected GoldPlayerTestInput input;
 
 		protected List<GameObject> sceneObjects = new List<GameObject>();
-		
+
 		// Standard time for a frame at 60 FPS.
 		protected const float FRAME_TIME = 1f / 60f;
 
@@ -173,18 +175,19 @@ namespace Hertzole.GoldPlayer.Tests
 				yield return current;
 			}
 		}
-		
-		protected static IEnumerator WaitFrames(int amount)
+
+		protected static IEnumerator WaitFrames(int amount, Action frameAction = null)
 		{
-			yield return WaitTime(FRAME_TIME * amount);
+			yield return WaitTime(FRAME_TIME * amount, frameAction);
 		}
-		
-		protected static IEnumerator WaitTime(float time)
+
+		protected static IEnumerator WaitTime(float time, Action frameAction = null)
 		{
 			double start = Time.realtimeSinceStartupAsDouble;
 			double end = start + time;
 			while (Time.realtimeSinceStartupAsDouble < end)
 			{
+				frameAction?.Invoke();
 				yield return null;
 			}
 		}
