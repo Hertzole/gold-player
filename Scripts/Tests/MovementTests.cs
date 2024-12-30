@@ -737,10 +737,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, TOLERANCE);
 
-                for (int i = 0; i < 20; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitFrames(20);
 
                 for (int i = 0; i < sceneObjects.Count; i++)
                 {
@@ -749,10 +746,7 @@ namespace Hertzole.GoldPlayer.Tests
                     sceneObjects[i].transform.eulerAngles = rot;
                 }
 
-                for (int i = 0; i < 20; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitFrames(20);
 
                 for (int i = 0; i < sceneObjects.Count; i++)
                 {
@@ -783,17 +777,16 @@ namespace Hertzole.GoldPlayer.Tests
             {
                 player.HeadBob.EnableBob = true;
 
-                for (int i = 0; i < 600; i++)
+                yield return WaitTime(1, () =>
                 {
                     for (int j = 0; j < sceneObjects.Count; j++)
                     {
-                        sceneObjects[j].transform.position = Vector3.MoveTowards(sceneObjects[j].transform.position, sceneObjects[j].transform.position + Vector3.forward, 2 * Time.deltaTime);
+                        sceneObjects[j].transform.position = Vector3.MoveTowards(sceneObjects[j].transform.position,
+                            sceneObjects[j].transform.position + Vector3.forward, 2 * Time.deltaTime);
                     }
 
                     Assert.AreEqual(0, player.HeadBob.BobCycle);
-
-                    yield return null;
-                }
+                });
             }
         }
 
@@ -806,15 +799,13 @@ namespace Hertzole.GoldPlayer.Tests
             {
                 player.Movement.MovingPlatforms.Enabled = true;
 
-                for (int i = 0; i < 10; i++)
+                yield return WaitTime(1, () =>
                 {
                     for (int j = 0; j < sceneObjects.Count; j++)
                     {
                         sceneObjects[j].transform.position += Vector3.forward * 0.00099f;
                     }
-
-                    yield return null;
-                }
+                });
 
                 Assert.AreNotEqual(0, player.transform.position.z);
             }
@@ -950,18 +941,12 @@ namespace Hertzole.GoldPlayer.Tests
             IEnumerator Test()
             {
                 input.moveDirection = new Vector2(0, 1);
-                for (int i = 0; i < 100; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitFrames(100);
 
                 AreApproximatelyEqualVector2(new Vector2(0, 1), player.Movement.SmoothedMovementInput, TOLERANCE);
                 input.moveDirection = new Vector2(1, 1);
 
-                for (int i = 0; i < 100; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitFrames(100);
 
                 AreApproximatelyEqualVector2(new Vector2(0.7f, 0.7f), player.Movement.SmoothedMovementInput, TOLERANCE);
             }
@@ -1008,10 +993,7 @@ namespace Hertzole.GoldPlayer.Tests
                 input.moveDirection = new Vector2(0, -1);
                 input.isRunning = true;
 
-                for (int i = 0; i < 60; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitTime(1f);
 
                 Assert.IsTrue(player.Movement.IsRunning);
             }
@@ -1027,15 +1009,9 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Camera.BodyAngle = -180;
                 input.moveDirection = new Vector2(0, -1);
                 input.mouseInput = new Vector2(0, -100);
-
-                yield return null;
-
                 player.Camera.RotateCameraOnly = true;
 
-                for (int i = 0; i < 60; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitTime(1f);
 
                 Vector3 position = player.transform.position;
                 Assert.IsTrue(position.z > 0);
@@ -1063,31 +1039,23 @@ namespace Hertzole.GoldPlayer.Tests
 
                 IEnumerator GroundedRoutine()
                 {
-                    for (int i = 0; i < 10; i++)
-                    {
-                        yield return null;
-                    }
+                    yield return WaitFrames(10);
 
                     Assert.IsTrue(player.Movement.IsGrounded);
 
-                    yield return null;
+                    yield return WaitFrames(1);
 
                     player.SetPosition(new Vector3(0, 100, 0));
 
-                    for (int i = 0; i < 10; i++)
-                    {
-                        yield return null;
-                    }
+                    yield return WaitTime(0.5f);
+                    
                     Assert.IsFalse(player.Movement.IsGrounded);
 
-                    yield return null;
+                    yield return WaitFrames(1);
 
                     player.SetPosition(new Vector3(0, 0, 0));
 
-                    for (int i = 0; i < 10; i++)
-                    {
-                        yield return null;
-                    }
+                    yield return WaitTime(0.5f);
                 }
             }
         }
@@ -1180,10 +1148,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 player.SetPosition(new Vector3(0, 100, 0));
 
-                for (int i = 0; i < 30; i++)
-                {
-                    yield return null;
-                }
+                yield return WaitTime(0.5f);
 
                 Assert.IsTrue(player.Movement.IsFalling);
                 Assert.IsTrue(player.Movement.ShouldJump);
@@ -1237,11 +1202,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 input.isJumpingToggle = true;
 
-                for (int i = 0; i < 30; i++)
-                {
-                    Assert.IsFalse(player.Movement.IsJumping);
-                    yield return null;
-                }
+                yield return WaitFrames(30, () => Assert.IsFalse(player.Movement.IsJumping));
 
                 yield return WaitFrames(2);
 
