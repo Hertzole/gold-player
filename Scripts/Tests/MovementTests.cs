@@ -1540,14 +1540,6 @@ namespace Hertzole.GoldPlayer.Tests
             }
         }
 #endif
-
-        private IEnumerator WaitFrames(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                yield return null;
-            }
-        }
     }
 }
 #endif
