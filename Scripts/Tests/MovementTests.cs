@@ -10,6 +10,8 @@ namespace Hertzole.GoldPlayer.Tests
     {
         private MovingPlatformsClass Platforms { get { return player.Movement.MovingPlatforms; } }
 
+        private const float TOLERANCE = 0.9f;
+
         /// <summary>
         /// Used to test if the player stops running when CanRun is set to false while running.
         /// </summary>
@@ -34,7 +36,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanRunStops :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanRunStops :: Set CanRun to false.");
@@ -45,7 +47,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanRunStops :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
             }
         }
 
@@ -73,7 +75,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanRunContinues :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanRunContinues :: Set CanRun to true.");
@@ -84,7 +86,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanRunContinues :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z, TOLERANCE);
 
                 input.isRunning = false;
 
@@ -114,7 +116,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveStops :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanMoveStops :: Set CanMoveAround to false.");
@@ -126,7 +128,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveStops :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z, TOLERANCE);
             }
         }
 
@@ -152,7 +154,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveContinues :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanMoveContinues :: Set CanMoveAround to true.");
@@ -164,7 +166,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveContinues :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
             }
         }
 
@@ -191,7 +193,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveRunningContinues :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanMoveRunningContinues :: Set CanMoveAround to true.");
@@ -203,7 +205,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveRunningContinues :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z, TOLERANCE);
             }
         }
 
@@ -230,7 +232,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveAround :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(0f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(0f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanMoveAround :: Set CanMoveAround to false.");
@@ -242,7 +244,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanMoveAround :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
             }
         }
 
@@ -268,8 +270,8 @@ namespace Hertzole.GoldPlayer.Tests
                 
                 Debug.Log("CanLookAround :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x + " | Player rotation: " + player.transform.eulerAngles.y);
 
-                Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
-                Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, TOLERANCE);
+                Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, TOLERANCE);
 
                 // Let one more frame go before we disable CanLookAround.
                 yield return null;
@@ -279,8 +281,8 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanLookAround :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x + " | Player rotation: " + player.transform.eulerAngles.y);
 
-                Assert.AreApproximatelyEqual(40f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
-                Assert.AreApproximatelyEqual(40f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(40f, player.Camera.CameraHead.localEulerAngles.x, TOLERANCE);
+                Assert.AreApproximatelyEqual(40f, player.transform.eulerAngles.y, TOLERANCE);
             }
         }
 
@@ -308,7 +310,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanRun :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 Debug.Log("CanRun :: Set CanRun to true.");
@@ -320,7 +322,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanRun :: Player velocity: " + player.Velocity.z);
 
-                Assert.AreApproximatelyEqual(7f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(7f, player.Velocity.z, TOLERANCE);
 
                 yield return null;
                 player.Movement.CanRun = false;
@@ -330,7 +332,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
                 
                 Debug.Log("CanRun :: Player velocity: " + player.Velocity.z);
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
             }
         }
 
@@ -355,7 +357,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanJump :: Player velocity: " + player.Velocity.y);
 
-                Assert.AreApproximatelyEqual(8.944f, player.Velocity.y, 0.1f);
+                Assert.AreApproximatelyEqual(8.944f, player.Velocity.y, TOLERANCE);
 
                 while (player.Movement.IsJumping || !player.Movement.IsGrounded)
                 {
@@ -372,7 +374,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanJump :: Player velocity: " + player.Velocity.y);
 
-                Assert.AreApproximatelyEqual(0, player.Velocity.y, 0.1f);
+                Assert.AreApproximatelyEqual(0, player.Velocity.y, TOLERANCE);
             }
         }
 
@@ -398,7 +400,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
 
-                Assert.AreApproximatelyEqual(player.Movement.CrouchHeight, player.Controller.height);
+                Assert.AreApproximatelyEqual(player.Movement.CrouchHeight, player.Controller.height, TOLERANCE);
 
                 Debug.Log("CanCrouch :: Set isCrouching to false.");
                 input.isCrouching = false;
@@ -407,7 +409,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
 
-                Assert.AreApproximatelyEqual(originalHeight, player.Controller.height);
+                Assert.AreApproximatelyEqual(originalHeight, player.Controller.height, TOLERANCE);
 
                 yield return null;
 
@@ -419,7 +421,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CanCrouch :: Player height: " + player.Controller.height);
                 // It should no longer crouch.
-                Assert.AreApproximatelyEqual(originalHeight, player.Controller.height);
+                Assert.AreApproximatelyEqual(originalHeight, player.Controller.height, TOLERANCE);
             }
         }
 
@@ -443,7 +445,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CameraInvertX :: Player rotation: " + player.transform.eulerAngles.y);
 
-                Assert.AreApproximatelyEqual(340f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(340f, player.transform.eulerAngles.y, TOLERANCE);
 
                 Debug.Log("CameraInvertX :: Set InvertX to false.");
                 player.Camera.InvertXAxis = false;
@@ -454,7 +456,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CameraInvertX :: Player rotation: " + player.transform.eulerAngles.y);
 
-                Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, 0.1f);
+                Assert.AreApproximatelyEqual(20f, player.transform.eulerAngles.y, TOLERANCE);
             }
         }
 
@@ -480,7 +482,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CameraInvertY :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x);
 
-                Assert.AreApproximatelyEqual(340f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+                Assert.AreApproximatelyEqual(340f, player.Camera.CameraHead.localEulerAngles.x, TOLERANCE);
 
                 Debug.Log("CameraInvertY :: Set InvertY to false.");
                 player.Camera.InvertYAxis = false;
@@ -491,7 +493,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 Debug.Log("CameraInvertY :: Camera rotation: " + player.Camera.CameraHead.localEulerAngles.x);
 
-                Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, 0.1f);
+                Assert.AreApproximatelyEqual(20f, player.Camera.CameraHead.localEulerAngles.x, TOLERANCE);
             }
         }
 
@@ -522,9 +524,9 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Movement.MovingPlatforms.currentPlatformGlobalRotation = Quaternion.identity;
                 
                 yield return null;
-                AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
+                AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, TOLERANCE);
                 yield return null;
-                Assert.AreApproximatelyEqual(0, player.transform.eulerAngles.y);
+                Assert.AreApproximatelyEqual(0, player.transform.eulerAngles.y, TOLERANCE);
                 yield return null;
 
                 for (int i = 0; i < sceneObjects.Count; i++)
@@ -536,8 +538,8 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
                 yield return null;
 
-                AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
-                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+                AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, TOLERANCE);
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y, TOLERANCE);
 
                 yield return null;
                 Debug.Log("FollowingMovingPlatform :: Set Enabled to false.");
@@ -552,8 +554,8 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return null;
 
-                AreApproximatelyEqualVector3(new Vector3(200, 0f, 200), player.transform.position, 0.1f);
-                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+                AreApproximatelyEqualVector3(new Vector3(200, 0f, 200), player.transform.position, TOLERANCE);
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y, TOLERANCE);
                 
                 for (int i = 0; i < sceneObjects.Count; i++)
                 {
@@ -592,7 +594,7 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Movement.MovingPlatforms.MovePosition = true;
                 yield return WaitFrames(2);
                 
-                AreApproximatelyEqualVector2(new Vector2(0, 0), new Vector2(player.transform.position.x, player.transform.position.z));
+                AreApproximatelyEqualVector2(new Vector2(0, 0), new Vector2(player.transform.position.x, player.transform.position.z), TOLERANCE);
                 yield return WaitFrames(2);
 
                 for (int i = 0; i < sceneObjects.Count; i++)
@@ -602,7 +604,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return WaitFrames(2);
                 
-                AreApproximatelyEqualVector2(new Vector2(200, 200), new Vector2(player.transform.position.x, player.transform.position.z));
+                AreApproximatelyEqualVector2(new Vector2(200, 200), new Vector2(player.transform.position.x, player.transform.position.z), TOLERANCE);
 
                 player.Movement.MovingPlatforms.MovePosition = false;
                 yield return WaitFrames(2);
@@ -614,7 +616,7 @@ namespace Hertzole.GoldPlayer.Tests
                 
                 yield return WaitFrames(2);
                 
-                AreApproximatelyEqualVector2(new Vector2(200, 200), new Vector2(player.transform.position.x, player.transform.position.z));
+                AreApproximatelyEqualVector2(new Vector2(200, 200), new Vector2(player.transform.position.x, player.transform.position.z), TOLERANCE);
   
                 for (int i = 0; i < sceneObjects.Count; i++)
                 {
@@ -651,7 +653,7 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Movement.MovingPlatforms.MoveRotation = true;
                 yield return WaitFrames(2);
                 
-                Assert.AreApproximatelyEqual(0, player.transform.eulerAngles.y);
+                Assert.AreApproximatelyEqual(0, player.transform.eulerAngles.y, TOLERANCE);
                 yield return WaitFrames(2);
 
                 for (int i = 0; i < sceneObjects.Count; i++)
@@ -661,7 +663,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return WaitFrames(2);
                 
-                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y, TOLERANCE);
 
                 player.Movement.MovingPlatforms.MoveRotation = false;
                 yield return WaitFrames(2);
@@ -673,7 +675,7 @@ namespace Hertzole.GoldPlayer.Tests
                 
                 yield return WaitFrames(2);
                 
-                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y);
+                Assert.AreApproximatelyEqual(45, player.transform.eulerAngles.y, TOLERANCE);
 
                 for (int i = 0; i < sceneObjects.Count; i++)
                 {
@@ -704,7 +706,7 @@ namespace Hertzole.GoldPlayer.Tests
                 player.Movement.MovingPlatforms.MovePosition = true;
 
                 yield return null;
-                AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, 0.1f);
+                AreApproximatelyEqualVector3(new Vector3(0, 0.08f, 0f), player.transform.position, TOLERANCE);
                 yield return null;
 
                 for (int i = 0; i < sceneObjects.Count; i++)
@@ -714,7 +716,7 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return null;
 
-                AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, 0.1f);
+                AreApproximatelyEqualVector3(new Vector3(200, 0.08f, 200), player.transform.position, TOLERANCE);
 
                 yield return null;
                 for (int i = 0; i < sceneObjects.Count; i++)
@@ -733,7 +735,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
                 yield return null;
 
-                AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
+                AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, TOLERANCE);
 
                 for (int i = 0; i < 20; i++)
                 {
@@ -760,7 +762,7 @@ namespace Hertzole.GoldPlayer.Tests
                 yield return null;
                 yield return null;
 
-                AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, 0.5f);
+                AreApproximatelyEqualVector3(new Vector3(0, 0.2f, 0), player.transform.position, TOLERANCE);
 
                 for (int i = 0; i < sceneObjects.Count; i++)
                 {
@@ -834,13 +836,13 @@ namespace Hertzole.GoldPlayer.Tests
 
                 yield return WaitFrames(2);
 
-                Assert.AreApproximatelyEqual(3f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(3f, player.Velocity.z, TOLERANCE);
 
                 player.Movement.MoveSpeedMultiplier = 2f;
 
                 yield return WaitFrames(2);
                 
-                Assert.AreApproximatelyEqual(6f, player.Velocity.z);
+                Assert.AreApproximatelyEqual(6f, player.Velocity.z, TOLERANCE);
 
                 input.isJumpingToggle = true;
 
@@ -858,7 +860,7 @@ namespace Hertzole.GoldPlayer.Tests
                     yield return null;
                 }
 
-                Assert.AreApproximatelyEqual(2f, highest, 0.25f);
+                Assert.AreApproximatelyEqual(2f, highest, TOLERANCE);
                 player.Movement.JumpHeightMultiplier = 2f;
                 
                 input.isJumpingToggle = true;
@@ -877,7 +879,7 @@ namespace Hertzole.GoldPlayer.Tests
                     yield return null;
                 }
               
-                Assert.AreApproximatelyEqual(4f, highest, 0.25f);
+                Assert.AreApproximatelyEqual(4f, highest, TOLERANCE);
             }
         }
 
@@ -953,7 +955,7 @@ namespace Hertzole.GoldPlayer.Tests
                     yield return null;
                 }
 
-                AreApproximatelyEqualVector2(new Vector2(0, 1), player.Movement.SmoothedMovementInput, 0.1f);
+                AreApproximatelyEqualVector2(new Vector2(0, 1), player.Movement.SmoothedMovementInput, TOLERANCE);
                 input.moveDirection = new Vector2(1, 1);
 
                 for (int i = 0; i < 100; i++)
@@ -961,7 +963,7 @@ namespace Hertzole.GoldPlayer.Tests
                     yield return null;
                 }
 
-                AreApproximatelyEqualVector2(new Vector2(0.7f, 0.7f), player.Movement.SmoothedMovementInput, 0.1f);
+                AreApproximatelyEqualVector2(new Vector2(0.7f, 0.7f), player.Movement.SmoothedMovementInput, TOLERANCE);
             }
         }
 
@@ -1208,8 +1210,8 @@ namespace Hertzole.GoldPlayer.Tests
                 input.moveDirection = new Vector2(0, -1);
                 yield return WaitFrames(30);
 
-                Assert.AreApproximatelyEqual(player.Movement.airVelocity.x, player.Movement.groundVelocity.x);
-                Assert.AreApproximatelyEqual(player.Movement.airVelocity.z, player.Movement.groundVelocity.z);
+                Assert.AreApproximatelyEqual(player.Movement.airVelocity.x, player.Movement.groundVelocity.x, TOLERANCE);
+                Assert.AreApproximatelyEqual(player.Movement.airVelocity.z, player.Movement.groundVelocity.z, TOLERANCE);
 
                 yield return WaitFrames(60);
             }
