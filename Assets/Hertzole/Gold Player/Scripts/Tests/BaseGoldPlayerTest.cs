@@ -13,6 +13,9 @@ namespace Hertzole.GoldPlayer.Tests
 		protected GoldPlayerTestInput input;
 
 		protected List<GameObject> sceneObjects = new List<GameObject>();
+		
+		// Standard time for a frame at 60 FPS.
+		protected const float FRAME_TIME = 1f / 60f;
 
 		[UnitySetUp]
 		public IEnumerator SetupScene()
@@ -168,6 +171,21 @@ namespace Hertzole.GoldPlayer.Tests
 				}
 
 				yield return current;
+			}
+		}
+		
+		protected static IEnumerator WaitFrames(int amount)
+		{
+			yield return WaitTime(FRAME_TIME * amount);
+		}
+		
+		protected static IEnumerator WaitTime(float time)
+		{
+			double start = Time.realtimeSinceStartupAsDouble;
+			double end = start + time;
+			while (Time.realtimeSinceStartupAsDouble < end)
+			{
+				yield return null;
 			}
 		}
 	}
