@@ -1,3 +1,16 @@
+## [1.7.2] - 2025-01-06
+
+### Changes:
+
+- Removed obsolete code that hasn't been used in a long time.
+- Object bobbing can now be multiplied dependening on grounded state.
+
+### Fixed:
+
+- Fixed Cinemachine 3.0 compatibility.
+- Fixed creating a new controller not respecting "Create at World Origin" preference.
+- Fixed tooltips not being removed in builds.
+
 ## [1.7.1] - 2022-02-19
 
 ### Added:
