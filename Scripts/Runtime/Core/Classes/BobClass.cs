@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Hertzole.GoldPlayer
@@ -45,6 +46,12 @@ namespace Hertzole.GoldPlayer
         [EditorTooltip("Multiplies the bob frequency speed.")]
         [FormerlySerializedAs("m_StrideMultiplier")]
         internal float strideMultiplier = 0.3f;
+        [SerializeField] 
+        [EditorTooltip("Sets how strong the bob will be when grounded.")]
+        private float groundedMultiplier = 1f;
+        [SerializeField] 
+        [EditorTooltip("Sets how strong the bob will be when airborne.")]
+        private float airborneMultiplier = 1f;
 
         [SerializeField]
         [EditorTooltip("How much the target will move when landing.")]
@@ -83,6 +90,10 @@ namespace Hertzole.GoldPlayer
         internal float zTilt = 0;
         internal float zTiltVelocity = 0;
 
+        private float fadeTime;
+        private bool wasMoving;
+        private bool wasGrounded;
+
         /// <summary> Determines if the bob effect should be enabled. </summary>
         public bool EnableBob { get { return enableBob; } set { enableBob = value; } }
         /// <summary> If true, bobbing will use unscaled delta time. </summary>
@@ -99,6 +110,10 @@ namespace Hertzole.GoldPlayer
         public float HeightMultiplier { get { return heightMultiplier; } set { heightMultiplier = value; } }
         /// <summary> Multiplies the bob frequency speed. </summary>
         public float StrideMultiplier { get { return strideMultiplier; } set { strideMultiplier = value; } }
+        /// <summary> Sets how strong the bob will be when grounded. </summary>
+        public float GroundedMultiplier { get { return groundedMultiplier; } set { groundedMultiplier = value; } }
+        /// <summary> Sets how strong the bob will be when airborne. </summary>
+        public float AirborneMultiplier { get { return airborneMultiplier; } set { airborneMultiplier = value; } }
         /// <summary> How much the target will move when landing. </summary>
         public float LandMove { get { return landMove; } set { landMove = value; } }
         /// <summary> How much the target will tilt when landing. </summary>
@@ -132,7 +147,13 @@ namespace Hertzole.GoldPlayer
             }
         }
 
+        [Obsolete("Use DoBob(Vector3, bool, float, float) instead.")]
         public void DoBob(Vector3 velocity, float deltaTime, float zTiltAxis = 0)
+        {
+            DoBob(velocity, true, deltaTime, zTiltAxis);
+        }
+
+        public void DoBob(Vector3 velocity, bool isGrounded, float deltaTime, float zTiltAxis = 0)
         {
             Vector3 velocityChange = velocity - previousVelocity;
             previousVelocity = velocity;
@@ -179,6 +200,7 @@ namespace Hertzole.GoldPlayer
 
             float flatVelocity = new Vector3(velocity.x, 0, velocity.z).magnitude;
             float strideLengthen = 1 + (flatVelocity * strideMultiplier);
+            float multiplier = isGrounded ? groundedMultiplier : airborneMultiplier;
             bobCycle += (flatVelocity / strideLengthen) * (deltaTime / bobFrequency);
             if (!bobCycle.IsNaN())
             {
@@ -195,9 +217,27 @@ namespace Hertzole.GoldPlayer
             float bobSwayFactor = Mathf.Sin(bobCycle * Mathf.PI * 2 + Mathf.PI * .5f);
             bobFactor = 1 - (bobFactor * .5f + 1);
             bobFactor *= bobFactor;
+            
+            bool isMoving = new Vector3(velocity.x, 0, velocity.z).magnitude > 0.1f;
+            
+            // Reset fadeTime when changing move state (including jumping due to airborne multiplier).
+            // Otherwise, the bob will snap to the new fadeTarget.
+            if (wasMoving != isMoving)
+            {
+                wasMoving = isMoving;
+                fadeTime = 0;
+            }
 
-            float fadeTarget = new Vector3(velocity.x, 0, velocity.z).magnitude < 0.1f ? 0 : 1;
-            bobFade = Mathf.Lerp(bobFade, fadeTarget, deltaTime);
+            if (wasGrounded != isGrounded)
+            {
+                wasGrounded = isGrounded;
+                fadeTime = 0;
+            }
+            
+            fadeTime += deltaTime;
+
+            float fadeTarget = isMoving ? 1 * multiplier : 0;
+            bobFade = Mathf.Lerp(bobFade, fadeTarget, fadeTime);
 
             float speedHeightFactor = 1 + (flatVelocity * heightMultiplier);
 
@@ -209,7 +249,7 @@ namespace Hertzole.GoldPlayer
 
             this.zTilt = Mathf.SmoothDamp(this.zTilt, -zTiltAxis, ref zTiltVelocity, 0.2f, Mathf.Infinity, deltaTime);
 
-            float xPos = -sideMovement * bobSwayFactor;
+            float xPos = -sideMovement * bobFade * bobSwayFactor;
             float yPos = springPos * landMove + bobFactor * bobHeight * bobFade * speedHeightFactor;
             float xTilt = -springPos * landTilt;
             float zTilt = bobSwayFactor * swayAngle * bobFade + this.zTilt * strafeTilt;
