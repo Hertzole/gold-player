@@ -26,6 +26,8 @@ namespace Hertzole.GoldPlayer.Editor
                     position = DrawNextProperty(position, property.FindPropertyRelative("sideMovement"));
                     position = DrawNextProperty(position, property.FindPropertyRelative("heightMultiplier"));
                     position = DrawNextProperty(position, property.FindPropertyRelative("strideMultiplier"));
+                    position = DrawNextProperty(position, property.FindPropertyRelative("groundedMultiplier"));
+                    position = DrawNextProperty(position, property.FindPropertyRelative("airborneMultiplier"));
 
                     position = DrawSpace(position);
 

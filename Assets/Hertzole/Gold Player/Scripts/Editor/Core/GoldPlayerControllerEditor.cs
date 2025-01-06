@@ -132,6 +132,8 @@ namespace Hertzole.GoldPlayer.Editor
         private SerializedProperty sideMovement;
         private SerializedProperty heightMultiplier;
         private SerializedProperty strideMultiplier;
+        private SerializedProperty groundedMultiplier;
+        private SerializedProperty airborneMultiplier;
         private SerializedProperty landMove;
         private SerializedProperty landTilt;
         private SerializedProperty enableStrafeTilting;
@@ -287,6 +289,8 @@ namespace Hertzole.GoldPlayer.Editor
             sideMovement = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("sideMovement");
             heightMultiplier = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("heightMultiplier");
             strideMultiplier = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("strideMultiplier");
+            groundedMultiplier = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("groundedMultiplier");
+            airborneMultiplier = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("airborneMultiplier");
             landMove = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("landMove");
             landTilt = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("landTilt");
             enableStrafeTilting = headBob.FindPropertyRelative("bobClass").FindPropertyRelative("enableStrafeTilting");
@@ -613,6 +617,8 @@ namespace Hertzole.GoldPlayer.Editor
                 EditorGUILayout.PropertyField(sideMovement);
                 EditorGUILayout.PropertyField(heightMultiplier);
                 EditorGUILayout.PropertyField(strideMultiplier);
+                EditorGUILayout.PropertyField(groundedMultiplier);
+                EditorGUILayout.PropertyField(airborneMultiplier);
 
                 EditorGUILayout.Space();
 

@@ -26,6 +26,10 @@ namespace Hertzole.GoldPlayer
         public float HeightMultiplier { get { return bobClass.HeightMultiplier; } set { bobClass.HeightMultiplier = value; } }
         /// <summary> Multiplies the bob frequency speed. </summary>
         public float StrideMultiplier { get { return bobClass.StrideMultiplier; } set { bobClass.StrideMultiplier = value; } }
+        /// <summary> Sets how strong the bob will be when grounded. </summary>
+        public float GroundedMultiplier { get { return bobClass.GroundedMultiplier; } set { bobClass.GroundedMultiplier = value; } }
+        /// <summary> Sets how strong the bob will be when airborne. </summary>
+        public float AirborneMultiplier { get { return bobClass.AirborneMultiplier; } set { bobClass.AirborneMultiplier = value; } }
         /// <summary> How much the target will move when landing. </summary>
         public float LandMove { get { return bobClass.LandMove; } set { bobClass.LandMove = value; } }
         /// <summary> How much the target will tilt when landing. </summary>
@@ -61,7 +65,7 @@ namespace Hertzole.GoldPlayer
 
         private void BobHandler(float deltaTime)
         {
-            bobClass.DoBob(PlayerController.Velocity, deltaTime, PlayerController.Movement.MovementInput.x);
+            bobClass.DoBob(PlayerController.Velocity, PlayerController.Movement.IsGrounded, deltaTime, PlayerController.Movement.MovementInput.x);
         }
     }
 }

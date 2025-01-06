@@ -190,6 +190,8 @@ namespace Hertzole.GoldPlayer.Example
         private GoldPlayerTweakField sideMovement;
         private GoldPlayerTweakField heightMultiplier;
         private GoldPlayerTweakField strideMultiplier;
+        private GoldPlayerTweakField groundedMultiplier;
+        private GoldPlayerTweakField airborneMultiplier;
         private GoldPlayerTweakField landMove;
         private GoldPlayerTweakField landTilt;
         private GoldPlayerTweakField enableStrafeTilt;
@@ -327,6 +329,8 @@ namespace Hertzole.GoldPlayer.Example
                 sideMovement.SetInteractable(x);
                 heightMultiplier.SetInteractable(x);
                 strideMultiplier.SetInteractable(x);
+				groundedMultiplier.SetInteractable(x);
+				airborneMultiplier.SetInteractable(x);
                 landMove.SetInteractable(x);
                 landTilt.SetInteractable(x);
                 enableStrafeTilt.SetInteractable(x);
@@ -338,6 +342,8 @@ namespace Hertzole.GoldPlayer.Example
             sideMovement = CreateTweaker("Side Movement", x => { targetPlayer.HeadBob.SideMovement = x; }, targetPlayer.HeadBob.SideMovement);
             heightMultiplier = CreateTweaker("Height Multiplier", x => { targetPlayer.HeadBob.HeightMultiplier = x; }, targetPlayer.HeadBob.HeightMultiplier);
             strideMultiplier = CreateTweaker("Stride Multiplier", x => { targetPlayer.HeadBob.StrideMultiplier = x; }, targetPlayer.HeadBob.StrideMultiplier);
+            groundedMultiplier = CreateTweaker("Grounded Multiplier", x => { targetPlayer.HeadBob.GroundedMultiplier = x; }, targetPlayer.HeadBob.GroundedMultiplier);
+			airborneMultiplier = CreateTweaker("Airborne Multiplier", x => { targetPlayer.HeadBob.AirborneMultiplier = x; }, targetPlayer.HeadBob.AirborneMultiplier);
             landMove = CreateTweaker("Land Move", x => { targetPlayer.HeadBob.LandMove = x; }, targetPlayer.HeadBob.LandMove);
             landTilt = CreateTweaker("Land Tilt", x => { targetPlayer.HeadBob.LandTilt = x; }, targetPlayer.HeadBob.LandTilt);
             enableStrafeTilt = CreateTweaker("Enable Strafe Tilt", x =>

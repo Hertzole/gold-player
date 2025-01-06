@@ -57,11 +57,12 @@ namespace Hertzole.GoldPlayer
             float tilt = Mathf.Clamp(transform.InverseTransformDirection(controller.velocity).x, -1f, 1f);
             // Cache the delta time to avoid native calls.
             float deltaTime = Time.deltaTime;
+            bool isGrounded = playerController != null ? playerController.Movement.IsGrounded : controller.isGrounded;
 
             // Go through each object and do the bob.
             for (int i = 0; i < targets.Length; i++)
             {
-                targets[i].DoBob(velocity, deltaTime, tilt);
+                targets[i].DoBob(velocity, isGrounded, deltaTime, tilt);
             }
         }
 
