@@ -12,36 +12,36 @@ namespace Hertzole.GoldPlayer
     public struct AudioItem : System.IEquatable<AudioItem>
     {
         [SerializeField]
-        [Tooltip("Determines if this audio should be enabled.")]
+        [EditorTooltip("Determines if this audio should be enabled.")]
         [FormerlySerializedAs("m_Enabled")]
         private bool enabled;
         [SerializeField]
-        [Tooltip("Determines if the pitch should be randomized.")]
+        [EditorTooltip("Determines if the pitch should be randomized.")]
         [FormerlySerializedAs("m_RandomPitch")]
         private bool randomPitch;
         [SerializeField]
-        [Tooltip("The pitch that the audio should play at.")]
+        [EditorTooltip("The pitch that the audio should play at.")]
         [FormerlySerializedAs("m_Pitch")]
         private float pitch;
         [SerializeField]
-        [Tooltip("The minimum pitch the audio can play at.")]
+        [EditorTooltip("The minimum pitch the audio can play at.")]
         [FormerlySerializedAs("m_MinPitch")]
         private float minPitch;
         [SerializeField]
-        [Tooltip("The maximum pitch the audio can play at.")]
+        [EditorTooltip("The maximum pitch the audio can play at.")]
         [FormerlySerializedAs("m_MaxPitch")]
         private float maxPitch;
         [SerializeField]
-        [Tooltip("Determines if the volume should be changed when playing.")]
+        [EditorTooltip("Determines if the volume should be changed when playing.")]
         [FormerlySerializedAs("m_ChangeVolume")]
         private bool changeVolume;
         [SerializeField]
         [Range(0f, 1f)]
-        [Tooltip("The volume that should be set when playing.")]
+        [EditorTooltip("The volume that should be set when playing.")]
         [FormerlySerializedAs("m_Volume")]
         private float volume;
         [SerializeField]
-        [Tooltip("All the audio clips.")]
+        [EditorTooltip("All the audio clips.")]
         [FormerlySerializedAs("m_AudioClips")]
         private AudioClip[] audioClips;
 

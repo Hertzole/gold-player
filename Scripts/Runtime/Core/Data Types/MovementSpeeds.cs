@@ -8,15 +8,15 @@ namespace Hertzole.GoldPlayer
     public struct MovementSpeeds : IEquatable<MovementSpeeds>
     {
         [SerializeField]
-        [Tooltip("The speed when moving forward.")]
+        [EditorTooltip("The speed when moving forward.")]
         [FormerlySerializedAs("m_ForwardSpeed")]
         private float forwardSpeed;
         [SerializeField]
-        [Tooltip("The speed when moving sideways.")]
+        [EditorTooltip("The speed when moving sideways.")]
         [FormerlySerializedAs("m_SidewaysSpeed")]
         private float sidewaysSpeed;
         [SerializeField]
-        [Tooltip("The speed when moving backwards.")]
+        [EditorTooltip("The speed when moving backwards.")]
         [FormerlySerializedAs("m_BackwardsSpeed")]
         private float backwardsSpeed;
 

@@ -26,12 +26,12 @@ namespace Hertzole.GoldPlayer
         public class InteractionEvent : UnityEvent { }
 
         [SerializeField]
-        [Tooltip("Determines if the object can be interacted with.")]
+        [EditorTooltip("Determines if the object can be interacted with.")]
         [FormerlySerializedAs("m_CanInteract")]
         [FormerlySerializedAs("canInteract")]
         private bool isInteractable = true;
         [SerializeField]
-        [Tooltip("Determines if the object should be hidden.\n(Used for UI to not show a interaction message)")]
+        [EditorTooltip("Determines if the object should be hidden.\n(Used for UI to not show a interaction message)")]
         [FormerlySerializedAs("m_IsHidden")]
         private bool isHidden = false;
 
@@ -40,11 +40,11 @@ namespace Hertzole.GoldPlayer
 #endif
 
         [SerializeField]
-        [Tooltip("Determines if a custom interaction message should be shown.")]
+        [EditorTooltip("Determines if a custom interaction message should be shown.")]
         [FormerlySerializedAs("m_UseCustomMessage")]
         private bool useCustomMessage = false;
         [SerializeField]
-        [Tooltip("A custom interaction message for UI elements.")]
+        [EditorTooltip("A custom interaction message for UI elements.")]
         [FormerlySerializedAs("m_CustomMessage")]
         private string customMessage = "Press E to interact";
 
@@ -52,10 +52,10 @@ namespace Hertzole.GoldPlayer
         [Space]
 #endif
         [SerializeField]
-        [Tooltip("If true, you can only interact with this object a certain amount of times.")]
+        [EditorTooltip("If true, you can only interact with this object a certain amount of times.")]
         private bool limitedInteractions = false;
         [SerializeField]
-        [Tooltip("The amount of times you can interact with this object.")]
+        [EditorTooltip("The amount of times you can interact with this object.")]
         private int maxInteractions = 1;
 
 #if UNITY_EDITOR
@@ -63,11 +63,11 @@ namespace Hertzole.GoldPlayer
 #endif
 
         [SerializeField]
-        [Tooltip("Called when the object is interacted with.")]
+        [EditorTooltip("Called when the object is interacted with.")]
         [FormerlySerializedAs("m_OnInteract")]
         private InteractionEvent onInteract = new InteractionEvent();
         [SerializeField]
-        [Tooltip("Called when the object has reached it's max interactions.")]
+        [EditorTooltip("Called when the object has reached it's max interactions.")]
         private InteractionEvent onReachedMaxInteractions = new InteractionEvent();
 
         // The amount of times this object has been interacted with.

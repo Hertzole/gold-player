@@ -10,57 +10,57 @@ namespace Hertzole.GoldPlayer
     public sealed class PlayerAudio : PlayerModule
     {
         [SerializeField]
-        [Tooltip("Determines if any audio should be played.")]
+        [EditorTooltip("Determines if any audio should be played.")]
         [FormerlySerializedAs("m_EnableAudio")]
         private bool enableAudio = true;
         [SerializeField]
-        [Tooltip("If true, audio will use unscaled delta time.")]
+        [EditorTooltip("If true, audio will use unscaled delta time.")]
         private bool unscaledTime = false;
         [SerializeField]
-        [Tooltip("Sets how the audio will work.\nCustom will require a PlayerAudioBehaviour attached to the player.")]
+        [EditorTooltip("Sets how the audio will work.\nCustom will require a PlayerAudioBehaviour attached to the player.")]
         [FormerlySerializedAs("m_AudioType")]
         private AudioTypes audioType = AudioTypes.Standard;
 
         [SerializeField]
-        [Tooltip("Determines if the audio should be based on head bob.")]
+        [EditorTooltip("Determines if the audio should be based on head bob.")]
         [FormerlySerializedAs("m_BasedOnHeadBob")]
         private bool basedOnHeadBob = true;
         [SerializeField]
-        [Tooltip("Sets how frequent the footsteps are.")]
+        [EditorTooltip("Sets how frequent the footsteps are.")]
         [FormerlySerializedAs("m_StepTime")]
         private float stepTime = 1.5f;
 
         [SerializeField]
-        [Tooltip("All the audio settings that plays when walking.")]
+        [EditorTooltip("All the audio settings that plays when walking.")]
         [FormerlySerializedAs("m_WalkFootsteps")]
         private AudioItem walkFootsteps = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
         [SerializeField]
-        [Tooltip("All the audio settings that plays when running.")]
+        [EditorTooltip("All the audio settings that plays when running.")]
         [FormerlySerializedAs("m_RunFootsteps")]
         private AudioItem runFootsteps = new AudioItem(true, true, 1.4f, 1.4f, 1.6f, true, 1f);
         [SerializeField]
-        [Tooltip("All the audio settings that plays when crouching.")]
+        [EditorTooltip("All the audio settings that plays when crouching.")]
         [FormerlySerializedAs("m_CrouchFootsteps")]
         private AudioItem crouchFootsteps = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 0.4f);
         [SerializeField]
-        [Tooltip("All the audio settings that plays when jumping.")]
+        [EditorTooltip("All the audio settings that plays when jumping.")]
         [FormerlySerializedAs("m_Jumping")]
         private AudioItem jumping = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
         [SerializeField]
-        [Tooltip("All the audio settings that plays when landing.")]
+        [EditorTooltip("All the audio settings that plays when landing.")]
         [FormerlySerializedAs("m_Landing")]
         private AudioItem landing = new AudioItem(true, true, 1f, 0.9f, 1.1f, true, 1f);
 
         [SerializeField]
-        [Tooltip("The audio source where all the footsteps sounds will be played.")]
+        [EditorTooltip("The audio source where all the footsteps sounds will be played.")]
         [FormerlySerializedAs("m_FootstepsSource")]
         private AudioSource footstepsSource = null;
         [SerializeField]
-        [Tooltip("The audio source where all the jump sounds will be played.")]
+        [EditorTooltip("The audio source where all the jump sounds will be played.")]
         [FormerlySerializedAs("m_JumpSource")]
         private AudioSource jumpSource = null;
         [SerializeField]
-        [Tooltip("The audio source where all the land sounds will be played.")]
+        [EditorTooltip("The audio source where all the land sounds will be played.")]
         [FormerlySerializedAs("m_LandSource")]
         private AudioSource landSource = null;
 

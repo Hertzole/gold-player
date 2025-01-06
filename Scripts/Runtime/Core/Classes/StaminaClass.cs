@@ -10,37 +10,37 @@ namespace Hertzole.GoldPlayer
     public class StaminaClass : PlayerModule
     {
         [SerializeField]
-        [Tooltip("Determines if stamina should be enabled.")]
+        [EditorTooltip("Determines if stamina should be enabled.")]
         [FormerlySerializedAs("m_EnableStamina")]
         private bool enableStamina = false;
         [SerializeField] 
-        [Tooltip("If true, stamina will use unscaled delta time.")]
+        [EditorTooltip("If true, stamina will use unscaled delta time.")]
         private bool unscaledTime = false;
         [SerializeField]
-        [Tooltip("Sets when the stamina should be drained.")]
+        [EditorTooltip("Sets when the stamina should be drained.")]
         [FormerlySerializedAs("m_DrainStaminaWhen")]
         private RunAction drainStaminaWhen = RunAction.IsRunning | RunAction.PressingRun;
         [SerializeField]
-        [Tooltip("The maximum amount of stamina.")]
+        [EditorTooltip("The maximum amount of stamina.")]
         [FormerlySerializedAs("m_MaxStamina")]
         private float maxStamina = 10f;
         [SerializeField]
-        [Tooltip("How much stamina will be drained per second.")]
+        [EditorTooltip("How much stamina will be drained per second.")]
         [FormerlySerializedAs("m_DrainRate")]
         private float drainRate = 1f;
         [SerializeField]
-        [Tooltip("The threshold where it counts if the player is standing still.")]
+        [EditorTooltip("The threshold where it counts if the player is standing still.")]
         private float stillThreshold = 0.2f;
         [SerializeField]
-        [Tooltip("How much stamina will regenerate per second when standing still.")]
+        [EditorTooltip("How much stamina will regenerate per second when standing still.")]
         [FormerlySerializedAs("m_RegenRate")]
         [FormerlySerializedAs("regenRate")]
         private float regenRateStill = 0.8f;
         [SerializeField]
-        [Tooltip("How much stamina will regenerate per second when moving.")]
+        [EditorTooltip("How much stamina will regenerate per second when moving.")]
         private float regenRateMoving = 0.5f;
         [SerializeField]
-        [Tooltip("How long it will wait before starting to regenerate stamina.")]
+        [EditorTooltip("How long it will wait before starting to regenerate stamina.")]
         [FormerlySerializedAs("m_RegenWait")]
         private float regenWait = 1f;
 

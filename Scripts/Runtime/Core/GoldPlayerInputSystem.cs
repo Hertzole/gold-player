@@ -28,21 +28,21 @@ namespace Hertzole.GoldPlayer
     {
 #if !OBSOLETE
         [SerializeField] 
-        [Tooltip("The player input to get the actions from.")]
+        [EditorTooltip("The player input to get the actions from.")]
         private PlayerInput playerInput = default;
         [SerializeField]
         [FormerlySerializedAs("input")]
-        [Tooltip("The input asset to get all actions from.")]
+        [EditorTooltip("The input asset to get all actions from.")]
         private InputActionAsset inputAsset = null;
         [SerializeField]
-        [Tooltip("All the available actions.")]
+        [EditorTooltip("All the available actions.")]
         private InputSystemItem[] actions = null;
 #endif
         [SerializeField]
-        [Tooltip("If true, all actions will be enabled on enable.")]
+        [EditorTooltip("If true, all actions will be enabled on enable.")]
         private bool autoEnableInput = true;
         [SerializeField]
-        [Tooltip("If true, all actions will be disabled on disable.")]
+        [EditorTooltip("If true, all actions will be disabled on disable.")]
         private bool autoDisableInput = true;
 
         private bool enabledInput = false;

@@ -11,80 +11,80 @@ namespace Hertzole.GoldPlayer
     public sealed class PlayerCamera : PlayerModule
     {
         [SerializeField]
-        [Tooltip("Determines if the player can look around.")]
+        [EditorTooltip("Determines if the player can look around.")]
         [FormerlySerializedAs("m_CanLookAround")]
         private bool canLookAround = true;
         [SerializeField]
-        [Tooltip("Determines if the cursor should be locked.")]
+        [EditorTooltip("Determines if the cursor should be locked.")]
         [FormerlySerializedAs("m_ShouldLockCursor")]
         private bool shouldLockCursor = true;
         [SerializeField]
-        [Tooltip("If true, the transform Y will not rotate and only the camera will rotate.")]
+        [EditorTooltip("If true, the transform Y will not rotate and only the camera will rotate.")]
         private bool rotateCameraOnly = false;
 
         [SerializeField]
-        [Tooltip("Determines if the X axis should be inverted.")]
+        [EditorTooltip("Determines if the X axis should be inverted.")]
         [FormerlySerializedAs("m_InvertXAxis")]
         private bool invertXAxis = false;
         [SerializeField]
-        [Tooltip("Determines if the Y axis should be inverted.")]
+        [EditorTooltip("Determines if the Y axis should be inverted.")]
         [FormerlySerializedAs("m_InvertYAxis")]
         private bool invertYAxis = false;
 
         [SerializeField]
-        [Tooltip("How fast the camera head should move when looking around.")]
+        [EditorTooltip("How fast the camera head should move when looking around.")]
         [FormerlySerializedAs("mouseSensitivity")]
         private Vector2 lookSensitivity = new Vector2(2f, 2f);
         [SerializeField]
-        [Tooltip("Sets how smooth the movement should be.")]
+        [EditorTooltip("Sets how smooth the movement should be.")]
         [FormerlySerializedAs("m_MouseDamping")]
         [FormerlySerializedAs("mouseDamping")]
         private float lookDamping = 0f;
         [SerializeField]
-        [Tooltip("Sets how far down the player can look.")]
+        [EditorTooltip("Sets how far down the player can look.")]
         [FormerlySerializedAs("m_MinimumX")]
         private float minimumX = -90f;
         [SerializeField]
-        [Tooltip("Sets how far up the player can look.")]
+        [EditorTooltip("Sets how far up the player can look.")]
         [FormerlySerializedAs("m_MaximumX")]
         private float maximumX = 90f;
         
         [SerializeField] 
-        [Tooltip("If true, the user will be allowed to zoom using the field of view.")]
+        [EditorTooltip("If true, the user will be allowed to zoom using the field of view.")]
         private bool enableZooming = false;
         [SerializeField]
         [Min(0.1f)]
-        [Tooltip("The target field of view when zooming.")]
+        [EditorTooltip("The target field of view when zooming.")]
         private float targetZoom = 30;
         [SerializeField] 
-        [Tooltip("The time it takes to zoom in.")]
+        [EditorTooltip("The time it takes to zoom in.")]
         private float zoomInTime = 0.2f;
         [SerializeField] 
         private AnimationCurve zoomInCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
         [SerializeField] 
-        [Tooltip("The time it takes to zoom out.")]
+        [EditorTooltip("The time it takes to zoom out.")]
         private float zoomOutTime = 0.2f;
         [SerializeField] 
         private AnimationCurve zoomOutCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
         [SerializeField] 
-        [Tooltip("The action that will trigger the zooming.")]
+        [EditorTooltip("The action that will trigger the zooming.")]
         private string zoomInput = "Zoom";
 
         [SerializeField]
-        [Tooltip("Settings related to field of view kick.")]
+        [EditorTooltip("Settings related to field of view kick.")]
         [FormerlySerializedAs("m_FOVKick")]
         private FOVKickClass fieldOfViewKick = new FOVKickClass();
 
         [SerializeField]
-        [Tooltip("The camera head that should be moved around.")]
+        [EditorTooltip("The camera head that should be moved around.")]
         [FormerlySerializedAs("m_CameraHead")]
         private Transform cameraHead = null;
 #if GOLD_PLAYER_CINEMACHINE
         [SerializeField]
-        [Tooltip("Allows you to use Cinemachine virtual camera instead of a direct reference to a camera.")]
+        [EditorTooltip("Allows you to use Cinemachine virtual camera instead of a direct reference to a camera.")]
         private bool useCinemachine = false;
         [SerializeField]
-        [Tooltip("The virtual camera that the FOV kick should be applied to.")]
+        [EditorTooltip("The virtual camera that the FOV kick should be applied to.")]
 #if GOLD_PLAYER_CINEMACHINE_3
         private Unity.Cinemachine.CinemachineCamera targetVirtualCamera = null;
 #else
@@ -92,11 +92,11 @@ namespace Hertzole.GoldPlayer
         #endif
 #endif
         [SerializeField]
-        [Tooltip("The camera that the FOV kick should be applied to.")]
+        [EditorTooltip("The camera that the FOV kick should be applied to.")]
         private Camera targetCamera = null;
 
         [SerializeField]
-        [Tooltip("Look action for the new Input System.")]
+        [EditorTooltip("Look action for the new Input System.")]
         private string input_Look = "Look";
 
         // Determines if a camera shake should be preformed.

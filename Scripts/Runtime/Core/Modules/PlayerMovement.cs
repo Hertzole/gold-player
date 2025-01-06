@@ -10,159 +10,159 @@ namespace Hertzole.GoldPlayer
     public sealed class PlayerMovement : PlayerModule
     {
         [SerializeField]
-        [Tooltip("Determines if the player can move at all.")]
+        [EditorTooltip("Determines if the player can move at all.")]
         [FormerlySerializedAs("m_CanMoveAround")]
         internal bool canMoveAround = true;
         [SerializeField]
-        [Tooltip("If true, movement will use unscaled delta time.")]
+        [EditorTooltip("If true, movement will use unscaled delta time.")]
         private bool unscaledTime = false;
 
         //////// WALKING
         [SerializeField]
-        [Tooltip("The movement speeds when walking.")]
+        [EditorTooltip("The movement speeds when walking.")]
         [FormerlySerializedAs("m_WalkingSpeeds")]
         private MovementSpeeds walkingSpeeds = new MovementSpeeds(3f, 2.5f, 2f);
 
         //////// RUNNING
         [SerializeField]
-        [Tooltip("Determines if the player can run.")]
+        [EditorTooltip("Determines if the player can run.")]
         [FormerlySerializedAs("m_CanRun")]
         private bool canRun = true;
         [SerializeField]
-        [Tooltip("Configuration of running as a toggle.")]
+        [EditorTooltip("Configuration of running as a toggle.")]
         [FormerlySerializedAs("m_RunToggleMode")]
         private RunToggleMode runToggleMode = RunToggleMode.Hold;
         [SerializeField]
-        [Tooltip("The movement speeds when running.")]
+        [EditorTooltip("The movement speeds when running.")]
         [FormerlySerializedAs("m_RunSpeeds")]
         private MovementSpeeds runSpeeds = new MovementSpeeds(7f, 5.5f, 5f);
         [SerializeField]
-        [Tooltip("Everything related to stamina (limited running).")]
+        [EditorTooltip("Everything related to stamina (limited running).")]
         [FormerlySerializedAs("m_Stamina")]
         private StaminaClass stamina = new StaminaClass();
 
         //////// JUMPING
         [SerializeField]
-        [Tooltip("Determines if the player can jump.")]
+        [EditorTooltip("Determines if the player can jump.")]
         [FormerlySerializedAs("m_CanJump")]
         private bool canJump = true;
         [SerializeField]
-        [Tooltip("If stamina is enabled and this is true, jumping will require some stamina.")]
+        [EditorTooltip("If stamina is enabled and this is true, jumping will require some stamina.")]
         private bool jumpingRequiresStamina = false;
         [SerializeField]
-        [Tooltip("How much stamina that is required to jump.")]
+        [EditorTooltip("How much stamina that is required to jump.")]
         private float jumpStaminaRequire = 1;
         [SerializeField]
-        [Tooltip("How much stamina that jumping will take away.")]
+        [EditorTooltip("How much stamina that jumping will take away.")]
         private float jumpStaminaCost = 1;
         [SerializeField]
-        [Tooltip("The height the player can jump in Unity units.")]
+        [EditorTooltip("The height the player can jump in Unity units.")]
         [FormerlySerializedAs("m_JumpHeight")]
         private float jumpHeight = 2f;
         [SerializeField]
-        [Tooltip("Determines if the player can jump for some time when falling.")]
+        [EditorTooltip("Determines if the player can jump for some time when falling.")]
         [FormerlySerializedAs("m_AirJump")]
         private bool airJump = true;
         [SerializeField]
-        [Tooltip("How long the player can be in the air and still jump.")]
+        [EditorTooltip("How long the player can be in the air and still jump.")]
         [FormerlySerializedAs("m_AirJumpTime")]
         private float airJumpTime = 0.1f;
         [SerializeField]
-        [Tooltip("How many times the player can jump while in the air.")]
+        [EditorTooltip("How many times the player can jump while in the air.")]
         [FormerlySerializedAs("m_AirJumpsAmount")]
         private int airJumpsAmount = 0;
         [SerializeField]
-        [Tooltip("If true, the player can change direction when air jumping.")]
+        [EditorTooltip("If true, the player can change direction when air jumping.")]
         [FormerlySerializedAs("m_AllowAirJumpDirectionChange")]
         private bool allowAirJumpDirectionChange = true;
 
         //////// CROUCHING
         [SerializeField]
-        [Tooltip("Determines if the player can crouch.")]
+        [EditorTooltip("Determines if the player can crouch.")]
         [FormerlySerializedAs("m_CanCrouch")]
         private bool canCrouch = true;
         [SerializeField]
-        [Tooltip("Configuration of crouching as a toggle.")]
+        [EditorTooltip("Configuration of crouching as a toggle.")]
         [FormerlySerializedAs("m_CrouchToggleMode")]
         private CrouchToggleMode crouchToggleMode = CrouchToggleMode.Hold;
         [SerializeField]
-        [Tooltip("The movement speeds when crouching.")]
+        [EditorTooltip("The movement speeds when crouching.")]
         [FormerlySerializedAs("m_CrouchSpeeds")]
         private MovementSpeeds crouchSpeeds = new MovementSpeeds(2f, 1.5f, 1f);
         [SerializeField]
-        [Tooltip("Determines if the player can jump while crouched.")]
+        [EditorTooltip("Determines if the player can jump while crouched.")]
         [FormerlySerializedAs("m_CrouchJumping")]
         private bool crouchJumping = false;
         [SerializeField]
-        [Tooltip("The height of the character controller when crouched.")]
+        [EditorTooltip("The height of the character controller when crouched.")]
         [FormerlySerializedAs("m_CrouchHeight")]
         private float crouchHeight = 1f;
         [SerializeField]
-        [Tooltip("How long it takes to crouch.")]
+        [EditorTooltip("How long it takes to crouch.")]
         private float crouchTime = 0.25f;     
         [SerializeField] 
         private AnimationCurve crouchCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField]
-        [Tooltip("How long it takes to crouch.")]
+        [EditorTooltip("How long it takes to crouch.")]
         private float standUpTime = 0.25f;
         [SerializeField] 
         private AnimationCurve standUpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         //////// OTHER
         [SerializeField]
-        [Tooltip("The layers the player will treat as ground. SHOULD NOT INCLUDE THE LAYER THE PLAYER IS ON!")]
+        [EditorTooltip("The layers the player will treat as ground. SHOULD NOT INCLUDE THE LAYER THE PLAYER IS ON!")]
         [FormerlySerializedAs("m_GroundLayer")]
         private LayerMask groundLayer = -1;
         [SerializeField]
-        [Tooltip("How long is takes for the player to reach top speed.")]
+        [EditorTooltip("How long is takes for the player to reach top speed.")]
         [FormerlySerializedAs("m_Acceleration")]
         private float acceleration = 0.10f;
         [SerializeField]
-        [Tooltip("Sets the gravity of the player.")]
+        [EditorTooltip("Sets the gravity of the player.")]
         [FormerlySerializedAs("m_Gravity")]
         internal float gravity = 20;
         [SerializeField]
         [Range(0f, 1f)]
-        [Tooltip("How much control the player will have in the air.")]
+        [EditorTooltip("How much control the player will have in the air.")]
         [FormerlySerializedAs("m_AirControl")]
         private float airControl = 0.5f;
         [SerializeField]
-        [Tooltip("Determines if ground stick should be enabled. This would stop the player for bouncing down slopes.")]
+        [EditorTooltip("Determines if ground stick should be enabled. This would stop the player for bouncing down slopes.")]
         [FormerlySerializedAs("m_EnableGroundStick")]
         private bool enableGroundStick = true;
         [SerializeField]
-        [Tooltip("Sets how much the player will stick to the ground.")]
+        [EditorTooltip("Sets how much the player will stick to the ground.")]
         [FormerlySerializedAs("m_GroundStick")]
         internal float groundStick = 10;
         [SerializeField]
-        [Tooltip("The way the player will check if it's grounded.")]
+        [EditorTooltip("The way the player will check if it's grounded.")]
         private GroundCheckType groundCheck = GroundCheckType.Sphere;
         [SerializeField]
-        [Tooltip("The amount of rays to use for ground checking.")]
+        [EditorTooltip("The amount of rays to use for ground checking.")]
         internal int rayAmount = 8;
         [SerializeField]
-        [Tooltip("How high up the rays will be when using ray ground checking.")]
+        [EditorTooltip("How high up the rays will be when using ray ground checking.")]
         private float rayHeight = 0.3f;
         [SerializeField]
-        [Tooltip("How far down the rays will reach when using ray ground checking.")]
+        [EditorTooltip("How far down the rays will reach when using ray ground checking.")]
         private float rayLength = 0.4f;
         [SerializeField]
-        [Tooltip("Everything related to moving platforms.")]
+        [EditorTooltip("Everything related to moving platforms.")]
         [FormerlySerializedAs("m_MovingPlatforms")]
         private MovingPlatformsClass movingPlatforms = new MovingPlatformsClass();
 
         //////// INPUT
         [SerializeField]
-        [Tooltip("Move action for the new Input System.")]
+        [EditorTooltip("Move action for the new Input System.")]
         private string input_Move = "Move";
         [SerializeField]
-        [Tooltip("Jump input action.")]
+        [EditorTooltip("Jump input action.")]
         private string input_Jump = "Jump";
         [SerializeField]
-        [Tooltip("Run input action.")]
+        [EditorTooltip("Run input action.")]
         private string input_Run = "Run";
         [SerializeField]
-        [Tooltip("Crouch input action.")]
+        [EditorTooltip("Crouch input action.")]
         private string input_Crouch = "Crouch";
 
         // The real calculated jump height.

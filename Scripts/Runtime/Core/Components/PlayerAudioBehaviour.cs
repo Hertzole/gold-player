@@ -10,7 +10,7 @@ namespace Hertzole.GoldPlayer
     public abstract class PlayerAudioBehaviour : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("If true, this will handle all the audio handling. Else the Player Audio module will handle it.")]
+        [EditorTooltip("If true, this will handle all the audio handling. Else the Player Audio module will handle it.")]
         private bool independentAudioHandling = false;
 
 #if UNITY_EDITOR || GOLD_PLAYER_DISABLE_OPTIMIZATIONS
