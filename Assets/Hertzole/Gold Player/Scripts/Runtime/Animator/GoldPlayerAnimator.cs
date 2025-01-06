@@ -23,39 +23,39 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerAnimator : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The target animator.")]
+        [EditorTooltip("The target animator.")]
         private Animator animator = null;
         [SerializeField]
-        [Tooltip("The max speed of your player to divide with.")]
+        [EditorTooltip("The max speed of your player to divide with.")]
         private float maxSpeed = 6f;
         [SerializeField]
-        [Tooltip("Smooths out the value to make transitions between Move X/Y values.")]
+        [EditorTooltip("Smooths out the value to make transitions between Move X/Y values.")]
         private float valueSmoothTime = 1f;
         [SerializeField]
-        [Tooltip("If true, the smoothing will use unscaled delta time.")]
+        [EditorTooltip("If true, the smoothing will use unscaled delta time.")]
         private bool unscaledSmooth = false;
 
 #if UNITY_EDITOR
         [Header("References")]
 #endif
         [SerializeField]
-        [Tooltip("The transform to use for the look angle. If empty it will use Camera Head from Gold Player Controller.")]
+        [EditorTooltip("The transform to use for the look angle. If empty it will use Camera Head from Gold Player Controller.")]
         private Transform lookAngleHead = null;
 
 #if UNITY_EDITOR
         [Header("Parameters")]
 #endif
         [SerializeField]
-        [Tooltip("The Move X parameter on your animator.")]
+        [EditorTooltip("The Move X parameter on your animator.")]
         private GoldPlayerAnimatorParameterInfo moveX = new GoldPlayerAnimatorParameterInfo(0, true);
         [SerializeField]
-        [Tooltip("The Move X parameter on your animator.")]
+        [EditorTooltip("The Move X parameter on your animator.")]
         private GoldPlayerAnimatorParameterInfo moveY = new GoldPlayerAnimatorParameterInfo(0, true);
         [SerializeField]
-        [Tooltip("The Move X parameter on your animator.")]
+        [EditorTooltip("The Move X parameter on your animator.")]
         private GoldPlayerAnimatorParameterInfo crouching = new GoldPlayerAnimatorParameterInfo(0, true);
         [SerializeField]
-        [Tooltip("The Move X parameter on your animator.")]
+        [EditorTooltip("The Move X parameter on your animator.")]
         private GoldPlayerAnimatorParameterInfo lookAngle = new GoldPlayerAnimatorParameterInfo(0, true);
 
         [SerializeField]

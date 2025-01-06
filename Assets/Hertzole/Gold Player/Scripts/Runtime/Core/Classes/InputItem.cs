@@ -26,21 +26,21 @@ namespace Hertzole.GoldPlayer
         public enum InputType { Button = 0, Axis = 1, Vector2 = 2 }
 
         [SerializeField]
-        [Tooltip("The name code will reference the item with.")]
+        [EditorTooltip("The name code will reference the item with.")]
         [FormerlySerializedAs("m_ButtonName")]
         private string buttonName;
         [SerializeField]
-        [Tooltip("The type of input this will be.")]
+        [EditorTooltip("The type of input this will be.")]
         private InputType type;
         [SerializeField]
-        [Tooltip("The name in the Input Manager.")]
+        [EditorTooltip("The name in the Input Manager.")]
         [FormerlySerializedAs("m_InputName")]
         private string inputName;
         [SerializeField]
-        [Tooltip("The second name in the Input Manager. This is only used for Vector2 values.")]
+        [EditorTooltip("The second name in the Input Manager. This is only used for Vector2 values.")]
         private string inputNameSecondary;
         [SerializeField]
-        [Tooltip("The key code for the item.")]
+        [EditorTooltip("The key code for the item.")]
         [FormerlySerializedAs("m_Key")]
         private KeyCode key;
 

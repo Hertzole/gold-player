@@ -10,17 +10,17 @@ namespace Hertzole.GoldPlayer
     public class MovingPlatformsClass : PlayerModule
     {
         [SerializeField]
-        [Tooltip("Determines if support for moving platforms should be enabled.")]
+        [EditorTooltip("Determines if support for moving platforms should be enabled.")]
         [FormerlySerializedAs("m_Enabled")]
         internal bool enabled = true;
         [SerializeField]
-        [Tooltip("If enabled, the player will move with platforms.")]
+        [EditorTooltip("If enabled, the player will move with platforms.")]
         internal bool movePosition = true;
         [SerializeField]
-        [Tooltip("If enabled, the player will rotate with platforms.")]
+        [EditorTooltip("If enabled, the player will rotate with platforms.")]
         internal bool moveRotation = true;
         [SerializeField]
-        [Tooltip("Sets the max angle of the platforms the player can stand on.")]
+        [EditorTooltip("Sets the max angle of the platforms the player can stand on.")]
         internal float maxAngle = 45f;
 
         private int? previousHitColliderId = null;

@@ -11,28 +11,28 @@ namespace Hertzole.GoldPlayer
     public class FOVKickClass : PlayerModule
     {
         [SerializeField]
-        [Tooltip("Determines if FOV kick should be enabled.")]
+        [EditorTooltip("Determines if FOV kick should be enabled.")]
         [FormerlySerializedAs("m_EnableFOVKick")]
         private bool enableFOVKick = true;
         [SerializeField]
-        [Tooltip("If true, FOV kick will use unscaled delta time.")]
+        [EditorTooltip("If true, FOV kick will use unscaled delta time.")]
         private bool unscaledTime = false;
         [SerializeField]
-        [Tooltip("Sets whenever the FOV kick should kick in.")]
+        [EditorTooltip("Sets whenever the FOV kick should kick in.")]
         [FormerlySerializedAs("m_KickWhen")]
         private RunAction kickWhen = RunAction.IsRunning;
         [SerializeField]
-        [Tooltip("Sets how much the FOV will kick.")]
+        [EditorTooltip("Sets how much the FOV will kick.")]
         [FormerlySerializedAs("m_KickAmount")]
         private float kickAmount = 15f;
         [SerializeField]
-        [Tooltip("Sets how fast the FOV will move to the new FOV.")]
+        [EditorTooltip("Sets how fast the FOV will move to the new FOV.")]
         [FormerlySerializedAs("m_LerpTimeTo")]
         private float lerpTimeTo = 0.25f;
         [SerializeField] 
         private AnimationCurve lerpToCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         [SerializeField]
-        [Tooltip("Sets how fast the FOV will move back to the original FOV.")]
+        [EditorTooltip("Sets how fast the FOV will move back to the original FOV.")]
         [FormerlySerializedAs("m_LerpTimeFrom")]
         private float lerpTimeFrom = 1f;
         [SerializeField] 

@@ -29,16 +29,16 @@ namespace Hertzole.GoldPlayer
         public struct GraphicsObject : IEquatable<GraphicsObject>
         {
             [SerializeField]
-            [Tooltip("The target object to modify.")]
+            [EditorTooltip("The target object to modify.")]
             private Transform target;
             [SerializeField]
-            [Tooltip("If true, it will try to find child renderers of the parent target.")]
+            [EditorTooltip("If true, it will try to find child renderers of the parent target.")]
             private bool isParent;
             [SerializeField]
-            [Tooltip("How the graphics are handled when 'Me' is the owner.")]
+            [EditorTooltip("How the graphics are handled when 'Me' is the owner.")]
             private HandleGraphics whenMyGraphics;
             [SerializeField]
-            [Tooltip("How the graphics are handled when 'Other' is the owner.")]
+            [EditorTooltip("How the graphics are handled when 'Other' is the owner.")]
             private HandleGraphics whenOtherGraphics;
 
             [SerializeField]
@@ -129,7 +129,7 @@ namespace Hertzole.GoldPlayer
         }
 
         [SerializeField]
-        [Tooltip("Graphics are usually invisible for 'me' and visible for 'others'.")]
+        [EditorTooltip("Graphics are usually invisible for 'me' and visible for 'others'.")]
         private GraphicsOwner owner = GraphicsOwner.Me;
 
         [SerializeField]

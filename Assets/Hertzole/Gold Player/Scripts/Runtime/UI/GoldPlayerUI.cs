@@ -47,11 +47,11 @@ namespace Hertzole.GoldPlayer
         public enum LabelDisplayType { Direct = 0, Percentage = 1 }
 
         [SerializeField]
-        [Tooltip("If true, the component will always attempt to find the player.\nIf false, you will have to manually set the player.")]
+        [EditorTooltip("If true, the component will always attempt to find the player.\nIf false, you will have to manually set the player.")]
         [FormerlySerializedAs("m_AutoFindPlayer")]
         private bool autoFindPlayer = false;
         [SerializeField]
-        [Tooltip("The target player.")]
+        [EditorTooltip("The target player.")]
         [FormerlySerializedAs("m_Player")]
         private GoldPlayerController player = null;
 
@@ -59,48 +59,48 @@ namespace Hertzole.GoldPlayer
         [Header("Stamina")]
 #endif
         [SerializeField]
-        [Tooltip("The type of progress bar that will be used.")]
+        [EditorTooltip("The type of progress bar that will be used.")]
         [FormerlySerializedAs("m_SprintingBarType")]
         [FormerlySerializedAs("sprintingBarType")]
         private ProgressBarType staminaBarType = ProgressBarType.Image;
 #if USE_GUI
         [SerializeField]
-        [Tooltip("The progress bar as an image.")]
+        [EditorTooltip("The progress bar as an image.")]
         [FormerlySerializedAs("m_SprintingBarImage")]
         [FormerlySerializedAs("sprintingBarImage")]
         private Image staminaBarImage;
         [SerializeField]
-        [Tooltip("The progress bar as a slider.")]
+        [EditorTooltip("The progress bar as a slider.")]
         [FormerlySerializedAs("m_SprintingBarSlider")]
         [FormerlySerializedAs("sprintingBarSlider")]
         private Slider staminaBarSlider;
         [SerializeField]
-        [Tooltip("The label for showing player stamina.")]
+        [EditorTooltip("The label for showing player stamina.")]
         [FormerlySerializedAs("m_SprintingLabel")]
         [FormerlySerializedAs("sprintingLabel")]
         private Text staminaLabel;
 #if USE_TMP
         [SerializeField]
-        [Tooltip("The TextMeshPro label for showing player stamina.")]
+        [EditorTooltip("The TextMeshPro label for showing player stamina.")]
         private TextMeshProUGUI staminaLabelPro;
 #endif
 #endif
         [SerializeField]
-        [Tooltip("The type of display if there's a label.")]
+        [EditorTooltip("The type of display if there's a label.")]
         [FormerlySerializedAs("m_SprintingLabelDisplay")]
         [FormerlySerializedAs("sprintingLabelDisplay")]
         private LabelDisplayType staminaLabelDisplay = LabelDisplayType.Percentage;
         [SerializeField] 
-        [Tooltip("The amount of stamina change required before the label is updated.")]
+        [EditorTooltip("The amount of stamina change required before the label is updated.")]
         private float staminaLabelChangeRequired = 0.1f;
         [SerializeField]
-        [Tooltip("The format of the stamina percentage value.")]
+        [EditorTooltip("The format of the stamina percentage value.")]
         private string staminaPercentageFormat = "F0";
         [SerializeField]
-        [Tooltip("The format of the current stamina value.")]
+        [EditorTooltip("The format of the current stamina value.")]
         private string staminaDirectValueFormat = "F0";
         [SerializeField]
-        [Tooltip("The format of the max stamina value.")]
+        [EditorTooltip("The format of the max stamina value.")]
         private string staminaDirectMaxFormat = "F0";
 
         // Only show if GoldPlayer interaction is enabled.
@@ -109,24 +109,24 @@ namespace Hertzole.GoldPlayer
         [Header("Interaction")]
 #endif
         [SerializeField]
-        [Tooltip("If true, the component will always attempt to find the interaction component.\nIf false, you will have to manually set the player.")]
+        [EditorTooltip("If true, the component will always attempt to find the interaction component.\nIf false, you will have to manually set the player.")]
         [FormerlySerializedAs("m_AutoFindInteraction")]
         private bool autoFindInteraction = true;
         [SerializeField]
         [FormerlySerializedAs("m_PlayerInteraction")]
         private GoldPlayerInteraction playerInteraction;
         [SerializeField]
-        [Tooltip("The box/label that should be toggled when the player can interact.")]
+        [EditorTooltip("The box/label that should be toggled when the player can interact.")]
         [FormerlySerializedAs("m_InteractionBox")]
         private GameObject interactionBox;
 #if USE_GUI
         [SerializeField]
-        [Tooltip("The label for the interaction message.")]
+        [EditorTooltip("The label for the interaction message.")]
         [FormerlySerializedAs("m_InteractionLabel")]
         private Text interactionLabel;
 #if USE_TMP
         [SerializeField]
-        [Tooltip("The TextMeshPro label for the interaction message.")]
+        [EditorTooltip("The TextMeshPro label for the interaction message.")]
         private TextMeshProUGUI interactionLabelPro;
 #endif
 #endif

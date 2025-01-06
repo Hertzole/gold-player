@@ -27,20 +27,20 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerInput : MonoBehaviour, IGoldInput
     {
         [SerializeField]
-        [Tooltip("Determines if the input should be based around KeyCodes. If false, Input Manager will be used.")]
+        [EditorTooltip("Determines if the input should be based around KeyCodes. If false, Input Manager will be used.")]
         [FormerlySerializedAs("m_UseKeyCodes")]
         private bool useKeyCodes = true;
         [SerializeField]
-        [Tooltip("If true, all actions will be enabled in OnEnable.")]
+        [EditorTooltip("If true, all actions will be enabled in OnEnable.")]
         private bool autoEnableInput = true;
         [SerializeField]
-        [Tooltip("If true, all actions will be disabled in OnDisable.")]
+        [EditorTooltip("If true, all actions will be disabled in OnDisable.")]
         private bool autoDisableInput = true;
 
         [Space]
 
         [SerializeField]
-        [Tooltip("All the available inputs.")]
+        [EditorTooltip("All the available inputs.")]
         [FormerlySerializedAs("m_Inputs")]
         private InputItem[] inputs = new InputItem[]
         {

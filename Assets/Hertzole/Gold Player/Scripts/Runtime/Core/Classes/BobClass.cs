@@ -13,58 +13,58 @@ namespace Hertzole.GoldPlayer
     public class BobClass
     {
         [SerializeField]
-        [Tooltip("Determines if the bob effect should be enabled.")]
+        [EditorTooltip("Determines if the bob effect should be enabled.")]
         [FormerlySerializedAs("m_EnableBob")]
         internal bool enableBob = true;
         [SerializeField]
-        [Tooltip("If true, bobbing will use unscaled delta time.")]
+        [EditorTooltip("If true, bobbing will use unscaled delta time.")]
         [FormerlySerializedAs("m_UnscaledTime")]
         internal bool unscaledTime = false;
 
         [SerializeField]
-        [Tooltip("Sets how frequent the bob happens.")]
+        [EditorTooltip("Sets how frequent the bob happens.")]
         [FormerlySerializedAs("m_BobFrequency")]
         internal float bobFrequency = 1.5f;
         [SerializeField]
-        [Tooltip("The height of the bob.")]
+        [EditorTooltip("The height of the bob.")]
         [FormerlySerializedAs("m_BobHeight")]
         internal float bobHeight = 0.3f;
         [SerializeField]
-        [Tooltip("How much the target will sway from side to side.")]
+        [EditorTooltip("How much the target will sway from side to side.")]
         [FormerlySerializedAs("m_SwayAngle")]
         internal float swayAngle = 0.5f;
         [SerializeField]
-        [Tooltip("How much the target will move to the sides.")]
+        [EditorTooltip("How much the target will move to the sides.")]
         [FormerlySerializedAs("m_SideMovement")]
         internal float sideMovement = 0.05f;
         [SerializeField]
-        [Tooltip("Adds extra movement to the bob height.")]
+        [EditorTooltip("Adds extra movement to the bob height.")]
         [FormerlySerializedAs("m_HeightMultiplier")]
         internal float heightMultiplier = 0.3f;
         [SerializeField]
-        [Tooltip("Multiplies the bob frequency speed.")]
+        [EditorTooltip("Multiplies the bob frequency speed.")]
         [FormerlySerializedAs("m_StrideMultiplier")]
         internal float strideMultiplier = 0.3f;
 
         [SerializeField]
-        [Tooltip("How much the target will move when landing.")]
+        [EditorTooltip("How much the target will move when landing.")]
         [FormerlySerializedAs("m_LandMove")]
         internal float landMove = 0.4f;
         [SerializeField]
-        [Tooltip("How much the target will tilt when landing.")]
+        [EditorTooltip("How much the target will tilt when landing.")]
         [FormerlySerializedAs("m_LandTilt")]
         internal float landTilt = 20f;
 
         [SerializeField]
-        [Tooltip("If enabled, the target will tilt when strafing.")]
+        [EditorTooltip("If enabled, the target will tilt when strafing.")]
         internal bool enableStrafeTilting = true;
         [SerializeField]
-        [Tooltip("How much the target will tilt when strafing.")]
+        [EditorTooltip("How much the target will tilt when strafing.")]
         [FormerlySerializedAs("m_StrafeTilt")]
         internal float strafeTilt = 3f;
 
         [SerializeField]
-        [Tooltip("The object to bob.")]
+        [EditorTooltip("The object to bob.")]
         [FormerlySerializedAs("m_BobTarget")]
         internal Transform bobTarget = null;
 

@@ -22,7 +22,7 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerObjectBob : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The target objects to bob.")]
+        [EditorTooltip("The target objects to bob.")]
         private BobClass[] targets = null;
 
         [SerializeField]

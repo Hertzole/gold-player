@@ -22,7 +22,7 @@ namespace Hertzole.GoldPlayer
     public class GoldPlayerInteraction : PlayerBehaviour
     {
         [SerializeField]
-        [Tooltip("The player camera head.")]
+        [EditorTooltip("The player camera head.")]
         [FormerlySerializedAs("m_CameraHead")]
         internal Transform cameraHead;
 
@@ -31,15 +31,15 @@ namespace Hertzole.GoldPlayer
 #endif
 
         [SerializeField]
-        [Tooltip("Sets how far the interaction reach is.")]
+        [EditorTooltip("Sets how far the interaction reach is.")]
         [FormerlySerializedAs("m_InteractionRange")]
         internal float interactionRange = 2f;
         [SerializeField]
-        [Tooltip("Sets the layers that the player can interact with.")]
+        [EditorTooltip("Sets the layers that the player can interact with.")]
         [FormerlySerializedAs("m_InteractionLayer")]
         internal LayerMask interactionLayer = 1;
         [SerializeField]
-        [Tooltip("Determines if colliders marked as triggers should be detected.")]
+        [EditorTooltip("Determines if colliders marked as triggers should be detected.")]
         [FormerlySerializedAs("m_IgnoreTriggers")]
         internal bool ignoreTriggers = true;
 
@@ -47,7 +47,7 @@ namespace Hertzole.GoldPlayer
         [Header("UI")]
 #endif
         [SerializeField]
-        [Tooltip("A default message for UI elements to show when the player can interact.")]
+        [EditorTooltip("A default message for UI elements to show when the player can interact.")]
         [FormerlySerializedAs("m_InteractMessage")]
         internal string interactMessage = "Press E to interact";
 
@@ -55,7 +55,7 @@ namespace Hertzole.GoldPlayer
         [Header("Input")]
 #endif
         [SerializeField]
-        [Tooltip("The input name for interaction to use.")]
+        [EditorTooltip("The input name for interaction to use.")]
         [FormerlySerializedAs("m_InteractInput")]
         internal string interactInput = "Interact";
 
