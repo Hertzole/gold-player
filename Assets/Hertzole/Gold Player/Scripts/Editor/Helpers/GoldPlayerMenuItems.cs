@@ -100,7 +100,9 @@ namespace Hertzole.GoldPlayer.Editor
             playerCamera.nearClipPlane = 0.01f;
             playerCamera.farClipPlane = 1000f;
             playerCamera.tag = "MainCamera";
+#if !UNITY_6000_5_OR_NEWER // FlareLayer is obsolete in 6.5
             Undo.AddComponent<FlareLayer>(playerCameraGo);
+#endif
             Undo.AddComponent<AudioListener>(playerCameraGo);
 #endif
 
