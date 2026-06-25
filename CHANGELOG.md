@@ -1,3 +1,14 @@
+## [1.7.3] - 2026-06-25
+
+### Added:
+
+Package is now signed
+
+### Fixed:
+
+- Usages of outdated APIs in newer Unity versions
+- Fixed PlayerModule not being marked as serializable
+
 ## [1.7.2] - 2025-01-06
 
 ### Changes:
