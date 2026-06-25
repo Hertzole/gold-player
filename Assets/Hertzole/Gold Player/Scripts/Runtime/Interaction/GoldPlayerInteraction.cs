@@ -60,7 +60,7 @@ namespace Hertzole.GoldPlayer
         internal string interactInput = "Interact";
 
         private int interactHash;
-        private int? previousHitColliderId = null;
+        private EntityId? previousHitColliderId = null;
 
         // Flag to determine if we have checked for a interactable.
         internal bool hasCheckedInteractable = false;
@@ -156,9 +156,9 @@ namespace Hertzole.GoldPlayer
         {
 	        // If there's no current hit or the hits doesn't match, update it and
 	        // the player need to check for a interactable again.
-	        if (hit.colliderInstanceID != previousHitColliderId)
+	        if (hit.GetEntityId() != previousHitColliderId)
 	        {
-		        previousHitColliderId = hit.colliderInstanceID;
+		        previousHitColliderId = hit.GetEntityId();
 		        currentHit = hit.collider;
 		        hasCheckedInteractable = false;
 
