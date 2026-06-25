@@ -437,8 +437,8 @@ namespace Hertzole.GoldPlayer
 
         private static T FindFirstObject<T>() where T : Object
         {
-#if UNITY_2023_1_OR_NEWER
-	        return FindFirstObjectByType<T>();
+#if UNITY_2020_3_OR_NEWER
+	        return FindAnyObjectByType<T>();
 #else
 	        return FindObjectOfType<T>();
 #endif
