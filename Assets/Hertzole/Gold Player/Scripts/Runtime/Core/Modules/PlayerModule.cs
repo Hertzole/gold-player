@@ -2,6 +2,7 @@
 
 namespace Hertzole.GoldPlayer
 {
+    [System.Serializable]
     public class PlayerModule
     {
         public GoldPlayerController PlayerController { get; set; }
