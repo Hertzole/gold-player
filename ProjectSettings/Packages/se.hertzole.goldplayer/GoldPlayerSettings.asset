@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37ff031a7756e1b49bffadd16cebe393, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Hertzole.GoldPlayer.Editor::Hertzole.GoldPlayer.Editor.GoldPlayerProjectSettings
   guiAdapation: 1
   showGroundCheckGizmos: 1
   disableInteraction: 0
