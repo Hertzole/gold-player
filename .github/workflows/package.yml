@@ -7,6 +7,11 @@ jobs:
   release:
     name: Create Package
     runs-on: ubuntu-latest
+    env:
+      UPM_SERVICE_ACCOUNT_KEY_ID: ${{ secrets.UPM_SERVICE_ACCOUNT_KEY_ID }}
+      UPM_SERVICE_ACCOUNT_KEY_SECRET: ${{ secrets.UPM_SERVICE_ACCOUNT_KEY_SECRET }}
+      UPM_ORG_ID: ${{ secrets.UPM_ORG_ID }}
+      DIST_DIR: /tmp/signed-upm-dist
     steps:
       - uses: actions/checkout@v6
         with:
@@ -56,3 +61,49 @@ jobs:
           git push origin ${{ steps.previoustag.outputs.tag }}-upm
         env:
           PKG_ROOT: Assets/Hertzole/Gold Player
+
+      - name: Read package metadata
+        run: |
+          package_name="$(jq -r '.name' package.json)"
+          package_version="$(jq -r '.version' package.json)"
+
+          echo "PACKAGE_NAME=$package_name" >> "$GITHUB_ENV"
+          echo "PACKAGE_VERSION=$package_version" >> "$GITHUB_ENV"
+
+          printf 'Package name: %s\n' "$package_name"
+          printf 'Package version: %s\n' "$package_version"
+
+      - name: Install Unity UPM CLI
+        run: |
+          curl -fsSL https://cdn.packages.unity.com/upm-cli/install.sh -o install.sh
+          bash install.sh
+          echo "$HOME/.upm/bin" >> "$GITHUB_PATH"
+          rm install.sh
+
+      - name: Sign package
+        run: |
+          mkdir -p "$DIST_DIR"
+          upm pack ./ --organization-id "$UPM_ORG_ID" --destination "$DIST_DIR"
+
+      - name: Print signed package info
+        run: |
+          shopt -s nullglob
+          archives=("$DIST_DIR"/*.tgz "$DIST_DIR"/*.tar.gz)
+          if [ "${#archives[@]}" -ne 1 ]; then
+            printf 'Expected exactly one signed package archive, found %s\n' "${#archives[@]}" >&2
+            exit 1
+          fi
+
+          archive="${archives[0]}"
+          tar -tzf "$archive" | grep -qx 'package/package.json'
+          tar -tzf "$archive" | grep -qx 'package/.attestation.p7m'
+
+          echo "PACKAGE_ARCHIVE=$archive" >> "$GITHUB_ENV"
+          printf 'Archive: %s\n' "$(basename "$archive")"
+          tar -xOzf "$archive" package/package.json | jq '{name, version}'
+
+      - name: Upload to release
+        uses: xresloader/upload-to-github-release@v1
+        with:
+          file: ${{ env.PACKAGE_ARCHIVE }}
+          update_latest_release: true
