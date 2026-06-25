@@ -2,7 +2,7 @@ name: WebGL Example
 on:
   release:
     types:
-    - published
+      - published
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -14,31 +14,30 @@ jobs:
     name: Build WebGL
     runs-on: ubuntu-latest
     steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    # Checkout
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      # Cache
+      - uses: actions/cache@v6
+        with:
+          path: Library
+          key: Library-WebBuild-${{ runner.os }}-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
 
-    # Cache
-    - uses: actions/cache@v4
-      with:
-        path: Library
-        key: Library-WebBuild-${{ runner.os }}-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v5
+        with:
+          targetPlatform: WebGL
 
-    # Build
-    - name: Build project
-      uses: game-ci/unity-builder@v4
-      with:
-       targetPlatform: WebGL
-
-    # Output
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages # The branch the action should deploy to.
-        folder: build/WebGL/WebGL # The folder the action should deploy.
-        target-folder: play
-        clean: true
+      # Output
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build/WebGL/WebGL # The folder the action should deploy.
+          target-folder: play
+          clean: true
