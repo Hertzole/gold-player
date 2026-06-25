@@ -23,7 +23,7 @@ namespace Hertzole.GoldPlayer
         [EditorTooltip("Sets the max angle of the platforms the player can stand on.")]
         internal float maxAngle = 45f;
 
-        private int? previousHitColliderId = null;
+        private EntityId? previousHitColliderId = null;
         
         /// <summary> Determines if support for moving platforms should be enabled. </summary>
         public bool Enabled { get { return enabled; } set { enabled = value; } }
@@ -164,10 +164,10 @@ namespace Hertzole.GoldPlayer
         {
             if (Physics.Raycast(PlayerTransform.position, new Vector3(0, -1, 0), out groundHit, CHECK_DISTANCE, PlayerController.Movement.GroundLayer, QueryTriggerInteraction.Ignore))
             {
-                if (previousHitColliderId != groundHit.colliderInstanceID)
+                if (previousHitColliderId != groundHit.GetEntityId())
                 {
                     hitPlatform = groundHit.collider.transform;
-                    previousHitColliderId = groundHit.colliderInstanceID;
+                    previousHitColliderId = groundHit.GetEntityId();
                 }
                 
                 CheckPlatformCollision(new Vector3(0f, -CHECK_DISTANCE, 0f), groundHit.normal, hitPlatform);
