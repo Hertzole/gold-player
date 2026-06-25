@@ -170,22 +170,14 @@ namespace Hertzole.GoldPlayer.Editor
 #if GOLD_PLAYER_CINEMACHINE
 		private static void CreateCinemachineBrainIfNeeded()
 		{
-			#if UNITY_2023_1_OR_NEWER
-			CinemachineBrain[] brains = Object.FindObjectsByType<CinemachineBrain>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-#else
-			CinemachineBrain[] brains = Object.FindObjectsOfType<CinemachineBrain>();
-#endif
+			CinemachineBrain[] brains = FindObjectsByType<CinemachineBrain>();
 			CinemachineBrain brain = brains != null && brains.Length > 0 ? brains[0] : null;
 			if (brain == null)
 			{
 				Camera cam = Camera.main;
 				if (cam == null)
 				{
-#if UNITY_2023_1_OR_NEWER
-					Camera[] cams = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-#else
-					Camera[] cams = Object.FindObjectsOfType<Camera>();
-#endif
+					Camera[] cams = FindObjectsByType<Camera>();
 
 					if (cams != null && cams.Length > 0)
 					{
@@ -200,6 +192,17 @@ namespace Hertzole.GoldPlayer.Editor
 			}
 		}
 #endif
+
+		private static T[] FindObjectsByType<T>() where T : Object
+		{
+#if UNITY_6000_4_OR_NEWER
+			return Object.FindObjectsByType<T>(FindObjectsInactive.Include);
+#elif UNITY_2023_1_OR_NEWER
+			return Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+#else
+			return Object.FindObjectsOfType<T>();
+#endif
+		}
 
 		private static void SetObjectTransform(Transform transform, Vector3? position, Vector3? rotation, Vector3? scale)
 		{
