@@ -25,6 +25,12 @@ jobs:
         with:
           path: Library
           key: Library-WebBuild-${{ runner.os }}-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
+          
+      # Cleanup
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          dotnet: false
 
       # Build
       - name: Build project
