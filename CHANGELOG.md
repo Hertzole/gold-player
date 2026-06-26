@@ -1,3 +1,9 @@
+## [1.7.4] - 2026-06-26
+
+### Fixed
+
+- Fixed EntityId shims conflicting in Unity 6.3
+
 ## [1.7.3] - 2026-06-25
 
 ### Added:
