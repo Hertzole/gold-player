@@ -6,7 +6,7 @@ namespace Hertzole.GoldPlayer
     {
         public static EntityId GetEntityId(this RaycastHit hit)
         {
-#if UNITY_6000_4_OR_NEWER
+#if UNITY_6000_3_OR_NEWER
             return hit.colliderEntityId;
 #else
             return new EntityId(hit.colliderInstanceID);
